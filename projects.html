@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>OpenTEAM — Projects</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+<style>
+/* ─── Rich project cards (TRAC, PODS, CCD) ─── */
+.pcard--rich {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  min-width: 320px;
+  max-width: 340px;
+  background: #fff;
+  border: 1.5px solid #ddd8ce;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 150ms, box-shadow 150ms, transform 150ms;
+  scroll-snap-align: start;
+}
+.pcard--rich:hover {
+  border-color: #1e4d2b;
+  box-shadow: 0 6px 28px rgba(30,77,43,.13);
+  transform: translateY(-2px);
+}
+.pcard__cover--rich {
+  position: relative;
+  height: 130px;
+  overflow: hidden;
+  flex: 0 0 130px;
+}
+.pcard__cover--rich img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.82) saturate(1.1);
+}
+.pcard__cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(30,77,43,.72) 0%, rgba(26,79,122,.55) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 10px 12px;
+}
+.pcard__cover-badge {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.75);
+  background: rgba(0,0,0,.28);
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+.pcard__rich-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.pcard__title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.pcard__title-row .pcard__title {
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  flex: 1;
+}
+.pcard__title-row .pcard__pills {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: flex-end;
+}
+.pcard__rich-body .pcard__sub {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #6b6760;
+  margin: 0;
+}
+.pcard__section-label {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: #9e9a93;
+  margin-bottom: 5px;
+}
+.pcard__partner-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.mini-pill--partner {
+  background: #eaf3ec;
+  color: #1e4d2b;
+  border: 1px solid #c8deca;
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.mini-pill--active {
+  background: #d4edda;
+  color: #1e6b3a;
+}
+.mini-pill--archive {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+.pcard__outcome-list {
+  margin: 0;
+  padding: 0 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pcard__outcome-list li {
+  font-size: 11.5px;
+  color: #4b4b45;
+  line-height: 1.45;
+}
+.pcard__link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 4px;
+  border-top: 1px solid #eee;
+}
+.pcard__link-row .pill.secondary {
+  font-size: 9.5px;
+  padding: 4px 9px;
+}
+</style>
+</head>
+<body>
+<header class="nav-shell" role="banner">
+<button aria-controls="drawer" aria-expanded="false" class="menu-button" id="menuButton">
+<span aria-hidden="true" class="menu-icon"><span></span></span>
+<span class="menu-label">MENU</span>
+</button>
+<div class="nav-title">
+<div class="nav-title-text">Open Technology Ecosystem for Agricultural Management</div>
+</div>
+<div aria-hidden="true" class="nav-logo">
+<img alt="" src="assets/openteam_logo.svg"/>
+</div>
+</header>
+<aside aria-hidden="true" class="drawer" id="drawer">
+<div class="drawer-inner">
+<div class="drawer-top">
+<div class="drawer-mark">
+<img alt="OpenTEAM logo" src="assets/openteam_logo.svg"/>
+</div>
+<div class="drawer-vertical">OpenTEAM</div>
+<button aria-label="Close menu" class="drawer-close" id="drawerClose">✕</button>
+</div>
+<nav aria-label="Site" class="drawer-links">
+<a class="drawer-link" href="index.html">HOME</a>
+<a class="drawer-link" href="index.html#initiatives">OUR WORK</a>
+<a class="drawer-link" href="index.html#pilots">COLLABATHONS</a>
+<a class="drawer-link" aria-current="page" href="projects.html">PROJECTS</a>
+<a class="drawer-link" href="index.html#library">TOOLS &amp; PLATFORMS</a>
+<a class="drawer-link" href="videos.html">VIDEOS</a>
+<a class="drawer-link" href="canonical-source-texts.html">INSPIRATIONS</a>
+<a class="drawer-link" href="calendar.html">EVENTS CALENDAR</a>
+<a class="drawer-link" href="index.html#join">JOIN</a>
+<a class="drawer-link" href="licenses.html">LICENSES</a>
+<a class="drawer-link" href="code-of-conduct.html">CODE OF CONDUCT</a>
+</nav>
+<div class="drawer-meta">
+<div class="drawer-meta-title">Contact</div>
+<a class="drawer-meta-link" href="https://www.hylo.com/groups/openteam" rel="noopener" target="_blank">Connect on Hylo ↗</a>
+</div>
+</div>
+</aside>
+<div aria-hidden="true" class="scrim" id="scrim"></div>
+<main class="page">
+<section class="hero hero--projects">
+<div class="container">
+<div class="hero__row">
+<div class="hero__text">
+<h1 class="hero__title">Projects</h1>
+<p class="hero__lede">Browse OpenTEAM working group projects and Metagov projects. Use filters to find what you need.</p>
+</div>
+<a class="pill" href="index.html">Back to index ↗</a>
+</div>
+</div>
+</section>
+<div class="container">
+<div id="rails-root"></div>
+</div>
+</main>
+<footer class="footer">
+<div class="container footer-grid">
+<div class="footer-brand">
+<img alt="OpenTEAM logo" class="footer-logo" src="assets/openteam_logo.svg"/>
+<div>
+<div class="footer-title">OpenTEAM</div>
+<div class="footer-subtitle">Open Technology Ecosystem for Agricultural Management</div>
+<div class="footer-meta">© <span id="year"></span> OpenTEAM — Built for Sharing</div>
+<div class="footer-meta" style="margin-top:4px;"><a href="code-of-conduct.html" style="color:inherit;">Code of Conduct</a></div>
+</div>
+</div>
+<div class="footer-links">
+<a href="index.html">Home</a>
+<a href="index.html#initiatives">Our Work</a>
+<a href="index.html#pilots">Collabathons</a>
+<a href="projects.html">Projects</a>
+<a href="index.html#library">Tools &amp; Platforms</a>
+<a href="videos.html">Videos</a>
+<a href="canonical-source-texts.html">Inspirations</a>
+<a href="calendar.html">Events</a>
+<a href="index.html#join">Join</a>
+<a href="licenses.html">Licenses</a>
+<a href="code-of-conduct.html">Code of Conduct</a>
+</div>
+</div>
+</footer>
+<script>
+// ==============================
+// EDIT IN GITHUB
+// - Toggle rails: show true/false
+// - Toggle search/filter per rail: showSearch/showFilters
+// - Edit filter chips per rail: filters[]
+// - Reorder rails by reordering RAILS_CONFIG
+// ==============================
+const RAILS_CONFIG = [
+  {
+    "id": "openteam",
+    "title": "All OpenTEAM Projects",
+    "show": true,
+    "showSearch": false,
+    "showFilters": true,
+    "filters": [
+      "All types",
+      "Data Trust Development",
+      "Commons & Governance",
+      "Data Sovereignty",
+      "Regenerative Economics",
+      "Interoperability",
+      "Governance in Practice"
+    ],
+    "showSort": false
+  },
+  {
+    "id": "metagov",
+    "title": "Metagov Projects",
+    "show": true,
+    "showSearch": false,
+    "showFilters": true,
+    "filterField": "category",
+    "filters": [
+      "All",
+      "Community",
+      "Convening & Experiences",
+      "Governance Funding",
+      "Governance UX",
+      "Interoperability",
+      "Mapping Governance",
+      "Network Building",
+      "Standards"
+    ],
+    "showSort": true,
+    "sortOptions": [
+      "Last updated",
+      "Alphabetical"
+    ]
+  }
+];
+
+const OPENTEAM_PROJECTS = [
+  {
+    "title": "Fair Tech Registry Collabathon",
+    "subtitle": "Co-design and collaboration activities supporting the FAIR Tech Registry.",
+    "status": "Complete",
+    "theme": "Registry",
+    "img": "assets/wg-project-card-fair-tech-registry-collabathon.jpg",
+    "links": [
+      {
+        "label": "Project site ↗",
+        "href": "https://openteamag.gitlab.io/codesign/fair-registry/"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/codesign/fair-registry"
+      }
+    ],
+    "type": "Data Trust Development"
+  },
+  {
+    "title": "FAIR Tech Registry Documentation",
+    "subtitle": "Developer-oriented documentation for the FAIR Tech Registry.",
+    "status": "Active",
+    "theme": "Docs",
+    "img": "assets/wg-project-card-fair-tech-registry-documentation.jpg",
+    "links": [
+      {
+        "label": "Project site ↗",
+        "href": "https://openteamag.gitlab.io/fair-tech-registry/devs/"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/fair-tech-registry"
+      }
+    ],
+    "type": "Data Trust Development"
+  },
+  {
+    "title": "GLCDI Documentation",
+    "subtitle": "Documentation hub for Grazing Lands Carbon Data Initiative.",
+    "status": "Active",
+    "theme": "Carbon data",
+    "img": "assets/wg-project-card-glcdi-documentation.jpg",
+    "links": [
+      {
+        "label": "Project site ↗",
+        "href": "https://openteamag.gitlab.io/codesign/grazingdata/"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/codesign/grazingdata"
+      }
+    ],
+    "type": "Interoperability"
+  },
+  {
+    "title": "Agricultural Data Use Documents",
+    "subtitle": "Ag data use agreements and related reference documents.",
+    "status": "Active",
+    "theme": "Agreements",
+    "img": "assets/wg-project-card-agricultural-data-use-documents.jpg",
+    "links": [
+      {
+        "label": "Project site ↗",
+        "href": "https://openteam-agreements.community/"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/agreements"
+      }
+    ],
+    "type": "Data Sovereignty"
+  },
+  {
+    "title": "Code of Conduct",
+    "subtitle": "Community expectations and participation guidelines.",
+    "status": "Active",
+    "theme": "Governance",
+    "img": "assets/wg-project-card-code-of-conduct.jpg",
+    "links": [
+      {
+        "label": "Project site ↗",
+        "href": "https://openteamag.gitlab.io/codesign/code-of-conduct/"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/codesign/code-of-conduct"
+      }
+    ],
+    "type": "Commons & Governance"
+  },
+  {
+    "title": "Marketplace Working Group",
+    "subtitle": "Working group charter, glossary, and shared framing for marketplace efforts.",
+    "status": "Archive",
+    "theme": "Working group",
+    "img": "assets/wg-project-card-marketplace-working-group.jpg",
+    "links": [
+      {
+        "label": "Project site ↗",
+        "href": "https://openteamag.gitlab.io/codesign/markets/"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/codesign/markets"
+      }
+    ],
+    "type": "Governance in Practice"
+  },
+  {
+    "title": "PCSC farmOS Module",
+    "subtitle": "Project space for a farmOS module and related implementation notes.",
+    "status": "Archive",
+    "theme": "farmOS",
+    "img": "assets/wg-project-card-pcsc-farmos-module.jpg",
+    "links": [
+      {
+        "label": "Project site ↗",
+        "href": "https://openteamag.gitlab.io/codesign/pcsc/"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/codesign/pcsc"
+      }
+    ],
+    "type": "Interoperability"
+  },
+  {
+    "title": "Northeast Grazing and Soil Carbon Network",
+    "subtitle": "Network hub for grazing and soil carbon collaboration materials.",
+    "status": "Archive",
+    "theme": "Soil carbon",
+    "img": "assets/wg-project-card-northeast-grazing-and-soil-carbon-network.jpg",
+    "links": [
+      {
+        "label": "Project site ↗",
+        "href": "https://openteamag.gitlab.io/codesign/grazing-SC-network/"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/codesign/grazing-SC-network"
+      }
+    ],
+    "type": "Regenerative Economics"
+  },
+  {
+    "title": "Ag Data Wallet",
+    "subtitle": "Project site for Agricultural Data Wallet materials and outcomes.",
+    "status": "Archive",
+    "theme": "Data tools",
+    "img": "assets/wg-project-card-ag-data-wallet.jpg",
+    "links": [
+      {
+        "label": "Project site ↗",
+        "href": "https://openteamag.gitlab.io/agricultural-data-wallet/"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/ag-data-wallet"
+      }
+    ],
+    "type": "Data Trust Development"
+  },
+  {
+    "title": "OpenTEAM Convention",
+    "subtitle": "Repository folder for OpenTEAM Convention materials.",
+    "status": "Active",
+    "theme": "Governance",
+    "img": "assets/wg-project-card-openteam-convention.jpg",
+    "links": [
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/ag-data-wallet/openteam-convention"
+      }
+    ],
+    "type": "Commons & Governance"
+  },
+  {
+    "title": "Documentation",
+    "subtitle": "Top-level documentation repositories and related assets.",
+    "status": "Active",
+    "theme": "Docs",
+    "img": "assets/wg-project-card-documentation.jpg",
+    "links": [
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/documentation"
+      }
+    ],
+    "type": "Data Trust Development"
+  },
+  {
+    "title": "USDA Cooperative Agreements",
+    "subtitle": "Folder for cooperative agreement materials and related project work.",
+    "status": "Archive",
+    "theme": "Agreements",
+    "img": "assets/wg-project-card-usda-cooperative-agreements.jpg",
+    "links": [
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
+      }
+    ],
+    "type": "Data Sovereignty"
+  },
+  {
+    "title": "TRAC — Tech Registry for Agricultural Conservation",
+    "subtitle": "Applying FAIR principles to NRCS tool discovery and management. A 'one-stop-shop' registry enabling authoritative listings, robust search, and community feedback for USDA conservation tools.",
+    "status": "Active",
+    "theme": "Registry",
+    "img": "assets/wg-project-card-fair-tech-registry-documentation.jpg",
+    "report_date": "September 2025",
+    "partners": ["USDA NRCS", "OpenTEAM", "Wolfe's Neck Center", "EcoData"],
+    "contacts": ["Melanie Kammerer — mkammerer@ecodata.tech", "Ben Weinberg — bweinberg@wolfesneck.org", "Dorn Cox — dorn@openteam.community"],
+    "outcomes": [
+      "User Needs Assessment summarizing NRCS priorities for a tools registry",
+      "FAIR Implementation Strategy with resources for evaluating tool alignment with FAIR principles",
+      "Functional Proof-of-Concept with interactive dashboard, commenting system, and favorites management"
+    ],
+    "links": [
+      {
+        "label": "Project Documentation ↗",
+        "href": "https://openteamag.gitlab.io/codesign/fair-registry/"
+      },
+      {
+        "label": "FAIR Tool Self-Assessment (SurveyStack) ↗",
+        "href": "https://surveystack.io"
+      },
+      {
+        "label": "Prototype Walkthrough ↗",
+        "href": "https://trac-prototype.bubbleapps.io/version-test/home/1746823554759x940046122529325000"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/fair-tech-registry"
+      }
+    ],
+    "type": "Data Trust Development"
+  },
+  {
+    "title": "PODS — Producer Operations Data System",
+    "subtitle": "Advancing interoperability of the NRCS Producer Operations Data System — an NRCS-branded farmOS instance — through standardized soil health data, the Common Farm Convention, and the Modus Lab Method Library.",
+    "status": "Active",
+    "theme": "Data infrastructure",
+    "img": "assets/wg-project-card-pcsc-farmos-module.jpg",
+    "report_date": "2025",
+    "partners": ["USDA NRCS", "OpenTEAM", "Wolfe's Neck Center", "Purdue Axi Lab", "Our Sci", "farmOS"],
+    "legislation": "2018 Farm Bill & OPEN Government Data Act",
+    "outcomes": [
+      "Common Farm Convention: data transfer standard for farm management data using farmOS's data model",
+      "Modus Lab Method Library: central repository tracking which soil testing labs use which methods",
+      "Comprehensive Needs Assessment: analysis based on 19 NRCS stakeholder interviews mapping data flows"
+    ],
+    "links": [
+      {
+        "label": "PODS Report ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
+      },
+      {
+        "label": "farmOS ↗",
+        "href": "https://farmos.org"
+      },
+      {
+        "label": "Modus / AgGateway ↗",
+        "href": "https://aggateway.org"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
+      }
+    ],
+    "type": "Interoperability"
+  },
+  {
+    "title": "CCD — Conservation Cost Data System",
+    "subtitle": "Designing an effective system for collecting, storing, and managing NRCS conservation practice cost data — enabling receipt-based collection with AI processing to improve accuracy, transparency, and payment schedules.",
+    "status": "Active",
+    "theme": "Data infrastructure",
+    "img": "assets/wg-project-card-usda-cooperative-agreements.jpg",
+    "report_date": "2025",
+    "partners": ["USDA NRCS", "OpenTEAM", "Wolfe's Neck Center", "Purdue Axi Lab", "Our Sci"],
+    "vision": "Transition NRCS to a predominantly receipt-based conservation practice cost data system leveraging AI to improve accuracy, efficiency, and transparency.",
+    "outcomes": [
+      "CCDS Conceptual Design: architecture overview and detailed module functionality",
+      "Data Structures, Conventions & Dictionaries: standards and integration architecture",
+      "Cost Data Collection CEMA: blueprint for critical data collection and storage"
+    ],
+    "links": [
+      {
+        "label": "CCD Report ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
+      },
+      {
+        "label": "USDA Cooperative Agreements ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
+      },
+      {
+        "label": "GitLab ↗",
+        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
+      }
+    ],
+    "type": "Data Sovereignty"
+  }
+];
+const METAGOV_PROJECTS = [
+  {
+    "title": "The Protopian Fiction Prize",
+    "href": "https://metagov.org/projects/protopian",
+    "img": "https://metagov.org/media/pages/projects/protopian/21feed2742-1768435511/globe-dithered-434x235-crop.png",
+    "desc": "Write the story of humanity's future.",
+    "category": "Convening & Experiences",
+    "type": "Publication",
+    "status": "Active"
+  },
+  {
+    "title": "Atlas Computing",
+    "href": "https://metagov.org/projects/atlas-computing",
+    "img": "https://metagov.org/media/pages/projects/atlas-computing/13c84f76f9-1756312156/atlascomputing-434x235-crop.jpg",
+    "desc": "Mapping the way to human governance of AI.",
+    "category": "Mapping Governance",
+    "type": "R&D",
+    "status": "Active"
+  },
+  {
+    "title": "Attention Economy",
+    "href": "https://metagov.org/projects/attentionecon",
+    "img": "https://metagov.org/media/pages/projects/attentionecon/820fb35067-1751175556/default_shaded-434x235-crop.png",
+    "desc": "Exploring the intersection of attention economies and governance experience design.",
+    "category": "Governance UX",
+    "type": "R&D",
+    "status": "Active"
+  },
+  {
+    "title": "Governable Spacemakers Fellowship",
+    "href": "https://metagov.org/projects/governable-spacemakers-fellowship",
+    "img": "https://metagov.org/media/pages/projects/governable-spacemakers-fellowship/f3062d056c-1748540628/space-makers-moving-434x235-crop.gif",
+    "desc": "Where and how governance happens online is evolving.",
+    "category": "Network Building",
+    "type": "Community of Practice",
+    "status": "Active"
+  },
+  {
+    "title": "Theory + Practice",
+    "href": "https://metagov.org/projects/theory-practice",
+    "img": "https://metagov.org/media/pages/projects/theory-practice/d6d274c0c3-1743615321/t-p-3-small-434x235-crop.png",
+    "desc": "Connecting new political theory with new democratic practice.",
+    "category": "Convening & Experiences",
+    "type": "Roundtable",
+    "status": "Active"
+  },
+  {
+    "title": "KOI Pond",
+    "href": "https://metagov.org/projects/koi-pond",
+    "img": "https://metagov.org/media/pages/projects/koi-pond/01f7edd29a-1741974414/koi-434x235-crop.png",
+    "desc": "Experiments in online community self-governance using an LLM-mediated Knowledge Organization Infrastructure.",
+    "category": "Governance UX",
+    "type": "Tool",
+    "status": "Active"
+  },
+  {
+    "title": "Cryptoeconomic Systems",
+    "href": "https://metagov.org/projects/cryptoeconomic-systems",
+    "img": "https://metagov.org/media/pages/projects/cryptoeconomic-systems/f24d711554-1733076312/screen-shot-2024-12-01-at-12.04.47-pm-434x235-crop.png",
+    "desc": "Academic journal and conference on cryptoeconomic design and token governance.",
+    "category": "Convening & Experiences",
+    "type": "Publication",
+    "status": "Active"
+  },
+  {
+    "title": "Interoperable Deliberative Tools",
+    "href": "https://metagov.org/projects/interop",
+    "img": "https://metagov.org/media/pages/projects/interop/5b4d99e38e-1732556125/interop-434x235-crop.jpg",
+    "desc": "Homebase for interoperable deliberative tools.",
+    "category": "Interoperability",
+    "type": "Tool",
+    "status": "Active"
+  },
+  {
+    "title": "Mathematics for Governance Design",
+    "href": "https://metagov.org/projects/mathematics-for-governance-design",
+    "img": "https://metagov.org/media/pages/projects/mathematics-for-governance-design/aac7795227-1732560935/screen-shot-2024-11-25-at-10.55.06-am-434x235-crop.png",
+    "desc": "Applying mathematics to the design of governance systems.",
+    "category": "Mapping Governance",
+    "type": "R&D",
+    "status": "Active"
+  },
+  {
+    "title": "Constitutions of Web3",
+    "href": "https://metagov.org/projects/constitutions-of-web3",
+    "img": "https://metagov.org/media/pages/projects/constitutions-of-web3/2fe8adbaef-1709309833/constit-434x235-crop.png",
+    "desc": "Analysis and guides for DAO constitutions.",
+    "category": "Mapping Governance",
+    "type": "Publication",
+    "status": "Active"
+  },
+  {
+    "title": "Cryptopolitics",
+    "href": "https://metagov.org/projects/cryptopolitics",
+    "img": "https://metagov.org/media/pages/projects/cryptopolitics/06905a4367-1709252374/cryptopolitics_all_stickers-434x235-crop.jpg",
+    "desc": "A study of politics and ideology in crypto.",
+    "category": "Mapping Governance",
+    "type": "Publication",
+    "status": "Active"
+  },
+  {
+    "title": "D20 Governance",
+    "href": "https://metagov.org/projects/d20-governance",
+    "img": "https://metagov.org/media/pages/projects/d20-governance/a9f69b3650-1709111871/d20_governance-434x235-crop.jpg",
+    "desc": "LLM-mediated modular governance games on Discord.",
+    "category": "Governance UX",
+    "type": "Tool",
+    "status": "Active"
+  },
+  {
+    "title": "DAO Science",
+    "href": "https://metagov.org/projects/dao-science",
+    "img": "https://metagov.org/media/pages/projects/dao-science/4711ccfb1f-1709253730/dao_science-434x235-crop.png",
+    "desc": "A survey paper and community site for DAO research.",
+    "category": "Mapping Governance",
+    "type": "Data Set",
+    "status": "Active"
+  },
+  {
+    "title": "DAOchem",
+    "href": "https://metagov.org/projects/daochem",
+    "img": "https://metagov.org/media/pages/projects/daochem/8afeee59c6-1709254113/dao_chem-434x235-crop.png",
+    "desc": "A holistic view of DAO governance.",
+    "category": "Mapping Governance",
+    "type": "Data Set",
+    "status": "Active"
+  },
+  {
+    "title": "Governance Ecologies",
+    "href": "https://metagov.org/projects/governance-ecologies",
+    "img": "https://metagov.org/media/pages/projects/governance-ecologies/8ddab38fa9-1746131858/goveco-removebg-preview-434x235-crop.png",
+    "desc": "An exploration of historical governance practices across communities.",
+    "category": "Mapping Governance",
+    "type": "R&D",
+    "status": "Active"
+  },
+  {
+    "title": "Governance Experience Design",
+    "href": "https://metagov.org/projects/governance-experience-design",
+    "img": "https://metagov.org/media/pages/projects/governance-experience-design/fd8fd40671-1709253305/gov_ex_design-434x235-crop.jpg",
+    "desc": "A living manifesto for online spaces.",
+    "category": "Governance UX",
+    "type": "Publication",
+    "status": "Active"
+  },
+  {
+    "title": "Groundwork Fellowship",
+    "href": "https://metagov.org/projects/groundwork-fellowship",
+    "img": "https://metagov.org/media/pages/projects/groundwork-fellowship/d83f500c02-1713925134/groundwork-photo_collage-bgs-434x235-crop.png",
+    "desc": "An internet infrastructure design and marginalization fellowship.",
+    "category": "Network Building",
+    "type": "Community of Practice",
+    "status": "Active"
+  },
+  {
+    "title": "Grant Innovation Lab",
+    "href": "https://metagov.org/projects/grant-lab",
+    "img": "https://metagov.org/media/pages/projects/grant-lab/71336c0026-1727039843/final@2x-1-434x235-crop.png",
+    "desc": "Research, resources, and community to help advance granting and impact measurement.",
+    "category": "Governance Funding",
+    "type": "Community of Practice",
+    "status": "Active"
+  },
+  {
+    "title": "CommunityRule",
+    "href": "https://metagov.org/projects/communityrule",
+    "img": "https://metagov.org/media/pages/projects/communityrule/d529c89347-1709247984/community_rule-434x235-crop.jpg",
+    "desc": "A user-friendly governance toolkit for great communities.",
+    "category": "Community",
+    "type": "Tool",
+    "status": "Active"
+  },
+  {
+    "title": "Modpol",
+    "href": "https://metagov.org/projects/modpol",
+    "img": "https://metagov.org/media/pages/projects/modpol/7680a60fcf-1709132695/modpol-434x235-crop.png",
+    "desc": "A governance mod for Minetest.",
+    "category": "Community",
+    "type": "Tool",
+    "status": "Active"
+  },
+  {
+    "title": "Modular Politics",
+    "href": "https://metagov.org/projects/modular-politics",
+    "img": "https://metagov.org/media/pages/projects/modular-politics/a3826a143b-1709249866/modular_politics-434x235-crop.jpg",
+    "desc": "A paper outlining a governance layer for the internet.",
+    "category": "Interoperability",
+    "type": "Publication",
+    "status": "Active"
+  },
+  {
+    "title": "Calm Technology",
+    "href": "https://metagov.org/projects/calm-technology",
+    "img": "https://metagov.org/media/pages/projects/calm-technology/c2ea4fe649-1716293567/calm-tech-institute-logo-434x235-crop.png",
+    "desc": "A standards body for aligning attention with technology.",
+    "category": "Standards",
+    "type": "Technical Standard",
+    "status": "Active"
+  },
+  {
+    "title": "Govbase Dataset",
+    "href": "https://metagov.org/projects/govbase-dataset",
+    "img": "https://metagov.org/media/pages/projects/govbase-dataset/075d836730-1708447035/govbase_data-434x235-crop.jpg",
+    "desc": "A set of research datasets in online governance.",
+    "category": "Mapping Governance",
+    "type": "Data Set",
+    "status": "Active"
+  },
+  {
+    "title": "Metagov Gateway",
+    "href": "https://metagov.org/projects/metagov-gateway",
+    "img": "https://metagov.org/media/pages/projects/metagov-gateway/089efc0288-1705328802/gateway-434x235-crop.jpg",
+    "desc": "An API gateway for digital governance services.",
+    "category": "Interoperability",
+    "type": "Tool",
+    "status": "Active"
+  },
+  {
+    "title": "MetagovDAO",
+    "href": "https://metagov.org/projects/metagovdao",
+    "img": "https://metagov.org/media/pages/projects/metagovdao/cd2fa49472-1708447035/metagov_dao-434x235-crop.jpg",
+    "desc": "A funding body for qualitative governance research on DAOs.",
+    "category": "Governance Funding",
+    "type": "Fundraising",
+    "status": "Active"
+  },
+  {
+    "title": "Metagov Seminar",
+    "href": "https://metagov.org/projects/metagovernance-seminar",
+    "img": "https://metagov.org/media/pages/projects/metagovernance-seminar/ac83387cf7-1708447035/metagov_seminar-434x235-crop.jpg",
+    "desc": "A weekly seminar on digital governance.",
+    "category": "Convening & Experiences",
+    "type": "Roundtable",
+    "status": "Active"
+  },
+  {
+    "title": "PolicyKit",
+    "href": "https://metagov.org/projects/policykit",
+    "img": "https://metagov.org/media/pages/projects/policykit/da151d8deb-1708447035/policykit-434x235-crop.jpg",
+    "desc": "An engine for building governance in online communities.",
+    "category": "Community",
+    "type": "Tool",
+    "status": "Active"
+  },
+  {
+    "title": "Public AI",
+    "href": "https://metagov.org/projects/public-ai",
+    "img": "https://metagov.org/media/pages/projects/public-ai/64b06615f3-1708447035/publicai-434x235-crop.jpg",
+    "desc": "A new political economy for AI.",
+    "category": "Mapping Governance",
+    "type": "R&D",
+    "status": "Active"
+  },
+  {
+    "title": "Telescope",
+    "href": "https://metagov.org/projects/telescope",
+    "img": "https://metagov.org/media/pages/projects/telescope/c72b993c45-1708447035/telescope-434x235-crop.jpg",
+    "desc": "A Discord bot for ethical, responsive digital ethnography.",
+    "category": "Community",
+    "type": "Tool",
+    "status": "Active"
+  },
+  {
+    "title": "Agreement Engine",
+    "href": "https://metagov.org/projects/agreement-engine",
+    "img": "https://metagov.org/media/pages/projects/agreement-engine/f7114d2c94-1700846822/net-native-agreement-systems-434x235-crop.jpg",
+    "desc": "A tool for building net-native agreement systems.",
+    "category": "Interoperability",
+    "type": "Tool",
+    "status": "Active"
+  },
+  {
+    "title": "DAOstar",
+    "href": "https://metagov.org/projects/daostar",
+    "img": "https://metagov.org/media/pages/projects/daostar/42f57ad6f1-1700846822/daostar-434x235-crop.jpg",
+    "desc": "The standards body of the DAO ecosystem.",
+    "category": "Standards",
+    "type": "Technical Standard",
+    "status": "Active"
+  },
+  {
+    "title": "OSS Transitions",
+    "href": "https://metagov.org/projects/oss-transitions",
+    "img": "https://metagov.org/media/pages/projects/oss-transitions/59c519349a-1708447035/default-434x235-crop.png",
+    "desc": "An NSF-funded collaboration studying open-source governance transitions.",
+    "category": "Mapping Governance",
+    "type": "R&D",
+    "status": "Active"
+  }
+];
+
+// --- utilities
+function el(tag, attrs={}, children=[]) {
+  const n = document.createElement(tag);
+  Object.entries(attrs).forEach(([k,v])=>{ if(v===null || v===undefined) return; n.setAttribute(k,v); });
+  children.forEach(c=>{ if(typeof c === "string") n.appendChild(document.createTextNode(c)); else if(c) n.appendChild(c); });
+  return n;
+}
+
+function sortItems(scope, items){
+  const sel = document.querySelector(`.rail-sort[data-scope="${scope}"]`);
+  const mode = sel ? sel.value : "Last updated";
+  const arr = items.slice();
+  if(mode === "Alphabetical") arr.sort((a,b)=>(a.title||"").localeCompare(b.title||""));
+  return arr;
+}
+
+function renderRail(cfg, items) {
+  const section = el("section", {class:"rail-section", "data-rail":cfg.id});
+  const header = el("div", {class:"rail-header"}, [
+    el("h2", {class:"rail-title"}, [cfg.title]),
+  ]);
+
+  if(cfg.showSort){
+    const sel = el("select", {class:"rail-sort", "data-scope":cfg.id, "aria-label":"Sort projects"});
+    (cfg.sortOptions || ["Alphabetical"]).forEach((opt,i)=>{
+      sel.appendChild(el("option", {value:opt, selected: i===0 ? "selected": null}, [opt]));
+    });
+    header.appendChild(sel);
+  }
+  section.appendChild(header);
+
+  if(cfg.showSearch || cfg.showFilters) {
+    const filterWrap = el("div", {class:"rail-filter", "data-scope":cfg.id});
+    const row = el("div", {class:"filter-row"});
+    if(cfg.showSearch) {
+      row.appendChild(el("input", {
+        class:"filter-search",
+        "data-scope":cfg.id,
+        type:"search",
+        placeholder: cfg.id === "openteam" ? "Filter OpenTEAM projects…" : "Filter Metagov projects…",
+        "aria-label": cfg.id === "openteam" ? "Filter OpenTEAM projects" : "Filter Metagov projects"
+      }));
+    }
+    if(cfg.showFilters) {
+      const chips = el("div", {class:"filter-chips", "data-scope":cfg.id});
+      (cfg.filters || ["All types"]).forEach((f,i)=>{
+        chips.appendChild(el("button", {
+          class: "chip" + (i===0 ? " is-active" : ""),
+          type:"button",
+          "data-value": f
+        }, [f]));
+      });
+      row.appendChild(chips);
+    }
+    filterWrap.appendChild(row);
+    section.appendChild(filterWrap);
+  }
+
+  const railWrap = el("div", {class:"rail-wrap"});
+  const left = el("button", {class:"rail-arrow rail-arrow--left", type:"button", "aria-label":"Scroll left"}, ["‹"]);
+  const right = el("button", {class:"rail-arrow rail-arrow--right", type:"button", "aria-label":"Scroll right"}, ["›"]);
+  const rail = el("div", {class:"rail", "data-scope":cfg.id});
+  items.forEach(item=> rail.appendChild(renderCard(cfg.id, item)));
+  railWrap.appendChild(left); railWrap.appendChild(rail); railWrap.appendChild(right);
+  section.appendChild(railWrap);
+  return section;
+}
+
+function renderCard(scope, item) {
+  if(scope === "openteam") {
+    // Rich card for TRAC, PODS, CCD — items that have outcomes[] or partners[]
+    const isRich = !!(item.outcomes && item.outcomes.length);
+    const href = (item.links?.[0]?.href || "#");
+    const card = el("article", {class:"pcard" + (isRich ? " pcard--rich" : ""), "data-theme": item.type || "All types"});
+
+    if(isRich) {
+      // Rich layout: image header + full body with outcomes, partners, links
+      const cover = el("div", {class:"pcard__cover pcard__cover--rich"}, [
+        el("img", {src:item.img || "assets/wg-project-card-placeholder.jpg", alt:"", loading:"lazy",
+          onerror:"this.onerror=null;this.src='assets/wg-project-card-placeholder.jpg';"}),
+        el("div", {class:"pcard__cover-overlay"}, [
+          el("div", {class:"pcard__cover-badge"}, [item.report_date || ""])
+        ])
+      ]);
+      const richBody = el("div", {class:"pcard__rich-body"});
+
+      const titleRow = el("div", {class:"pcard__title-row"}, [
+        el("div", {class:"pcard__title"}, [item.title]),
+        el("div", {class:"pcard__pills"}, [
+          item.status ? el("span", {class:"mini-pill mini-pill--" + (item.status==="Active"?"active":"archive")}, [item.status]) : null,
+          item.type ? el("span", {class:"mini-pill mini-pill--theme"}, [item.type]) : null,
+        ].filter(Boolean))
+      ]);
+      richBody.appendChild(titleRow);
+      richBody.appendChild(el("div", {class:"pcard__sub"}, [item.subtitle || ""]));
+
+      // Partners
+      if(item.partners && item.partners.length) {
+        const pw = el("div", {class:"pcard__partners"});
+        pw.appendChild(el("div", {class:"pcard__section-label"}, ["Partners"]));
+        const pp = el("div", {class:"pcard__partner-pills"});
+        item.partners.forEach(p => pp.appendChild(el("span", {class:"mini-pill mini-pill--partner"}, [p])));
+        pw.appendChild(pp);
+        richBody.appendChild(pw);
+      }
+
+      // Outcomes
+      if(item.outcomes && item.outcomes.length) {
+        const ow = el("div", {class:"pcard__outcomes"});
+        ow.appendChild(el("div", {class:"pcard__section-label"}, ["Key Outcomes"]));
+        const ul = el("ul", {class:"pcard__outcome-list"});
+        item.outcomes.forEach(o => ul.appendChild(el("li", {}, [o])));
+        ow.appendChild(ul);
+        richBody.appendChild(ow);
+      }
+
+      // Links row
+      if(item.links && item.links.length) {
+        const lw = el("div", {class:"pcard__link-row"});
+        item.links.forEach(l => {
+          lw.appendChild(el("a", {class:"pill secondary", href:l.href, target:"_blank", rel:"noopener"}, [l.label]));
+        });
+        richBody.appendChild(lw);
+      }
+
+      card.appendChild(cover);
+      card.appendChild(richBody);
+      return card;
+    }
+
+    // Standard card (original layout)
+    const a = el("a", {class:"pcard__link", href, target:"_blank", rel:"noopener"});
+    const cover = el("div", {class:"pcard__cover"}, [
+      el("img", {src:item.img || "assets/wg-project-card-placeholder.jpg", alt:"", loading:"lazy",
+        onerror:"this.onerror=null;this.src='assets/wg-project-card-placeholder.jpg';"})
+    ]);
+    const meta = el("div", {class:"pcard__meta"}, [
+      el("div", {class:"pcard__title"}, [item.title]),
+      el("div", {class:"pcard__sub"}, [item.subtitle || ""]),
+      el("div", {class:"pcard__pills"}, [
+        item.status ? el("span", {class:"mini-pill"}, ["Status: " + item.status]) : null,
+        item.type ? el("span", {class:"mini-pill mini-pill--theme"}, [item.type]) : null,
+      ].filter(Boolean))
+    ]);
+    const actions = el("div", {class:"pcard__actions"}, [
+      el("span", {class:"pcard__arrow","aria-hidden":"true"}, ["↗"])
+    ]);
+    a.appendChild(cover); a.appendChild(meta); a.appendChild(actions);
+    card.appendChild(a);
+
+    if(item.links && item.links.length>1) {
+      const more = el("details", {class:"pcard__more"}, [
+        el("summary", {class:"pcard__morebtn"}, ["more"]),
+        el("div", {class:"pcard__morebody"}, item.links.map(l =>
+          el("a", {class:"pill secondary", href:l.href, target:"_blank", rel:"noopener"}, [l.label])
+        ))
+      ]);
+      card.appendChild(more);
+    }
+    return card;
+  }
+
+  // metagov — matches screenshot 3: left image, bold title, short desc, tag pills, More button
+  const card = el("article", {class:"pcard mg-card", "data-theme": item.category || "All"});
+
+  // Left: cover image (portrait crop matching pcard__cover dimensions)
+  const imgSrc = item.img || "assets/wg-project-card-placeholder.jpg";
+  const cover = el("div", {class:"pcard__cover"}, [
+    el("img", {src:imgSrc, alt:"", loading:"lazy",
+      onerror:"this.onerror=null;this.src='assets/wg-project-card-placeholder.jpg';"})
+  ]);
+
+  // Right: title + description (capped at 2 lines) + status/source pills
+  const statusClass = item.status === "Active" ? "mini-pill mini-pill--active"
+    : item.status === "Complete" ? "mini-pill mini-pill--active"
+    : "mini-pill mini-pill--research";
+  const pillsEl = el("div", {class:"pcard__pills"}, [
+    item.category ? el("span", {class:"mini-pill mini-pill--theme"}, [item.category]) : null,
+    item.type ? el("span", {class:"mini-pill"}, [item.type]) : null,
+  ].filter(Boolean));
+
+  const meta = el("div", {class:"pcard__meta"}, [
+    el("div", {class:"pcard__title"}, [item.title]),
+    el("div", {class:"pcard__sub mg-card__desc"}, [item.desc || "A Metagov project."]),
+    pillsEl
+  ]);
+
+  // Action: "More ↗" button linking out
+  const actions = el("div", {class:"pcard__actions"});
+  const moreBtn = el("a", {class:"mg-card__more-btn", href:item.href, target:"_blank", rel:"noopener"}, ["More ↗"]);
+  actions.appendChild(moreBtn);
+
+  // Assemble using the standard pcard__link grid (image | meta | actions)
+  const link = el("div", {class:"pcard__link pcard__link--grid"});
+  link.appendChild(cover); link.appendChild(meta); link.appendChild(actions);
+  card.appendChild(link);
+  return card;
+}
+
+function applyFilters(scope) {
+  const q = (document.querySelector(`.filter-search[data-scope="${scope}"]`)?.value || "").toLowerCase().trim();
+  const activeChip = document.querySelector(`.filter-chips[data-scope="${scope}"] .chip.is-active`);
+  const active = activeChip ? activeChip.getAttribute("data-value") : "All";
+  const allValues = ["All types", "All"];
+
+  const rail = document.querySelector(`.rail[data-scope="${scope}"]`);
+  if(!rail) return;
+
+  rail.querySelectorAll(".pcard,.mg-card").forEach(card=>{
+    const theme = card.getAttribute("data-theme") || "All";
+    const txt = card.innerText.toLowerCase();
+    const okQ = !q || txt.includes(q);
+    const okT = allValues.includes(active) ? true : (theme === active);
+    card.style.display = (okQ && okT) ? "" : "none";
+  });
+}
+
+function wireArrows(){
+  document.querySelectorAll(".rail-wrap").forEach(w=>{
+    const rail = w.querySelector(".rail");
+    const left = w.querySelector(".rail-arrow--left");
+    const right = w.querySelector(".rail-arrow--right");
+    const step = ()=> Math.max(280, Math.floor(rail.clientWidth*0.85));
+    left.addEventListener("click", ()=> rail.scrollBy({left:-step(), behavior:"smooth"}));
+    right.addEventListener("click", ()=> rail.scrollBy({left:step(), behavior:"smooth"}));
+    const update=()=>{
+      const max = rail.scrollWidth - rail.clientWidth - 2;
+      left.disabled = rail.scrollLeft <= 2;
+      right.disabled = rail.scrollLeft >= max;
+    };
+    rail.addEventListener("scroll", update, {passive:true});
+    window.addEventListener("resize", update);
+    update();
+  });
+}
+
+// --- Metagov enrichment (img + description)
+const METAGOV_CACHE_KEY = "metagovProjectCache_v1";
+function loadCache(){
+  try { return JSON.parse(localStorage.getItem(METAGOV_CACHE_KEY) || "{}"); } catch(e){ return {}; }
+}
+function saveCache(obj){ try { localStorage.setItem(METAGOV_CACHE_KEY, JSON.stringify(obj)); } catch(e){} }
+
+async function enrichMetagov() {
+  const cache = loadCache();
+  const cards = Array.from(document.querySelectorAll(".metagov-card"));
+  for (const card of cards) {
+    const href = card.getAttribute("data-href");
+    if(!href) continue;
+    const imgEl = card.querySelector(".pcard__cover img");
+    const descEl = card.querySelector(".pcard__sub");
+    if(cache[href]) {
+      if(cache[href].img) imgEl.src = cache[href].img;
+      if(cache[href].desc) descEl.textContent = cache[href].desc;
+      continue;
+    }
+    try {
+      const res = await fetch(href, {mode:"cors"});
+      const text = await res.text();
+      const doc = new DOMParser().parseFromString(text, "text/html");
+      const ogImg = doc.querySelector('meta[property="og:image"]')?.getAttribute("content") || "";
+      const ogDesc = doc.querySelector('meta[property="og:description"]')?.getAttribute("content") ||
+                     doc.querySelector('meta[name="description"]')?.getAttribute("content") || "";
+      const heroP = doc.querySelector("main p")?.textContent?.trim() || "";
+      const desc = (ogDesc || heroP).replace(/\s+/g," ").slice(0, 140);
+      const img = ogImg;
+      if(img) imgEl.src = img;
+      if(desc) descEl.textContent = desc;
+      cache[href] = {img, desc};
+      saveCache(cache);
+    } catch(e) {
+      // leave fallback
+      descEl.textContent = "metagov.org/projects";
+    }
+  }
+}
+
+function mount() {
+  const root = document.getElementById("rails-root");
+  root.innerHTML = "";
+  RAILS_CONFIG.forEach(cfg=>{
+    if(!cfg.show) return;
+    const raw = cfg.id === "openteam" ? OPENTEAM_PROJECTS : METAGOV_PROJECTS;
+    const items = sortItems(cfg.id, raw);
+    root.appendChild(renderRail(cfg, items));
+  });
+  wireArrows();
+
+  document.addEventListener("click", (e)=>{
+    const chip = e.target.closest(".chip");
+    if(chip) {
+      const wrap = chip.closest(".filter-chips");
+      if(wrap) {
+        wrap.querySelectorAll(".chip").forEach(c=>c.classList.remove("is-active"));
+        chip.classList.add("is-active");
+        applyFilters(wrap.getAttribute("data-scope"));
+      }
+    }
+  });
+  document.addEventListener("input", (e)=>{
+    const inp = e.target.closest(".filter-search");
+    if(inp) applyFilters(inp.getAttribute("data-scope"));
+  });
+  document.addEventListener("change", (e)=>{
+    const sel = e.target.closest(".rail-sort");
+    if(sel) mount();
+  });
+  applyFilters("openteam");
+  applyFilters("metagov");
+  // Data is inline — no async enrichment needed
+  // Data is inline — no async enrichment needed
+  // enrichMetagov() was removed; metagov cards now ship with real images and descriptions
+}
+
+mount();
+</script>
+<script src="script.js"></script>
+</body>
+</html>

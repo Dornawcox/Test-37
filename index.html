@@ -1,0 +1,2097 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>OpenTEAM — Open Technology Ecosystem for Agricultural Management</title>
+<meta content="OpenTEAM is a collaborative ecosystem of open-source tools, data practices, and community convenings that help farmers, ranchers, and land stewards manage land regeneratively." name="description"/>
+<meta content="OpenTEAM" property="og:title"/>
+<meta content="Open Technology Ecosystem for Agricultural Management" property="og:description"/>
+<meta content="assets/bg_malawi.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&amp;family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<style>
+/* ─── Rich project cards (TRAC, PODS, CCD) on index rail ─── */
+.pcard--rich{display:flex;flex-direction:column;width:320px;min-width:320px;max-width:340px;background:#fff;border:1.5px solid #ddd8ce;border-radius:10px;overflow:hidden;transition:border-color 150ms,box-shadow 150ms,transform 150ms;scroll-snap-align:start;}
+.pcard--rich:hover{border-color:#1e4d2b;box-shadow:0 6px 28px rgba(30,77,43,.13);transform:translateY(-2px);}
+.pcard__cover--rich{position:relative;height:130px;overflow:hidden;flex:0 0 130px;}
+.pcard__cover--rich img{width:100%;height:100%;object-fit:cover;filter:brightness(.82) saturate(1.1);}
+.pcard__cover-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(30,77,43,.72) 0%,rgba(26,79,122,.55) 100%);display:flex;align-items:flex-end;padding:10px 12px;}
+.pcard__cover-badge{font-family:'IBM Plex Mono','Courier New',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);background:rgba(0,0,0,.28);padding:3px 8px;border-radius:10px;}
+.pcard__rich-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1;}
+.pcard__title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.pcard__title-row .pcard__title{font-size:13.5px;font-weight:700;line-height:1.25;flex:1;}
+.pcard__title-row .pcard__pills{flex:0 0 auto;display:flex;flex-direction:column;gap:3px;align-items:flex-end;}
+.pcard__rich-body .pcard__sub{font-size:11.5px;line-height:1.5;color:#6b6760;margin:0;}
+.pcard__section-label{font-family:'IBM Plex Mono','Courier New',monospace;font-size:8.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#9e9a93;margin-bottom:5px;}
+.pcard__partner-pills{display:flex;flex-wrap:wrap;gap:4px;}
+.mini-pill--partner{background:#eaf3ec;color:#1e4d2b;border:1px solid #c8deca;font-size:9px;padding:2px 7px;border-radius:10px;font-weight:600;}
+.mini-pill--active{background:#d4edda;color:#1e6b3a;}
+.mini-pill--archive{background:#f3f4f6;color:#6b7280;}
+.pcard__outcome-list{margin:0;padding:0 0 0 14px;display:flex;flex-direction:column;gap:4px;}
+.pcard__outcome-list li{font-size:11.5px;color:#4b4b45;line-height:1.45;}
+.pcard__link-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:4px;border-top:1px solid #eee;}
+.pcard__link-row .pill.secondary{font-size:9.5px;padding:4px 9px;}
+</style>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- OEDP-inspired: sticky header + over-left drawer -->
+<header class="nav-shell" role="banner">
+<button aria-controls="drawer" aria-expanded="false" class="menu-button" id="menuButton">
+<span aria-hidden="true" class="menu-icon"><span></span></span>
+<span class="menu-label">MENU</span>
+</button>
+<div class="nav-title">
+<div class="nav-title-text">Open Technology Ecosystem for Agricultural Management</div>
+</div>
+<div aria-hidden="true" class="nav-logo">
+<img alt="" src="assets/openteam_logo.svg"/>
+</div>
+</header>
+<aside aria-hidden="true" class="drawer" id="drawer">
+<div class="drawer-inner">
+<div class="drawer-top">
+<div class="drawer-mark">
+<img alt="OpenTEAM logo" src="assets/openteam_logo.svg"/>
+</div>
+<div class="drawer-vertical">OpenTEAM</div>
+<button aria-label="Close menu" class="drawer-close" id="drawerClose">✕</button>
+</div>
+<nav aria-label="Site" class="drawer-links">
+<a class="drawer-link" aria-current="page" href="index.html">HOME</a>
+<a class="drawer-link" href="index.html#initiatives">OUR WORK</a>
+<a class="drawer-link" href="index.html#pilots">COLLABATHONS</a>
+<a class="drawer-link" href="projects.html">PROJECTS</a>
+<a class="drawer-link" href="index.html#library">TOOLS &amp; PLATFORMS</a>
+<a class="drawer-link" href="videos.html">VIDEOS</a>
+<a class="drawer-link" href="canonical-source-texts.html">INSPIRATIONS</a>
+<a class="drawer-link" href="calendar.html">EVENTS CALENDAR</a>
+<a class="drawer-link" href="index.html#join">JOIN</a>
+<a class="drawer-link" href="licenses.html">LICENSES</a>
+<a class="drawer-link" href="code-of-conduct.html">CODE OF CONDUCT</a>
+</nav>
+<div class="drawer-meta">
+<div class="drawer-meta-title">Contact</div>
+<a class="drawer-meta-link" href="https://www.hylo.com/groups/openteam" rel="noopener" target="_blank">Connect on Hylo ↗</a>
+</div>
+</div>
+</aside>
+<div aria-hidden="true" class="scrim" id="scrim"></div>
+<main id="main">
+<!-- HERO -->
+<section class="hero" id="home">
+<div class="container hero-grid">
+<div class="hero-left">
+<div class="feature-head">A Community for Sharing Agricultural Knowledge</div>
+<p class="feature-sub">
+            OpenTEAM (Open Technology Ecosystem for Agroecological Management) works with diverse agriculture communities,
+            technologists, and aligned organizations to collaboratively generate, share, and sustain agricultural knowledge to enable
+            climate resilience, food system equity, and land stewardship for future generations. Together, we advance open agricultural
+            technologies and data systems that are transparent, equitable, and regenerative.
+          </p>
+<div class="hero-ctas">
+<a class="btn primary" href="#join">Join OpenTEAM on Hylo</a>
+<a class="btn" href="#initiatives">Explore initiatives</a>
+</div>
+<div class="hero-notes">
+</div>
+</div>
+<div class="hero-right">
+<div aria-label="Primary sections" class="tile-grid">
+<a class="tile tile-covercrop" href="#initiatives">
+<div class="tile-top">
+<div class="tile-title">Our Work</div>
+<div aria-hidden="true" class="tile-arrow">→</div>
+</div>
+<div class="tile-desc">Tools • Frameworks • Learning</div>
+</a>
+<a class="tile tile-mycelium" href="#join">
+<div class="tile-top">
+<div class="tile-title">Convene</div>
+<div aria-hidden="true" class="tile-arrow">→</div>
+</div>
+<div class="tile-desc">In-Depths • Library • Stories</div>
+</a>
+<a class="tile tile-fieldpatterns" href="#pilots">
+<div class="tile-top">
+<div class="tile-title">Facilitate</div>
+<div aria-hidden="true" class="tile-arrow">→</div>
+</div>
+<div class="tile-desc">Collabathons • Current work</div>
+</a>
+<a class="tile tile-malawi" href="#library">
+<div class="tile-top">
+<div class="tile-title">Collaborators</div>
+<div aria-hidden="true" class="tile-arrow">→</div>
+</div>
+<div class="tile-desc">Allied efforts &amp; projects</div>
+</a>
+</div>
+<div class="hero-caption"><strong>OpenTEAM is an Evolving Ecosystem.</strong> Land steward trust and data sovereignty are front and center</div>
+</div>
+</div>
+</section>
+<!-- INITIATIVES -->
+<section class="section" id="initiatives">
+<div class="container">
+<div class="section-head">
+<h2>Our Work</h2>
+<p>
+            Discover tools, frameworks, and knowledge developed and stewarded by our community.
+          </p>
+</div>
+<div class="cards">
+<article class="card card-covercrop">
+<h3>Convene</h3>
+<p>In-Depths series and library—orientation, primers, glossary updates, and stories that make community work accessible.</p>
+<p class="muted"><a href="videos.html">Watch the In-Depths video library ↗</a></p>
+</article>
+<article class="card card-mycelium">
+<h3>Facilitate</h3>
+<p>Collabathons and working groups map actors, develop shared needs assesments, and pressure-test ideas across communities.</p>
+<p class="muted">Structured, longer-form collaboration.</p>
+</article>
+<article class="card card-fieldpatterns">
+<h3>Steward shared infrastructure</h3>
+<p>Ethical technical infrastructure and practical governance patterns to provide choice and reduce vendor lock-in.</p>
+<p class="muted">Open standards and interoperability.</p>
+</article>
+<article class="card card-malawi">
+<h3>Celebrate collaborators</h3>
+<p> Make visible allied efforts, communities, and projects and highlight shared learning and inspiration.</p>
+<p class="muted">An ecosystem approach.</p>
+</article>
+</div>
+</div>
+</section>
+<!-- PILOTS -->
+<section class="section alt" id="pilots">
+<div class="container">
+<div class="section-head">
+<h2>Projects and Collabathons</h2>
+<p>
+            Where community priorities become shared projects—testing workflows, developing templates, and publishing reusable outputs. <span class="muted">(see <img alt="Ag Knowledge Concordance logo" class="inline-logo" loading="lazy" src="assets/akc_logo.png"/><span class="inline-logo-label"><a href="https://agricultural-knowledge-concordance.github.io/Ag-Knowledge-Concordance/" rel="noopener" style="color: inherit; text-decoration: underline;" target="_blank">
+  Ag Knowledge Concordance
+</a></span> project to dig deeper on how we are safeguarding key data and shared infrastructure)</span>
+</p>
+<div class="notes-wrap" style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;"><div class="note">
+<div class="note-title">Our community</div>
+<div class="note-body">A collaborative network putting farmers, ranchers, and land stewards at the center of agricultural innovation.</div>
+</div><div class="note">
+<div class="note-title">Our approach</div>
+<div class="note-body">Build tools and processes together that enable others to build on our work</div>
+</div></div></div>
+<!-- Help text bubble (moved up); Archives bubble removed -->
+<article aria-label="How we choose" class="panel panel-help">
+<p class="muted" style="margin:0;">
+<strong>How we choose:</strong> As a community we decide together on focus areas that address critical challenges in agriculture —
+            field relevance &amp; practical impact, interoperability &amp; reuse, and stewardship &amp; long-term maintenance.
+          </p>
+</article>
+<div aria-label="Project cards" class="wg-project-cards">
+<div class="wg-project-cards__head">
+<p class="muted">Swipe or scroll to browse projects. Filter by type and click ↗ to open a project.</p>
+</div>
+<div class="rail-section"><div style="margin:8px 0 10px 0;"><a class="pill" href="projects.html">Open Projects page ↗</a></div>
+<div class="rail-filter" data-scope="openteam-index">
+<div class="filter-row">
+<div class="filter-chips" data-scope="openteam-index">
+<button class="chip is-active" data-value="All types" type="button">All types</button><button class="chip" data-value="Data Trust Development" type="button">Data Trust Development</button><button class="chip" data-value="Commons &amp; Governance" type="button">Commons &amp; Governance</button><button class="chip" data-value="Data Sovereignty" type="button">Data Sovereignty</button><button class="chip" data-value="Regenerative Economics" type="button">Regenerative Economics</button><button class="chip" data-value="Interoperability" type="button">Interoperability</button><button class="chip" data-value="Governance in Practice" type="button">Governance in Practice</button>
+</div>
+</div>
+</div>
+<div class="rail-wrap">
+<button aria-label="Scroll left" class="rail-arrow rail-arrow--left" type="button">‹</button>
+<div class="rail" data-scope="openteam-index" id="openteamIndexRail"></div>
+<button aria-label="Scroll right" class="rail-arrow rail-arrow--right" type="button">›</button>
+</div>
+<script>
+window.OPENTEAM_INDEX_PROJECTS = [{"title": "Fair Tech Registry Collabathon", "subtitle": "Co-design and collaboration activities supporting the FAIR Tech Registry.", "status": "Complete", "theme": "Registry", "img": "assets/wg-project-card-fair-tech-registry-collabathon.jpg", "links": [{"label": "Project site ↗", "href": "https://openteamag.gitlab.io/codesign/fair-registry/"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/codesign/fair-registry"}], "type": "Data Trust Development"}, {"title": "FAIR Tech Registry Documentation", "subtitle": "Developer-oriented documentation for the FAIR Tech Registry.", "status": "Active", "theme": "Docs", "img": "assets/wg-project-card-fair-tech-registry-documentation.jpg", "links": [{"label": "Project site ↗", "href": "https://openteamag.gitlab.io/fair-tech-registry/devs/"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/fair-tech-registry"}], "type": "Data Trust Development"}, {"title": "GLCDI Documentation", "subtitle": "Documentation hub for Grazing Lands Carbon Data Initiative.", "status": "Active", "theme": "Carbon data", "img": "assets/wg-project-card-glcdi-documentation.jpg", "links": [{"label": "Project site ↗", "href": "https://openteamag.gitlab.io/codesign/grazingdata/"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/codesign/grazingdata"}], "type": "Interoperability"}, {"title": "Agricultural Data Use Documents", "subtitle": "Ag data use agreements and related reference documents.", "status": "Active", "theme": "Agreements", "img": "assets/wg-project-card-agricultural-data-use-documents.jpg", "links": [{"label": "Project site ↗", "href": "https://openteam-agreements.community/"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/agreements"}], "type": "Data Sovereignty"}, {"title": "Code of Conduct", "subtitle": "Community expectations and participation guidelines.", "status": "Active", "theme": "Governance", "img": "assets/wg-project-card-code-of-conduct.jpg", "links": [{"label": "Project site ↗", "href": "https://openteamag.gitlab.io/codesign/code-of-conduct/"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/codesign/code-of-conduct"}], "type": "Commons & Governance"}, {"title": "Marketplace Working Group", "subtitle": "Working group charter, glossary, and shared framing for marketplace efforts.", "status": "Archive", "theme": "Working group", "img": "assets/wg-project-card-marketplace-working-group.jpg", "links": [{"label": "Project site ↗", "href": "https://openteamag.gitlab.io/codesign/markets/"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/codesign/markets"}], "type": "Governance in Practice"}, {"title": "PCSC farmOS Module", "subtitle": "Project space for a farmOS module and related implementation notes.", "status": "Archive", "theme": "farmOS", "img": "assets/wg-project-card-pcsc-farmos-module.jpg", "links": [{"label": "Project site ↗", "href": "https://openteamag.gitlab.io/codesign/pcsc/"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/codesign/pcsc"}], "type": "Interoperability"}, {"title": "Northeast Grazing and Soil Carbon Network", "subtitle": "Network hub for grazing and soil carbon collaboration materials.", "status": "Archive", "theme": "Soil carbon", "img": "assets/wg-project-card-northeast-grazing-and-soil-carbon-network.jpg", "links": [{"label": "Project site ↗", "href": "https://openteamag.gitlab.io/codesign/grazing-SC-network/"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/codesign/grazing-SC-network"}], "type": "Regenerative Economics"}, {"title": "Ag Data Wallet", "subtitle": "Project site for Agricultural Data Wallet materials and outcomes.", "status": "Archive", "theme": "Data tools", "img": "assets/wg-project-card-ag-data-wallet.jpg", "links": [{"label": "Project site ↗", "href": "https://openteamag.gitlab.io/agricultural-data-wallet/"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/ag-data-wallet"}], "type": "Data Trust Development"}, {"title": "OpenTEAM Convention", "subtitle": "Repository folder for OpenTEAM Convention materials.", "status": "Active", "theme": "Governance", "img": "assets/wg-project-card-openteam-convention.jpg", "links": [{"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/ag-data-wallet/openteam-convention"}], "type": "Commons & Governance"}, {"title": "Documentation", "subtitle": "Top-level documentation repositories and related assets.", "status": "Active", "theme": "Docs", "img": "assets/wg-project-card-documentation.jpg", "links": [{"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/documentation"}], "type": "Data Trust Development"}, {"title": "USDA Cooperative Agreements", "subtitle": "Folder for cooperative agreement materials and related project work.", "status": "Archive", "theme": "Agreements", "img": "assets/wg-project-card-usda-cooperative-agreements.jpg", "links": [{"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"}], "type": "Data Sovereignty"}, {"title": "TRAC — Tech Registry for Agricultural Conservation", "subtitle": "Applying FAIR principles to NRCS tool discovery and management. A browser-based registry enabling authoritative listings, robust search, commenting, and feedback for USDA conservation tools.", "status": "Active", "theme": "Registry", "report_date": "September 2025", "img": "assets/wg-project-card-fair-tech-registry-documentation.jpg", "partners": ["USDA NRCS", "OpenTEAM", "Wolfe's Neck Center", "EcoData"], "outcomes": ["User Needs Assessment summarizing NRCS priorities for a tools registry", "FAIR Implementation Strategy with resources for evaluating tool alignment", "Functional Proof-of-Concept: interactive dashboard, commenting, favorites management"], "links": [{"label": "Project Documentation ↗", "href": "https://openteamag.gitlab.io/codesign/fair-registry/"}, {"label": "FAIR Self-Assessment ↗", "href": "https://surveystack.io"}, {"label": "Prototype Walkthrough ↗", "href": "https://trac-prototype.bubbleapps.io/version-test/home/1746823554759x940046122529325000"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/fair-tech-registry"}], "type": "Data Trust Development"}, {"title": "PODS — Producer Operations Data System", "subtitle": "Advancing interoperability of the NRCS-branded farmOS instance through the Common Farm Convention and the Modus Lab Method Library, rooted in the 2018 Farm Bill and OPEN Government Data Act.", "status": "Active", "theme": "Data infrastructure", "report_date": "2025", "img": "assets/wg-project-card-pcsc-farmos-module.jpg", "partners": ["USDA NRCS", "OpenTEAM", "Wolfe's Neck Center", "Purdue Axi Lab", "Our Sci", "farmOS"], "outcomes": ["Common Farm Convention: data transfer standard using farmOS’s data model", "Modus Lab Method Library: central repository for comparing soil test results across labs", "Needs Assessment: 19 NRCS stakeholder interviews mapping data flows across conservation tools"], "links": [{"label": "PODS Report ↗", "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"}, {"label": "farmOS ↗", "href": "https://farmos.org"}, {"label": "Modus / AgGateway ↗", "href": "https://aggateway.org"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"}], "type": "Interoperability"}, {"title": "CCD — Conservation Cost Data System", "subtitle": "Designing an effective system for collecting and managing NRCS conservation practice cost data — receipt-based collection with AI processing to improve accuracy, efficiency, and payment schedule transparency.", "status": "Active", "theme": "Data infrastructure", "report_date": "2025", "img": "assets/wg-project-card-usda-cooperative-agreements.jpg", "partners": ["USDA NRCS", "OpenTEAM", "Wolfe's Neck Center", "Purdue Axi Lab", "Our Sci"], "outcomes": ["CCDS Conceptual Design: architecture overview and detailed module functionality", "Data Structures, Conventions & Dictionaries: standards and integration architecture", "Cost Data Collection CEMA: blueprint for critical data collection and AI-assisted processing"], "links": [{"label": "CCD Report ↗", "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"}, {"label": "USDA Cooperative Agreements ↗", "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"}, {"label": "GitLab ↗", "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"}], "type": "Data Sovereignty"}];
+</script>
+</div>
+</div>
+</div></div>
+</section>
+<!-- CONVENINGS -->
+<!-- CONVENINGS -->
+<!-- LIBRARY -->
+<section class="section alt" id="library">
+<div class="container">
+<div aria-label="Tool, Community, and Platform cards" class="tcp-scroller">
+<div class="section-head">
+<h2>Tool, Communities, and Platforms</h2>
+<p>Communities, platforms, tools, projects, and networks we’re allied with for both shared learning and shared inspiration.</p>
+</div>
+<div class="wg-project-cards__wrap">
+<button aria-label="Scroll left" class="wg-edge-arrow wg-edge-arrow--left" data-tcp-scroll="prev" type="button">‹</button>
+<button aria-label="Scroll right" class="wg-edge-arrow wg-edge-arrow--right" data-tcp-scroll="next" type="button">›</button>
+<div class="tcp-rail" data-tcp-rail="">
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://www.hylo.com/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.hylo.com&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">Hylo</div>
+<div class="tcp-card__tag">Community platform</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://surveystack.io/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=surveystack.io&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">Survey Stack</div>
+<div class="tcp-card__tag">Data collection platform</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://openfoodnetwork.org/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=openfoodnetwork.org&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">Open Food Network</div>
+<div class="tcp-card__tag">Community &amp; platform</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://indigidao.org/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=indigidao.org&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">IndigiDAO</div>
+<div class="tcp-card__tag">Community governance</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://openhardware.science/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=openhardware.science&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">GOSH</div>
+<div class="tcp-card__tag">Open hardware community</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://www.openenvironmentaldata.org/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.openenvironmentaldata.org&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">Open Environmental Data Project</div>
+<div class="tcp-card__tag">Data commons community</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://farmhack.org/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=farmhack.org&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">FarmHack</div>
+<div class="tcp-card__tag">Open-source farming community</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://agricultural-knowledge-concordance.github.io/Ag-Knowledge-Concordance/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="assets/akc_logo.png"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">Ag Knowledge Concordance</div>
+<div class="tcp-card__tag">Living atlas + library</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://landpks.terraso.org/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=landpks.terraso.org&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">landPKS</div>
+<div class="tcp-card__tag">Tool / platform</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://terraso.org/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=terraso.org&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">Terraso</div>
+<div class="tcp-card__tag">Project</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article><article class="tcp-card">
+<a class="tcp-card__link" href="https://www.betterdealfordata.org/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.betterdealfordata.org&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">Better Deal for Data</div>
+<div class="tcp-card__tag">Project</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://farmos.org/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=farmos.org&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">farmOS</div>
+<div class="tcp-card__tag">Tool</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://github.com/search?q=float+farm&amp;type=repositories" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=github.com&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">Float</div>
+<div class="tcp-card__tag">Community Governance</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://litefarm.org/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=litefarm.org&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">LiteFarm</div>
+<div class="tcp-card__tag">Tool</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://aggateway.org/" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=aggateway.org&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">Modus / AgGateway</div>
+<div class="tcp-card__tag">Data Standards</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card">
+<a class="tcp-card__link" href="https://goatech.org" rel="noopener" target="_blank">
+<div class="tcp-card__top">
+<img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=goatech.org&amp;sz=64"/>
+<div class="tcp-card__meta">
+<div class="tcp-card__name">GOAT</div>
+<div class="tcp-card__tag">Community</div>
+</div>
+<div aria-hidden="true" class="tcp-card__arrow">↗</div>
+</div>
+</a>
+</article>
+<article class="tcp-card"><a class="tcp-card__link" href="https://www.gia-agroecology.org/" rel="noopener" target="_blank"><div class="tcp-card__top"><img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.gia-agroecology.org&amp;sz=64"/><div class="tcp-card__meta"><div class="tcp-card__name">GIAA</div><div class="tcp-card__tag">Agroecology network</div></div><div aria-hidden="true" class="tcp-card__arrow">↗</div></div></a></article><article class="tcp-card"><a class="tcp-card__link" href="https://www.icfoods.org/" rel="noopener" target="_blank"><div class="tcp-card__top"><img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.icfoods.org&amp;sz=64"/><div class="tcp-card__meta"><div class="tcp-card__name">IC Foods</div><div class="tcp-card__tag">Food system tool</div></div><div aria-hidden="true" class="tcp-card__arrow">↗</div></div></a></article><article class="tcp-card"><a class="tcp-card__link" href="https://coolfarm.org/" rel="noopener" target="_blank"><div class="tcp-card__top"><img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=coolfarm.org&amp;sz=64"/><div class="tcp-card__meta"><div class="tcp-card__name">Cool Farm Tool</div><div class="tcp-card__tag">Metrics &amp; calculator</div></div><div aria-hidden="true" class="tcp-card__arrow">↗</div></div></a></article><article class="tcp-card"><a class="tcp-card__link" href="https://coolfarm.org/join-us/" rel="noopener" target="_blank"><div class="tcp-card__top"><img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=coolfarm.org&amp;sz=64"/><div class="tcp-card__meta"><div class="tcp-card__name">Cool Farm Alliance</div><div class="tcp-card__tag">Alliance / community</div></div><div aria-hidden="true" class="tcp-card__arrow">↗</div></div></a></article><article class="tcp-card"><a class="tcp-card__link" href="https://fieldtomarket.org/" rel="noopener" target="_blank"><div class="tcp-card__top"><img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=fieldtomarket.org&amp;sz=64"/><div class="tcp-card__meta"><div class="tcp-card__name">Field to Market</div><div class="tcp-card__tag">Sustainability alliance</div></div><div aria-hidden="true" class="tcp-card__arrow">↗</div></div></a></article><article class="tcp-card"><a class="tcp-card__link" href="https://lexiconoffood.com/lex-icons/library/" rel="noopener" target="_blank"><div class="tcp-card__top"><img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=lexiconoffood.com&amp;sz=64"/><div class="tcp-card__meta"><div class="tcp-card__name">Foodicons</div><div class="tcp-card__tag">Visual lexicon</div></div><div aria-hidden="true" class="tcp-card__arrow">↗</div></div></a></article><article class="tcp-card"><a class="tcp-card__link" href="https://www.regenscore.org/" rel="noopener" target="_blank"><div class="tcp-card__top"><img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.regenscore.org&amp;sz=64"/><div class="tcp-card__meta"><div class="tcp-card__name">RegenScore</div><div class="tcp-card__tag">Regenerative scoring</div></div><div aria-hidden="true" class="tcp-card__arrow">↗</div></div></a></article><article class="tcp-card"><a class="tcp-card__link" href="https://www.entidad.io/" rel="noopener" target="_blank"><div class="tcp-card__top"><img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.entidad.io&amp;sz=64"/><div class="tcp-card__meta"><div class="tcp-card__name">Entidad</div><div class="tcp-card__tag">Identity &amp; credentials</div></div><div aria-hidden="true" class="tcp-card__arrow">↗</div></div></a></article><article class="tcp-card"><a class="tcp-card__link" href="https://metagov.org/projects/koi-pond" rel="noopener" target="_blank"><div class="tcp-card__top"><img alt="" class="tcp-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=metagov.org&sz=64"/><div class="tcp-card__meta"><div class="tcp-card__name">KOI Pond</div><div class="tcp-card__tag">Governance knowledge</div></div><div aria-hidden="true" class="tcp-card__arrow">↗</div></div></a></article>
+</div>
+<div aria-hidden="true" class="wg-rail-fade wg-rail-fade--left"></div>
+<div aria-hidden="true" class="wg-rail-fade wg-rail-fade--right"></div>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="join">
+<div class="container">
+<div class="section-head participate-head">
+<div class="participate-title-row">
+  <h2 style="margin:0;">Participate</h2>
+  <img src="assets/collab-header.png" alt="Collabathon: collaboration + sprint = structured outcomes" class="participate-icon" loading="lazy"/>
+</div>
+<p>Bring your experience, your tools, your questions, and your needs.</p>
+<div class="note" style="background: rgba(255,255,255,0.96); border: 1px solid rgba(0,0,0,0.14);"><div class="note-title" style="color: rgba(0,0,0,0.92);">Video archive</div><div class="note-body" style="color: rgba(0,0,0,0.88);"><a href="videos.html" style="color: rgba(0,0,0,0.95); text-decoration: underline; font-weight: 900;">browse our extensive archive of in-depth videos ↗</a></div></div></div><details class="participate-ways" style="margin-top: 18px;">
+<summary class="participate-ways__summary">
+  <span class="participate-ways__label">Ways to participate</span>
+  <span class="participate-ways__chev" aria-hidden="true">▾</span>
+</summary>
+<div class="events" style="margin-top: 14px;">
+
+<div class="event">
+<div class="event-date">
+<div class="event-month"><span aria-hidden="true" class="event-icon"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="16"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="3"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a3 3 0 0 1 0 5.74"></path></svg></span>JOIN</div>
+<div class="event-day">•</div>
+</div>
+<div class="event-body">
+<h3>Community calls</h3>
+<p class="muted">Connect with a collaborative network and shape priorities together.</p>
+</div>
+</div>
+<div class="event">
+<div class="event-date">
+<div class="event-month"><span aria-hidden="true" class="event-icon"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="16"><path d="M14.7 6.3a1 1 0 0 1 1.4 0l1.6 1.6a1 1 0 0 1 0 1.4l-8.8 8.8L6 20l.5-3.9 8.2-8.2z"></path><path d="M12 20h9"></path></svg></span>BUILD</div>
+<div class="event-day">•</div>
+</div>
+<div class="event-body">
+<h3>Collabathons</h3>
+<p class="muted">Structured collaboration to map needs, test ideas, and publish outputs.</p>
+</div>
+</div>
+<div class="event">
+<div class="event-date">
+<div class="event-month"><span aria-hidden="true" class="event-icon"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="16"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 3.9"></path><path d="M15.4 6.6L8.6 10.5"></path></svg></span>SHARE</div>
+<div class="event-day">•</div>
+</div>
+<div class="event-body">
+<h3>Demos &amp; learning sessions</h3>
+<p class="muted">Show what’s working and document what’s learned.</p>
+</div>
+</div>
+</div>
+</details></div></div>
+<div class="container">
+<!-- OpenTEAM forum callout (styled like “How we choose”) -->
+<article aria-label="OpenTEAM forum" class="panel panel-help">
+<p style="margin:0; color: var(--ink);">OpenTEAM forum @ (GOATech.org): Join the GOAT forum (Gathering for Open Ag Tech) to share updates, ask questions, and connect with the broader ecosystem.</p>
+<div style="margin-top: 12px;">
+<a class="btn small goat-btn" href="https://forum.goatech.org/c/open-technology-ecosystem-for-agricultural-management/27" rel="noopener" target="_blank">
+<img alt="" class="btn-logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=forum.goatech.org&amp;sz=64"/>
+<span>Join the conversation</span>
+</a>
+</div>
+</article>
+<div class="cards two">
+<article class="card card-covercrop">
+<h3>Join a community call</h3>
+<p>Stay connected and help shape OpenTEAM’s priorities and working groups.</p>
+<a class="btn small" href="https://www.hylo.com/" rel="noopener" target="_blank">Connect on Hylo ↗</a>
+</article>
+<article class="card card-malawi">
+<h3>Partner or propose a working group</h3>
+<p>Bring a pilot idea, integration need, or stewardship challenge and collaborate with the community.</p>
+<a class="btn small" href="https://www.hylo.com/" rel="noopener" target="_blank">Connect on Hylo ↗</a>
+</article>
+</div>
+<!-- Shared Calendar of Events (OpenTEAM network) -->
+<section class="section" id="events" style="margin-top: 26px;">
+<div class="container">
+<div class="section-head">
+<h2>Shared Calendar of Events</h2>
+<p>Upcoming events aggregated from GOAT, GIAA, and <img alt="Ag Knowledge Concordance logo" class="inline-logo" loading="lazy" src="assets/akc_logo.png"/><span class="inline-logo-label">Ag Knowledge Concordance</span>. Scroll through event cards and expand for details.</p>
+</div>
+<details class="cal-details" open="">
+<summary class="cal-summary">
+<div>
+<div class="cal-summary-title">Browse upcoming events</div>
+<div class="cal-summary-subtitle">Filter by source or tag. Shareable month view available.</div>
+</div>
+<a class="btn small" href="calendar.html">Open month view ↗</a>
+</summary>
+<div aria-label="Event filters" class="cal-controls">
+<div class="cal-filterrow">
+  <div class="cal-chips" id="calTagChips" aria-label="Filter by tag"></div>
+</div>
+<div id="calSourceChips" style="display:none" aria-hidden="true"></div>
+<div class="muted cal-meta-count" id="calMeta">Loading events…</div>
+</div>
+<div aria-label="Event cards" class="wg-project-cards">
+<div class="wg-project-cards__wrap">
+<button aria-label="Scroll left" class="wg-edge-arrow wg-edge-arrow--left" data-cal-scroll="prev" type="button">‹</button>
+<button aria-label="Scroll right" class="wg-edge-arrow wg-edge-arrow--right" data-cal-scroll="next" type="button">›</button>
+<div class="wg-project-cards__rail cal-rail" data-cal-rail="">
+<!-- Event cards injected by script.js -->
+</div>
+</div>
+</div>
+</details>
+</div>
+</div></section>
+<section class="section" id="reading">
+<div class="container">
+<div class="section-head">
+<h2>Inspirations - What we’re reading</h2>
+<p><strong>Coming soon:</strong> An interactive library. The live list is explorable via the button below.</p>
+<div style="margin-top: 12px;">
+<a class="btn small" href="canonical-source-texts.html">Open the library ↗</a>
+</div>
+</div><div class="suggest-bubble">
+<div class="suggest-inner">
+<div class="suggest-title">Suggest something</div>
+<div class="suggest-text">We’re building a shared library of essays, tools, and case studies that support farmer-led, regenerative technology development.</div>
+<a class="suggest-link" href="https://www.hylo.com/groups/openteam" rel="noopener" target="_blank">Connect on Hylo ↗</a>
+</div>
+</div>
+<div class="rail-card library-rail-card" style="margin-top: 10px;">
+<div class="rail-head">
+<h3 class="rail-title">Library highlights</h3>
+</div>
+<div class="rail-wrap">
+<button aria-label="Scroll left" class="rail-arrow-end rail-arrow-left" data-dir="-1" data-rail="indexLibraryRail" type="button">
+<svg viewbox="0 0 24 24"><path d="M15.4 19.4 8 12l7.4-7.4 1.4 1.4L10.8 12l6 6z"></path></svg>
+</button>
+<div aria-label="Library highlights rail" class="rail" id="indexLibraryRail" role="region">
+<article class="scard" data-theme="Agroecology &amp; Regenerative Agriculture">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Great Regeneration" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Great Regeneration</p>
+<div class="ssub">Dorn Cox • Book • 2025</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>A regenerative agriculture perspective centered on ecological resilience and community practice — directly aligned with OpenTEAM’s emphasis on durable, reusable knowledge and stewardship.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=The%20Great%20Regeneration" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">regenerative agriculture</span><span class="stag">agroecology</span><span class="stag">stewardship</span><span class="stag">resilience</span><span class="stag">community</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Agroecology &amp; Regenerative Agriculture">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Regeneration: Ending the Climate Crisis in One Generation" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Regeneration: Ending the Climate Crisis in One Generation</p>
+<div class="ssub">Paul Hawken • Book • 2021</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Frames regenerative agriculture within climate action ecosystems</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Regeneration:%20Ending%20the%20Climate%20Crisis%20in%20One%20Generation" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">climate</span><span class="stag">systems thinking</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Agroecology &amp; Regenerative Agriculture">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Dirt: The Erosion of Civilizations" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Dirt: The Erosion of Civilizations</p>
+<div class="ssub">David R. Montgomery • Book • 2007</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Supports OpenTEAM’s emphasis on healthy soil as public infrastructure</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Dirt:%20The%20Erosion%20of%20Civilizations" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">soil health</span><span class="stag">history</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Agroecology &amp; Regenerative Agriculture">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Agroecology: The Ecology of Sustainable Food Systems" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Agroecology: The Ecology of Sustainable Food Systems</p>
+<div class="ssub">Miguel Altieri • Book • 1995</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Scientific grounding for the agroecological paradigm embraced by OpenTEAM</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Agroecology:%20The%20Ecology%20of%20Sustainable%20Food%20Systems" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">agroecology</span><span class="stag">sustainability</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Agroecology &amp; Regenerative Agriculture">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Unsettling of America" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Unsettling of America</p>
+<div class="ssub">Wendell Berry • Book • 1977</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Foundational text on the ethics of agriculture and place-based knowledge</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=The%20Unsettling%20of%20America" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">agroecology</span><span class="stag">rural knowledge</span><span class="stag">land stewardship</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Agroecology &amp; Regenerative Agriculture">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: One-Straw Revolution" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">One-Straw Revolution</p>
+<div class="ssub">Masanobu Fukuoka • Book • 1975</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Inspires soil-first philosophies and low-input systems</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=One-Straw%20Revolution" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">regenerative</span><span class="stag">philosophy</span><span class="stag">natural farming</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Systems Thinking &amp; Complexity">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Designing Regenerative Cultures" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Designing Regenerative Cultures</p>
+<div class="ssub">Daniel Christian Wahl • Book • 2016</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Guides OpenTEAM’s ecosystem thinking in technology and community design</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Designing%20Regenerative%20Cultures" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">regenerative design</span><span class="stag">systems</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Systems Thinking &amp; Complexity">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Thinking in Systems" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Thinking in Systems</p>
+<div class="ssub">Donella Meadows • Book • 2008</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Key framework for whole-systems design in agricultural networks</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Thinking%20in%20Systems" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">systems thinking</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Systems Thinking &amp; Complexity">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Panarchy" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Panarchy</p>
+<div class="ssub">Lance Gunderson &amp; C.S. Holling • Book • 2001</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Offers models for understanding social-ecological systems over time</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Panarchy" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">resilience</span><span class="stag">adaptive cycles</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Systems Thinking &amp; Complexity">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Fifth Discipline" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Fifth Discipline</p>
+<div class="ssub">Peter Senge • Book • 1990</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Supports OpenTEAM’s approach to co-learning and feedback loops</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=The%20Fifth%20Discipline" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">learning organizations</span><span class="stag">systems</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Systems Thinking &amp; Complexity">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Pattern Language" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://covers.openlibrary.org/b/isbn/0195019199-L.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Pattern Language</p>
+<div class="ssub">Christopher Alexander; Sara Ishikawa; Murray Silverstein • 1977</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Systems Thinking &amp; Complexity' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://openlibrary.org/books/OL5059163M/A_pattern_language" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">complexity</span><span class="stag">systems thinking</span><span class="stag">thinking</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Commons &amp; Governance">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Ecological Institutions" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://cdn.sanity.io/images/oflfnr14/production/5186cdff18c08bce27f8e4bb145d63fdf4cb614c-883x475.png?w=1600&amp;fit=max"/>
+</div>
+<div class="smeta">
+<p class="stitle">Ecological Institutions</p>
+<div class="ssub">Austin Wade Smith • 2025</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Commons &amp; Governance' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://regen.foundation/" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">commons</span><span class="stag">governance</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Commons &amp; Governance">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Patterns of Commoning" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Patterns of Commoning</p>
+<div class="ssub">Helfrich &amp; Bollier (eds.) • Anthology • 2015</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Case studies that resonate with OpenTEAM’s cooperative ethos</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Patterns%20of%20Commoning" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">commons</span><span class="stag">social innovation</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Commons &amp; Governance">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Internet of Ownership" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Internet of Ownership</p>
+<div class="ssub">Nathan Schneider • Website • 2015–</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Shapes OpenTEAM’s exploration of data stewardship and cooperative tech</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=The%20Internet%20of%20Ownership" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">platform coops</span><span class="stag">ownership</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Commons &amp; Governance">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Polycentricity" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Polycentricity</p>
+<div class="ssub">Elinor Ostrom • 2010</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Commons &amp; Governance' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://www.aeaweb.org/articles?id=10.1257/aer.100.3.641" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">commons</span><span class="stag">governance</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Commons &amp; Governance">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Governing the Commons" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Governing the Commons</p>
+<div class="ssub">Elinor Ostrom • Book • 1990</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>A core inspiration for participatory, polycentric governance models</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Governing%20the%20Commons" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">commons</span><span class="stag">governance</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Commons &amp; Governance">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Community Technology" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Community Technology</p>
+<div class="ssub">Karl Hess • Pamphlet • 1979</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Early inspiration for community-led tech in food systems</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Community%20Technology" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">peer production</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Ethical AI &amp; Data Stewardship">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Trustworthy Infrastructure" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Trustworthy Infrastructure</p>
+<div class="ssub">Metagov • Whitepaper • 2023</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Foundation for OpenTEAM’s trust architecture strategy</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Trustworthy%20Infrastructure" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">trust</span><span class="stag">modular governance</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Ethical AI &amp; Data Stewardship">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Data Feminism" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Data Feminism</p>
+<div class="ssub">Catherine D’Ignazio, Lauren Klein • Book • 2020</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reframes data ownership and visibility for agricultural equity</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Data%20Feminism" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">equity</span><span class="stag">data ethics</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Ethical AI &amp; Data Stewardship">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Ethical OS Toolkit" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Ethical OS Toolkit</p>
+<div class="ssub">Omidyar Network • Toolkit • 2019</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Supports ethical foresight in ag-tech design</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Ethical%20OS%20Toolkit" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">AI</span><span class="stag">tech foresight</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Ethical AI &amp; Data Stewardship">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Right to Explanation" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Right to Explanation</p>
+<div class="ssub">Sandra Wachter • Paper • 2017</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Informs OpenTEAM's approach to transparency in ag-informatics</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=The%20Right%20to%20Explanation" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">AI ethics</span><span class="stag">GDPR</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Ethical AI &amp; Data Stewardship">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Intention Economy" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://covers.openlibrary.org/b/isbn/1422158527-L.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Intention Economy</p>
+<div class="ssub">Doc Searls • Book • 2012</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Proposes a shift in digital commerce toward consumer agency and control over data.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/The_Intention_Economy" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">Data Ownership</span><span class="stag">Personal Data</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Ethical AI &amp; Data Stewardship">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Cathedral and the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Cathedral and the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary</p>
+<div class="ssub">Eric S. Raymond • Book • 1999</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>A foundational text on open source culture and collaborative development — helpful context for OpenTEAM’s governance, interoperability practices, and community stewardship.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/The_Cathedral_and_the_Bazaar" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">open source</span><span class="stag">governance</span><span class="stag">collaboration</span><span class="stag">stewardship</span><span class="stag">commons</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Participatory Research &amp; Community Science">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Open Environmental Data Project" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Open Environmental Data Project</p>
+<div class="ssub">Shannon Dosemagen (founder) • 2020</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Participatory Research &amp; Community Science' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://www.openenvironmentaldata.org/about" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">community</span><span class="stag">research</span><span class="stag">science</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Participatory Research &amp; Community Science">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Civic Science Framework" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Civic Science Framework</p>
+<div class="ssub">Public Lab • Framework • 2017</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Inspires distributed data stewardship and participatory sensing</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Civic%20Science%20Framework" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">citizen science</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Participatory Research &amp; Community Science">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Democratizing Innovation" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Democratizing Innovation</p>
+<div class="ssub">Eric von Hippel • Book • 2005</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Validates farmer-centered innovation in OpenTEAM tools</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Democratizing%20Innovation" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">user innovation</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Participatory Research &amp; Community Science">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Farmer First" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Farmer First</p>
+<div class="ssub">Robert Chambers • Book • 1989</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>A landmark call for listening to farmers as primary innovators</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Farmer%20First" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">participatory research</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Data &amp; Interoperability">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Schema.org for Agriculture" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Schema.org for Agriculture</p>
+<div class="ssub">GODAN • Ontology • 2018</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Supports semantic interoperability in ag knowledge graphs</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Schema.org%20for%20Agriculture" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">linked data</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Data &amp; Interoperability">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: FAIR Guiding Principles" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">FAIR Guiding Principles</p>
+<div class="ssub">Wilkinson et al. • Paper • 2016</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>A foundational standard for OpenTEAM’s tech stack</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=FAIR%20Guiding%20Principles" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">data sharing</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Data &amp; Interoperability">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Open Ag Data Alliance (OADA)" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Open Ag Data Alliance (OADA)</p>
+<div class="ssub">OADA • Protocol • 2014</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Early technical standard OpenTEAM builds upon</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Open%20Ag%20Data%20Alliance%20(OADA)" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">interoperability</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Data &amp; Interoperability">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Common Accord Project" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Common Accord Project</p>
+<div class="ssub">CommonAccord.org • Framework • ongoing</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Supports interoperable governance templates</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Common%20Accord%20Project" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">legal automation</span><span class="stag">modularity</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Indigenous and Ancestral Knowledge">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Dawn of Everything" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Dawn of Everything</p>
+<div class="ssub">Graeber &amp; Wengrow • Book • 2021</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Expands ideas of premodern civic design and stewardship</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=The%20Dawn%20of%20Everything" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">alternative governance</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Indigenous and Ancestral Knowledge">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Braiding Sweetgrass" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Braiding Sweetgrass</p>
+<div class="ssub">Robin Wall Kimmerer • Book • 2013</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Frames reciprocity and ecological knowledge</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Braiding%20Sweetgrass" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">indigenous science</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Indigenous and Ancestral Knowledge">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Other Side of Eden" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Other Side of Eden</p>
+<div class="ssub">Hugh Brody • Book • 2001</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Valuing indigenous epistemologies in landscape understanding</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=The%20Other%20Side%20of%20Eden" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">oral tradition</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Indigenous and Ancestral Knowledge">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Look to the mountain" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://covers.openlibrary.org/b/isbn/1882308654-L.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Look to the mountain</p>
+<div class="ssub">Gregory Cajete • 1994</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Indigenous and Ancestral Knowledge' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://eric.ed.gov/?id=ED375993" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">and</span><span class="stag">indigenous knowledge</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Governance in Practice">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Block Science Papers /KOI" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Block Science Papers /KOI</p>
+<div class="ssub">BlockScience • 2024</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://blog.block.science/architecting-knowledge-organization-infrastructure/" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">governance</span><span class="stag">in</span><span class="stag">practice</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Governance in Practice">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: NCPP Local Working Group handbook" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">NCPP Local Working Group handbook</p>
+<div class="ssub">National Conservation Planning Partnership (NCPP) / NRCS • 2023</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://www.nrcs.usda.gov/sites/default/files/2023-03/LWG%20Guidebook%20from%20National%20Conservation%20Planning%20Partnership_1.pdf" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">governance</span><span class="stag">in</span><span class="stag">practice</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Governance in Practice">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Long Land War" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://covers.openlibrary.org/b/isbn/030025668X-L.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Long Land War</p>
+<div class="ssub">Jo Guldi • 2022</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://www.amazon.com/Long-Land-War-Struggle-Occupancy/dp/030025668X" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">governance</span><span class="stag">in</span><span class="stag">practice</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Governance in Practice">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Metagov Gateway" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Metagov Gateway</p>
+<div class="ssub">Metagov • Platform • 2022–</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Powers many OpenTEAM governance pilots</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Metagov%20Gateway" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">modular governance</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Governance in Practice">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: R3 Blueprints - Regenerative Finance" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">R3 Blueprints - Regenerative Finance</p>
+<div class="ssub">r3.0 (Redesign for Resilience &amp; Regeneration) • 2020</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://r3dot0.medium.com/r3-0-releases-sustainable-finance-and-value-cycles-blueprints-4e35f02fd222" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">governance</span><span class="stag">in</span><span class="stag">practice</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Governance in Practice">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: NACD HandBook" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">NACD HandBook</p>
+<div class="ssub">NACD + American Farmland Trust • 2018</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://www.nacdnet.org/wp-content/uploads/2018/02/AFT-NACD-Environmental-Markets-web-final.pdf" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">governance</span><span class="stag">in</span><span class="stag">practice</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Governance in Practice">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Sociocracy 3.0" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Sociocracy 3.0</p>
+<div class="ssub">Bernhard Bockelbrink et al. • Framework • 2015–</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Offers practices for cooperative and nested governance</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Sociocracy%203.0" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">distributed governance</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Governance in Practice">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Debt: the first 5000 years" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://covers.openlibrary.org/b/isbn/1933633867-L.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Debt: the first 5000 years</p>
+<div class="ssub">David Graeber • 2011</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Debt:_The_First_5,000_Years" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">governance</span><span class="stag">in</span><span class="stag">practice</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Speculative Science Fiction">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Ministry for the Future" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Ministry for the Future</p>
+<div class="ssub">Kim Stanley Robinson • Book • 2020</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Speculative near-future governance and climate response scenarios that help stress-test how institutions, incentives, and data systems might evolve under climate pressure — relevant for resilient agricultural knowledge infrastructure.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/The_Ministry_for_the_Future" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">climate futures</span><span class="stag">governance</span><span class="stag">institutions</span><span class="stag">adaptation</span><span class="stag">systems change</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Speculative Science Fiction">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Transparent Society" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Transparent Society</p>
+<div class="ssub">David Brin • Book • 1998</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>A speculative and policy-oriented exploration of privacy, accountability, and reciprocal transparency — useful context for data stewardship, consent, and governance in socio-technical ecosystems.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/The_Transparent_Society" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">surveillance</span><span class="stag">transparency</span><span class="stag">privacy</span><span class="stag">governance</span><span class="stag">ethics</span><span class="stag">futures</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Speculative Science Fiction">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Parable of the Sower" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Parable of the Sower</p>
+<div class="ssub">Octavia E. Butler • Book • 1993</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>A foundational speculative story about resilience and community organization amid systemic disruption — useful for thinking about social infrastructure, reciprocity, and durable knowledge under stress.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Parable_of_the_Sower" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">resilience</span><span class="stag">community</span><span class="stag">collapse</span><span class="stag">migration</span><span class="stag">mutual aid</span><span class="stag">stewardship</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Long History  and Visionary Works">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Indigenous Currencies" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://covers.openlibrary.org/b/isbn/0262552531-L.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Indigenous Currencies</p>
+<div class="ssub">Ashley Cordes • Book • 2025</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Examines historical and future roles of Indigenous currencies as tools of sovereignty and ecological value.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://mitpress.mit.edu/9780262552530/indigenous-currencies/" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">Regen EcoWeaving</span><span class="stag">Indigenous Economics</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Long History  and Visionary Works">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Ways of Being: Animals, Plants, Machines" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://covers.openlibrary.org/b/isbn/0374601119-L.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Ways of Being: Animals, Plants, Machines</p>
+<div class="ssub">James Bridle • Book • 2022</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Explores non-human forms of intelligence and the implications for design and planetary life.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Ways_of_Being" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">Regen EcoWeaving</span><span class="stag">More-than-human Intelligence</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Long History  and Visionary Works">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Hospicing Modernity" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://covers.openlibrary.org/b/isbn/1623176247-L.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Hospicing Modernity</p>
+<div class="ssub">Vanessa Machado de Oliveira • Book • 2021</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Explores how to die well to systems in decline and create space for alternatives rooted in Indigenous knowledge.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://www.penguinrandomhouse.com/books/675703/hospicing-modernity-by-vanessa-machado-de-oliveira/" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">Regen EcoWeaving</span><span class="stag">Decolonial Futures</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Long History  and Visionary Works">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: A Paradise Built in Hell" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://covers.openlibrary.org/b/isbn/0670021075-L.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">A Paradise Built in Hell</p>
+<div class="ssub">Rebecca Solnit • Book • 2009</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Documents human generosity and mutual support in times of disaster.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/A_Paradise_Built_in_Hell" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">Regen EcoWeaving</span><span class="stag">Mutual Aid</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Long History  and Visionary Works">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Ecological Economics" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://covers.openlibrary.org/b/isbn/1559633123-L.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Ecological Economics</p>
+<div class="ssub">Herman E. Daly; Joshua Farley • 2003</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Long History  and Visionary Works' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://www.bibliovault.org/BV.book.epl?ISBN=9781559633123" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">and</span><span class="stag">history</span><span class="stag">long</span><span class="stag">visionary</span><span class="stag">works</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Long History  and Visionary Works">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: The Ecology of Freedom" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">The Ecology of Freedom</p>
+<div class="ssub">Murray Bookchin • Book • 1982</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Early framing of ecological and decentralized societies</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=The%20Ecology%20of%20Freedom" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">political ecology</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Long History  and Visionary Works">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Dragons of Eden" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="https://covers.openlibrary.org/b/isbn/0394410459-L.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Dragons of Eden</p>
+<div class="ssub">Carl Sagan • 1977</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Long History  and Visionary Works' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/The_Dragons_of_Eden" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">and</span><span class="stag">history</span><span class="stag">long</span><span class="stag">visionary</span><span class="stag">works</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Long History  and Visionary Works">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Small is Beautiful: Economics as if People Mattered" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Small is Beautiful: Economics as if People Mattered</p>
+<div class="ssub">E. F. Schumacher • Book • 1973</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Seminal work arguing for sustainable, human-scale economics.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Small_Is_Beautiful" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">New Economics</span><span class="stag">Localism</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Long History  and Visionary Works">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Silent Spring" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Silent Spring</p>
+<div class="ssub">Rachel Carson • Book • 1962</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Raised ecological consciousness foundational to regen ag</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://en.wikipedia.org/wiki/Special:Search?search=Silent%20Spring" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">ecology</span><span class="stag">public awareness</span></div>
+</div>
+</article>
+<article class="scard" data-theme="Long History  and Visionary Works">
+<div class="shead">
+<div aria-hidden="true" class="scover">
+<img alt="Cover: Reconstruction by way of the soil" loading="lazy" onerror="this.onerror=null; this.src='assets/bg_malawi.jpg';" src="assets/bg_malawi.jpg"/>
+</div>
+<div class="smeta">
+<p class="stitle">Reconstruction by way of the soil</p>
+<div class="ssub">Guy Theodore Wrench • Book • 1946</div>
+</div>
+</div>
+<div class="sactions">
+<button class="pill secondary" data-action="toggle" type="button">more</button>
+</div>
+<div aria-hidden="true" class="detail">
+<p>Reference point within the 'Long History  and Visionary Works' lineage; useful for OpenTEAM orientation and shared vocabulary.</p>
+<div style="margin:8px 0 10px 0;">
+<a class="pill" href="https://archive.org/details/reconstructionby0000guyt" rel="noopener" target="_blank">Link ↗</a>
+</div>
+<div aria-label="Tags" class="stags"><span class="stag">and</span><span class="stag">history</span><span class="stag">long</span><span class="stag">visionary</span><span class="stag">works</span></div>
+</div>
+</article>
+</div>
+<button aria-label="Scroll right" class="rail-arrow-end rail-arrow-right" data-dir="1" data-rail="indexLibraryRail" type="button">
+<svg viewbox="0 0 24 24"><path d="m8.6 4.6 7.4 7.4-7.4 7.4-1.4-1.4 6-6-6-6z"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="institutional-home">
+<div class="container">
+<div class="callout">
+<div class="callout-title">Institutional home</div>
+<div class="callout-body">OpenTEAM is a fiscally sponsored project of Raft Foundation Inc, a 501(c)(3).
+          <div style="margin-top: 14px;">
+<div style="font-weight:600;">Attributions</div>
+<div style="margin-top:6px; color: rgba(43,43,43,0.78);">
+              We extend our gratitude to all those who have contributed their time, expertise, and resources to building OpenTEAM's knowledge commons.
+              OpenTEAM's work is made possible through the support and partnership of numerous organizations and individuals committed to advancing regenerative agriculture through collaborative technology development. Want your organization listed? Add an entry through onboarding (coming soon) or contact the team.
+            </div>
+<div aria-label="Attributions" class="attr-scroller">
+<div class="wg-project-cards__wrap">
+<button aria-label="Scroll left" class="wg-edge-arrow wg-edge-arrow--left" data-attr-scroll="prev" type="button">‹</button>
+<button aria-label="Scroll right" class="wg-edge-arrow wg-edge-arrow--right" data-attr-scroll="next" type="button">›</button>
+<div class="attr-rail" data-attr-rail="">
+<article class="attr-card">
+<a class="attr-card__link" href="https://11thhourproject.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=11thhourproject.org&amp;sz=64"/>
+<div class="attr-card__name">11th Hour Project</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://noregretsfoundation.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=noregretsfoundation.org&amp;sz=64"/>
+<div class="attr-card__name">No Regrets Foundation</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://techmatters.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=techmatters.org&amp;sz=64"/>
+<div class="attr-card__name">Tech Matters</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://farmhack.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=farmhack.org&amp;sz=64"/>
+<div class="attr-card__name">FarmHack</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://pasafarming.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=pasafarming.org&amp;sz=64"/>
+<div class="attr-card__name">PASA</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://goatech.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=goatech.org&amp;sz=64"/>
+<div class="attr-card__name">GOAT</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://caneyforkfarmtn.com/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=caneyforkfarmtn.com&amp;sz=64"/>
+<div class="attr-card__name">Canney Fork Farm</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://paicinesranch.com/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=paicinesranch.com&amp;sz=64"/>
+<div class="attr-card__name">Paicines Ranch</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://pointblue.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=pointblue.org&amp;sz=64"/>
+<div class="attr-card__name">Point Blue Conservation</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://www.icfoods.com/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.icfoods.com&amp;sz=64"/>
+<div class="attr-card__name">IC Foods</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://www.ubc.ca/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.ubc.ca&amp;sz=64"/>
+<div class="attr-card__name">UBC</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://foundationfar.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=foundationfar.org&amp;sz=64"/>
+<div class="attr-card__name">FFAR</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://www.terra-genesis.com/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.terra-genesis.com&amp;sz=64"/>
+<div class="attr-card__name">Terra Genesis</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://www.regen.network/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.regen.network&amp;sz=64"/>
+<div class="attr-card__name">Regen Network</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://regenfoundation.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=regenfoundation.org&amp;sz=64"/>
+<div class="attr-card__name">Regen Foundation</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://quiviracoalition.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=quiviracoalition.org&amp;sz=64"/>
+<div class="attr-card__name">Quivira Coalition</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://regenscore.com/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=regenscore.com&amp;sz=64"/>
+<div class="attr-card__name">Regen Score</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://terraethics.com/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=terraethics.com&amp;sz=64"/>
+<div class="attr-card__name">Terra Ethics</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://www.terren.co/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.terren.co&amp;sz=64"/>
+<div class="attr-card__name">Terren Collective</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://www.zerofoodprint.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.zerofoodprint.org&amp;sz=64"/>
+<div class="attr-card__name">Zero Food Print</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://openfoodnetwork.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=openfoodnetwork.org&amp;sz=64"/>
+<div class="attr-card__name">Open Food Network</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://ctic.org/" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=ctic.org&amp;sz=64"/>
+<div class="attr-card__name">CTIC</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card">
+<a class="attr-card__link" href="https://engineering.purdue.edu/OATSCenter" rel="noopener" target="_blank">
+<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=engineering.purdue.edu&amp;sz=64"/>
+<div class="attr-card__name">Purdue OATS Center</div>
+<div aria-hidden="true" class="attr-card__arrow">↗</div>
+</a>
+</article>
+<article class="attr-card"><a class="attr-card__link" href="https://startinblox.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=startinblox.com&amp;sz=64"/><div class="attr-card__name">Startin'blox</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article><article class="attr-card"><a class="attr-card__link" href="https://www.gia-agroecology.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.gia-agroecology.org&amp;sz=64"/><div class="attr-card__name">GIAA</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article><article class="attr-card"><a class="attr-card__link" href="https://prolinnova.net/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=prolinnova.net&amp;sz=64"/><div class="attr-card__name">Prolinnova</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article><article class="attr-card"><a class="attr-card__link" href="https://metagov.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=metagov.org&amp;sz=64"/><div class="attr-card__name">Metagov</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article><article class="attr-card"><a class="attr-card__link" href="https://www.block.science/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.block.science&amp;sz=64"/><div class="attr-card__name">Block Science</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://regenfarmers.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=regenfarmers.org&sz=64"/><div class="attr-card__name">Regen Farmers Mutual</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article><article class="attr-card"><a class="attr-card__link" href="https://whitebuffalolandtrust.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=whitebuffalolandtrust.org&sz=64"/><div class="attr-card__name">White Buffalo Land Trust</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article></div>
+<div aria-hidden="true" class="wg-rail-fade wg-rail-fade--left"></div>
+<div aria-hidden="true" class="wg-rail-fade wg-rail-fade--right"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="footer">
+<div class="container footer-grid">
+<div class="footer-brand">
+<img alt="OpenTEAM logo" class="footer-logo" src="assets/openteam_logo.svg"/>
+<div>
+<div class="footer-title">OpenTEAM</div>
+<div class="footer-subtitle">Open Technology Ecosystem for Agricultural Management</div>
+<div class="footer-meta">© <span id="year"></span> OpenTEAM — Built for Sharing</div>
+<div class="footer-meta" style="margin-top:4px;"><a href="code-of-conduct.html" style="color:inherit;">Code of Conduct</a></div>
+</div>
+</div>
+<div class="footer-links">
+<a href="index.html">Home</a>
+<a href="index.html#initiatives">Our Work</a>
+<a href="index.html#pilots">Collabathons</a>
+<a href="projects.html">Projects</a>
+<a href="index.html#library">Tools &amp; Platforms</a>
+<a href="videos.html">Videos</a>
+<a href="canonical-source-texts.html">Inspirations</a>
+<a href="calendar.html">Events</a>
+<a href="index.html#join">Join</a>
+<a href="licenses.html">Licenses</a>
+<a href="code-of-conduct.html">Code of Conduct</a>
+</div>
+</div>
+</footer>
+<script src="script.js"></script>
+<script>
+(function(){
+  // Toggle "more" on library cards
+  document.addEventListener("click", function(e){
+    var btn = e.target.closest("button[data-action='toggle']");
+    if(btn){
+      var card = btn.closest(".scard");
+      if(!card) return;
+      var detail = card.querySelector(".detail");
+      if(!detail) return;
+      var open = detail.classList.toggle("open");
+      detail.setAttribute("aria-hidden", open ? "false" : "true");
+      btn.textContent = open ? "less" : "more";
+    }
+    var arrow = e.target.closest("button.rail-arrow-end");
+    if(arrow){
+      var railId = arrow.getAttribute("data-rail");
+      var dir = parseInt(arrow.getAttribute("data-dir")||"1",10);
+      var rail = document.getElementById(railId);
+      if(!rail) return;
+      var step = Math.max(320, Math.floor(rail.clientWidth * 0.85));
+      rail.scrollBy({ left: dir * step, top: 0, behavior: "smooth" });
+    }
+  });
+})();
+</script>
+<script>
+(function(){
+  function renderOpenTEAMIndexRail(){
+    const rail = document.getElementById("openteamIndexRail");
+    if(!rail || !window.OPENTEAM_INDEX_PROJECTS) return;
+    rail.innerHTML = "";
+    window.OPENTEAM_INDEX_PROJECTS.forEach(item=>{
+      const href = (item.links && item.links[0] && item.links[0].href) ? item.links[0].href : "#";
+      const typeMap = {"Registry":"Data Trust Development","Docs":"Data Trust Development","Carbon data":"Interoperability","Agreements":"Data Sovereignty","Governance":"Commons & Governance","Working group":"Governance in Practice","farmOS":"Interoperability","Soil carbon":"Regenerative Economics","Data tools":"Data Trust Development","Data infrastructure":"Interoperability"};
+      const type = item.type || typeMap[item.theme] || "Data Trust Development";
+      const card = document.createElement("article");
+      const isRich = !!(item.outcomes && item.outcomes.length);
+
+      if(isRich) {
+        card.className = "pcard pcard--rich";
+        card.setAttribute("data-theme", type);
+        const partnersHtml = (item.partners||[]).map(p=>`<span class="mini-pill mini-pill--partner">${p}</span>`).join('');
+        const outcomesHtml = (item.outcomes||[]).map(o=>`<li>${o}</li>`).join('');
+        const linksHtml = (item.links||[]).map(l=>`<a class="pill secondary" href="${l.href}" target="_blank" rel="noopener">${l.label}</a>`).join('');
+        const statusCls = item.status==="Active" ? "mini-pill--active" : "mini-pill--archive";
+        card.innerHTML = `
+          <div class="pcard__cover pcard__cover--rich">
+            <img loading="lazy" alt="" src="${item.img||"assets/wg-project-card-placeholder.jpg"}" onerror="this.onerror=null;this.src='assets/wg-project-card-placeholder.jpg';">
+            <div class="pcard__cover-overlay"><div class="pcard__cover-badge">${item.report_date||""}</div></div>
+          </div>
+          <div class="pcard__rich-body">
+            <div class="pcard__title-row">
+              <div class="pcard__title">${item.title}</div>
+              <div class="pcard__pills" style="flex-direction:column;align-items:flex-end;">
+                ${item.status?`<span class="mini-pill ${statusCls}">${item.status}</span>`:""}
+                <span class="mini-pill mini-pill--theme">${type}</span>
+              </div>
+            </div>
+            <div class="pcard__sub">${item.subtitle||""}</div>
+            ${partnersHtml ? `<div class="pcard__partners"><div class="pcard__section-label">Partners</div><div class="pcard__partner-pills">${partnersHtml}</div></div>` : ""}
+            ${outcomesHtml ? `<div class="pcard__outcomes"><div class="pcard__section-label">Key Outcomes</div><ul class="pcard__outcome-list">${outcomesHtml}</ul></div>` : ""}
+            ${linksHtml ? `<div class="pcard__link-row">${linksHtml}</div>` : ""}
+          </div>`;
+      } else {
+        card.className = "pcard";
+        card.setAttribute("data-theme", type);
+        card.innerHTML = `
+          <a class="pcard__link" href="${href}" target="_blank" rel="noopener">
+            <div class="pcard__cover"><img loading="lazy" alt="" src="${item.img || "assets/wg-project-card-placeholder.jpg"}" onerror="this.onerror=null;this.src='assets/wg-project-card-placeholder.jpg';"></div>
+            <div class="pcard__meta">
+              <div class="pcard__title">${item.title}</div>
+              <div class="pcard__sub">${item.subtitle||""}</div>
+              <div class="pcard__pills">
+                ${item.status ? `<span class="mini-pill">Status: ${item.status}</span>`:""}
+                <span class="mini-pill mini-pill--theme">${type}</span>
+              </div>
+            </div>
+            <div class="pcard__actions"><span class="pcard__arrow" aria-hidden="true">↗</span></div>
+          </a>`;
+      }
+      rail.appendChild(card);
+    });
+  }
+
+  function apply(scope){
+    const wrap = document.querySelector(`.filter-chips[data-scope="${scope}"]`);
+    const active = wrap ? wrap.querySelector(".chip.is-active")?.getAttribute("data-value") : "All types";
+    const rail = document.querySelector(`.rail[data-scope="${scope}"]`);
+    if(!rail) return;
+    rail.querySelectorAll(".pcard").forEach(card=>{
+      const t = card.getAttribute("data-theme") || "All types";
+      const ok = (active === "All types") ? true : (t === active);
+      card.style.display = ok ? "" : "none";
+    });
+  }
+
+  function wire(scope){
+    const wrap = document.querySelector(`.filter-chips[data-scope="${scope}"]`);
+    if(wrap){
+      wrap.addEventListener("click", (e)=>{
+        const chip = e.target.closest(".chip");
+        if(!chip) return;
+        wrap.querySelectorAll(".chip").forEach(c=>c.classList.remove("is-active"));
+        chip.classList.add("is-active");
+        apply(scope);
+      });
+    }
+    document.querySelectorAll(`.rail-wrap .rail[data-scope="${scope}"]`).forEach(rail=>{
+      const w = rail.parentElement;
+      const left = w.querySelector(".rail-arrow--left");
+      const right = w.querySelector(".rail-arrow--right");
+      const step = ()=> Math.max(280, Math.floor(rail.clientWidth*0.85));
+      left?.addEventListener("click", ()=> rail.scrollBy({left:-step(), behavior:"smooth"}));
+      right?.addEventListener("click", ()=> rail.scrollBy({left:step(), behavior:"smooth"}));
+      const update=()=>{
+        const max = rail.scrollWidth - rail.clientWidth - 2;
+        if(left) left.disabled = rail.scrollLeft <= 2;
+        if(right) right.disabled = rail.scrollLeft >= max;
+      };
+      rail.addEventListener("scroll", update, {passive:true});
+      window.addEventListener("resize", update);
+      update();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", ()=>{
+    renderOpenTEAMIndexRail();
+    wire("openteam-index");
+    apply("openteam-index");
+    wire("calendar");
+  });
+})();
+</script>
+</body>
+</html>

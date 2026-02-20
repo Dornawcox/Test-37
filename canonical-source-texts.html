@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>OpenTEAM — Canonical Source Texts</title>
+<meta content="OpenTEAM canonical source texts: books, papers, tools, and community inspirations that shaped the ecosystem." name="description"/>
+<meta content="OpenTEAM Canonical Source Texts" property="og:title"/>
+<meta content="Books and sources that shaped OpenTEAM — browse by theme." property="og:description"/>
+<meta content="assets/bg_malawi.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&amp;family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+<style>
+  /* Featured */
+  .featured-grid{display:grid;grid-template-columns:180px 1fr;gap:16px;align-items:start}
+  @media (max-width: 720px){.featured-grid{grid-template-columns:1fr}}
+  .featured-cover{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.22)}
+  .featured-cover img{width:100%;height:100%;display:block;object-fit:cover}
+  .featured-title{margin:6px 0 6px 0; font-size:20px; line-height:1.2}
+  .featured-sub{opacity:.90; font-size:13px}
+  .featured-meta .muted, .featured-callout .muted{color:rgba(255,255,255,0.92) !important; opacity:1 !important}
+  .tagrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .tag{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(0,0,0,0.18);font-size:12px;opacity:.92}
+
+  /* Rails */
+  .theme-block{margin-top:18px}
+  .rail-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:18px;padding:14px;position:relative}
+  .rail-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:10px}
+  .rail-title{margin:0;font-size:16px}
+  .rail-nav{display:none}
+  .rail{display:flex;gap:12px;overflow:auto;padding-bottom:6px;scroll-snap-type:x proximity;scroll-behavior:smooth}
+  .rail::-webkit-scrollbar{height:10px}
+  .rail::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.18);border-radius:999px}
+
+  /* Desktop rail arrows */
+  @media (min-width: 900px){
+    .rail-nav{display:flex;gap:8px}
+    .rail-arrow{width:34px;height:34px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(0,0,0,0.30);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+    .rail-arrow:hover{border-color:rgba(255,255,255,0.35);background:rgba(0,0,0,0.38)}
+    .rail-arrow svg{width:16px;height:16px;fill:#fff;opacity:.95}
+  }
+
+  /* Source card */
+  .scard{min-width:260px;max-width:320px;scroll-snap-align:start;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.22);transition:transform .12s ease,border-color .12s ease;position:relative}
+  .scard:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.28)}
+  .shead{display:grid;grid-template-columns:86px 1fr;gap:10px;padding:12px 12px 10px 12px;align-items:start}
+  .scover{width:86px;height:120px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);background:linear-gradient(135deg, rgba(255,255,255,0.10), rgba(0,0,0,0.20))}
+  .scover img{width:100%;height:100%;object-fit:cover;display:block}
+  .smeta{min-width:0}
+  .stitle{margin:0 0 6px 0;font-size:14px;line-height:1.25}
+  .ssub{font-size:12px;opacity:.82}
+
+  .sactions{display:flex;gap:8px;flex-wrap:wrap;padding:0 12px 12px 12px}
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(0,0,0,0.20);color:var(--text);text-decoration:none;font-weight:700;font-size:12px}
+  .pill:hover{border-color:rgba(255,255,255,0.35);background:rgba(0,0,0,0.26)}
+  .pill.secondary{font-weight:800;opacity:.92}
+
+  /* Expansion */
+  .detail{border-top:1px solid rgba(255,255,255,0.10);padding:10px 12px 40px 12px;display:none}
+  .detail.open{display:block}
+  .detail p{margin:0 0 10px 0;font-size:12.5px;line-height:1.45;opacity:.95}
+  .stags{display:flex;flex-wrap:wrap;gap:6px}
+  .stag{font-size:11px;opacity:.92;border:1px solid rgba(255,255,255,0.14);background:rgba(0,0,0,0.16);border-radius:999px;padding:5px 8px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* Gratitude */
+  .gratitude{position:absolute;right:10px;bottom:10px;display:inline-flex;align-items:center;gap:6px}
+  .gbtn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(0,0,0,0.30);cursor:pointer}
+  .gbtn:hover{border-color:rgba(255,255,255,0.35);background:rgba(0,0,0,0.38)}
+  .gbtn svg{width:16px;height:16px;fill:#fff;opacity:.95}
+  .gcount{font-size:12px;opacity:.92;min-width:18px;text-align:left}
+
+  /* Join line */
+  .join-once{margin-top:12px;font-size:13px;opacity:.88}
+  .join-once a{color:var(--text);font-weight:900;text-decoration:none}
+  .join-once a:hover{text-decoration:underline}
+
+  /* Featured descriptor higher contrast */
+  .featured-desc{
+    color: rgba(0,0,0,0.88) !important;
+    opacity: 1 !important;
+    background: rgba(255,255,255,0.86);
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.10);
+  }
+
+
+    /* Nominate bubble high contrast */
+  .nominate-bubble{
+    background: rgba(255,255,255,0.96) !important;
+    border: 1px solid rgba(0,0,0,0.16) !important;
+    color: rgba(0,0,0,0.92) !important;
+  }
+  .nominate-bubble .callout-title{
+    color: rgba(0,0,0,0.92) !important;
+  }
+  .nominate-bubble p,
+  .nominate-bubble .muted,
+  .nominate-bubble strong{
+    color: rgba(0,0,0,0.92) !important;
+    opacity: 1 !important;
+  }
+  .nominate-bubble a{
+    color: rgba(0,0,0,0.95) !important;
+    text-decoration: underline !important;
+    font-weight: 900 !important;
+  }
+
+
+  /* Rail wrap + end-position arrows (like index/videos) */
+  .rail-wrap{position:relative}
+  .rail-arrow-end{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:38px;height:38px;border-radius:999px;
+    border:1px solid rgba(255,255,255,0.20);
+    background:rgba(0,0,0,0.35);
+    cursor:pointer;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:3;
+  }
+  .rail-arrow-end:hover{border-color:rgba(255,255,255,0.40);background:rgba(0,0,0,0.45)}
+  .rail-arrow-end svg{width:18px;height:18px;fill:#fff;opacity:.95}
+  .rail-arrow-left{left:-6px}
+  .rail-arrow-right{right:-6px}
+  @media (min-width: 900px){ .rail-arrow-end{display:flex} .rail{padding:0 26px 6px 26px;} }
+
+</style>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="nav-shell" role="banner">
+<button aria-controls="drawer" aria-expanded="false" class="menu-button" id="menuButton">
+<span aria-hidden="true" class="menu-icon"><span></span></span>
+<span class="menu-label">MENU</span>
+</button>
+<div class="nav-title">
+<div class="nav-title-text">Open Technology Ecosystem for Agricultural Management</div>
+</div>
+<div aria-hidden="true" class="nav-logo">
+<img alt="" src="assets/openteam_logo.svg"/>
+</div>
+</header>
+<aside aria-hidden="true" class="drawer" id="drawer">
+<div class="drawer-inner">
+<div class="drawer-top">
+<div class="drawer-mark">
+<img alt="OpenTEAM logo" src="assets/openteam_logo.svg"/>
+</div>
+<div class="drawer-vertical">OpenTEAM</div>
+<button aria-label="Close menu" class="drawer-close" id="drawerClose">✕</button>
+</div>
+<nav aria-label="Site" class="drawer-links">
+<a class="drawer-link" href="index.html">HOME</a>
+<a class="drawer-link" href="index.html#initiatives">OUR WORK</a>
+<a class="drawer-link" href="index.html#pilots">COLLABATHONS</a>
+<a class="drawer-link" href="projects.html">PROJECTS</a>
+<a class="drawer-link" href="index.html#library">TOOLS &amp; PLATFORMS</a>
+<a class="drawer-link" href="videos.html">VIDEOS</a>
+<a class="drawer-link" aria-current="page" href="canonical-source-texts.html">INSPIRATIONS</a>
+<a class="drawer-link" href="calendar.html">EVENTS CALENDAR</a>
+<a class="drawer-link" href="index.html#join">JOIN</a>
+<a class="drawer-link" href="licenses.html">LICENSES</a>
+<a class="drawer-link" href="code-of-conduct.html">CODE OF CONDUCT</a>
+</nav>
+<div class="drawer-meta">
+<div class="drawer-meta-title">Contact</div>
+<a class="drawer-meta-link" href="https://www.hylo.com/groups/openteam" rel="noopener" target="_blank">Connect on Hylo ↗</a>
+</div>
+</div>
+</aside>
+<div aria-hidden="true" class="scrim" id="scrim"></div>
+<main id="main">
+<section class="section" id="sources-page">
+<div class="container">
+<div class="section-head">
+<h2>Canonical source texts</h2>
+<p>Books, papers, tools, and community touchstones that shaped the work — browse by theme and add your gratitude.</p>
+</div>
+<!-- Featured book -->
+<div class="callout featured-callout" style="margin-top: 14px;">
+<div class="callout-title">Featured book</div>
+<div class="callout-body">
+<div class="featured-grid">
+<div class="featured-cover">
+<img alt="Cover: Ecological Institutions: Law, Economics, and Technology in a More-than-Human World" loading="lazy" src="https://cdn.sanity.io/images/oflfnr14/production/5186cdff18c08bce27f8e4bb145d63fdf4cb614c-883x475.png?fit=max&amp;w=1600"/>
+</div>
+<div class="featured-meta">
+<div class="kicker">Regen Foundation</div>
+<h3 class="featured-title">Ecological Institutions: Law, Economics, and Technology in a More-than-Human World</h3>
+<div class="featured-sub">Regen Foundation • Austin Wade Smith • Book • 2025</div>
+<div class="tagrow">
+<span class="tag">regenerative governance</span><span class="tag">institutions</span><span class="tag">reciprocity</span><span class="tag">commons</span>
+</div>
+<p class="featured-desc" style="margin-top:10px;">A field guide and toolkit for regenerative governance that bridges living systems and digital systems — a strong match for OpenTEAM’s work on stewardship, protocols, and durable agricultural knowledge.</p>
+<div class="player-actions" style="margin-top: 12px;">
+<a class="btn small" href="https://www.regen.foundation/" rel="noopener" target="_blank">Open ↗</a>
+<a class="btn small" href="index.html#reading">Back to site ↗</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Theme rails -->
+<div class="callout nominate-bubble" style="margin-top: 18px;background: rgba(255,255,255,0.96);border:1px solid rgba(0,0,0,0.16);">
+<div class="callout-title" style="color:rgba(0,0,0,0.92);">Nominate a missing source</div>
+<div class="callout-body">
+<p style="margin:0;color:rgba(0,0,0,0.92) !important;opacity:1 !important;">
+<strong>Don't see a book that should be here?</strong>
+              Join to nominate the books, tools, events and people that were important to you and the evolution of your efforts.
+              <a href="index.html#join" style="color:rgba(0,0,0,0.95) !important;text-decoration:underline;font-weight:900;">Join ↗</a>
+</p>
+</div>
+</div>
+<div id="themeRails" style="margin-top: 16px;"></div>
+</div>
+</section>
+<div class="callout" style="margin-top: 18px;">
+<div class="callout-title">Nominate a missing source</div>
+<div class="callout-body">
+<p class="muted" style="margin:0;color:rgba(255,255,255,0.92);opacity:1;">
+<strong>Don't see a book that should be here?</strong>
+              Join to nominate the books, tools, events and people that were important to you and the evolution of your efforts.
+              <a href="index.html#join" style="color:var(--text);font-weight:900;text-decoration:none;">Join ↗</a>
+</p>
+</div>
+</div>
+</main>
+<footer class="footer">
+<div class="container footer-grid">
+<div class="footer-brand">
+<img alt="OpenTEAM logo" class="footer-logo" src="assets/openteam_logo.svg"/>
+<div>
+<div class="footer-title">OpenTEAM</div>
+<div class="footer-subtitle">Open Technology Ecosystem for Agricultural Management</div>
+<div class="footer-meta">© <span id="year"></span> OpenTEAM — Built for Sharing</div>
+<div class="footer-meta" style="margin-top:4px;"><a href="code-of-conduct.html" style="color:inherit;">Code of Conduct</a></div>
+</div>
+</div>
+<div class="footer-links">
+<a href="index.html">Home</a>
+<a href="index.html#initiatives">Our Work</a>
+<a href="index.html#pilots">Collabathons</a>
+<a href="projects.html">Projects</a>
+<a href="index.html#library">Tools &amp; Platforms</a>
+<a href="videos.html">Videos</a>
+<a href="canonical-source-texts.html">Inspirations</a>
+<a href="calendar.html">Events</a>
+<a href="index.html#join">Join</a>
+<a href="licenses.html">Licenses</a>
+<a href="code-of-conduct.html">Code of Conduct</a>
+</div>
+</div>
+</footer>
+<script>
+  // Data
+  // ==============================
+// SOURCE CARDS & THEMES (edit/add/remove here in GitHub)
+// - Each theme key becomes a rail.
+// - Add a new theme by adding a new key in THEMES and (optionally) adding it to THEMES_ORDER.
+// - Each card is a plain object: edit text, links, tags, and cover URLs directly.
+// ==============================
+
+const THEMES_ORDER = [
+  "Agroecology & Regenerative Agriculture",
+  "Systems Thinking & Complexity",
+  "Commons & Governance",
+  "Ethical AI & Data Stewardship",
+  "Participatory Research & Community Science",
+  "Data & Interoperability",
+  "Indigenous and Ancestral Knowledge",
+  "Governance in Practice",
+  "Speculative Science Fiction",
+  "GIAA Library",
+  "Long History  and Visionary Works"
+];
+
+const THEMES = {
+  "Agroecology & Regenerative Agriculture": [
+    {
+      "Theme": "Agroecology & Regenerative Agriculture",
+      "Title": "The Great Regeneration",
+      "Author/Contributor": "Dorn Cox",
+      "Type": "Book",
+      "Year": "2025",
+      "Tags": "regenerative agriculture, agroecology, stewardship, resilience, community",
+      "Relevance to OpenTEAM": "A regenerative agriculture perspective centered on ecological resilience and community practice — directly aligned with OpenTEAM’s emphasis on durable, reusable knowledge and stewardship.",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2025,
+      "id": "the-great-regeneration-dorn-cox"
+    },
+    {
+      "Theme": "Agroecology & Regenerative Agriculture",
+      "Title": "Regeneration: Ending the Climate Crisis in One Generation",
+      "Author/Contributor": "Paul Hawken",
+      "Type": "Book",
+      "Year": "2021",
+      "Tags": "climate, systems thinking",
+      "Relevance to OpenTEAM": "Frames regenerative agriculture within climate action ecosystems",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2021,
+      "id": "regeneration-ending-the-climate-crisis-in-one-generation-paul-hawken"
+    },
+    {
+      "Theme": "Agroecology & Regenerative Agriculture",
+      "Title": "Dirt: The Erosion of Civilizations",
+      "Author/Contributor": "David R. Montgomery",
+      "Type": "Book",
+      "Year": "2007",
+      "Tags": "soil health, history",
+      "Relevance to OpenTEAM": "Supports OpenTEAM’s emphasis on healthy soil as public infrastructure",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2007,
+      "id": "dirt-the-erosion-of-civilizations-david-r-montgomery"
+    },
+    {
+      "Theme": "Agroecology & Regenerative Agriculture",
+      "Title": "Agroecology: The Ecology of Sustainable Food Systems",
+      "Author/Contributor": "Miguel Altieri",
+      "Type": "Book",
+      "Year": "1995",
+      "Tags": "agroecology, sustainability",
+      "Relevance to OpenTEAM": "Scientific grounding for the agroecological paradigm embraced by OpenTEAM",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 1995,
+      "id": "agroecology-the-ecology-of-sustainable-food-systems-miguel-altieri"
+    },
+    {
+      "Theme": "Agroecology & Regenerative Agriculture",
+      "Title": "The Unsettling of America",
+      "Author/Contributor": "Wendell Berry",
+      "Type": "Book",
+      "Year": "1977",
+      "Tags": "agroecology, rural knowledge, land stewardship",
+      "Relevance to OpenTEAM": "Foundational text on the ethics of agriculture and place-based knowledge",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 1977,
+      "id": "the-unsettling-of-america-wendell-berry"
+    },
+    {
+      "Theme": "Agroecology & Regenerative Agriculture",
+      "Title": "One-Straw Revolution",
+      "Author/Contributor": "Masanobu Fukuoka",
+      "Type": "Book",
+      "Year": "1975",
+      "Tags": "regenerative, philosophy, natural farming",
+      "Relevance to OpenTEAM": "Inspires soil-first philosophies and low-input systems",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 1975,
+      "id": "one-straw-revolution-masanobu-fukuoka"
+    }
+  ],
+  "Systems Thinking & Complexity": [
+    {
+      "Theme": "Systems Thinking & Complexity",
+      "Title": "Designing Regenerative Cultures",
+      "Author/Contributor": "Daniel Christian Wahl",
+      "Type": "Book",
+      "Year": "2016",
+      "Tags": "regenerative design, systems",
+      "Relevance to OpenTEAM": "Guides OpenTEAM’s ecosystem thinking in technology and community design",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2016,
+      "id": "designing-regenerative-cultures-daniel-christian-wahl"
+    },
+    {
+      "Theme": "Systems Thinking & Complexity",
+      "Title": "Thinking in Systems",
+      "Author/Contributor": "Donella Meadows",
+      "Type": "Book",
+      "Year": "2008",
+      "Tags": "systems thinking",
+      "Relevance to OpenTEAM": "Key framework for whole-systems design in agricultural networks",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2008,
+      "id": "thinking-in-systems-donella-meadows"
+    },
+    {
+      "Theme": "Systems Thinking & Complexity",
+      "Title": "Panarchy",
+      "Author/Contributor": "Lance Gunderson & C.S. Holling",
+      "Type": "Book",
+      "Year": "2001",
+      "Tags": "resilience, adaptive cycles",
+      "Relevance to OpenTEAM": "Offers models for understanding social-ecological systems over time",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2001,
+      "id": "panarchy-lance-gunderson-c-s-holling"
+    },
+    {
+      "Theme": "Systems Thinking & Complexity",
+      "Title": "The Fifth Discipline",
+      "Author/Contributor": "Peter Senge",
+      "Type": "Book",
+      "Year": "1990",
+      "Tags": "learning organizations, systems",
+      "Relevance to OpenTEAM": "Supports OpenTEAM’s approach to co-learning and feedback loops",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 1990,
+      "id": "the-fifth-discipline-peter-senge"
+    },
+    {
+      "Theme": "Systems Thinking & Complexity",
+      "Title": "Pattern Language",
+      "Author/Contributor": "Christopher Alexander; Sara Ishikawa; Murray Silverstein",
+      "Type": "",
+      "Year": "1977",
+      "Tags": "complexity, systems thinking, thinking",
+      "Relevance to OpenTEAM": "Reference point within the 'Systems Thinking & Complexity' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://openlibrary.org/books/OL5059163M/A_pattern_language",
+      "Cover Image URL": "https://covers.openlibrary.org/b/isbn/0195019199-L.jpg",
+      "Year_num": 1977,
+      "id": "pattern-language-christopher-alexander-sara-ishikawa-murray-silverstein"
+    }
+  ],
+  "Commons & Governance": [
+    {
+      "Theme": "Commons & Governance",
+      "Title": "Ecological Institutions",
+      "Author/Contributor": "Austin Wade Smith",
+      "Type": "",
+      "Year": "2025",
+      "Tags": "commons, governance",
+      "Relevance to OpenTEAM": "Reference point within the 'Commons & Governance' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://regen.foundation/",
+      "Cover Image URL": "https://cdn.sanity.io/images/oflfnr14/production/5186cdff18c08bce27f8e4bb145d63fdf4cb614c-883x475.png?w=1600&fit=max",
+      "Year_num": 2025,
+      "id": "ecological-institutions-austin-wade-smith"
+    },
+    {
+      "Theme": "Commons & Governance",
+      "Title": "Patterns of Commoning",
+      "Author/Contributor": "Helfrich & Bollier (eds.)",
+      "Type": "Anthology",
+      "Year": "2015",
+      "Tags": "commons, social innovation",
+      "Relevance to OpenTEAM": "Case studies that resonate with OpenTEAM’s cooperative ethos",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2015,
+      "id": "patterns-of-commoning-helfrich-bollier-eds"
+    },
+    {
+      "Theme": "Commons & Governance",
+      "Title": "The Internet of Ownership",
+      "Author/Contributor": "Nathan Schneider",
+      "Type": "Website",
+      "Year": "2015–",
+      "Tags": "platform coops, ownership",
+      "Relevance to OpenTEAM": "Shapes OpenTEAM’s exploration of data stewardship and cooperative tech",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2015,
+      "id": "the-internet-of-ownership-nathan-schneider"
+    },
+    {
+      "Theme": "Commons & Governance",
+      "Title": "Polycentricity",
+      "Author/Contributor": "Elinor Ostrom",
+      "Type": "",
+      "Year": "2010",
+      "Tags": "commons, governance",
+      "Relevance to OpenTEAM": "Reference point within the 'Commons & Governance' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://www.aeaweb.org/articles?id=10.1257/aer.100.3.641",
+      "Cover Image URL": "",
+      "Year_num": 2010,
+      "id": "polycentricity-elinor-ostrom"
+    },
+    {
+      "Theme": "Commons & Governance",
+      "Title": "Governing the Commons",
+      "Author/Contributor": "Elinor Ostrom",
+      "Type": "Book",
+      "Year": "1990",
+      "Tags": "commons, governance",
+      "Relevance to OpenTEAM": "A core inspiration for participatory, polycentric governance models",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 1990,
+      "id": "governing-the-commons-elinor-ostrom"
+    },
+    {
+      "Theme": "Commons & Governance",
+      "Title": "Community Technology",
+      "Author/Contributor": "Karl Hess",
+      "Type": "Pamphlet",
+      "Year": "1979",
+      "Tags": "peer production",
+      "Relevance to OpenTEAM": "Early inspiration for community-led tech in food systems",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 1979,
+      "id": "community-technology-karl-hess"
+    }
+  ],
+  "Ethical AI & Data Stewardship": [
+    {
+      "Theme": "Ethical AI & Data Stewardship",
+      "Title": "Trustworthy Infrastructure",
+      "Author/Contributor": "Metagov",
+      "Type": "Whitepaper",
+      "Year": "2023",
+      "Tags": "trust, modular governance",
+      "Relevance to OpenTEAM": "Foundation for OpenTEAM’s trust architecture strategy",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2023,
+      "id": "trustworthy-infrastructure-metagov"
+    },
+    {
+      "Theme": "Ethical AI & Data Stewardship",
+      "Title": "Data Feminism",
+      "Author/Contributor": "Catherine D’Ignazio, Lauren Klein",
+      "Type": "Book",
+      "Year": "2020",
+      "Tags": "equity, data ethics",
+      "Relevance to OpenTEAM": "Reframes data ownership and visibility for agricultural equity",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2020,
+      "id": "data-feminism-catherine-dignazio-lauren-klein"
+    },
+    {
+      "Theme": "Ethical AI & Data Stewardship",
+      "Title": "Ethical OS Toolkit",
+      "Author/Contributor": "Omidyar Network",
+      "Type": "Toolkit",
+      "Year": "2019",
+      "Tags": "AI, tech foresight",
+      "Relevance to OpenTEAM": "Supports ethical foresight in ag-tech design",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2019,
+      "id": "ethical-os-toolkit-omidyar-network"
+    },
+    {
+      "Theme": "Ethical AI & Data Stewardship",
+      "Title": "The Right to Explanation",
+      "Author/Contributor": "Sandra Wachter",
+      "Type": "Paper",
+      "Year": "2017",
+      "Tags": "AI ethics, GDPR",
+      "Relevance to OpenTEAM": "Informs OpenTEAM's approach to transparency in ag-informatics",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2017,
+      "id": "the-right-to-explanation-sandra-wachter"
+    },
+    {
+      "Theme": "Ethical AI & Data Stewardship",
+      "Title": "The Intention Economy",
+      "Author/Contributor": "Doc Searls",
+      "Type": "Book",
+      "Year": "2012",
+      "Tags": "Data Ownership, Personal Data",
+      "Relevance to OpenTEAM": "Proposes a shift in digital commerce toward consumer agency and control over data.",
+      "Source Link": "https://en.wikipedia.org/wiki/The_Intention_Economy",
+      "Cover Image URL": "https://covers.openlibrary.org/b/isbn/1422158527-L.jpg",
+      "Year_num": 2012,
+      "id": "the-intention-economy-doc-searls"
+    },
+    {
+      "Theme": "Ethical AI & Data Stewardship",
+      "Title": "The Cathedral and the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary",
+      "Author/Contributor": "Eric S. Raymond",
+      "Type": "Book",
+      "Year": "1999",
+      "Tags": "open source, governance, collaboration, stewardship, commons",
+      "Relevance to OpenTEAM": "A foundational text on open source culture and collaborative development — helpful context for OpenTEAM’s governance, interoperability practices, and community stewardship.",
+      "Source Link": "https://en.wikipedia.org/wiki/The_Cathedral_and_the_Bazaar",
+      "Cover Image URL": "",
+      "Year_num": 1999,
+      "id": "the-cathedral-and-the-bazaar-eric-s-raymond"
+    }
+  ],
+  "Participatory Research & Community Science": [
+    {
+      "Theme": "Participatory Research & Community Science",
+      "Title": "Open Environmental Data Project",
+      "Author/Contributor": "Shannon Dosemagen (founder)",
+      "Type": "",
+      "Year": "2020",
+      "Tags": "community, research, science",
+      "Relevance to OpenTEAM": "Reference point within the 'Participatory Research & Community Science' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://www.openenvironmentaldata.org/about",
+      "Cover Image URL": "",
+      "Year_num": 2020,
+      "id": "open-environmental-data-project-shannon-dosemagen-founder"
+    },
+    {
+      "Theme": "Participatory Research & Community Science",
+      "Title": "Civic Science Framework",
+      "Author/Contributor": "Public Lab",
+      "Type": "Framework",
+      "Year": "2017",
+      "Tags": "citizen science",
+      "Relevance to OpenTEAM": "Inspires distributed data stewardship and participatory sensing",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2017,
+      "id": "civic-science-framework-public-lab"
+    },
+    {
+      "Theme": "Participatory Research & Community Science",
+      "Title": "Democratizing Innovation",
+      "Author/Contributor": "Eric von Hippel",
+      "Type": "Book",
+      "Year": "2005",
+      "Tags": "user innovation",
+      "Relevance to OpenTEAM": "Validates farmer-centered innovation in OpenTEAM tools",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2005,
+      "id": "democratizing-innovation-eric-von-hippel"
+    },
+    {
+      "Theme": "Participatory Research & Community Science",
+      "Title": "Farmer First",
+      "Author/Contributor": "Robert Chambers",
+      "Type": "Book",
+      "Year": "1989",
+      "Tags": "participatory research",
+      "Relevance to OpenTEAM": "A landmark call for listening to farmers as primary innovators",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 1989,
+      "id": "farmer-first-robert-chambers"
+    }
+  ],
+  "Data & Interoperability": [
+    {
+      "Theme": "Data & Interoperability",
+      "Title": "Schema.org for Agriculture",
+      "Author/Contributor": "GODAN",
+      "Type": "Ontology",
+      "Year": "2018",
+      "Tags": "linked data",
+      "Relevance to OpenTEAM": "Supports semantic interoperability in ag knowledge graphs",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2018,
+      "id": "schema-org-for-agriculture-godan"
+    },
+    {
+      "Theme": "Data & Interoperability",
+      "Title": "FAIR Guiding Principles",
+      "Author/Contributor": "Wilkinson et al.",
+      "Type": "Paper",
+      "Year": "2016",
+      "Tags": "data sharing",
+      "Relevance to OpenTEAM": "A foundational standard for OpenTEAM’s tech stack",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2016,
+      "id": "fair-guiding-principles-wilkinson-et-al"
+    },
+    {
+      "Theme": "Data & Interoperability",
+      "Title": "Open Ag Data Alliance (OADA)",
+      "Author/Contributor": "OADA",
+      "Type": "Protocol",
+      "Year": "2014",
+      "Tags": "interoperability",
+      "Relevance to OpenTEAM": "Early technical standard OpenTEAM builds upon",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2014,
+      "id": "open-ag-data-alliance-oada-oada"
+    },
+    {
+      "Theme": "Data & Interoperability",
+      "Title": "Common Accord Project",
+      "Author/Contributor": "CommonAccord.org",
+      "Type": "Framework",
+      "Year": "ongoing",
+      "Tags": "legal automation, modularity",
+      "Relevance to OpenTEAM": "Supports interoperable governance templates",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 0,
+      "id": "common-accord-project-commonaccord-org"
+    }
+  ],
+  "Indigenous and Ancestral Knowledge": [
+    {
+      "Theme": "Indigenous and Ancestral Knowledge",
+      "Title": "The Dawn of Everything",
+      "Author/Contributor": "Graeber & Wengrow",
+      "Type": "Book",
+      "Year": "2021",
+      "Tags": "alternative governance",
+      "Relevance to OpenTEAM": "Expands ideas of premodern civic design and stewardship",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2021,
+      "id": "the-dawn-of-everything-graeber-wengrow"
+    },
+    {
+      "Theme": "Indigenous and Ancestral Knowledge",
+      "Title": "Braiding Sweetgrass",
+      "Author/Contributor": "Robin Wall Kimmerer",
+      "Type": "Book",
+      "Year": "2013",
+      "Tags": "indigenous science",
+      "Relevance to OpenTEAM": "Frames reciprocity and ecological knowledge",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2013,
+      "id": "braiding-sweetgrass-robin-wall-kimmerer"
+    },
+    {
+      "Theme": "Indigenous and Ancestral Knowledge",
+      "Title": "The Other Side of Eden",
+      "Author/Contributor": "Hugh Brody",
+      "Type": "Book",
+      "Year": "2001",
+      "Tags": "oral tradition",
+      "Relevance to OpenTEAM": "Valuing indigenous epistemologies in landscape understanding",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2001,
+      "id": "the-other-side-of-eden-hugh-brody"
+    },
+    {
+      "Theme": "Indigenous and Ancestral Knowledge",
+      "Title": "Look to the mountain",
+      "Author/Contributor": "Gregory Cajete",
+      "Type": "",
+      "Year": "1994",
+      "Tags": "and, indigenous knowledge",
+      "Relevance to OpenTEAM": "Reference point within the 'Indigenous and Ancestral Knowledge' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://eric.ed.gov/?id=ED375993",
+      "Cover Image URL": "https://covers.openlibrary.org/b/isbn/1882308654-L.jpg",
+      "Year_num": 1994,
+      "id": "look-to-the-mountain-gregory-cajete"
+    }
+  ],
+  "Governance in Practice": [
+    {
+      "Theme": "Governance in Practice",
+      "Title": "Block Science Papers /KOI",
+      "Author/Contributor": "BlockScience",
+      "Type": "",
+      "Year": "2024",
+      "Tags": "governance, in, practice",
+      "Relevance to OpenTEAM": "Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://blog.block.science/architecting-knowledge-organization-infrastructure/",
+      "Cover Image URL": "",
+      "Year_num": 2024,
+      "id": "block-science-papers-koi-blockscience"
+    },
+    {
+      "Theme": "Governance in Practice",
+      "Title": "NCPP Local Working Group handbook",
+      "Author/Contributor": "National Conservation Planning Partnership (NCPP) / NRCS",
+      "Type": "",
+      "Year": "2023",
+      "Tags": "governance, in, practice",
+      "Relevance to OpenTEAM": "Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://www.nrcs.usda.gov/sites/default/files/2023-03/LWG%20Guidebook%20from%20National%20Conservation%20Planning%20Partnership_1.pdf",
+      "Cover Image URL": "",
+      "Year_num": 2023,
+      "id": "ncpp-local-working-group-handbook-national-conservation-planning-partnership-ncpp-nrcs"
+    },
+    {
+      "Theme": "Governance in Practice",
+      "Title": "Long Land War",
+      "Author/Contributor": "Jo Guldi",
+      "Type": "",
+      "Year": "2022",
+      "Tags": "governance, in, practice",
+      "Relevance to OpenTEAM": "Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://www.amazon.com/Long-Land-War-Struggle-Occupancy/dp/030025668X",
+      "Cover Image URL": "https://covers.openlibrary.org/b/isbn/030025668X-L.jpg",
+      "Year_num": 2022,
+      "id": "long-land-war-jo-guldi"
+    },
+    {
+      "Theme": "Governance in Practice",
+      "Title": "Metagov Gateway",
+      "Author/Contributor": "Metagov",
+      "Type": "Platform",
+      "Year": "2022–",
+      "Tags": "modular governance",
+      "Relevance to OpenTEAM": "Powers many OpenTEAM governance pilots",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2022,
+      "id": "metagov-gateway-metagov"
+    },
+    {
+      "Theme": "Governance in Practice",
+      "Title": "R3 Blueprints - Regenerative Finance",
+      "Author/Contributor": "r3.0 (Redesign for Resilience & Regeneration)",
+      "Type": "",
+      "Year": "2020",
+      "Tags": "governance, in, practice",
+      "Relevance to OpenTEAM": "Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://r3dot0.medium.com/r3-0-releases-sustainable-finance-and-value-cycles-blueprints-4e35f02fd222",
+      "Cover Image URL": "",
+      "Year_num": 2020,
+      "id": "r3-blueprints-regenerative-finance-r3-0-redesign-for-resilience-regeneration"
+    },
+    {
+      "Theme": "Governance in Practice",
+      "Title": "NACD HandBook",
+      "Author/Contributor": "NACD + American Farmland Trust",
+      "Type": "",
+      "Year": "2018",
+      "Tags": "governance, in, practice",
+      "Relevance to OpenTEAM": "Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://www.nacdnet.org/wp-content/uploads/2018/02/AFT-NACD-Environmental-Markets-web-final.pdf",
+      "Cover Image URL": "",
+      "Year_num": 2018,
+      "id": "nacd-handbook-nacd-american-farmland-trust"
+    },
+    {
+      "Theme": "Governance in Practice",
+      "Title": "Sociocracy 3.0",
+      "Author/Contributor": "Bernhard Bockelbrink et al.",
+      "Type": "Framework",
+      "Year": "2015–",
+      "Tags": "distributed governance",
+      "Relevance to OpenTEAM": "Offers practices for cooperative and nested governance",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 2015,
+      "id": "sociocracy-3-0-bernhard-bockelbrink-et-al"
+    },
+    {
+      "Theme": "Governance in Practice",
+      "Title": "Debt: the first 5000 years",
+      "Author/Contributor": "David Graeber",
+      "Type": "",
+      "Year": "2011",
+      "Tags": "governance, in, practice",
+      "Relevance to OpenTEAM": "Reference point within the 'Governance in Practice' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://en.wikipedia.org/wiki/Debt:_The_First_5,000_Years",
+      "Cover Image URL": "https://covers.openlibrary.org/b/isbn/1933633867-L.jpg",
+      "Year_num": 2011,
+      "id": "debt-the-first-5000-years-david-graeber"
+    }
+  ],
+  "Long History  and Visionary Works": [
+    {
+      "Theme": "Long History  and Visionary Works",
+      "Title": "Indigenous Currencies",
+      "Author/Contributor": "Ashley Cordes",
+      "Type": "Book",
+      "Year": "2025",
+      "Tags": "Regen EcoWeaving, Indigenous Economics",
+      "Relevance to OpenTEAM": "Examines historical and future roles of Indigenous currencies as tools of sovereignty and ecological value.",
+      "Source Link": "https://mitpress.mit.edu/9780262552530/indigenous-currencies/",
+      "Cover Image URL": "https://covers.openlibrary.org/b/isbn/0262552531-L.jpg",
+      "Year_num": 2025,
+      "id": "indigenous-currencies-ashley-cordes"
+    },
+    {
+      "Theme": "Long History  and Visionary Works",
+      "Title": "Ways of Being: Animals, Plants, Machines",
+      "Author/Contributor": "James Bridle",
+      "Type": "Book",
+      "Year": "2022",
+      "Tags": "Regen EcoWeaving, More-than-human Intelligence",
+      "Relevance to OpenTEAM": "Explores non-human forms of intelligence and the implications for design and planetary life.",
+      "Source Link": "https://en.wikipedia.org/wiki/Ways_of_Being",
+      "Cover Image URL": "https://covers.openlibrary.org/b/isbn/0374601119-L.jpg",
+      "Year_num": 2022,
+      "id": "ways-of-being-animals-plants-machines-james-bridle"
+    },
+    {
+      "Theme": "Long History  and Visionary Works",
+      "Title": "Hospicing Modernity",
+      "Author/Contributor": "Vanessa Machado de Oliveira",
+      "Type": "Book",
+      "Year": "2021",
+      "Tags": "Regen EcoWeaving, Decolonial Futures",
+      "Relevance to OpenTEAM": "Explores how to die well to systems in decline and create space for alternatives rooted in Indigenous knowledge.",
+      "Source Link": "https://www.penguinrandomhouse.com/books/675703/hospicing-modernity-by-vanessa-machado-de-oliveira/",
+      "Cover Image URL": "https://covers.openlibrary.org/b/isbn/1623176247-L.jpg",
+      "Year_num": 2021,
+      "id": "hospicing-modernity-vanessa-machado-de-oliveira"
+    },
+    {
+      "Theme": "Long History  and Visionary Works",
+      "Title": "A Paradise Built in Hell",
+      "Author/Contributor": "Rebecca Solnit",
+      "Type": "Book",
+      "Year": "2009",
+      "Tags": "Regen EcoWeaving, Mutual Aid",
+      "Relevance to OpenTEAM": "Documents human generosity and mutual support in times of disaster.",
+      "Source Link": "https://en.wikipedia.org/wiki/A_Paradise_Built_in_Hell",
+      "Cover Image URL": "https://covers.openlibrary.org/b/isbn/0670021075-L.jpg",
+      "Year_num": 2009,
+      "id": "a-paradise-built-in-hell-rebecca-solnit"
+    },
+    {
+      "Theme": "Long History  and Visionary Works",
+      "Title": "Ecological Economics",
+      "Author/Contributor": "Herman E. Daly; Joshua Farley",
+      "Type": "",
+      "Year": "2003",
+      "Tags": "and, history, long, visionary, works",
+      "Relevance to OpenTEAM": "Reference point within the 'Long History  and Visionary Works' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://www.bibliovault.org/BV.book.epl?ISBN=9781559633123",
+      "Cover Image URL": "https://covers.openlibrary.org/b/isbn/1559633123-L.jpg",
+      "Year_num": 2003,
+      "id": "ecological-economics-herman-e-daly-joshua-farley"
+    },
+    {
+      "Theme": "Long History  and Visionary Works",
+      "Title": "The Ecology of Freedom",
+      "Author/Contributor": "Murray Bookchin",
+      "Type": "Book",
+      "Year": "1982",
+      "Tags": "political ecology",
+      "Relevance to OpenTEAM": "Early framing of ecological and decentralized societies",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 1982,
+      "id": "the-ecology-of-freedom-murray-bookchin"
+    },
+    {
+      "Theme": "Long History  and Visionary Works",
+      "Title": "Dragons of Eden",
+      "Author/Contributor": "Carl Sagan",
+      "Type": "",
+      "Year": "1977",
+      "Tags": "and, history, long, visionary, works",
+      "Relevance to OpenTEAM": "Reference point within the 'Long History  and Visionary Works' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://en.wikipedia.org/wiki/The_Dragons_of_Eden",
+      "Cover Image URL": "https://covers.openlibrary.org/b/isbn/0394410459-L.jpg",
+      "Year_num": 1977,
+      "id": "dragons-of-eden-carl-sagan"
+    },
+    {
+      "Theme": "Long History  and Visionary Works",
+      "Title": "Small is Beautiful: Economics as if People Mattered",
+      "Author/Contributor": "E. F. Schumacher",
+      "Type": "Book",
+      "Year": "1973",
+      "Tags": "New Economics, Localism",
+      "Relevance to OpenTEAM": "Seminal work arguing for sustainable, human-scale economics.",
+      "Source Link": "https://en.wikipedia.org/wiki/Small_Is_Beautiful",
+      "Cover Image URL": "",
+      "Year_num": 1973,
+      "id": "small-is-beautiful-economics-as-if-people-mattered-e-f-schumacher"
+    },
+    {
+      "Theme": "Long History  and Visionary Works",
+      "Title": "Silent Spring",
+      "Author/Contributor": "Rachel Carson",
+      "Type": "Book",
+      "Year": "1962",
+      "Tags": "ecology, public awareness",
+      "Relevance to OpenTEAM": "Raised ecological consciousness foundational to regen ag",
+      "Source Link": "",
+      "Cover Image URL": "",
+      "Year_num": 1962,
+      "id": "silent-spring-rachel-carson"
+    },
+    {
+      "Theme": "Long History  and Visionary Works",
+      "Title": "Reconstruction by way of the soil",
+      "Author/Contributor": "Guy Theodore Wrench",
+      "Type": "Book",
+      "Year": "1946",
+      "Tags": "and, history, long, visionary, works",
+      "Relevance to OpenTEAM": "Reference point within the 'Long History  and Visionary Works' lineage; useful for OpenTEAM orientation and shared vocabulary.",
+      "Source Link": "https://archive.org/details/reconstructionby0000guyt",
+      "Cover Image URL": "",
+      "Year_num": 1946,
+      "id": "reconstruction-by-way-of-the-soil-guy-theodore-wrench"
+    }
+  ,
+    {
+      "Theme": "Long History  and Visionary Works",
+      "Title": "The Structure of World History",
+      "Author/Contributor": "Kojin Karatani",
+      "Type": "Book",
+      "Year": "2014",
+      "Tags": "world history, political economy, exchange, commons, modes of production",
+      "Relevance to OpenTEAM": "A sweeping reinterpretation of human history through modes of exchange rather than production — provides deep historical grounding for thinking about commons, reciprocity, and alternative economic forms relevant to open agricultural knowledge systems.",
+      "Source Link": "https://www.dukeupress.edu/the-structure-of-world-history",
+      "Cover Image URL": "",
+      "Year_num": 2014,
+      "id": "structure-of-world-history-karatani"
+    }
+  ],
+  "Speculative Science Fiction": [
+    {
+      "Theme": "Speculative Science Fiction",
+      "Title": "The Ministry for the Future",
+      "Author/Contributor": "Kim Stanley Robinson",
+      "Type": "Book",
+      "Year": "2020",
+      "Tags": "climate futures, governance, institutions, adaptation, systems change",
+      "Relevance to OpenTEAM": "Speculative near-future governance and climate response scenarios that help stress-test how institutions, incentives, and data systems might evolve under climate pressure — relevant for resilient agricultural knowledge infrastructure.",
+      "Source Link": "https://en.wikipedia.org/wiki/The_Ministry_for_the_Future",
+      "Cover Image URL": "",
+      "Year_num": 2020,
+      "id": "the-ministry-for-the-future-kim-stanley-robinson"
+    },
+    {
+      "Theme": "Speculative Science Fiction",
+      "Title": "The Transparent Society",
+      "Author/Contributor": "David Brin",
+      "Type": "Book",
+      "Year": "1998",
+      "Tags": "surveillance, transparency, privacy, governance, ethics, futures",
+      "Relevance to OpenTEAM": "A speculative and policy-oriented exploration of privacy, accountability, and reciprocal transparency — useful context for data stewardship, consent, and governance in socio-technical ecosystems.",
+      "Source Link": "https://en.wikipedia.org/wiki/The_Transparent_Society",
+      "Cover Image URL": "",
+      "Year_num": 1998,
+      "id": "the-transparent-society-david-brin"
+    },
+    {
+      "Theme": "Speculative Science Fiction",
+      "Title": "Parable of the Sower",
+      "Author/Contributor": "Octavia E. Butler",
+      "Type": "Book",
+      "Year": "1993",
+      "Tags": "resilience, community, collapse, migration, mutual aid, stewardship",
+      "Relevance to OpenTEAM": "A foundational speculative story about resilience and community organization amid systemic disruption — useful for thinking about social infrastructure, reciprocity, and durable knowledge under stress.",
+      "Source Link": "https://en.wikipedia.org/wiki/Parable_of_the_Sower",
+      "Cover Image URL": "",
+      "Year_num": 1993,
+      "id": "parable-of-the-sower-octavia-e-butler"
+    }
+  ],
+  "GIAA Library": [
+    {
+      "Theme": "GIAA Library",
+      "Title": "GIAA Library",
+      "Author/Contributor": "Grassroots Innovations Assembly for Agroecology (GIAA)",
+      "Type": "Library",
+      "Year": "—",
+      "Tags": "agroecology, grassroots innovation, farmer-led tech, documentation",
+      "Relevance to OpenTEAM": "Browse GIAA’s library of publications, reports, and resources on grassroots agroecological innovation networks.",
+      "Source Link": "https://www.gia-agroecology.org/index.php/library/",
+      "Cover Image URL": "",
+      "Year_num": 0,
+      "id": "giaa-library-home"
+    },
+    {
+      "Theme": "GIAA Library",
+      "Title": "Autonomy in the Face of Agtech",
+      "Author/Contributor": "GIAA",
+      "Type": "Library material",
+      "Year": "2025",
+      "Tags": "politics of innovations, autonomy, agtech",
+      "Relevance to OpenTEAM": "Analysis and perspectives on autonomy and power dynamics around agricultural technology—useful context for ethical tech and governance work.",
+      "Source Link": "https://www.gia-agroecology.org/index.php/library-material/autonomy-in-the-face-of-agtech/",
+      "Cover Image URL": "",
+      "Year_num": 2025,
+      "id": "autonomy-in-the-face-of-agtech-giaa"
+    },
+    {
+      "Theme": "GIAA Library",
+      "Title": "Pan African Declaration on the future of Biodigital Technologies in Food and Agriculture",
+      "Author/Contributor": "GIAA / partners",
+      "Type": "Library material",
+      "Year": "2025",
+      "Tags": "biodigital technologies, policy, sovereignty",
+      "Relevance to OpenTEAM": "Movement-facing declaration on biodigital technologies—relevant for data sovereignty and stewardship discussions.",
+      "Source Link": "https://www.gia-agroecology.org/index.php/library-material/pan-african-declaration-on-the-future-of-biodigital-technologies-in-food-and-agriculture/",
+      "Cover Image URL": "",
+      "Year_num": 2025,
+      "id": "pan-african-declaration-biodigital-giaa"
+    },
+    {
+      "Theme": "GIAA Library",
+      "Title": "Innovation databases",
+      "Author/Contributor": "GIAA",
+      "Type": "Directory",
+      "Year": "—",
+      "Tags": "databases, tools, innovations",
+      "Relevance to OpenTEAM": "Entry point to GIAA innovation databases—aligned with tool registries and documentation workflows.",
+      "Source Link": "https://www.gia-agroecology.org/index.php/inovation-databases/",
+      "Cover Image URL": "",
+      "Year_num": 0,
+      "id": "giaa-innovation-databases"
+    },
+    {
+      "Theme": "GIAA Library",
+      "Title": "Gatherings",
+      "Author/Contributor": "GIAA",
+      "Type": "Reports",
+      "Year": "—",
+      "Tags": "gatherings, notes, collaboration",
+      "Relevance to OpenTEAM": "Notes and reports from GIAA gatherings—useful references for convening patterns and shared documentation.",
+      "Source Link": "https://www.gia-agroecology.org/index.php/gatherings/",
+      "Cover Image URL": "",
+      "Year_num": 0,
+      "id": "giaa-gatherings"
+    }
+  ]
+};
+
+// ==============================
+// CARD ORDER WITHIN EACH THEME (edit these arrays to reorder books)
+// - Each value is a list of card `id`s in the exact order you want them to appear.
+// - To move a book, move its id up/down within its theme array.
+// - If you add a new card, add its id here (optional). If omitted, it will appear at the end.
+// ==============================
+
+const CARDS_ORDER = {
+  "Agroecology & Regenerative Agriculture": [
+    "regeneration-ending-the-climate-crisis-in-one-generation-paul-hawken",
+    "dirt-the-erosion-of-civilizations-david-r-montgomery",
+    "agroecology-the-ecology-of-sustainable-food-systems-miguel-altieri",
+    "the-unsettling-of-america-wendell-berry",
+    "one-straw-revolution-masanobu-fukuoka",
+    "the-great-regeneration-dorn-cox"
+  ],
+  "Systems Thinking & Complexity": [
+    "thinking-in-systems-donella-meadows",
+    "panarchy-lance-gunderson-c-s-holling",
+    "the-fifth-discipline-peter-senge",
+    "pattern-language-christopher-alexander-sara-ishikawa-murray-silverstein",
+    "designing-regenerative-cultures-daniel-christian-wahl"
+  ],
+  "Commons & Governance": [
+    "ecological-institutions-austin-wade-smith",
+    "patterns-of-commoning-helfrich-bollier-eds",
+    "the-internet-of-ownership-nathan-schneider",
+    "polycentricity-elinor-ostrom",
+    "governing-the-commons-elinor-ostrom",
+    "community-technology-karl-hess"
+  ],
+  "Ethical AI & Data Stewardship": [
+    "the-cathedral-and-the-bazaar-eric-s-raymond",
+    "trustworthy-infrastructure-metagov",
+    "data-feminism-catherine-dignazio-lauren-klein",
+    "ethical-os-toolkit-omidyar-network",
+    "the-right-to-explanation-sandra-wachter",
+    "the-intention-economy-doc-searls"
+  ],
+  "Participatory Research & Community Science": [
+    "open-environmental-data-project-shannon-dosemagen-founder",
+    "civic-science-framework-public-lab",
+    "democratizing-innovation-eric-von-hippel",
+    "farmer-first-robert-chambers"
+  ],
+  "Data & Interoperability": [
+    "schema-org-for-agriculture-godan",
+    "fair-guiding-principles-wilkinson-et-al",
+    "open-ag-data-alliance-oada-oada",
+    "common-accord-project-commonaccord-org"
+  ],
+  "Indigenous and Ancestral Knowledge": [
+    "the-dawn-of-everything-graeber-wengrow",
+    "braiding-sweetgrass-robin-wall-kimmerer",
+    "the-other-side-of-eden-hugh-brody",
+    "look-to-the-mountain-gregory-cajete"
+  ],
+  "Governance in Practice": [
+    "block-science-papers-koi-blockscience",
+    "ncpp-local-working-group-handbook-national-conservation-planning-partnership-ncpp-nrcs",
+    "long-land-war-jo-guldi",
+    "metagov-gateway-metagov",
+    "r3-blueprints-regenerative-finance-r3-0-redesign-for-resilience-regeneration",
+    "nacd-handbook-nacd-american-farmland-trust",
+    "sociocracy-3-0-bernhard-bockelbrink-et-al",
+    "debt-the-first-5000-years-david-graeber"
+  ],
+  "Long History  and Visionary Works": [
+    "reconstruction-by-way-of-the-soil-guy-theodore-wrench",
+    "a-paradise-built-in-hell-rebecca-solnit",
+    "ecological-economics-herman-e-daly-joshua-farley",
+    "small-is-beautiful-economics-as-if-people-mattered-e-f-schumacher",
+    "dragons-of-eden-carl-sagan",
+    "the-ecology-of-freedom-murray-bookchin",
+    "indigenous-currencies-ashley-cordes",
+    "ways-of-being-animals-plants-machines-james-bridle",
+    "hospicing-modernity-vanessa-machado-de-oliveira",
+    "silent-spring-rachel-carson"
+  ],
+  "Speculative Science Fiction": [
+    "the-ministry-for-the-future-kim-stanley-robinson",
+    "the-transparent-society-david-brin",
+    "parable-of-the-sower-octavia-e-butler"
+  ],
+  "GIAA Library": [
+    "giaa-library-home",
+    "autonomy-in-the-face-of-agtech-giaa",
+    "pan-african-declaration-biodigital-giaa",
+    "giaa-innovation-databases",
+    "giaa-gatherings"
+  ]
+};
+
+
+const PLACEHOLDER_COVER = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='280' viewBox='0 0 200 280'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23ffffff' stop-opacity='.22'/><stop offset='1' stop-color='%23000000' stop-opacity='.18'/></linearGradient></defs><rect width='200' height='280' rx='18' fill='url(%23g)'/><path d='M62 76h74c10 0 18 8 18 18v126c-6-5-13-7-21-7H62c-6 0-12 1-18 3V94c0-10 8-18 18-18z' fill='%23ffffff' fill-opacity='.18'/><path d='M62 76v143c0 3-2 5-5 5H44V94c0-10 8-18 18-18z' fill='%23ffffff' fill-opacity='.12'/><path d='M78 112h56' stroke='%23ffffff' stroke-opacity='.45' stroke-width='4' stroke-linecap='round'/><path d='M78 134h48' stroke='%23ffffff' stroke-opacity='.38' stroke-width='4' stroke-linecap='round'/><path d='M78 156h52' stroke='%23ffffff' stroke-opacity='.32' stroke-width='4' stroke-linecap='round'/><text x='100' y='240' text-anchor='middle' font-family='Poppins,Arial' font-size='12' fill='%23ffffff' fill-opacity='.70'>Cover missing</text></svg>`;
+
+// Tip: if you prefer editing in a spreadsheet, export/import via canonical-source-texts-cards.csv.
+
+
+  function norm(s) {
+    return (s || "").toString().trim().toLowerCase()
+      .replace(/[’']/g, "")
+      .replace(/[^a-z0-9]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function scoreEntry(s) {
+    let score = 0;
+    if ((s["Relevance to OpenTEAM"] || "").trim()) score += 3;
+    if ((s["Source Link"] || "").trim()) score += 2;
+    if ((s["Cover Image URL"] || "").trim()) score += 2;
+    if ((s["Tags"] || "").trim()) score += 1;
+    if ((s["Year"] || "").trim()) score += 1;
+    return score;
+  }
+
+  // Dedup + filter
+  const deduped = new Map();
+  [].forEach(s => {
+    const theme = (s.Theme || "").toString();
+    if (THEME_BLACKLIST.has(theme)) return;
+
+    const key = `${norm(s.Title)}|${norm(s["Author/Contributor"])}`;
+    const prev = deduped.get(key);
+    if (!prev) return deduped.set(key, s);
+    if (scoreEntry(s) > scoreEntry(prev)) deduped.set(key, s);
+  });
+  
+  // Gratitude counter
+  function gratitudeKey(id) {
+    return `openteam_gratitude_${id}`;
+  }
+  function getGratitude(id) {
+    const v = localStorage.getItem(gratitudeKey(id));
+    const n = parseInt(v || "0", 10);
+    return Number.isFinite(n) ? n : 0;
+  }
+  function bumpGratitude(id) {
+    const next = getGratitude(id) + 1;
+    localStorage.setItem(gratitudeKey(id), String(next));
+    return next;
+  }
+
+  function makeTagPills(tagStr) {
+    const tags = (tagStr || "").toString().split(",").map(t => t.trim()).filter(Boolean).slice(0, 8);
+    if (!tags.length) return "";
+    return tags.map(t => `<span class="stag" title="${t}">${t}</span>`).join("");
+  }
+
+  
+  // Open Library + Google Books cover hydration
+  async function tryHydrateCover(cardEl, title, author) {
+    const img = cardEl.querySelector("img[data-role='cover']");
+    if (!img) return;
+
+    // 1) Open Library
+    try {
+      const qTitle = encodeURIComponent(title || "");
+      const qAuthor = encodeURIComponent(author || "");
+      const url = `https://openlibrary.org/search.json?title=${qTitle}&author=${qAuthor}&limit=1`;
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        const doc = data?.docs?.[0];
+        if (doc?.cover_i) {
+          img.src = `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`;
+          img.dataset.hydrated = "openlibrary";
+          return;
+        }
+      }
+    } catch (e) {}
+
+
+  function hydrateMissingCovers(rail) {
+    rail.querySelectorAll(".scard").forEach(card => {
+      const img = card.querySelector("img[data-role='cover']");
+      if (!img) return;
+      const src = img.getAttribute("src") || "";
+      const title = card.getAttribute("data-title") || "";
+      const author = card.getAttribute("data-author") || "";
+      const needs = (!src) || (src === PLACEHOLDER_COVER) || src.startsWith("data:image/svg+xml");
+      if (needs) {
+        tryHydrateCover(card, title, author);
+        return;
+      }
+      // If URL exists but doesn't load, try hydrate once.
+      img.addEventListener("error", () => {
+        tryHydrateCover(card, title, author);
+      }, { once: true });
+    });
+  }
+
+    // 2) Google Books (often has thumbnails even when Open Library doesn't)
+    try {
+      const q = encodeURIComponent([title, author].filter(Boolean).join(" "));
+      const url = `https://www.googleapis.com/books/v1/volumes?q=${q}&maxResults=1`;
+      const res = await fetch(url);
+      if (!res.ok) return;
+      const data = await res.json();
+      const item = data?.items?.[0];
+      const thumb = item?.volumeInfo?.imageLinks?.thumbnail || item?.volumeInfo?.imageLinks?.smallThumbnail;
+      if (thumb) {
+        // Ensure https
+        img.src = thumb.replace(/^http:/, "https:");
+        img.dataset.hydrated = "googlebooks";
+      }
+    } catch (e) {}
+  }
+
+
+  function cardHTML(s) {
+    const suppliedCoverRaw = (s["Cover Image URL"] || "").toString().trim();
+    const suppliedCover = suppliedCoverRaw ? suppliedCoverRaw.replace(/^http:\/\//i,"https://") : "";
+    const year = (s["Year"] || "").toString().trim();
+    const subtitleParts = [(s["Author/Contributor"] || "").toString().trim(), (s["Type"] || "").toString().trim()].filter(Boolean);
+    if (year) subtitleParts.push(year);
+
+    const id = s.id || `${norm(s.Title)}-${norm(s["Author/Contributor"])}`;
+    const count = getGratitude(id);
+
+    const tagsHtml = makeTagPills(s.Tags);
+
+    const titleEsc = (s.Title || "").toString().replaceAll('"', "&quot;");
+    const authEsc = (s["Author/Contributor"] || "").toString().replaceAll('"', "&quot;");
+
+    return `
+      <article class="scard" data-id="${id}" data-title="${titleEsc}" data-author="${authEsc}">
+        <div class="shead">
+          <div class="scover" aria-hidden="true">
+            <img data-role="cover" loading="lazy" src="${suppliedCover || PLACEHOLDER_COVER}" alt="Cover: ${titleEsc}" onerror="this.onerror=null; this.src=window.PLACEHOLDER_COVER || this.src;" />
+          </div>
+          <div class="smeta">
+            <p class="stitle">${(s.Title || "").toString()}</p>
+            <div class="ssub">${subtitleParts.join(" • ")}</div>
+          </div>
+        </div>
+
+        <div class="sactions">
+          <button class="pill secondary" type="button" data-action="toggle">more</button>
+        </div>
+
+        <div class="detail" aria-hidden="true">
+          <p>${(s["Relevance to OpenTEAM"] || "").toString()}</p>
+          ${(() => {
+              const raw = (s["Source Link"] || "").toString().trim();
+              const titleQ = encodeURIComponent((s.Title || "").toString());
+              const wiki = `https://en.wikipedia.org/wiki/Special:Search?search=${titleQ}`;
+              const best = raw || wiki;
+              return `<div style="margin:8px 0 10px 0;">
+                        <a class="pill" href="${best}" target="_blank" rel="noopener">Link ↗</a>
+                      </div>`;
+            })()}${
+            tagsHtml ? `<div class="stags" aria-label="Tags">${tagsHtml}</div>` : ""
+          }
+        </div>
+
+        <div class="gratitude" aria-label="Gratitude counter">
+          <button class="gbtn" type="button" data-action="gratitude" aria-label="Add gratitude">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21s-7.2-4.35-9.6-8.7C.9 9.1 2.2 6.3 5.1 5.4c1.9-.6 3.7.2 4.9 1.7 1.2-1.5 3-2.3 4.9-1.7 2.9.9 4.2 3.7 2.7 6.9C19.2 16.65 12 21 12 21z"/>
+            </svg>
+          </button>
+          <div class="gcount" data-count="${count}">${count}</div>
+        </div>
+      </article>
+    `;
+  }
+
+  
+  function applyCardOrder(theme, list) {
+    const order = (CARDS_ORDER && CARDS_ORDER[theme]) ? CARDS_ORDER[theme] : null;
+    if (!order || !Array.isArray(order) || order.length === 0) return list;
+
+    const byId = new Map(list.map(c => [c.id, c]));
+    const ordered = [];
+    order.forEach(id => {
+      const card = byId.get(id);
+      if (card) {
+        ordered.push(card);
+        byId.delete(id);
+      }
+    });
+    // Append any cards not listed in CARDS_ORDER (e.g., newly added)
+    for (const card of byId.values()) ordered.push(card);
+    return ordered;
+  }
+
+function renderThemeRails() {
+    const container = document.getElementById("themeRails");
+    container.innerHTML = "";
+
+    const rendered = new Set();
+
+    function renderTheme(theme, list) {
+      if (!list || !list.length) return;
+
+      // Apply manual ordering (if provided)
+      list = applyCardOrder(theme, list);
+
+      const themeId = theme.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/-+/g,"-").replace(/(^-|-$)/g,"");
+
+      const block = document.createElement("section");
+      block.className = "theme-block";
+
+      block.innerHTML = `
+        <div class="rail-card">
+          <div class="rail-head">
+            <h3 class="rail-title">${theme}</h3>
+          </div>
+
+          <div class="rail-wrap">
+            <button class="rail-arrow-end rail-arrow-left" type="button" data-rail="${themeId}" data-dir="-1" aria-label="Scroll left">
+              <svg viewBox="0 0 24 24"><path d="M15.4 19.4 8 12l7.4-7.4 1.4 1.4L10.8 12l6 6z"/></svg>
+            </button>
+
+            <div class="rail" id="${themeId}" role="region" aria-label="${theme} rail"></div>
+
+            <button class="rail-arrow-end rail-arrow-right" type="button" data-rail="${themeId}" data-dir="1" aria-label="Scroll right">
+              <svg viewBox="0 0 24 24"><path d="m8.6 4.6 7.4 7.4-7.4 7.4-1.4-1.4 6-6-6-6z"/></svg>
+            </button>
+          </div>
+        </div>
+      `;
+
+      const rail = block.querySelector(".rail");
+      rail.innerHTML = list.map(cardHTML).join("");
+      container.appendChild(block);
+      rendered.add(theme);
+
+      // hydrate covers that are missing
+      rail.querySelectorAll(".scard").forEach(card => {
+        const img = card.querySelector("img[data-role='cover']");
+        if (!img) return;
+        const src = img.getAttribute("src") || "";
+        if (src && src !== PLACEHOLDER_COVER && !src.startsWith("data:image/svg+xml")) return;
+        const title = card.getAttribute("data-title") || "";
+        const author = card.getAttribute("data-author") || "";
+        tryHydrateCover(card, title, author);
+      });
+    }
+
+    // Ordered themes
+    THEMES_ORDER.forEach(theme => {
+      if (THEMES[theme]) renderTheme(theme, THEMES[theme]);
+    });
+
+    // Any remaining themes not listed in THEMES_ORDER
+    Object.keys(THEMES).sort((a,b)=>a.localeCompare(b)).forEach(theme => {
+      if (!rendered.has(theme)) renderTheme(theme, THEMES[theme]);
+    });
+  }
+
+  function wireInteractions() {
+    const root = document.getElementById("themeRails");
+    root.addEventListener("click", (e) => {
+      // rail arrows
+      const arrow = e.target.closest("button.rail-arrow, button.rail-arrow-end");
+      if (arrow) {
+        const railId = arrow.getAttribute("data-rail");
+        const dir = parseInt(arrow.getAttribute("data-dir") || "1", 10);
+        const rail = document.getElementById(railId);
+        if (rail) {
+          const step = Math.max(280, Math.floor(rail.clientWidth * 0.85));
+          rail.scrollBy({ left: dir * step, top: 0, behavior: "smooth" });
+        }
+        return;
+      }
+
+      const btn = e.target.closest("button");
+      if (!btn) return;
+
+      const card = e.target.closest(".scard");
+      if (!card) return;
+
+      const id = card.getAttribute("data-id");
+      const action = btn.getAttribute("data-action");
+
+      if (action === "toggle") {
+        const detail = card.querySelector(".detail");
+        const isOpen = detail.classList.toggle("open");
+        detail.setAttribute("aria-hidden", isOpen ? "false" : "true");
+        btn.textContent = isOpen ? "less" : "more";
+      }
+
+      if (action === "gratitude") {
+        const next = bumpGratitude(id);
+        const el = card.querySelector(".gcount");
+        el.textContent = next;
+        el.setAttribute("data-count", String(next));
+      }
+    });
+  }
+
+  renderThemeRails();
+  wireInteractions();
+</script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>OpenTEAM — Events Calendar</title>
+<meta content="OpenTEAM is a collaborative ecosystem of open-source tools, data practices, and community convenings that help farmers, ranchers, and land stewards manage land regeneratively." name="description"/>
+<meta content="OpenTEAM" property="og:title"/>
+<meta content="Open Technology Ecosystem for Agricultural Management" property="og:description"/>
+<meta content="assets/bg_malawi.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&amp;family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- OEDP-inspired: sticky header + over-left drawer -->
+<header class="nav-shell" role="banner">
+<button aria-controls="drawer" aria-expanded="false" class="menu-button" id="menuButton">
+<span aria-hidden="true" class="menu-icon"><span></span></span>
+<span class="menu-label">MENU</span>
+</button>
+<div class="nav-title">
+<div class="nav-title-text">Open Technology Ecosystem for Agricultural Management</div>
+</div>
+<div aria-hidden="true" class="nav-logo">
+<img alt="" src="assets/openteam_logo.svg"/>
+</div>
+</header>
+<aside aria-hidden="true" class="drawer" id="drawer">
+<div class="drawer-inner">
+<div class="drawer-top">
+<div class="drawer-mark">
+<img alt="OpenTEAM logo" src="assets/openteam_logo.svg"/>
+</div>
+<div class="drawer-vertical">OpenTEAM</div>
+<button aria-label="Close menu" class="drawer-close" id="drawerClose">✕</button>
+</div>
+<nav aria-label="Site" class="drawer-links">
+<a class="drawer-link" href="index.html">HOME</a>
+<a class="drawer-link" href="index.html#initiatives">OUR WORK</a>
+<a class="drawer-link" href="index.html#pilots">COLLABATHONS</a>
+<a class="drawer-link" href="projects.html">PROJECTS</a>
+<a class="drawer-link" href="index.html#library">TOOLS &amp; PLATFORMS</a>
+<a class="drawer-link" href="videos.html">VIDEOS</a>
+<a class="drawer-link" href="canonical-source-texts.html">INSPIRATIONS</a>
+<a class="drawer-link" aria-current="page" href="calendar.html">EVENTS CALENDAR</a>
+<a class="drawer-link" href="index.html#join">JOIN</a>
+<a class="drawer-link" href="licenses.html">LICENSES</a>
+<a class="drawer-link" href="code-of-conduct.html">CODE OF CONDUCT</a>
+</nav>
+<div class="drawer-meta">
+<div class="drawer-meta-title">Contact</div>
+<a class="drawer-meta-link" href="https://www.hylo.com/groups/openteam" rel="noopener" target="_blank">Connect on Hylo ↗</a>
+</div>
+</div>
+</aside>
+<div aria-hidden="true" class="scrim" id="scrim"></div>
+<main id="main">
+<section class="section" id="calendar-page">
+<div class="container">
+<div class="section-head">
+<h2>Shared Calendar of Events</h2>
+<p>Navigate the month view and click a day to see events aggregated from GOAT, GIAA, Farm Hack, and Ag Knowledge Concordance.</p>
+</div>
+<div class="callout" style="margin-top: 14px;">
+<div class="callout-title">Month view</div>
+<div class="callout-body">
+<div class="calpage-nav" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin: 8px 0 14px 0;">
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+<button class="btn small" id="calPrev" type="button">← Prev</button>
+<button class="btn small" id="calToday" type="button">This month</button>
+<button class="btn small" id="calNext" type="button">Next →</button>
+</div>
+<div id="calMonthTitle" style="font-family: Oswald; font-weight:700; font-size: 18px;">...</div>
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+<a class="btn small" href="index.html#events">Back to site ↗</a>
+</div>
+</div>
+<div class="calpage-layout" style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 14px;">
+<div class="panel" style="padding:0; overflow:hidden;">
+<div id="calDow" style="display:grid; grid-template-columns: repeat(7, minmax(0,1fr)); border-bottom:1px solid var(--border);"></div>
+<div id="calGrid" style="display:grid; grid-template-columns: repeat(7, minmax(0,1fr));"></div>
+</div>
+<div class="panel" style="padding:0; overflow:hidden;">
+<div style="padding: 12px 12px; border-bottom:1px solid var(--border);">
+<div id="calDayTitle" style="font-weight:700;">Select a day</div>
+<div class="muted" id="calDaySub" style="margin-top: 4px;">Events will appear here.</div>
+</div>
+<div id="calDayList" style="padding: 12px 12px; display:grid; gap: 10px;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<style>
+    @media (max-width: 980px){
+      .calpage-layout{ grid-template-columns: 1fr !important; }
+    }
+    .calcell{
+      min-height: 92px;
+      padding: 10px;
+      border-right:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      cursor:pointer;
+      background: #fff;
+    }
+    .calcell:nth-child(7n){ border-right:none; }
+    .calcell.other{ opacity: .45; }
+    .calcell.selected{ outline: 3px solid rgba(45,106,79,0.22); outline-offset: -3px; background: rgba(45,106,79,0.06); }
+    .calnum{ font-size: 12px; font-weight:700; color: var(--muted); }
+    .caldots{ display:flex; gap:6px; flex-wrap:wrap; margin-top: 8px; }
+    .caldot{ width: 8px; height:8px; border-radius: 99px; background: rgba(43,43,43,0.18); }
+    .caldow{
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(45,106,79,0.06);
+      border-right:1px solid var(--border);
+    }
+    .caldow:nth-child(7){ border-right:none; }
+    .evitem{ border: 1px solid var(--border); border-radius: 16px; padding: 12px; background:#fff; }
+    .evitem-title{ font-weight:700; }
+    .evitem-when{ margin-top: 6px; font-size: 12px; color: var(--muted); }
+    .evitem-tags{ display:flex; gap: 8px; flex-wrap:wrap; margin-top: 10px; }
+    .evitem a{ text-decoration:none; color: var(--accent); font-weight:700; }
+    .evitem a:hover{ text-decoration:underline; }
+  </style>
+<script>
+    (function(){
+      const DOW = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      const els = {
+        monthTitle: document.getElementById('calMonthTitle'),
+        dow: document.getElementById('calDow'),
+        grid: document.getElementById('calGrid'),
+        dayTitle: document.getElementById('calDayTitle'),
+        daySub: document.getElementById('calDaySub'),
+        dayList: document.getElementById('calDayList'),
+        prev: document.getElementById('calPrev'),
+        next: document.getElementById('calNext'),
+        today: document.getElementById('calToday'),
+      };
+
+      let events = [];
+      let cursor = startOfMonth(new Date());
+      let selected = null;
+
+      function startOfMonth(d){
+        return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
+      }
+      function monthLabel(d){
+        return d.toLocaleString(undefined, { month:'long', year:'numeric' });
+      }
+      function ymd(d){
+        const yyyy = d.getUTCFullYear();
+        const mm = String(d.getUTCMonth()+1).padStart(2,'0');
+        const dd = String(d.getUTCDate()).padStart(2,'0');
+        return `${yyyy}-${mm}-${dd}`;
+      }
+      function sameDay(a,b){ return ymd(a) === ymd(b); }
+
+      function eventsOnDay(day){
+        const k = ymd(day);
+        return events.filter(e => (e.start||'').slice(0,10) === k)
+          .sort((a,b)=> new Date(a.start).getTime() - new Date(b.start).getTime());
+      }
+
+      function renderSelected(){
+        if(!selected) return;
+        const evs = eventsOnDay(selected);
+        els.dayTitle.textContent = selected.toLocaleString(undefined, { weekday:'long', year:'numeric', month:'short', day:'numeric' });
+        els.daySub.textContent = evs.length ? `${evs.length} event(s)` : 'No events on this day.';
+        els.dayList.innerHTML = evs.map(ev => {
+          const t = new Date(ev.start).toLocaleTimeString(undefined, { hour:'2-digit', minute:'2-digit' });
+          const tags = [ev.source, ...(ev.tags||[])].filter(Boolean).slice(0,4)
+            .map(x=>`<span class="wg-pill">${escapeHtml(x)}</span>`).join('');
+          return `
+            <div class="evitem">
+              <div class="evitem-title">${escapeHtml(ev.title||'Untitled event')}</div>
+              <div class="evitem-when">${escapeHtml(t)}${ev.location ? ' • ' + escapeHtml(ev.location) : ''}</div>
+              <div class="evitem-tags">${tags}</div>
+              <div style="margin-top:10px;">${ev.url ? `<a href="${escapeHtml(ev.url)}" target="_blank" rel="noopener">Open event ↗</a>` : ''}</div>
+            </div>`;
+        }).join('');
+      }
+
+      function escapeHtml(s){
+        return (s ?? '').toString()
+          .replaceAll('&','&amp;')
+          .replaceAll('<','&lt;')
+          .replaceAll('>','&gt;')
+          .replaceAll('"','&quot;')
+          .replaceAll("'",'&#039;');
+      }
+
+      function render(){
+        els.monthTitle.textContent = monthLabel(cursor);
+        els.dow.innerHTML = DOW.map((d,i)=>`<div class="caldow">${d}</div>`).join('');
+
+        const first = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth(), 1));
+        const firstDow = (first.getUTCDay()+6)%7; // Mon=0
+        const gridStart = new Date(first);
+        gridStart.setUTCDate(first.getUTCDate() - firstDow);
+
+        const days = [];
+        for(let i=0;i<42;i++){
+          const d = new Date(gridStart);
+          d.setUTCDate(gridStart.getUTCDate()+i);
+          days.push(d);
+        }
+
+        els.grid.innerHTML = days.map(d => {
+          const isOther = d.getUTCMonth() !== cursor.getUTCMonth();
+          const evs = eventsOnDay(d);
+          const dots = evs.slice(0,5).map(()=>`<span class="caldot"></span>`).join('');
+          const sel = selected && sameDay(d, selected);
+          return `<div class="calcell ${isOther?'other':''} ${sel?'selected':''}" data-ymd="${ymd(d)}">
+            <div class="calnum">${d.getUTCDate()}</div>
+            <div class="caldots">${dots}</div>
+          </div>`;
+        }).join('');
+
+        els.grid.querySelectorAll('.calcell').forEach(cell => {
+          cell.addEventListener('click', () => {
+            const [Y,M,D] = cell.getAttribute('data-ymd').split('-').map(Number);
+            selected = new Date(Date.UTC(Y, M-1, D));
+            renderSelected();
+            render();
+          });
+        });
+
+        if(!selected){
+          const now = new Date();
+          if(now.getUTCMonth()===cursor.getUTCMonth() && now.getUTCFullYear()===cursor.getUTCFullYear()){
+            selected = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+            renderSelected();
+            render();
+          }
+        }
+      }
+
+      els.prev.addEventListener('click', () => { cursor = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth()-1, 1)); selected = null; render(); });
+      els.next.addEventListener('click', () => { cursor = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth()+1, 1)); selected = null; render(); });
+      els.today.addEventListener('click', () => { cursor = startOfMonth(new Date()); selected = null; render(); });
+
+      fetch('data/events.json', { cache:'no-store' })
+        .then(r => r.ok ? r.json() : Promise.reject(new Error('events.json not found')))
+        .then(json => { events = Array.isArray(json) ? json : (json.items || []); render(); })
+        .catch(err => { console.error(err); els.monthTitle.textContent = 'Could not load events.'; });
+    })();
+  </script>
+</main>
+<footer class="footer">
+<div class="container footer-grid">
+<div class="footer-brand">
+<img alt="OpenTEAM logo" class="footer-logo" src="assets/openteam_logo.svg"/>
+<div>
+<div class="footer-title">OpenTEAM</div>
+<div class="footer-subtitle">Open Technology Ecosystem for Agricultural Management</div>
+<div class="footer-meta">© <span id="year"></span> OpenTEAM — Built for Sharing</div>
+<div class="footer-meta" style="margin-top:4px;"><a href="code-of-conduct.html" style="color:inherit;">Code of Conduct</a></div>
+</div>
+</div>
+<div class="footer-links">
+<a href="index.html">Home</a>
+<a href="index.html#initiatives">Our Work</a>
+<a href="index.html#pilots">Collabathons</a>
+<a href="projects.html">Projects</a>
+<a href="index.html#library">Tools &amp; Platforms</a>
+<a href="videos.html">Videos</a>
+<a href="canonical-source-texts.html">Inspirations</a>
+<a href="calendar.html">Events</a>
+<a href="index.html#join">Join</a>
+<a href="licenses.html">Licenses</a>
+<a href="code-of-conduct.html">Code of Conduct</a>
+</div>
+</div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>

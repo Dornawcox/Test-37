@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>OpenTEAM — Videos</title>
+<meta content="Archived Open Agriculture Learning Series videos." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&amp;family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+<style>
+    /* Minimal page-specific styling; relies on site CSS for most layout */
+    .video-embed{
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #000;
+      box-shadow: var(--shadow);
+    }
+    .video-embed iframe{
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      display: block;
+      background: #000;
+    }
+
+    /* Rail layout */
+    .video-rail-wrap{
+      position: relative;
+      margin-top: 14px;
+    }
+    .video-rail{
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 6px 2px 10px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+    }
+    .video-rail::-webkit-scrollbar{ height: 10px; }
+    .video-rail::-webkit-scrollbar-thumb{
+      background: rgba(255,255,255,0.18);
+      border-radius: 999px;
+    }
+
+    .video-card{
+      flex: 0 0 auto;
+      width: 240px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.18);
+      cursor: pointer;
+      scroll-snap-align: start;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      text-align: left;
+    }
+    .video-card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.24);
+      background: rgba(0,0,0,0.24);
+    }
+    .video-card.active{
+      border-color: rgba(255,255,255,0.42);
+      background: rgba(0,0,0,0.28);
+    }
+
+    .video-thumb{
+      height: 138px;
+      background: rgba(0,0,0,0.35);
+      position: relative;
+    }
+    .video-thumb img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.05) contrast(1.02);
+    }
+    .video-playdot{
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.22);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .video-playdot svg{
+      width: 16px;
+      height: 16px;
+      fill: #fff;
+      opacity: .95;
+      margin-left: 2px;
+    }
+
+    .video-meta{
+      padding: 10px 12px 12px;
+    }
+    .video-kicker{
+      font-size: 12px;
+      opacity: .78;
+      margin: 0 0 6px 0;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .video-title{
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    /* Rail arrows (works even if site rail JS is broken) */
+    .rail-arrow{
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.35);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .rail-arrow:hover{
+      background: rgba(0,0,0,0.48);
+      border-color: rgba(255,255,255,0.28);
+    }
+    .rail-arrow:disabled{
+      opacity: .35;
+      cursor: default;
+    }
+    .rail-arrow.left{ left: -6px; }
+    .rail-arrow.right{ right: -6px; }
+
+    .rail-fade{
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 40px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .rail-fade.left{
+      left: 0;
+      background: linear-gradient(90deg, rgba(0,0,0,0.20), rgba(0,0,0,0));
+    }
+    .rail-fade.right{
+      right: 0;
+      background: linear-gradient(270deg, rgba(0,0,0,0.20), rgba(0,0,0,0));
+    }
+
+    .video-actions{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .muted-tight{
+      opacity: .82;
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- Single header (no duplicates) -->
+<header class="nav-shell" role="banner">
+<button aria-controls="drawer" aria-expanded="false" class="menu-button" id="menuButton">
+<span aria-hidden="true" class="menu-icon"><span></span></span>
+<span class="menu-label">MENU</span>
+</button>
+<div class="nav-title">
+<div class="nav-title-text">Open Technology Ecosystem for Agricultural Management</div>
+</div>
+<div aria-hidden="true" class="nav-logo">
+<img alt="" src="assets/openteam_logo.svg"/>
+</div>
+</header>
+<!-- Drawer -->
+<aside aria-hidden="true" class="drawer" id="drawer">
+<div class="drawer-inner">
+<div class="drawer-top">
+<div class="drawer-mark">
+<img alt="OpenTEAM logo" src="assets/openteam_logo.svg"/>
+</div>
+<div class="drawer-vertical">OpenTEAM</div>
+<button aria-label="Close menu" class="drawer-close" id="drawerClose">✕</button>
+</div>
+<nav aria-label="Site" class="drawer-links">
+<a class="drawer-link" href="index.html">HOME</a>
+<a class="drawer-link" href="index.html#initiatives">OUR WORK</a>
+<a class="drawer-link" href="index.html#pilots">COLLABATHONS</a>
+<a class="drawer-link" href="projects.html">PROJECTS</a>
+<a class="drawer-link" href="index.html#library">TOOLS &amp; PLATFORMS</a>
+<a class="drawer-link" aria-current="page" href="videos.html">VIDEOS</a>
+<a class="drawer-link" href="canonical-source-texts.html">INSPIRATIONS</a>
+<a class="drawer-link" href="calendar.html">EVENTS CALENDAR</a>
+<a class="drawer-link" href="index.html#join">JOIN</a>
+<a class="drawer-link" href="licenses.html">LICENSES</a>
+<a class="drawer-link" href="code-of-conduct.html">CODE OF CONDUCT</a>
+</nav>
+<div class="drawer-meta">
+<div class="drawer-meta-title">Contact</div>
+<a class="drawer-meta-link" href="https://www.hylo.com/groups/openteam" rel="noopener" target="_blank">Connect on Hylo ↗</a>
+</div>
+</div>
+</aside>
+<div aria-hidden="true" class="scrim" id="scrim"></div>
+<main id="main">
+<section class="section" id="videos-page">
+<div class="container">
+<div class="section-head">
+<h2>Videos</h2>
+<p>Archived learning sessions from Open Agriculture and partners.</p>
+</div>
+<!-- Featured video (playlist embed) -->
+<div class="panel" style="margin-top: 14px;">
+<h3 style="margin:0 0 10px 0;">Featured - (click on the upper right to browse the full archive)</h3>
+<div aria-label="Featured video player" class="video-embed">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" id="featuredPlayer" src="https://www.youtube.com/embed/videoseries?list=PLnl6JeuBOQB3RZKoacQ_1CGq8ssAVgu7y" title="OpenTEAM In-Depths Playlist"></iframe>
+</div>
+<div class="video-actions">
+<a class="btn small" href="https://www.youtube.com/playlist?list=PLnl6JeuBOQB3RZKoacQ_1CGq8ssAVgu7y" id="openOnYouTube" rel="noopener" target="_blank">Open playlist on YouTube ↗</a>
+<a class="btn small" href="index.html#convenings">Back to Convenings ↗</a>
+</div>
+<div class="muted-tight" id="nowPlayingLabel">Now playing: OpenTEAM In-Depths Playlist</div>
+<!-- Rail directly below the featured player -->
+<div aria-label="Video rail section" class="video-rail-wrap">
+<div class="rail-fade left"></div>
+<div class="rail-fade right"></div>
+<button aria-label="Scroll left" class="rail-arrow left" id="railLeft" type="button">‹</button>
+<button aria-label="Scroll right" class="rail-arrow right" id="railRight" type="button">›</button>
+<h3 style="margin: 14px 0 6px 0;">Archived Open Agriculture Learning Series</h3>
+<div class="muted" style="font-size: 13px; margin-bottom: 8px;">Scroll to browse. Click any card to play.</div>
+<div class="video-rail" id="videoRail"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="footer">
+<div class="container footer-grid">
+<div class="footer-brand">
+<img alt="OpenTEAM logo" class="footer-logo" src="assets/openteam_logo.svg"/>
+<div>
+<div class="footer-title">OpenTEAM</div>
+<div class="footer-subtitle">Open Technology Ecosystem for Agricultural Management</div>
+<div class="footer-meta">© <span id="year"></span> OpenTEAM — Built for Sharing</div>
+<div class="footer-meta" style="margin-top:4px;"><a href="code-of-conduct.html" style="color:inherit;">Code of Conduct</a></div>
+</div>
+</div>
+<div class="footer-links">
+<a href="index.html">Home</a>
+<a href="index.html#initiatives">Our Work</a>
+<a href="index.html#pilots">Collabathons</a>
+<a href="projects.html">Projects</a>
+<a href="index.html#library">Tools &amp; Platforms</a>
+<a href="videos.html">Videos</a>
+<a href="canonical-source-texts.html">Inspirations</a>
+<a href="calendar.html">Events</a>
+<a href="index.html#join">Join</a>
+<a href="licenses.html">Licenses</a>
+<a href="code-of-conduct.html">Code of Conduct</a>
+</div>
+</div>
+</footer>
+<!-- Keep site JS for drawer/menu -->
+<script src="script.js"></script>
+<script>
+    // Footer year
+    (function(){
+      var y = document.getElementById('year');
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+
+    // Populate rail from your links (15 videos)
+    const VIDEOS = [
+      { id: "NaqgUhw_eYk", label: "Archived Session 01" },
+      { id: "vh4y-sTv4Fo", label: "Archived Session 02" },
+      { id: "bRBcRavT_Qs", label: "Archived Session 03" },
+      { id: "U5J6gip40qs", label: "Archived Session 04" },
+      { id: "qABJ1s77cSY", label: "Archived Session 05" },
+      { id: "dM0HIaDUX0I", label: "Archived Session 06" },
+      { id: "dHAQHTXf9I4", label: "Archived Session 07" },
+      { id: "ujRedeZnYM4", label: "Archived Session 08" },
+      { id: "IMUFItDfQ1M", label: "Archived Session 09" },
+      { id: "scQeIVbJh4U", label: "Archived Session 10" },
+      { id: "3Xjgmf6ojYM", label: "Archived Session 11" },
+      { id: "BKoNLyC4Gmw", label: "Archived Session 12" },
+      { id: "jefE87Ip8v8", label: "Archived Session 13" },
+      { id: "UgPNrNoT5Fc", label: "Archived Session 14" },
+      { id: "8upk0oY-Mhg", label: "Archived Session 15" }
+    ];
+
+    const PLAYLIST_URL = "https://www.youtube.com/playlist?list=PLnl6JeuBOQB3RZKoacQ_1CGq8ssAVgu7y";
+    const PLAYLIST_EMBED = "https://www.youtube.com/embed/videoseries?list=PLnl6JeuBOQB3RZKoacQ_1CGq8ssAVgu7y";
+
+    const rail = document.getElementById("videoRail");
+    const player = document.getElementById("featuredPlayer");
+    const nowLabel = document.getElementById("nowPlayingLabel");
+    const openBtn = document.getElementById("openOnYouTube");
+
+    function thumb(id){
+      return "https://img.youtube.com/vi/" + id + "/hqdefault.jpg";
+    }
+    function videoEmbed(id){
+      return "https://www.youtube.com/embed/" + id + "?autoplay=1&rel=0";
+    }
+    function watch(id){
+      return "https://www.youtube.com/watch?v=" + id;
+    }
+
+    function setActive(idx){
+      document.querySelectorAll(".video-card").forEach((c, i) => {
+        c.classList.toggle("active", i === idx);
+        c.setAttribute("aria-current", i === idx ? "true" : "false");
+      });
+    }
+
+    function playVideo(idx){
+      const v = VIDEOS[idx];
+      player.src = videoEmbed(v.id);
+      nowLabel.textContent = "Now playing: " + v.label;
+      openBtn.href = watch(v.id);
+      setActive(idx);
+    }
+
+    // Build rail cards
+    (function render(){
+      rail.innerHTML = "";
+      VIDEOS.forEach((v, idx) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "video-card";
+        card.setAttribute("aria-label", "Play: " + v.label);
+        card.innerHTML = `
+          <div class="video-thumb">
+            <img loading="lazy" alt="" src="${thumb(v.id)}" />
+            <div class="video-playdot" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+            </div>
+          </div>
+          <div class="video-meta">
+            <p class="video-kicker">Archived</p>
+            <p class="video-title">${v.label}</p>
+          </div>
+        `;
+        card.addEventListener("click", () => playVideo(idx));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); playVideo(idx); }
+        });
+        rail.appendChild(card);
+      });
+
+      // Start with the playlist in the featured player
+      player.src = PLAYLIST_EMBED;
+      nowLabel.textContent = "Now playing: OpenTEAM In-Depths Playlist";
+      openBtn.href = PLAYLIST_URL;
+      setActive(0); // highlight first card (optional)
+    })();
+
+    // Fix scrolling with arrows (independent of any site rail JS)
+    (function railControls(){
+      const left = document.getElementById("railLeft");
+      const right = document.getElementById("railRight");
+
+      function step(){
+        // Scroll about 2 cards per click
+        return Math.max(480, Math.min(rail.clientWidth * 0.9, 900));
+      }
+      function update(){
+        const maxScroll = rail.scrollWidth - rail.clientWidth - 2;
+        left.disabled = rail.scrollLeft <= 2;
+        right.disabled = rail.scrollLeft >= maxScroll;
+      }
+
+      left.addEventListener("click", () => rail.scrollBy({ left: -step(), behavior: "smooth" }));
+      right.addEventListener("click", () => rail.scrollBy({ left: step(), behavior: "smooth" }));
+
+      rail.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+      setTimeout(update, 60);
+    })();
+  </script>
+</body>
+</html>

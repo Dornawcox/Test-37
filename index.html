@@ -170,30 +170,119 @@
             field relevance &amp; practical impact, interoperability &amp; reuse, and stewardship &amp; long-term maintenance.
           </p>
 </article>
-<div aria-label="Project cards" class="wg-project-cards">
-<div class="wg-project-cards__head">
-<p class="muted">Swipe or scroll to browse projects. Filter by type and click ↗ to open a project.</p>
+<style>
+/* ── IBM Plex fonts (scoped to rail area) ── */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;0,700&family=IBM+Plex+Sans:wght@0,300;0,400;0,600;0,700&display=swap');
+
+/* ── CSS variables used by the rail ── */
+.proj-rail-root {
+  --forest:#1e4d2b;--forest-md:#2a6338;--forest-lt:#d4e8d8;
+  --sage:#5a7f5e;--sage-lt:#c8deca;
+  --ink:#1a1a14;--white:#fff;--cream:#f7f3ec;
+  --line:#ddd8ce;--dim:#6b6760;--faint:#9e9a93;
+}
+
+/* ── Filter bar ── */
+.proj-rail-root .fbar-idx {
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+  padding:12px 0 10px;overflow-x:auto;
+}
+.proj-rail-root .fbar-idx::-webkit-scrollbar{display:none;}
+.proj-rail-root .fl {
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:#6b6760;
+  white-space:nowrap;flex:0 0 auto;margin-right:3px;
+}
+.proj-rail-root .fb-idx {
+  appearance:none;border:1px solid #ddd8ce;background:#f7f3ec;
+  font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:#6b6760;
+  padding:5px 11px;border-radius:20px;cursor:pointer;
+  white-space:nowrap;flex:0 0 auto;transition:all 120ms;
+}
+.proj-rail-root .fb-idx:hover,
+.proj-rail-root .fb-idx.on {background:#1e4d2b;color:#fff;border-color:#1e4d2b;}
+
+/* ── Rail shell ── */
+.proj-rail-root .rail-sec-idx {
+  background:#1a1a14;border-top:3px solid #1e4d2b;
+  padding:22px 24px 28px;border-radius:6px;margin-top:2px;
+}
+.proj-rail-root .rail-hd-idx {
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);margin-bottom:14px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.proj-rail-root .rail-hd-idx a {
+  font-size:9px;color:rgba(255,255,255,.4);text-decoration:none;letter-spacing:.1em;
+}
+.proj-rail-root .rail-hd-idx a:hover{color:#c8deca;}
+
+/* ── Scrollable track ── */
+.proj-rail-root .rail-idx {
+  display:flex;gap:8px;overflow-x:auto;
+  padding:2px 0 10px;scroll-snap-type:x mandatory;
+}
+.proj-rail-root .rail-idx::-webkit-scrollbar{height:4px;}
+.proj-rail-root .rail-idx::-webkit-scrollbar-thumb{background:#2a3a2e;border-radius:4px;}
+
+/* ── Cards ── */
+.proj-rail-root .rc-idx {
+  flex:0 0 162px;scroll-snap-align:start;
+  border:1px solid rgba(255,255,255,.1);border-radius:8px;
+  background:rgba(255,255,255,.04);text-decoration:none;color:#fff;
+  display:flex;flex-direction:column;
+  transition:border-color 120ms,background 120ms;
+  overflow:hidden;cursor:pointer;
+}
+.proj-rail-root .rc-idx:hover{border-color:#c8deca;background:rgba(255,255,255,.07);}
+.proj-rail-root .rc-idx.rc-hidden{display:none;}
+.proj-rail-root .rc-band-idx {
+  height:54px;display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.proj-rail-root .rc-band-idx svg{width:26px;height:26px;opacity:.85;}
+.proj-rail-root .rc-body-idx{padding:8px 10px;flex:1;}
+.proj-rail-root .rc-t-idx {
+  font-family:'IBM Plex Sans',sans-serif;font-weight:700;
+  font-size:11px;line-height:1.25;margin-bottom:3px;color:#fff;
+}
+.proj-rail-root .rc-org-idx {
+  font-family:'IBM Plex Mono',monospace;font-size:8.5px;
+  color:rgba(255,255,255,.35);text-transform:uppercase;
+  letter-spacing:.04em;font-weight:600;
+}
+.proj-rail-root .rc-arr-idx {
+  font-size:9.5px;color:rgba(255,255,255,.25);
+  padding:0 10px 7px;align-self:flex-end;
+  font-family:'IBM Plex Mono',monospace;
+}
+</style>
+
+<div class="proj-rail-root" id="projRailRoot" style="margin-top:18px;">
+  <!-- Filter buttons -->
+  <div class="fbar-idx" id="projFbarIdx">
+    <span class="fl">Filter:</span>
+    <button class="fb-idx on" data-f="all">All</button>
+    <button class="fb-idx" data-f="data-trust">Data Trust</button>
+    <button class="fb-idx" data-f="commons">Commons &amp; Governance</button>
+    <button class="fb-idx" data-f="sovereignty">Data Sovereignty</button>
+    <button class="fb-idx" data-f="interop">Interoperability</button>
+    <button class="fb-idx" data-f="regen-econ">Regen Economics</button>
+    <button class="fb-idx" data-f="infrastructure">Infrastructure</button>
+  </div>
+  <!-- Dark rail -->
+  <div class="rail-sec-idx">
+    <div class="rail-hd-idx">
+      All Projects — Quick Navigation · Click any card to open detail
+      <a href="projects.html">Full projects page ↗</a>
+    </div>
+    <div class="rail-idx" id="pRailIdx"></div>
+  </div>
 </div>
-<div class="rail-section"><div style="margin:8px 0 10px 0;"><a class="pill" href="projects.html">Open Projects page ↗</a></div>
-<div class="rail-filter" data-scope="openteam-index">
-<div class="filter-row">
-<div class="filter-chips" data-scope="openteam-index">
-<button class="chip is-active" data-value="All types" type="button">All types</button><button class="chip" data-value="Data Trust Development" type="button">Data Trust Development</button><button class="chip" data-value="Commons &amp; Governance" type="button">Commons &amp; Governance</button><button class="chip" data-value="Data Sovereignty" type="button">Data Sovereignty</button><button class="chip" data-value="Regenerative Economics" type="button">Regenerative Economics</button><button class="chip" data-value="Interoperability" type="button">Interoperability</button><button class="chip" data-value="Governance in Practice" type="button">Governance in Practice</button>
-</div>
-</div>
-</div>
-<div class="rail-wrap">
-<button aria-label="Scroll left" class="rail-arrow rail-arrow--left" type="button">‹</button>
-<div class="rail" data-scope="openteam-index" id="openteamIndexRail"></div>
-<button aria-label="Scroll right" class="rail-arrow rail-arrow--right" type="button">›</button>
-</div>
-<script>
-window.OPENTEAM_INDEX_PROJECTS = [{"title":"TRAC — Tech Registry for Agricultural Conservation","subtitle":"USDA cooperative agreement delivering a functional FAIR Tech Registry proof-of-concept for NRCS staff to discover, evaluate, and compare agricultural tools.","status":"Complete","theme":"Registry","img":"assets/wg-project-card-fair-tech-registry-collabathon.jpg","links":[{"label":"Prototype ↗","href":"https://trac-prototype.bubbleapps.io/version-test/home/1746823554759x940046122529325000"},{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"}],"type":"Data Trust Development","projectsHref":"projects.html#trac"},{"title":"PODS — Producer Operational Data System","subtitle":"USDA/NRCS cooperative agreement: Common Farm Convention, Modus Lab Method Library, and needs assessment of 19 NRCS stakeholders.","status":"Complete","theme":"farmOS","img":"assets/wg-project-card-usda-cooperative-agreements.jpg","links":[{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"}],"type":"Interoperability","projectsHref":"projects.html#pods"},{"title":"CCD — Conservation Cost Data System","subtitle":"USDA cooperative agreement designing a standardized system for conservation practice cost data, including AI-powered receipt processing.","status":"Complete","theme":"Agreements","img":"assets/wg-project-card-usda-cooperative-agreements.jpg","links":[{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"}],"type":"Interoperability","projectsHref":"projects.html#ccd"},{"title":"Fair Tech Registry Collabathon","subtitle":"Co-design and collaboration activities supporting the FAIR Tech Registry.","status":"Complete","theme":"Registry","img":"assets/wg-project-card-fair-tech-registry-collabathon.jpg","links":[{"label":"Project site ↗","href":"https://openteamag.gitlab.io/codesign/fair-registry/"},{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/codesign/fair-registry"}],"type":"Data Trust Development","projectsHref":"projects.html#fair-tech"},{"title":"FAIR Tech Registry Documentation","subtitle":"Developer-oriented documentation for the FAIR Tech Registry.","status":"Active","theme":"Docs","img":"assets/wg-project-card-fair-tech-registry-documentation.jpg","links":[{"label":"Project site ↗","href":"https://openteamag.gitlab.io/fair-tech-registry/devs/"},{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/fair-tech-registry"}],"type":"Data Trust Development","projectsHref":"projects.html#fair-tech"},{"title":"GLCDI Documentation","subtitle":"Documentation hub for Grazing Lands Carbon Data Initiative.","status":"Active","theme":"Carbon data","img":"assets/wg-project-card-glcdi-documentation.jpg","links":[{"label":"Project site ↗","href":"https://openteamag.gitlab.io/codesign/grazingdata/"},{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/codesign/grazingdata"}],"type":"Interoperability","projectsHref":"projects.html#glcdi"},{"title":"Agricultural Data Use Documents","subtitle":"Ag data use agreements and related reference documents.","status":"Active","theme":"Agreements","img":"assets/wg-project-card-agricultural-data-use-documents.jpg","links":[{"label":"Project site ↗","href":"https://openteam-agreements.community/"},{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/agreements"}],"type":"Data Sovereignty","projectsHref":"projects.html#ag-data-use"},{"title":"Code of Conduct","subtitle":"Community expectations and participation guidelines.","status":"Active","theme":"Governance","img":"assets/wg-project-card-code-of-conduct.jpg","links":[{"label":"Project site ↗","href":"https://openteamag.gitlab.io/codesign/code-of-conduct/"},{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/codesign/code-of-conduct"}],"type":"Commons & Governance","projectsHref":"projects.html"},{"title":"Marketplace Working Group","subtitle":"Working group charter, glossary, and shared framing for marketplace efforts.","status":"Archive","theme":"Working group","img":"assets/wg-project-card-marketplace-working-group.jpg","links":[{"label":"Project site ↗","href":"https://openteamag.gitlab.io/codesign/markets/"},{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/codesign/markets"}],"type":"Governance in Practice","projectsHref":"projects.html#marketplace"},{"title":"PCSC farmOS Module","subtitle":"Project space for a farmOS module and related implementation notes.","status":"Archive","theme":"farmOS","img":"assets/wg-project-card-pcsc-farmos-module.jpg","links":[{"label":"Project site ↗","href":"https://openteamag.gitlab.io/codesign/pcsc/"},{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/codesign/pcsc"}],"type":"Interoperability","projectsHref":"projects.html#pcsc-farmos"},{"title":"Northeast Grazing and Soil Carbon Network","subtitle":"Network hub for grazing and soil carbon collaboration materials.","status":"Archive","theme":"Soil carbon","img":"assets/wg-project-card-northeast-grazing-and-soil-carbon-network.jpg","links":[{"label":"Project site ↗","href":"https://openteamag.gitlab.io/codesign/grazing-SC-network/"},{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/codesign/grazing-SC-network"}],"type":"Regenerative Economics","projectsHref":"projects.html#ne-grazing"},{"title":"Ag Data Wallet","subtitle":"Project site for Agricultural Data Wallet materials and outcomes.","status":"Archive","theme":"Data tools","img":"assets/wg-project-card-ag-data-wallet.jpg","links":[{"label":"Project site ↗","href":"https://openteamag.gitlab.io/agricultural-data-wallet/"},{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/ag-data-wallet"}],"type":"Data Trust Development","projectsHref":"projects.html#ag-data-wallet"},{"title":"OpenTEAM Convention","subtitle":"Repository folder for OpenTEAM Convention materials.","status":"Active","theme":"Governance","img":"assets/wg-project-card-openteam-convention.jpg","links":[{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/ag-data-wallet/openteam-convention"}],"type":"Commons & Governance","projectsHref":"projects.html#convention"},{"title":"Documentation","subtitle":"Top-level documentation repositories and related assets.","status":"Active","theme":"Docs","img":"assets/wg-project-card-documentation.jpg","links":[{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/documentation"}],"type":"Data Trust Development","projectsHref":"projects.html"},{"title":"USDA Cooperative Agreements","subtitle":"Cooperative agreement materials including PODS, CCD, and TRAC. Federal partnership for open ag data interoperability.","status":"Active","theme":"Agreements","img":"assets/wg-project-card-usda-cooperative-agreements.jpg","links":[{"label":"GitLab ↗","href":"https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"}],"type":"Data Sovereignty","projectsHref":"projects.html#usda-coop"}]];
-</script>
-</div>
-</div>
-</div></div>
 </section>
+
 <!-- CONVENINGS -->
 <!-- CONVENINGS -->
 <!-- LIBRARY -->
@@ -1964,81 +2053,789 @@ window.OPENTEAM_INDEX_PROJECTS = [{"title":"TRAC — Tech Registry for Agricultu
 </script>
 <script>
 (function(){
-  function renderOpenTEAMIndexRail(){
-    const rail = document.getElementById("openteamIndexRail");
-    if(!rail || !window.OPENTEAM_INDEX_PROJECTS) return;
-    rail.innerHTML = "";
-    window.OPENTEAM_INDEX_PROJECTS.forEach(item=>{
-      const href = item.projectsHref ? item.projectsHref : ((item.links && item.links[0] && item.links[0].href) ? item.links[0].href : "#");
-      const typeMap = {"Registry":"Data Trust Development","Docs":"Data Trust Development","Carbon data":"Interoperability","Agreements":"Data Sovereignty","Governance":"Commons & Governance","Working group":"Governance in Practice","farmOS":"Interoperability","Soil carbon":"Regenerative Economics","Data tools":"Data Trust Development","Cost data":"Interoperability","Interoperability":"Interoperability"};
-      const type = typeMap[item.theme] || "Data Trust Development";
-      const card = document.createElement("article");
-      card.className="pcard";
-      card.setAttribute("data-theme", type);
-      card.innerHTML = `
-        <a class="pcard__link" href="${href}" target="_blank" rel="noopener">
-          <div class="pcard__cover"><img loading="lazy" alt="" src="${item.img || "assets/wg-project-card-placeholder.jpg"}" onerror="this.onerror=null;this.src='assets/wg-project-card-placeholder.jpg';"></div>
-          <div class="pcard__meta">
-            <div class="pcard__title">${item.title}</div>
-            <div class="pcard__sub">${item.subtitle||""}</div>
-            <div class="pcard__pills">
-              ${item.status ? `<span class="mini-pill">Status: ${item.status}</span>`:""}
-              <span class="mini-pill mini-pill--theme">${type}</span>
-            </div>
-          </div>
-          <div class="pcard__actions"><span class="pcard__arrow" aria-hidden="true">↗</span></div>
-        </a>`;
-      rail.appendChild(card);
-    });
-  }
-
-  function apply(scope){
-    const wrap = document.querySelector(`.filter-chips[data-scope="${scope}"]`);
-    const active = wrap ? wrap.querySelector(".chip.is-active")?.getAttribute("data-value") : "All types";
-    const rail = document.querySelector(`.rail[data-scope="${scope}"]`);
-    if(!rail) return;
-    rail.querySelectorAll(".pcard").forEach(card=>{
-      const t = card.getAttribute("data-theme") || "All types";
-      const ok = (active === "All types") ? true : (t === active);
-      card.style.display = ok ? "" : "none";
-    });
-  }
-
-  function wire(scope){
-    const wrap = document.querySelector(`.filter-chips[data-scope="${scope}"]`);
-    if(wrap){
-      wrap.addEventListener("click", (e)=>{
-        const chip = e.target.closest(".chip");
-        if(!chip) return;
-        wrap.querySelectorAll(".chip").forEach(c=>c.classList.remove("is-active"));
-        chip.classList.add("is-active");
-        apply(scope);
-      });
-    }
-    document.querySelectorAll(`.rail-wrap .rail[data-scope="${scope}"]`).forEach(rail=>{
-      const w = rail.parentElement;
-      const left = w.querySelector(".rail-arrow--left");
-      const right = w.querySelector(".rail-arrow--right");
-      const step = ()=> Math.max(280, Math.floor(rail.clientWidth*0.85));
-      left?.addEventListener("click", ()=> rail.scrollBy({left:-step(), behavior:"smooth"}));
-      right?.addEventListener("click", ()=> rail.scrollBy({left:step(), behavior:"smooth"}));
-      const update=()=>{
-        const max = rail.scrollWidth - rail.clientWidth - 2;
-        if(left) left.disabled = rail.scrollLeft <= 2;
+  /* Wire the event-calendar rail scroll arrows (scope="calendar") */
+  function wireCalendarRail(){
+    document.querySelectorAll('.rail-wrap .rail[data-scope="calendar"]').forEach(function(rail){
+      var w = rail.parentElement;
+      var left  = w.querySelector('.rail-arrow--left');
+      var right = w.querySelector('.rail-arrow--right');
+      var step  = function(){ return Math.max(280, Math.floor(rail.clientWidth * 0.85)); };
+      if(left)  left.addEventListener('click',  function(){ rail.scrollBy({left:-step(), behavior:'smooth'}); });
+      if(right) right.addEventListener('click', function(){ rail.scrollBy({left: step(), behavior:'smooth'}); });
+      function update(){
+        var max = rail.scrollWidth - rail.clientWidth - 2;
+        if(left)  left.disabled  = rail.scrollLeft <= 2;
         if(right) right.disabled = rail.scrollLeft >= max;
-      };
-      rail.addEventListener("scroll", update, {passive:true});
-      window.addEventListener("resize", update);
+      }
+      rail.addEventListener('scroll', update, {passive:true});
+      window.addEventListener('resize', update);
       update();
     });
   }
+  document.addEventListener('DOMContentLoaded', wireCalendarRail);
+})();
+</script>
+<script>
+/* ── Index page project rail ── */
+(function() {
 
-  document.addEventListener("DOMContentLoaded", ()=>{
-    renderOpenTEAMIndexRail();
-    wire("openteam-index");
-    apply("openteam-index");
-    wire("calendar");
-  });
+const PAL = {
+  'data-trust':   {bg:'#1e4d2b', tag:'#d4edda', tagc:'#1e6b3a'},
+  'commons':      {bg:'#1a4f7a', tag:'#dbeafe', tagc:'#1a4f7a'},
+  'sovereignty':  {bg:'#7a4520', tag:'#fde8d0', tagc:'#7a4520'},
+  'interop':      {bg:'#4c1d95', tag:'#ede9fe', tagc:'#4c1d95'},
+  'regen-econ':   {bg:'#0f766e', tag:'#ccfbf1', tagc:'#0f766e'},
+  'infrastructure':{bg:'#374151',tag:'#f3f4f6',tagc:'#374151'},
+};
+
+
+function icon(id,s='white'){
+const I={
+'fair-tech':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3l2 4.5h5l-4 3 1.5 5L14 13l-4.5 2.5 1.5-5L7 7.5h5z"/><circle cx="14" cy="20.5" r="5"/><path d="M11.5 20.5l2 2 4-3.5"/></svg>`,
+'ag-data-wallet':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="22" height="16" rx="2"/><path d="M3 13h22"/><circle cx="19" cy="18" r="2.5"/><path d="M8 5l4 3 4-3"/><path d="M19 18h.01"/></svg>`,
+'trac':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3l8 3.5v7.5c0 5-3.5 9-8 10.5C9.5 23 6 19 6 14V6.5z"/><path d="M10 14.5l3 3 5.5-5.5"/></svg>`,
+'pcsc-farmos':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v9"/><circle cx="14" cy="5" r="2.5"/><path d="M8 8c-4 .5-5 4-5 6a9 9 0 0 0 11 8.7A9 9 0 0 0 25 14c0-2-1-5.5-5-6"/><path d="M6 19c0 2 2.5 4 4.5 4.5"/></svg>`,
+'glcdi':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24c2.5-5 6-8 10-8s7.5 3 10 8"/><path d="M14 3v9"/><path d="M9 7c1.5-3 3-4 5-4s3.5 1 5 4"/><path d="M5.5 16c1-2 2.5-3.5 4-3.5M22.5 16c-1-2-2.5-3.5-4-3.5"/></svg>`,
+'ag-data-use':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h14l4 4v18H3V3z"/><path d="M17 3v6h8"/><path d="M8 14h12M8 18h9M8 10h6"/></svg>`,
+'marketplace':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h20M5 12V5.5h18V12"/><path d="M4 12l2 14h16l2-14"/><path d="M10.5 12v3a2 2 0 0 0 4 0v-3"/></svg>`,
+'soil-stack':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4"  width="22" height="6" rx="1.5"/><rect x="3" y="12" width="22" height="6" rx="1.5"/><rect x="3" y="20" width="22" height="5" rx="1.5"/><circle cx="22" cy="7"  r="2" fill="${s}" stroke="none"/><circle cx="22" cy="15" r="2" fill="${s}" stroke="none"/></svg>`,
+'ubc-gov':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3L3 9.5v3h22v-3z"/><rect x="5"  y="12.5" width="4" height="10"/><rect x="12" y="12.5" width="4" height="10"/><rect x="19" y="12.5" width="4" height="10"/><path d="M3 22.5h22"/></svg>`,
+'convention':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="11"/><path d="M14 3v11l6.5 4"/><path d="M3 14h22M14 3a11 11 0 0 1 0 22M14 3a11 11 0 0 0 0 22"/></svg>`,
+'equity':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9"  cy="9"  r="4"/><circle cx="19" cy="9"  r="4"/><path d="M2 24c0-3 3-5 7-5s7 2 7 5"/><path d="M14 24c0-3 3-5 7-5"/><path d="M9 13v11"/></svg>`,
+'pods':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="14" cy="7"   rx="10" ry="4"/><path d="M4 7v7c0 2.2 4.5 4 10 4s10-1.8 10-4V7"/><path d="M4 14v7c0 2.2 4.5 4 10 4s10-1.8 10-4v-7"/></svg>`,
+'hcd':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9"  cy="8" r="3.5"/><circle cx="19" cy="8" r="3.5"/><path d="M9 11.5v3a5 5 0 0 0 10 0v-3"/><path d="M14 17.5V26M10 26h8"/></svg>`,
+'range-c':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20c3-8 6-12 11-12s8 4 11 12"/><path d="M8 20c1.5-4 3.5-6 6-6s4.5 2 6 6"/><circle cx="14" cy="6" r="3"/><path d="M14 9v3"/></svg>`,
+'env-claims':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="22" height="20" rx="2"/><path d="M3 10h22"/><path d="M9 4V10M14 4V10M19 4V10"/><path d="M7 15h14M7 19h9"/></svg>`,
+'ccd':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="20" height="22" rx="2"/><path d="M4 9h20"/><path d="M9 3v6M14 3v6M19 3v6"/><path d="M8 15h12M8 19h8"/><circle cx="20" cy="20" r="4"/><path d="M18.5 20l1 1 2-2"/></svg>`,
+'ne-grazing':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22c0-6 5-10 11-10s11 4 11 10"/><path d="M14 12V5"/><path d="M10 7c1-2 2.5-3 4-3s3 1 4 3"/><path d="M7 22c0-3 3-5 7-5s7 2 7 5"/></svg>`,
+'usda-coop':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3l9 4v8c0 5-4 9-9 10C9 24 5 20 5 15V7z"/><path d="M9 14l3.5 3.5L19 11"/></svg>`,
+};
+return I[id]||`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8"><circle cx="14" cy="14" r="9"/><path d="M14 9v5l3 3"/></svg>`;
+}
+
+
+const PROJS = [
+{id:'fair-tech',cat:'data-trust',
+ title:'FAIR Tech Registry',
+ sub:'Collabathon · Documentation',
+ tags:['FAIR Principles','Registry','Assessment','Open Standards'],
+ lead:'OpenTEAM Community',lc:'#1e4d2b',
+ status:'Active · Static site published',
+ short:'A community-maintained registry applying FAIR principles (Findable, Accessible, Interoperable, Reusable) to agricultural technologies — enabling farmers and advisors to evaluate tools with trust and transparency.',
+ long:'The FAIR Tech Registry collabathon mapped the agricultural technology landscape against FAIR principles and produced a filterable, community-maintained registry. It includes the Ethical Technology Assessment (ETA) framework, interoperability scoring, and documentation standards. The collabathon output is published as a static site on GitLab and connects to the broader OpenTEAM ethical infrastructure work. Outputs include the ETA rubric now used in tool cards and dataset cards across the ecosystem.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: FarmOS · EPIC · Digital Green · LiteFarm · PASA · UBC · Soil & Water Outcomes Fund · Element 84 · Our Sci',
+ outputs:'Static site published · FAIR Tech Registry Documentation · ETA framework · Collabathon outputs on GitLab',
+ grat:{'🌱 Grateful':12,'⭐ Valuable':8,'🔗 Used this':5},
+ links:[
+   {n:'FAIR Tech Registry Documentation', t:'Static Site', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+   {n:'Fair Tech Registry Collabathon', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+ ]},
+
+{id:'ag-data-wallet',cat:'sovereignty',
+ title:'Ag Data Wallet',
+ sub:'Data Sovereignty · Producer Control',
+ tags:['Data Sovereignty','Producer Rights','Identity','Consent'],
+ lead:'OpenTEAM / Entidad',lc:'#7a4520',
+ status:'Active · Prototype in development',
+ short:'A farmer-controlled data wallet enabling producers to manage consent, share selectively, and maintain sovereignty over their agricultural data across the OpenTEAM ecosystem of tools.',
+ long:'The Ag Data Wallet gives producers a personal, portable record of their data and consent decisions. The wallet integrates with farmOS, SurveyStack, and other ecosystem tools via OAuth2/OADA. It builds on the Agriculturalists\' Bill of Data Rights and the full OpenTEAM data agreements framework. Connected to Entidad for identity and credentials, and informed by UBC ethical data governance research. The wallet is designed to be modular and field-readable — not just a legal artifact.',
+ contrib:'Lead: OpenTEAM Fellows · Entidad\n\nContributors: UBC · farmOS · SurveyStack · Our Sci · Terran Collective · EPIC · Digital Green',
+ outputs:'Prototype specification · OADA API integration · Connection to Data Use Agreements site · Entidad credential schema',
+ grat:{'🌱 Grateful':19,'⭐ Valuable':14,'🔗 Used this':7},
+ links:[
+   {n:'Ag Data Use Documents', t:'Static Site', u:'https://openteam-agreements.community/', i:'globe'},
+   {n:'Agriculturalists\' Bill of Data Rights', t:'Document', u:'https://openteam-agreements.community/billofrights/', i:'doc'},
+   {n:'Oath of Care for Ag Professionals', t:'Document', u:'https://openteam-agreements.community/oathofcare/', i:'doc'},
+   {n:'Ag Data Glossary', t:'Reference', u:'https://openteam-agreements.community/TermsandDefinitions/', i:'doc'},
+ ]},
+
+{id:'trac',cat:'data-trust',
+ title:'TRAC — Tech Registry for Agricultural Conservation',
+ sub:'USDA Cooperative Agreement · FAIR Tech Registry · October 2024–September 2025',
+ tags:['FAIR Tech Registry','NRCS Tools','Assessment','Open Standards'],
+ lead:'OpenTEAM · EcoData · Meridian · USDA NRCS',lc:'#1e4d2b',
+ status:'Complete · Proof-of-concept delivered',
+ short:'A functional FAIR Tech Registry proof-of-concept built under a USDA/NRCS cooperative agreement — enabling NRCS staff to discover, evaluate, and compare agricultural technology tools against FAIR (Findable, Accessible, Interoperable, Reusable) principles.',
+ long:'TRAC (Tech Registry for Agricultural Conservation) is formalized as a USDA/NRCS cooperative agreement (Oct 2024–Sep 2025), co-led by OpenTEAM, EcoData, and Meridian. It delivers a functional proof-of-concept FAIR Tech Registry built specifically for NRCS staff use — assessing USDA tools against the standardized FAIR criteria developed in the prior PODS Soil Health cooperative agreement. From the agreement purpose statement: \"This work is a timely contribution to agency-wide efforts towards a Common Conservation Data Management System that fully integrates key NRCS datasets (field records, soil samples, practice implementation costs) and tools to improve program implementation, track outcomes, and enable data-driven decision making.\"\n\nKey deliverables: User Needs Assessment identifying how NRCS staff discover and use tools; a FAIR Implementation Strategy with resources for evaluating tool alignment; and a functional browser-based prototype with interactive dashboard, tool filtering, commenting, and favoriting. The registry reduces duplicative development, strengthens external partnerships, and positions NRCS as a leader in open conservation technology. The FAIR Self-Assessment survey tool enables NRCS partners to self-evaluate their tools before submission.',
+ contrib:'Lead: OpenTEAM · EcoData (Melanie Kammerer) · Meridian · USDA NRCS\n\nContacts: Melanie Kammerer — mkammerer@ecodata.tech · Ben Weinberg — bweinberg@wolfesneck.org · Dorn Cox — dorn@openteam.community',
+ outputs:'User Needs Assessment · FAIR Implementation Strategy · Functional POC browser app (dashboard, filtering, commenting, favorites) · FAIR Self-Assessment survey tool · FAIR criteria framework (Appendix 10 of PODS report)',
+ grat:{'🌱 Grateful':9,'⭐ Valuable':11,'🔗 Used this':4},
+ links:[
+   {n:'TRAC Prototype (Bubble.io)', t:'Live Proof-of-Concept', u:'https://trac-prototype.bubbleapps.io/version-test/home/1746823554759x940046122529325000', i:'globe'},
+   {n:'FAIR Self-Assessment Survey', t:'Assessment Tool', u:'https://www.surveystack.io/survey/66f01dfff56bce40fc7a9c78/start', i:'tool'},
+   {n:'USDA Cooperative Agreements Folder', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements', i:'gitlab'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+ ]},
+
+{id:'pcsc-farmos',cat:'interop',
+ title:'PCSC farmOS Module',
+ sub:'Interoperability · USDA Cooperative Agreement',
+ tags:['farmOS','USDA PCSC','Interoperability','Carbon'],
+ lead:'farmOS · OpenTEAM',lc:'#4c1d95',
+ status:'Active · Module in production',
+ short:'A farmOS module developed under USDA Partnerships for Climate-Smart Commodities (PCSC) to standardize soil carbon and practice data collection across participating farms, using Modus-compliant schemas.',
+ long:'Developed through the USDA Cooperative Agreements (Modus and CCD) working group, the PCSC farmOS module extends farmOS with standardized data entry forms, Modus-compliant soil data export, and integration with the Conservation Cost Database. The module enables participating farms to contribute verified practice and outcomes data to USDA PCSC reporting pipelines while maintaining local data sovereignty. Connects directly to the PODS (Producer Operational Data System) architecture.',
+ contrib:'Lead: farmOS (Paul Weidner) · OpenTEAM\n\nContributors: USDA NRCS · Soil & Water Outcomes Fund · ESMC · Element 84',
+ outputs:'farmOS module released · Modus schema extensions · USDA PCSC data pipeline integration · USDA Cooperative Agreements folder (GitLab)',
+ grat:{'🌱 Grateful':22,'⭐ Valuable':18,'🔗 Used this':11},
+ links:[
+   {n:'farmOS', t:'Tool', u:'https://farmos.org', i:'tool'},
+   {n:'USDA Cooperative Agreements (Modus & CCD)', t:'GitLab Folder', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Modus / AgGateway Standard', t:'Standard', u:'https://aggateway.org', i:'std'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+ ]},
+
+{id:'glcdi',cat:'regen-econ',
+ title:'GLCDI',
+ sub:'Grazing Lands Carbon Data Initiative · Documentation',
+ tags:['Grazing Lands','Soil Carbon','Data Standards','Documentation'],
+ lead:'OpenTEAM · USDA NRCS',lc:'#0f766e',
+ status:'Active · Documentation site published',
+ short:'Standardizing carbon and ecological data collection across grazing land systems — enabling comparable outcomes measurement for regenerative grazing practice transitions at continental scale.',
+ long:'The Grazing Lands Carbon Data Initiative (GLCDI) builds shared data standards and field protocols for measuring soil carbon, plant diversity, and water dynamics on grazed land. Developed through OpenTEAM collabathons with NRCS, PASA, Point Blue, and Northeast Grazing Network partners. Documentation includes field methods, data dictionaries, Modus schema extensions, and integration with farmOS and SurveyStack field forms.',
+ contrib:'Lead: OpenTEAM · USDA NRCS\n\nContributors: Point Blue Conservation Science · PASA · Northeast Grazing and Soil Carbon Network · Millpont · Our Sci',
+ outputs:'GLCDI Documentation site · Field protocols · SurveyStack form templates · Modus schema extensions · Northeast Grazing Network connection',
+ grat:{'🌱 Grateful':17,'⭐ Valuable':13,'🔗 Used this':9},
+ links:[
+   {n:'GLCDI Documentation', t:'Static Site', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+   {n:'Northeast Grazing and Soil Carbon Network', t:'Project', u:'https://gitlab.com/OpenTEAMAg', i:'part'},
+   {n:'Range C and Crop C', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Conservation Cost Database (CCD)', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+ ]},
+
+{id:'ag-data-use',cat:'sovereignty',
+ title:'Ag Data Use Documents',
+ sub:'Consent Management · Legal Framework',
+ tags:['Consent','Legal Framework','Data Rights','Governance'],
+ lead:'OpenTEAM Tech Working Group',lc:'#7a4520',
+ status:'Published · Active iteration',
+ short:'A suite of human-readable, modular consent and data governance documents — Glossary, Oath of Care, Bill of Data Rights, and Hosting Agreement — the foundation for in-app consent management across the ecosystem.',
+ long:'These four documents — developed by 30+ organizations — establish the shared language and legal foundation for OpenTEAM\'s consent management system. The ultimate goal is icon-based, in-app, conditional data use agreements that keep producers in control. The suite is versioned and publicly iterated at openteam-agreements.community. Each document is linked to icons and definitions from the Ag Data Glossary.',
+ contrib:'Lead: OpenTEAM Tech Working Group\n\nContributors: Digital Green · IC-Foods · FarmOS · EPIC · Millpont · Terra Genesis · We Are For The Land Foundation · Soil & Water Outcomes Fund · Cool Farm Alliance · LandPKS · Open Rivers · LiteFarm · Open Food Network · Field to Market · Tech Matters · CFA · PASA · UBC · Point Blue · USDA-ARS · Terran Collective · ESMC · Our Sci · ReGrow · Element 84',
+ outputs:'Ag Data Glossary · Data Fiduciary Oath of Care · Agriculturalists\' Bill of Data Rights · Data Hosting & Storage Agreement · openteam-agreements.community site',
+ grat:{'🌱 Grateful':31,'⭐ Valuable':27,'🔗 Used this':16},
+ links:[
+   {n:'Agricultural Data Use Documents', t:'Static Site', u:'https://openteam-agreements.community/', i:'globe'},
+   {n:'Agriculturalists\' Bill of Data Rights', t:'Document', u:'https://openteam-agreements.community/billofrights/', i:'doc'},
+   {n:'Data Fiduciary Oath of Care', t:'Document', u:'https://openteam-agreements.community/oathofcare/', i:'doc'},
+   {n:'Data Hosting & Storage Agreement', t:'Document', u:'https://openteam-agreements.community/hostingandstorage/', i:'doc'},
+   {n:'Ag Data Glossary', t:'Reference Site', u:'https://openteam-agreements.community/TermsandDefinitions/', i:'doc'},
+ ]},
+
+{id:'marketplace',cat:'regen-econ',
+ title:'Marketplace Working Group',
+ sub:'Charter · Glossary · Regen Economics',
+ tags:['Market Infrastructure','Economics','Charter','Governance'],
+ lead:'OpenTEAM Community',lc:'#0f766e',
+ status:'Active working group',
+ short:'Developing shared vocabulary, governance patterns, and open infrastructure for transparent, equitable market mechanisms that support regenerative agriculture transitions without vendor lock-in.',
+ long:'The Marketplace Working Group is developing a charter and glossary for open, interoperable market infrastructure — covering carbon credits, ecosystem services payments, and producer-direct supply chains. The group works on preventing lock-in, enabling producer sovereignty, and connecting to the Environmental Claims Clearinghouse and Claims Engine project. Connects to PODS (Producer Operational Data System) and RegenScore.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: Field to Market · Cool Farm Alliance · ESMC · Millpont · RegenScore · Soil & Water Outcomes Fund',
+ outputs:'Charter document · Glossary · Environmental Claims Clearinghouse framework · Claims Engine spec · Connection to PODS',
+ grat:{'🌱 Grateful':8,'⭐ Valuable':12,'🔗 Used this':3},
+ links:[
+   {n:'Marketplace WG Charter & Glossary', t:'GitLab', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Environmental Claims Clearinghouse', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Producer Operational Data System', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+ ]},
+
+{id:'soil-stack',cat:'infrastructure',
+ title:'Soil Health Tech Stack',
+ sub:'Infrastructure · Interoperability Architecture',
+ tags:['Infrastructure','Soil Health','Tech Stack','Modus'],
+ lead:'OpenTEAM · farmOS · TSIP',lc:'#374151',
+ status:'Active · Architecture documented',
+ short:'A reference architecture mapping the complete open-source stack for soil health data — from field observation through analysis pipelines to reporting and market integration.',
+ long:'The Soil Health Tech Stack project documents the end-to-end open-source infrastructure for soil data: field collection (farmOS, SurveyStack, Field Methods), data standards (Modus/AgGateway, OADA), analysis (TSIP Ensemble Explorer, R/Python), and reporting (Cool Farm Tool, PCSC). Includes the Conservation Cost Database and Producer Operational Data System integration patterns. The Field Methods working group feeds directly into this stack.',
+ contrib:'Lead: farmOS · OpenTEAM · TSIP\n\nContributors: Our Sci · SurveyStack · Element 84 · USDA-ARS · Soil & Water Outcomes Fund',
+ outputs:'Architecture diagram · Integration guide · Field Methods working group outputs · Modus schema library',
+ grat:{'🌱 Grateful':14,'⭐ Valuable':11,'🔗 Used this':8},
+ links:[
+   {n:'Soil Health Tech Stack', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Field Methods Working Group', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Modus / AgGateway', t:'Standard', u:'https://aggateway.org', i:'std'},
+   {n:'TSIP Ensemble Explorer', t:'Tool', u:'https://tsip.org/tech', i:'tool'},
+ ]},
+
+{id:'ubc-gov',cat:'commons',
+ title:'UBC Ethical Data Governance',
+ sub:'Research · Commons & Governance',
+ tags:['Governance','Ethics','Research','Academic Partnership'],
+ lead:'University of British Columbia',lc:'#1a4f7a',
+ status:'Active research collaboration',
+ short:'University of British Columbia research partnership applying ethical data governance frameworks — polycentric governance, consent architecture, and Indigenous data sovereignty — to the OpenTEAM ecosystem.',
+ long:'The UBC collaboration brings academic rigor to OpenTEAM\'s governance design. Research covers polycentric data governance (building on Ostrom\'s commons theory), consent-forward architectures, Indigenous data sovereignty (OCAP principles), and trust infrastructure patterns. Outputs inform the Ag Data Wallet, TRAC credentialing system, and AKC Data & Trust framework. The HCD (Human-Centered Design) Working Group is closely connected to this work.',
+ contrib:'Lead: University of British Columbia\n\nContributors: OpenTEAM Fellows · IndigiDAO · AKC · Metagov · UBC Research teams',
+ outputs:'Research papers · Governance templates · TRAC framework integration · AKC Data Trust dimensions',
+ grat:{'🌱 Grateful':10,'⭐ Valuable':15,'🔗 Used this':4},
+ links:[
+   {n:'Ag Knowledge Concordance', t:'Partner Project', u:'https://agricultural-knowledge-concordance.github.io/Ag-Knowledge-Concordance/', i:'part'},
+   {n:'Metagov / KOI Pond', t:'Partner', u:'https://metagov.org/projects/koi-pond', i:'part'},
+   {n:'IndigiDAO', t:'Community Partner', u:'https://indigidao.org', i:'part'},
+ ]},
+
+{id:'convention',cat:'commons',
+ title:'OpenTEAM Convention',
+ sub:'Commons & Governance · Community Charter',
+ tags:['Governance','Charter','Commons','Community'],
+ lead:'OpenTEAM Community',lc:'#1a4f7a',
+ status:'Draft in community review',
+ short:'A foundational governance document establishing the principles, decision-making processes, and shared agreements that define how OpenTEAM operates as an open commons and evolving ecosystem.',
+ long:'The OpenTEAM Convention articulates the governance model for the ecosystem — covering how priorities are set, how working groups form and sunset, how conflicts are resolved, and how resources are stewarded. Draws on Sociocracy 3.0, Elinor Ostrom\'s commons design principles, and the Metagov governance pattern library. Connects to the Code of Conduct and License framework. Designed to grow alongside the community.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: Metagov · KOI Pond · UBC · Terran Collective',
+ outputs:'Convention draft · Governance patterns library · Code of Conduct integration · License framework',
+ grat:{'🌱 Grateful':7,'⭐ Valuable':9,'🔗 Used this':2},
+ links:[
+   {n:'OpenTEAM Convention', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Code of Conduct', t:'Document', u:'code-of-conduct.html', i:'doc'},
+   {n:'OpenTEAM Licenses', t:'Document', u:'licenses.html', i:'doc'},
+ ]},
+
+{id:'equity',cat:'sovereignty',
+ title:'Equity Working Group',
+ sub:'Data Sovereignty · Inclusion · Justice',
+ tags:['Equity','Indigenous Sovereignty','Inclusion','Justice'],
+ lead:'OpenTEAM Fellows · IndigiDAO',lc:'#7a4520',
+ status:'Active working group',
+ short:'Ensuring OpenTEAM technology, governance, and data practices center equity, Indigenous data sovereignty, and underrepresented farming communities at every stage of development.',
+ long:'The Equity Working Group reviews OpenTEAM projects and tools for equity implications — ensuring that open technology doesn\'t inadvertently replicate existing power imbalances. Focus areas include Indigenous OCAP principles, FPIC processes for data collection, equitable access to tools, and representation in governance. Connects to IndigiDAO, the AKC Fellows program, and the Ag Data Wallet.',
+ contrib:'Lead: OpenTEAM Fellows · IndigiDAO\n\nContributors: We Are For The Land Foundation · AKC · GIAA · Terran Collective',
+ outputs:'Equity review framework · FPIC templates · Representation guidelines · Connections to AKC Indigenous sovereignty gate',
+ grat:{'🌱 Grateful':16,'⭐ Valuable':13,'🔗 Used this':5},
+ links:[
+   {n:'Equity Working Group', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'IndigiDAO', t:'Community Partner', u:'https://indigidao.org', i:'part'},
+   {n:'GIAA Agroecology Network', t:'Partner', u:'https://www.gia-agroecology.org', i:'part'},
+ ]},
+
+{id:'pods',cat:'infrastructure',
+ title:'PODS — Producer Operational Data System',
+ sub:'USDA Cooperative Agreement · farmOS · Modus · Common Farm Convention',
+ tags:['PODS','farmOS','USDA NRCS','Modus','Data Interoperability'],
+ lead:'OpenTEAM · Purdue Axi Lab · Our Sci · farmOS · USDA NRCS',lc:'#374151',
+ status:'Complete · Report published 2025',
+ short:'A USDA/NRCS cooperative agreement advancing the interoperability of PODS — NRCS’s farmOS-based producer data system — through the Common Farm Convention data transfer standard, Modus Lab Method Library, and a comprehensive needs assessment of 19 NRCS stakeholders.',
+ long:'PODS (Producer Operations Data System) is NRCS’s branded instance of farmOS, developed under a cooperative agreement with OpenTEAM, Purdue Axi Lab, Our Sci, and farmOS. The project pursued two core goals: (1) create data interoperability in the NRCS technology ecosystem by standardizing around farmOS’s generalizable data model, and (2) enhance PODS for soil health and farm management data handling.\n\nKey deliverables:\n• The Common Farm Convention and Tools — a data transfer standard for farm management data using farmOS’s data model, enabling producers to \u201ccollect data once, use it many times\u201d while seamlessly sharing data between USDA systems.\n• The Modus Lab Method Library — a central repository tracking which soil testing labs use which methods, enabling confident cross-lab soil test result comparison via the industry-backed Modus/AgGateway standard.\n• Comprehensive Needs Assessment — interviews with 19 NRCS stakeholders mapping data flows between conservation planning, soil testing, and analysis tools.\n• Implementation Guidelines and SOPs — Version 1.0 Standard Operating Procedures for data management, quality control, and cross-team software development practices.\n• FAIR Tech Registry Framework — a structured approach for evaluating NRCS tools against FAIR principles (continued as the TRAC cooperative agreement).\n\nPODS 2.0 design elements address shortcomings in the 1.0 implementation: adopting the farmOS standard Modules for software interoperability, using the farmOS standard data model, and annotating soil lab results with Modus lab method IDs for cross-lab comparability. The vision: each producer has their own farmOS system for farm operations, management records, and farm plans — with a PODS module enabling opt-in NRCS data sharing.',
+ contrib:'Lead: OpenTEAM (Dorn Cox) · Purdue Axi Lab · Our Sci · farmOS · USDA NRCS\n\nPartners: Wolfe\'s Neck Center · SurveyStack · Element 84',
+ outputs:'Common Farm Convention and Tools · Modus Lab Method Library · Needs Assessment (19 NRCS stakeholders) · Implementation Guidelines + SOPs v1.0 · FAIR Tech Registry Framework · PODS 2.0 design specifications · Recommendations report 2025',
+ grat:{'🌱 Grateful':11,'⭐ Valuable':10,'🔗 Used this':6},
+ links:[
+   {n:'USDA Cooperative Agreements Folder', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements', i:'gitlab'},
+   {n:'Modus / AgGateway Standard', t:'Standard', u:'https://aggateway.org', i:'std'},
+   {n:'farmOS', t:'Tool', u:'https://farmos.org', i:'tool'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+   ]},
+
+{id:'ccd',cat:'interop',
+ title:'CCD — Conservation Cost Data System',
+ sub:'USDA Cooperative Agreement · NRCS · Conservation Practice Costing',
+ tags:['Conservation Costs','NRCS','Data System','FAIR Principles'],
+ lead:'OpenTEAM · Purdue Axi Lab · Our Sci · USDA NRCS',lc:'#4c1d95',
+ status:'Complete · Design report published 2025',
+ short:'A USDA cooperative agreement designing a standardized system for collecting and managing conservation practice cost data — addressing volatile costs that have caused NRCS payment schedules to diverge from actual regional prices since 2020.',
+ long:'Since 2020, conservation practice costs have become increasingly volatile, creating significant challenges for NRCS in maintaining accurate payment schedules. Producers in some regions are canceling contracts because payment schedules cover less of the actual cost, while in others, payment rates may exceed actual costs, resulting in overpayments. The CCDS addresses this disconnect.\n\nThe Conservation Cost Data System (CCDS) connects field staff, national and state economists, the Cost Data Team, and producers via a shared cost data service. Key deliverables:\n• Needs Assessment — stakeholder interviews with NRCS field staff, economists, and producers identifying pain points in cost data workflows\n• CCDS Conceptual Design — a modular architecture from field receipt collection through processing, storage, and reporting, including data flow diagrams\n• Data Structures, Conventions & Dictionaries — FAIR-aligned schemas and supporting data dictionary for conservation practice cost data\n• AI-powered Receipt Collection Tool — proof-of-concept using AI to extract and categorize line items from producer receipts and invoices, reducing administrative burden on field staff\n• CEMA Protocols — Conservation Evaluation and Monitoring Activity scoping standardized cost data collection prior to full system development, including PII handling\n\nThe CCDS integrates with PODS, the Payment Schedules App, and farmers.gov. Using FAIR principles, the system ensures regional conservation cost data can be easily discovered, accessed with appropriate permissions, integrated across platforms, and utilized for payment schedule updates, policy analysis, and producer financial planning.',
+ contrib:'Lead: OpenTEAM (Dorn Cox) · Purdue Axi Lab · Our Sci · USDA NRCS\n\nPartners: Wolfe\'s Neck Center',
+ outputs:'Needs Assessment report · CCDS Conceptual Design with architecture diagrams · FAIR-aligned data schemas and data dictionary · AI Receipt Collection Tool proof-of-concept · CEMA data collection protocols · SOPs for cost data management',
+ grat:{'🌱 Grateful':7,'⭐ Valuable':9,'🔗 Used this':4},
+ links:[
+   {n:'USDA Cooperative Agreements Folder', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements', i:'gitlab'},
+   {n:'PCSC farmOS Module', t:'Connected Project', u:'https://farmos.org', i:'tool'},
+   {n:'Modus / AgGateway Standard', t:'Standard', u:'https://aggateway.org', i:'std'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+   ]},
+
+{id:'hcd',cat:'commons',
+ title:'HCD Working Group',
+ sub:'Human-Centered Design · Accessibility',
+ tags:['Design','Accessibility','Farmer UX','Community'],
+ lead:'OpenTEAM Fellows',lc:'#1a4f7a',
+ status:'Active working group',
+ short:'Applying human-centered design principles to agricultural technology — ensuring that tools, workflows, and data systems are genuinely usable by and useful for the farmers and land stewards they serve.',
+ long:'The HCD Working Group brings participatory design practices to OpenTEAM tool evaluation and development. Focuses on accessibility, language equity, and context-appropriate design — particularly for tools used in the field. Feeds into the FAIR Tech Registry ETA rubric, the Ag Data Wallet UX, and SurveyStack form design. Connected to UBC Ethical Data Governance research.',
+ contrib:'Lead: OpenTEAM Fellows\n\nContributors: UBC · SurveyStack · LiteFarm · Digital Green',
+ outputs:'HCD working group outputs · Accessibility rubric for ETA · Field UX guidelines',
+ grat:{'🌱 Grateful':6,'⭐ Valuable':8,'🔗 Used this':3},
+ links:[
+   {n:'HCD Working Group', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'FAIR Tech Registry ETA', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+ ]},
+
+{id:'range-c',cat:'regen-econ',
+ title:'Range C &amp; Crop C',
+ sub:'Carbon Quantification · Rangeland &amp; Cropland',
+ tags:['Carbon','Rangeland','Cropland','Quantification'],
+ lead:'OpenTEAM · NRCS',lc:'#0f766e',
+ status:'Active · Data integration ongoing',
+ short:'Developing harmonized carbon quantification methods and datasets for both rangeland and cropland systems — bridging NRCS practice standards with open, farmer-contributed data.',
+ long:'Range C and Crop C bridges the rangeland and cropland carbon quantification worlds — developing harmonized methods, shared schemas, and integrated datasets that work with both NRCS practice standards and open, farmer-contributed data. Connects to GLCDI, the Soil Health Tech Stack, PODS, and the USDA Cooperative Agreements. Datasets feed into the AKC Soil Carbon Composite.',
+ contrib:'Lead: OpenTEAM · USDA NRCS\n\nContributors: Millpont · TSIP · ESMC · Soil & Water Outcomes Fund · Point Blue',
+ outputs:'Carbon quantification schema · Integration with GLCDI and PODS · Feeding AKC Soil Carbon Composite dataset',
+ grat:{'🌱 Grateful':13,'⭐ Valuable':10,'🔗 Used this':7},
+ links:[
+   {n:'Range C and Crop C', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'GLCDI Documentation', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+   {n:'Conservation Cost Database', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+ ]},
+
+{id:'env-claims',cat:'regen-econ',
+ title:'Environmental Claims Clearinghouse',
+ sub:'Claims Engine · Verification Infrastructure',
+ tags:['Claims','Verification','Market Integrity','Clearinghouse'],
+ lead:'OpenTEAM Community',lc:'#0f766e',
+ status:'Architecture phase',
+ short:'Open infrastructure for verifying and clearing environmental claims — preventing greenwashing and enabling trustworthy, interoperable carbon and ecosystem service market participation.',
+ long:'The Environmental Claims Clearinghouse and Claims Engine provides open infrastructure for verifying agricultural environmental claims before they enter markets. Designed to work with multiple carbon standards and market systems, reducing vendor lock-in and greenwashing risk. Connects to the Marketplace Working Group, PODS, RegenScore, and the Cool Farm Tool integration.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: Cool Farm Alliance · ESMC · Field to Market · RegenScore · Millpont',
+ outputs:'Claims clearinghouse architecture · Claims Engine spec · Market integration patterns',
+ grat:{'🌱 Grateful':5,'⭐ Valuable':9,'🔗 Used this':2},
+ links:[
+   {n:'Environmental Claims Clearinghouse', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Marketplace Working Group', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'RegenScore', t:'Partner Tool', u:'https://www.regenscore.org', i:'tool'},
+ ]},
+
+{id:'ne-grazing',cat:'regen-econ',
+ title:'Northeast Grazing &amp; Soil Carbon Network',
+ sub:'Regional Network · Data Collection · Farmers',
+ tags:['Grazing','Northeast','Network','Field Data'],
+ lead:'PASA · OpenTEAM',lc:'#0f766e',
+ status:'Active · Data collection ongoing',
+ short:'A regional farmer network collecting longitudinal soil carbon and grazing practice data across Northeast US farms — producing open datasets and reusable field protocols for the OpenTEAM ecosystem.',
+ long:'The Northeast Grazing and Soil Carbon Network brings together farmers, extension partners, and researchers across the Northeast to collect longitudinal soil health and grazing practice data. The network uses GLCDI field protocols and SurveyStack forms, with data flowing into farmOS and the AKC Soil Carbon Composite. Farmer-contributed data is governed by the OpenTEAM data agreements framework with full consent management.',
+ contrib:'Lead: PASA Sustainable Agriculture · OpenTEAM\n\nContributors: Cornell Cooperative Extension · University of Vermont Extension · Point Blue · Millpont',
+ outputs:'Longitudinal soil carbon dataset · GLCDI field protocol testing · SurveyStack form library · Network reports',
+ grat:{'🌱 Grateful':14,'⭐ Valuable':11,'🔗 Used this':7},
+ links:[
+   {n:'Northeast Grazing and Soil Carbon Network', t:'Project', u:'https://gitlab.com/OpenTEAMAg', i:'part'},
+   {n:'PASA Sustainable Agriculture', t:'Lead Organization', u:'https://pasafarming.org', i:'part'},
+   {n:'GLCDI Documentation', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+ ]},
+
+{id:'usda-coop',cat:'interop',
+ title:'USDA Cooperative Agreements',
+ sub:'Modus · CCD · Federal Partnership',
+ tags:['USDA','Modus','Federal','Partnership'],
+ lead:'OpenTEAM · USDA',lc:'#4c1d95',
+ status:'Active · Agreements in place',
+ short:'Federal cooperative agreements enabling OpenTEAM to develop Modus-compliant soil data standards and the Conservation Cost Database (CCD) in collaboration with USDA agencies.',
+ long:'The USDA Cooperative Agreements provide formal partnership structure for OpenTEAM\'s work with USDA-ARS, NRCS, and PCSC programs. Key outputs include Modus schema extensions, the Conservation Cost Database, and the PCSC farmOS module. The agreements folder on GitLab documents the governance and outputs of this federal collaboration. Feeds directly into the Soil Health Tech Stack and PODS architecture.',
+ contrib:'Lead: OpenTEAM · USDA\n\nContributors: USDA-ARS · USDA NRCS · farmOS · Element 84 · Soil & Water Outcomes Fund',
+ outputs:'Modus schema extensions · Conservation Cost Database (CCD) · PCSC farmOS module · PODS integration · USDA agreements folder (GitLab)',
+ grat:{'🌱 Grateful':18,'⭐ Valuable':15,'🔗 Used this':10},
+ links:[
+   {n:'USDA Cooperative Agreements Folder', t:'GitLab', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Conservation Cost Database (CCD)', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'PCSC farmOS Module', t:'Connected Project', u:'https://farmos.org', i:'tool'},
+   {n:'Modus / AgGateway', t:'Standard', u:'https://aggateway.org', i:'std'},
+ ]},
+];
+
+  function renderRailIdx() {
+    var r = document.getElementById('pRailIdx');
+    if (!r) return;
+    r.innerHTML = PROJS.map(function(p) {
+      var c = PAL[p.cat] || {bg:'#374151'};
+      var org = p.lead.split('\xb7')[0].trim();
+      return '<a class="rc-idx" href="projects.html#' + p.id + '" data-cat="' + p.cat + '">'
+           + '<div class="rc-band-idx" style="background:' + c.bg + ';">' + icon(p.id) + '</div>'
+           + '<div class="rc-body-idx">'
+           +   '<div class="rc-t-idx">' + p.title.replace(/&amp;/g,'&') + '</div>'
+           +   '<div class="rc-org-idx">' + org + '</div>'
+           + '</div>'
+           + '<div class="rc-arr-idx">\u2197</div>'
+           + '</a>';
+    }).join('');
+  }
+
+  function wireRailFilters() {
+    var bar = document.getElementById('projFbarIdx');
+    if (!bar) return;
+    bar.addEventListener('click', function(e) {
+      var btn = e.target.closest('.fb-idx');
+      if (!btn) return;
+      bar.querySelectorAll('.fb-idx').forEach(function(b) { b.classList.remove('on'); });
+      btn.classList.add('on');
+      var f = btn.getAttribute('data-f');
+      document.querySelectorAll('#pRailIdx .rc-idx').forEach(function(card) {
+        card.classList.toggle('rc-hidden', f !== 'all' && card.getAttribute('data-cat') !== f);
+      });
+    });
+  }
+
+  renderRailIdx();
+  wireRailFilters();
+
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════
+  RAIL CARD CODE FOR index.html
+  Copy the block below and paste it into your projects rail
+  on index.html — replace the existing rail cards list.
+  Each card is 162px wide, snap-scrollable, dark themed.
+═══════════════════════════════════════════════════════ -->
+<!--
+RAIL CARD INSERT (copy into index.html projects rail):
+
+<a href="projects.html#fair-tech"    class="railCard">…Fair Tech Registry — OpenTEAM Community</a>
+<a href="projects.html#ag-data-wallet" class="railCard">…Ag Data Wallet — OpenTEAM / Entidad</a>
+<a href="projects.html#trac"         class="railCard">…TRAC — OpenTEAM Community</a>
+<a href="projects.html#pcsc-farmos"  class="railCard">…PCSC farmOS Module — farmOS · OpenTEAM</a>
+<a href="projects.html#glcdi"        class="railCard">…GLCDI — OpenTEAM · USDA NRCS</a>
+<a href="projects.html#ag-data-use"  class="railCard">…Ag Data Use Documents — OpenTEAM Tech WG</a>
+<a href="projects.html#marketplace"  class="railCard">…Marketplace WG — OpenTEAM Community</a>
+<a href="projects.html#soil-stack"   class="railCard">…Soil Health Tech Stack — farmOS · TSIP</a>
+<a href="projects.html#ubc-gov"      class="railCard">…UBC Ethical Data Governance — UBC</a>
+<a href="projects.html#convention"   class="railCard">…OpenTEAM Convention — OpenTEAM Community</a>
+<a href="projects.html#equity"       class="railCard">…Equity Working Group — OpenTEAM · IndigiDAO</a>
+<a href="projects.html#pods"         class="railCard">…PODS — OpenTEAM · USDA</a>
+<a href="projects.html#hcd"          class="railCard">…HCD Working Group — OpenTEAM Fellows</a>
+<a href="projects.html#range-c"      class="railCard">…Range C & Crop C — OpenTEAM · NRCS</a>
+<a href="projects.html#env-claims"   class="railCard">…Env. Claims Clearinghouse — OpenTEAM</a>
+<a href="projects.html#ne-grazing"   class="railCard">…NE Grazing Network — PASA · OpenTEAM</a>
+<a href="projects.html#usda-coop"    class="railCard">…USDA Cooperative Agreements — OpenTEAM · USDA</a>
+-->
+
+</body>
+</html>
+
+
+
+const PROJS = [
+{id:'fair-tech',cat:'data-trust',
+ title:'FAIR Tech Registry',
+ sub:'Collabathon · Documentation',
+ tags:['FAIR Principles','Registry','Assessment','Open Standards'],
+ lead:'OpenTEAM Community',lc:'#1e4d2b',
+ status:'Active · Static site published',
+ short:'A community-maintained registry applying FAIR principles (Findable, Accessible, Interoperable, Reusable) to agricultural technologies — enabling farmers and advisors to evaluate tools with trust and transparency.',
+ long:'The FAIR Tech Registry collabathon mapped the agricultural technology landscape against FAIR principles and produced a filterable, community-maintained registry. It includes the Ethical Technology Assessment (ETA) framework, interoperability scoring, and documentation standards. The collabathon output is published as a static site on GitLab and connects to the broader OpenTEAM ethical infrastructure work. Outputs include the ETA rubric now used in tool cards and dataset cards across the ecosystem.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: FarmOS · EPIC · Digital Green · LiteFarm · PASA · UBC · Soil & Water Outcomes Fund · Element 84 · Our Sci',
+ outputs:'Static site published · FAIR Tech Registry Documentation · ETA framework · Collabathon outputs on GitLab',
+ grat:{'🌱 Grateful':12,'⭐ Valuable':8,'🔗 Used this':5},
+ links:[
+   {n:'FAIR Tech Registry Documentation', t:'Static Site', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+   {n:'Fair Tech Registry Collabathon', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+ ]},
+
+{id:'ag-data-wallet',cat:'sovereignty',
+ title:'Ag Data Wallet',
+ sub:'Data Sovereignty · Producer Control',
+ tags:['Data Sovereignty','Producer Rights','Identity','Consent'],
+ lead:'OpenTEAM / Entidad',lc:'#7a4520',
+ status:'Active · Prototype in development',
+ short:'A farmer-controlled data wallet enabling producers to manage consent, share selectively, and maintain sovereignty over their agricultural data across the OpenTEAM ecosystem of tools.',
+ long:'The Ag Data Wallet gives producers a personal, portable record of their data and consent decisions. The wallet integrates with farmOS, SurveyStack, and other ecosystem tools via OAuth2/OADA. It builds on the Agriculturalists\' Bill of Data Rights and the full OpenTEAM data agreements framework. Connected to Entidad for identity and credentials, and informed by UBC ethical data governance research. The wallet is designed to be modular and field-readable — not just a legal artifact.',
+ contrib:'Lead: OpenTEAM Fellows · Entidad\n\nContributors: UBC · farmOS · SurveyStack · Our Sci · Terran Collective · EPIC · Digital Green',
+ outputs:'Prototype specification · OADA API integration · Connection to Data Use Agreements site · Entidad credential schema',
+ grat:{'🌱 Grateful':19,'⭐ Valuable':14,'🔗 Used this':7},
+ links:[
+   {n:'Ag Data Use Documents', t:'Static Site', u:'https://openteam-agreements.community/', i:'globe'},
+   {n:'Agriculturalists\' Bill of Data Rights', t:'Document', u:'https://openteam-agreements.community/billofrights/', i:'doc'},
+   {n:'Oath of Care for Ag Professionals', t:'Document', u:'https://openteam-agreements.community/oathofcare/', i:'doc'},
+   {n:'Ag Data Glossary', t:'Reference', u:'https://openteam-agreements.community/TermsandDefinitions/', i:'doc'},
+ ]},
+
+{id:'trac',cat:'data-trust',
+ title:'TRAC',
+ sub:'Transparency · Responsibility · Accountability · Credentialing',
+ tags:['Credentials','Trust','Verification','Accountability'],
+ lead:'OpenTEAM Community',lc:'#1e4d2b',
+ status:'Active · Prototype live',
+ short:'A trust and credentialing system for agricultural claims — enabling verifiable attestations for regenerative practices, data quality, and professional accountability across the OpenTEAM ecosystem.',
+ long:'TRAC (Transparency, Responsibility, Accountability, Credentialing) provides a modular credentialing framework for ag professionals, tools, and datasets. The prototype enables sign-on to the Data Fiduciary Oath of Care, verifiable practice claims, and integration with the Ag Data Wallet. Built on the OpenTEAM agreements framework with Metagov/KOI Pond governance patterns. The Bubble.io prototype is live for community testing.',
+ contrib:'Lead: OpenTEAM Fellows\n\nContributors: Metagov · UBC · Entidad · KOI Pond',
+ outputs:'Live prototype (Bubble.io) · Integration spec · Oath of Care sign-on flow',
+ grat:{'🌱 Grateful':9,'⭐ Valuable':11,'🔗 Used this':4},
+ links:[
+   {n:'TRAC Prototype', t:'Live Web App', u:'https://trac-prototype.bubbleapps.io/version-test/home/1746823554759x940046122529325000', i:'globe'},
+   {n:'Data Fiduciary Oath of Care', t:'Document', u:'https://openteam-agreements.community/oathofcare/', i:'doc'},
+   {n:'Metagov / KOI Pond', t:'Partner', u:'https://metagov.org/projects/koi-pond', i:'part'},
+ ]},
+
+{id:'pcsc-farmos',cat:'interop',
+ title:'PCSC farmOS Module',
+ sub:'Interoperability · USDA Cooperative Agreement',
+ tags:['farmOS','USDA PCSC','Interoperability','Carbon'],
+ lead:'farmOS · OpenTEAM',lc:'#4c1d95',
+ status:'Active · Module in production',
+ short:'A farmOS module developed under USDA Partnerships for Climate-Smart Commodities (PCSC) to standardize soil carbon and practice data collection across participating farms, using Modus-compliant schemas.',
+ long:'Developed through the USDA Cooperative Agreements (Modus and CCD) working group, the PCSC farmOS module extends farmOS with standardized data entry forms, Modus-compliant soil data export, and integration with the Conservation Cost Database. The module enables participating farms to contribute verified practice and outcomes data to USDA PCSC reporting pipelines while maintaining local data sovereignty. Connects directly to the PODS (Producer Operational Data System) architecture.',
+ contrib:'Lead: farmOS (Paul Weidner) · OpenTEAM\n\nContributors: USDA NRCS · Soil & Water Outcomes Fund · ESMC · Element 84',
+ outputs:'farmOS module released · Modus schema extensions · USDA PCSC data pipeline integration · USDA Cooperative Agreements folder (GitLab)',
+ grat:{'🌱 Grateful':22,'⭐ Valuable':18,'🔗 Used this':11},
+ links:[
+   {n:'farmOS', t:'Tool', u:'https://farmos.org', i:'tool'},
+   {n:'USDA Cooperative Agreements (Modus & CCD)', t:'GitLab Folder', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Modus / AgGateway Standard', t:'Standard', u:'https://aggateway.org', i:'std'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+ ]},
+
+{id:'glcdi',cat:'regen-econ',
+ title:'GLCDI',
+ sub:'Grazing Lands Carbon Data Initiative · Documentation',
+ tags:['Grazing Lands','Soil Carbon','Data Standards','Documentation'],
+ lead:'OpenTEAM · USDA NRCS',lc:'#0f766e',
+ status:'Active · Documentation site published',
+ short:'Standardizing carbon and ecological data collection across grazing land systems — enabling comparable outcomes measurement for regenerative grazing practice transitions at continental scale.',
+ long:'The Grazing Lands Carbon Data Initiative (GLCDI) builds shared data standards and field protocols for measuring soil carbon, plant diversity, and water dynamics on grazed land. Developed through OpenTEAM collabathons with NRCS, PASA, Point Blue, and Northeast Grazing Network partners. Documentation includes field methods, data dictionaries, Modus schema extensions, and integration with farmOS and SurveyStack field forms.',
+ contrib:'Lead: OpenTEAM · USDA NRCS\n\nContributors: Point Blue Conservation Science · PASA · Northeast Grazing and Soil Carbon Network · Millpont · Our Sci',
+ outputs:'GLCDI Documentation site · Field protocols · SurveyStack form templates · Modus schema extensions · Northeast Grazing Network connection',
+ grat:{'🌱 Grateful':17,'⭐ Valuable':13,'🔗 Used this':9},
+ links:[
+   {n:'GLCDI Documentation', t:'Static Site', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+   {n:'Northeast Grazing and Soil Carbon Network', t:'Project', u:'https://gitlab.com/OpenTEAMAg', i:'part'},
+   {n:'Range C and Crop C', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Conservation Cost Database (CCD)', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+ ]},
+
+{id:'ag-data-use',cat:'sovereignty',
+ title:'Ag Data Use Documents',
+ sub:'Consent Management · Legal Framework',
+ tags:['Consent','Legal Framework','Data Rights','Governance'],
+ lead:'OpenTEAM Tech Working Group',lc:'#7a4520',
+ status:'Published · Active iteration',
+ short:'A suite of human-readable, modular consent and data governance documents — Glossary, Oath of Care, Bill of Data Rights, and Hosting Agreement — the foundation for in-app consent management across the ecosystem.',
+ long:'These four documents — developed by 30+ organizations — establish the shared language and legal foundation for OpenTEAM\'s consent management system. The ultimate goal is icon-based, in-app, conditional data use agreements that keep producers in control. The suite is versioned and publicly iterated at openteam-agreements.community. Each document is linked to icons and definitions from the Ag Data Glossary.',
+ contrib:'Lead: OpenTEAM Tech Working Group\n\nContributors: Digital Green · IC-Foods · FarmOS · EPIC · Millpont · Terra Genesis · We Are For The Land Foundation · Soil & Water Outcomes Fund · Cool Farm Alliance · LandPKS · Open Rivers · LiteFarm · Open Food Network · Field to Market · Tech Matters · CFA · PASA · UBC · Point Blue · USDA-ARS · Terran Collective · ESMC · Our Sci · ReGrow · Element 84',
+ outputs:'Ag Data Glossary · Data Fiduciary Oath of Care · Agriculturalists\' Bill of Data Rights · Data Hosting & Storage Agreement · openteam-agreements.community site',
+ grat:{'🌱 Grateful':31,'⭐ Valuable':27,'🔗 Used this':16},
+ links:[
+   {n:'Agricultural Data Use Documents', t:'Static Site', u:'https://openteam-agreements.community/', i:'globe'},
+   {n:'Agriculturalists\' Bill of Data Rights', t:'Document', u:'https://openteam-agreements.community/billofrights/', i:'doc'},
+   {n:'Data Fiduciary Oath of Care', t:'Document', u:'https://openteam-agreements.community/oathofcare/', i:'doc'},
+   {n:'Data Hosting & Storage Agreement', t:'Document', u:'https://openteam-agreements.community/hostingandstorage/', i:'doc'},
+   {n:'Ag Data Glossary', t:'Reference Site', u:'https://openteam-agreements.community/TermsandDefinitions/', i:'doc'},
+ ]},
+
+{id:'marketplace',cat:'regen-econ',
+ title:'Marketplace Working Group',
+ sub:'Charter · Glossary · Regen Economics',
+ tags:['Market Infrastructure','Economics','Charter','Governance'],
+ lead:'OpenTEAM Community',lc:'#0f766e',
+ status:'Active working group',
+ short:'Developing shared vocabulary, governance patterns, and open infrastructure for transparent, equitable market mechanisms that support regenerative agriculture transitions without vendor lock-in.',
+ long:'The Marketplace Working Group is developing a charter and glossary for open, interoperable market infrastructure — covering carbon credits, ecosystem services payments, and producer-direct supply chains. The group works on preventing lock-in, enabling producer sovereignty, and connecting to the Environmental Claims Clearinghouse and Claims Engine project. Connects to PODS (Producer Operational Data System) and RegenScore.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: Field to Market · Cool Farm Alliance · ESMC · Millpont · RegenScore · Soil & Water Outcomes Fund',
+ outputs:'Charter document · Glossary · Environmental Claims Clearinghouse framework · Claims Engine spec · Connection to PODS',
+ grat:{'🌱 Grateful':8,'⭐ Valuable':12,'🔗 Used this':3},
+ links:[
+   {n:'Marketplace WG Charter & Glossary', t:'GitLab', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Environmental Claims Clearinghouse', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Producer Operational Data System', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+ ]},
+
+{id:'soil-stack',cat:'infrastructure',
+ title:'Soil Health Tech Stack',
+ sub:'Infrastructure · Interoperability Architecture',
+ tags:['Infrastructure','Soil Health','Tech Stack','Modus'],
+ lead:'OpenTEAM · farmOS · TSIP',lc:'#374151',
+ status:'Active · Architecture documented',
+ short:'A reference architecture mapping the complete open-source stack for soil health data — from field observation through analysis pipelines to reporting and market integration.',
+ long:'The Soil Health Tech Stack project documents the end-to-end open-source infrastructure for soil data: field collection (farmOS, SurveyStack, Field Methods), data standards (Modus/AgGateway, OADA), analysis (TSIP Ensemble Explorer, R/Python), and reporting (Cool Farm Tool, PCSC). Includes the Conservation Cost Database and Producer Operational Data System integration patterns. The Field Methods working group feeds directly into this stack.',
+ contrib:'Lead: farmOS · OpenTEAM · TSIP\n\nContributors: Our Sci · SurveyStack · Element 84 · USDA-ARS · Soil & Water Outcomes Fund',
+ outputs:'Architecture diagram · Integration guide · Field Methods working group outputs · Modus schema library',
+ grat:{'🌱 Grateful':14,'⭐ Valuable':11,'🔗 Used this':8},
+ links:[
+   {n:'Soil Health Tech Stack', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Field Methods Working Group', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Modus / AgGateway', t:'Standard', u:'https://aggateway.org', i:'std'},
+   {n:'TSIP Ensemble Explorer', t:'Tool', u:'https://tsip.org/tech', i:'tool'},
+ ]},
+
+{id:'ubc-gov',cat:'commons',
+ title:'UBC Ethical Data Governance',
+ sub:'Research · Commons & Governance',
+ tags:['Governance','Ethics','Research','Academic Partnership'],
+ lead:'University of British Columbia',lc:'#1a4f7a',
+ status:'Active research collaboration',
+ short:'University of British Columbia research partnership applying ethical data governance frameworks — polycentric governance, consent architecture, and Indigenous data sovereignty — to the OpenTEAM ecosystem.',
+ long:'The UBC collaboration brings academic rigor to OpenTEAM\'s governance design. Research covers polycentric data governance (building on Ostrom\'s commons theory), consent-forward architectures, Indigenous data sovereignty (OCAP principles), and trust infrastructure patterns. Outputs inform the Ag Data Wallet, TRAC credentialing system, and AKC Data & Trust framework. The HCD (Human-Centered Design) Working Group is closely connected to this work.',
+ contrib:'Lead: University of British Columbia\n\nContributors: OpenTEAM Fellows · IndigiDAO · AKC · Metagov · UBC Research teams',
+ outputs:'Research papers · Governance templates · TRAC framework integration · AKC Data Trust dimensions',
+ grat:{'🌱 Grateful':10,'⭐ Valuable':15,'🔗 Used this':4},
+ links:[
+   {n:'Ag Knowledge Concordance', t:'Partner Project', u:'https://agricultural-knowledge-concordance.github.io/Ag-Knowledge-Concordance/', i:'part'},
+   {n:'Metagov / KOI Pond', t:'Partner', u:'https://metagov.org/projects/koi-pond', i:'part'},
+   {n:'IndigiDAO', t:'Community Partner', u:'https://indigidao.org', i:'part'},
+ ]},
+
+{id:'convention',cat:'commons',
+ title:'OpenTEAM Convention',
+ sub:'Commons & Governance · Community Charter',
+ tags:['Governance','Charter','Commons','Community'],
+ lead:'OpenTEAM Community',lc:'#1a4f7a',
+ status:'Draft in community review',
+ short:'A foundational governance document establishing the principles, decision-making processes, and shared agreements that define how OpenTEAM operates as an open commons and evolving ecosystem.',
+ long:'The OpenTEAM Convention articulates the governance model for the ecosystem — covering how priorities are set, how working groups form and sunset, how conflicts are resolved, and how resources are stewarded. Draws on Sociocracy 3.0, Elinor Ostrom\'s commons design principles, and the Metagov governance pattern library. Connects to the Code of Conduct and License framework. Designed to grow alongside the community.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: Metagov · KOI Pond · UBC · Terran Collective',
+ outputs:'Convention draft · Governance patterns library · Code of Conduct integration · License framework',
+ grat:{'🌱 Grateful':7,'⭐ Valuable':9,'🔗 Used this':2},
+ links:[
+   {n:'OpenTEAM Convention', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Code of Conduct', t:'Document', u:'https://dornawcox.github.io/Test-36/code-of-conduct.html', i:'doc'},
+   {n:'OpenTEAM Licenses', t:'Document', u:'https://dornawcox.github.io/Test-36/licenses.html', i:'doc'},
+ ]},
+
+{id:'equity',cat:'sovereignty',
+ title:'Equity Working Group',
+ sub:'Data Sovereignty · Inclusion · Justice',
+ tags:['Equity','Indigenous Sovereignty','Inclusion','Justice'],
+ lead:'OpenTEAM Fellows · IndigiDAO',lc:'#7a4520',
+ status:'Active working group',
+ short:'Ensuring OpenTEAM technology, governance, and data practices center equity, Indigenous data sovereignty, and underrepresented farming communities at every stage of development.',
+ long:'The Equity Working Group reviews OpenTEAM projects and tools for equity implications — ensuring that open technology doesn\'t inadvertently replicate existing power imbalances. Focus areas include Indigenous OCAP principles, FPIC processes for data collection, equitable access to tools, and representation in governance. Connects to IndigiDAO, the AKC Fellows program, and the Ag Data Wallet.',
+ contrib:'Lead: OpenTEAM Fellows · IndigiDAO\n\nContributors: We Are For The Land Foundation · AKC · GIAA · Terran Collective',
+ outputs:'Equity review framework · FPIC templates · Representation guidelines · Connections to AKC Indigenous sovereignty gate',
+ grat:{'🌱 Grateful':16,'⭐ Valuable':13,'🔗 Used this':5},
+ links:[
+   {n:'Equity Working Group', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'IndigiDAO', t:'Community Partner', u:'https://indigidao.org', i:'part'},
+   {n:'GIAA Agroecology Network', t:'Partner', u:'https://www.gia-agroecology.org', i:'part'},
+ ]},
+
+{id:'pods',cat:'infrastructure',
+ title:'Producer Operational Data System',
+ sub:'PODS · Data Infrastructure · Sovereignty',
+ tags:['PODS','Data Infrastructure','Producer Sovereignty','Architecture'],
+ lead:'OpenTEAM · USDA',lc:'#374151',
+ status:'Architecture phase',
+ short:'A reference architecture for producer-controlled operational data systems — enabling farmers to maintain a persistent, portable record of their farm operations across tools, programs, and databases.',
+ long:'PODS defines how farm operational data — field boundaries, practice history, crop records, soil tests — is stored and controlled by the producer rather than siloed in individual tools or program databases. The architecture connects farmOS, SurveyStack, the Ag Data Wallet, and USDA PCSC reporting while maintaining local data sovereignty. Informed by the OADA specification and Modus data standards.',
+ contrib:'Lead: OpenTEAM · USDA\n\nContributors: farmOS · Our Sci · SurveyStack · Element 84',
+ outputs:'PODS architecture spec · OADA integration pattern · farmOS module spec · USDA cooperative agreement',
+ grat:{'🌱 Grateful':11,'⭐ Valuable':10,'🔗 Used this':6},
+ links:[
+   {n:'Producer Operational Data System', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'OADA Specification', t:'Standard', u:'https://openag.io', i:'std'},
+   {n:'farmOS', t:'Tool', u:'https://farmos.org', i:'tool'},
+ ]},
+
+{id:'hcd',cat:'commons',
+ title:'HCD Working Group',
+ sub:'Human-Centered Design · Accessibility',
+ tags:['Design','Accessibility','Farmer UX','Community'],
+ lead:'OpenTEAM Fellows',lc:'#1a4f7a',
+ status:'Active working group',
+ short:'Applying human-centered design principles to agricultural technology — ensuring that tools, workflows, and data systems are genuinely usable by and useful for the farmers and land stewards they serve.',
+ long:'The HCD Working Group brings participatory design practices to OpenTEAM tool evaluation and development. Focuses on accessibility, language equity, and context-appropriate design — particularly for tools used in the field. Feeds into the FAIR Tech Registry ETA rubric, the Ag Data Wallet UX, and SurveyStack form design. Connected to UBC Ethical Data Governance research.',
+ contrib:'Lead: OpenTEAM Fellows\n\nContributors: UBC · SurveyStack · LiteFarm · Digital Green',
+ outputs:'HCD working group outputs · Accessibility rubric for ETA · Field UX guidelines',
+ grat:{'🌱 Grateful':6,'⭐ Valuable':8,'🔗 Used this':3},
+ links:[
+   {n:'HCD Working Group', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'FAIR Tech Registry ETA', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+ ]},
+
+{id:'range-c',cat:'regen-econ',
+ title:'Range C &amp; Crop C',
+ sub:'Carbon Quantification · Rangeland &amp; Cropland',
+ tags:['Carbon','Rangeland','Cropland','Quantification'],
+ lead:'OpenTEAM · NRCS',lc:'#0f766e',
+ status:'Active · Data integration ongoing',
+ short:'Developing harmonized carbon quantification methods and datasets for both rangeland and cropland systems — bridging NRCS practice standards with open, farmer-contributed data.',
+ long:'Range C and Crop C bridges the rangeland and cropland carbon quantification worlds — developing harmonized methods, shared schemas, and integrated datasets that work with both NRCS practice standards and open, farmer-contributed data. Connects to GLCDI, the Soil Health Tech Stack, PODS, and the USDA Cooperative Agreements. Datasets feed into the AKC Soil Carbon Composite.',
+ contrib:'Lead: OpenTEAM · USDA NRCS\n\nContributors: Millpont · TSIP · ESMC · Soil & Water Outcomes Fund · Point Blue',
+ outputs:'Carbon quantification schema · Integration with GLCDI and PODS · Feeding AKC Soil Carbon Composite dataset',
+ grat:{'🌱 Grateful':13,'⭐ Valuable':10,'🔗 Used this':7},
+ links:[
+   {n:'Range C and Crop C', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'GLCDI Documentation', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+   {n:'Conservation Cost Database', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+ ]},
+
+{id:'env-claims',cat:'regen-econ',
+ title:'Environmental Claims Clearinghouse',
+ sub:'Claims Engine · Verification Infrastructure',
+ tags:['Claims','Verification','Market Integrity','Clearinghouse'],
+ lead:'OpenTEAM Community',lc:'#0f766e',
+ status:'Architecture phase',
+ short:'Open infrastructure for verifying and clearing environmental claims — preventing greenwashing and enabling trustworthy, interoperable carbon and ecosystem service market participation.',
+ long:'The Environmental Claims Clearinghouse and Claims Engine provides open infrastructure for verifying agricultural environmental claims before they enter markets. Designed to work with multiple carbon standards and market systems, reducing vendor lock-in and greenwashing risk. Connects to the Marketplace Working Group, PODS, RegenScore, and the Cool Farm Tool integration.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: Cool Farm Alliance · ESMC · Field to Market · RegenScore · Millpont',
+ outputs:'Claims clearinghouse architecture · Claims Engine spec · Market integration patterns',
+ grat:{'🌱 Grateful':5,'⭐ Valuable':9,'🔗 Used this':2},
+ links:[
+   {n:'Environmental Claims Clearinghouse', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Marketplace Working Group', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'RegenScore', t:'Partner Tool', u:'https://www.regenscore.org', i:'tool'},
+ ]},
+
+{id:'ne-grazing',cat:'regen-econ',
+ title:'Northeast Grazing &amp; Soil Carbon Network',
+ sub:'Regional Network · Data Collection · Farmers',
+ tags:['Grazing','Northeast','Network','Field Data'],
+ lead:'PASA · OpenTEAM',lc:'#0f766e',
+ status:'Active · Data collection ongoing',
+ short:'A regional farmer network collecting longitudinal soil carbon and grazing practice data across Northeast US farms — producing open datasets and reusable field protocols for the OpenTEAM ecosystem.',
+ long:'The Northeast Grazing and Soil Carbon Network brings together farmers, extension partners, and researchers across the Northeast to collect longitudinal soil health and grazing practice data. The network uses GLCDI field protocols and SurveyStack forms, with data flowing into farmOS and the AKC Soil Carbon Composite. Farmer-contributed data is governed by the OpenTEAM data agreements framework with full consent management.',
+ contrib:'Lead: PASA Sustainable Agriculture · OpenTEAM\n\nContributors: Cornell Cooperative Extension · University of Vermont Extension · Point Blue · Millpont',
+ outputs:'Longitudinal soil carbon dataset · GLCDI field protocol testing · SurveyStack form library · Network reports',
+ grat:{'🌱 Grateful':14,'⭐ Valuable':11,'🔗 Used this':7},
+ links:[
+   {n:'Northeast Grazing and Soil Carbon Network', t:'Project', u:'https://gitlab.com/OpenTEAMAg', i:'part'},
+   {n:'PASA Sustainable Agriculture', t:'Lead Organization', u:'https://pasafarming.org', i:'part'},
+   {n:'GLCDI Documentation', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+ ]},
+
+{id:'usda-coop',cat:'interop',
+ title:'USDA Cooperative Agreements',
+ sub:'Modus · CCD · Federal Partnership',
+ tags:['USDA','Modus','Federal','Partnership'],
+ lead:'OpenTEAM · USDA',lc:'#4c1d95',
+ status:'Active · Agreements in place',
+ short:'Federal cooperative agreements enabling OpenTEAM to develop Modus-compliant soil data standards and the Conservation Cost Database (CCD) in collaboration with USDA agencies.',
+ long:'The USDA Cooperative Agreements provide formal partnership structure for OpenTEAM\'s work with USDA-ARS, NRCS, and PCSC programs. Key outputs include Modus schema extensions, the Conservation Cost Database, and the PCSC farmOS module. The agreements folder on GitLab documents the governance and outputs of this federal collaboration. Feeds directly into the Soil Health Tech Stack and PODS architecture.',
+ contrib:'Lead: OpenTEAM · USDA\n\nContributors: USDA-ARS · USDA NRCS · farmOS · Element 84 · Soil & Water Outcomes Fund',
+ outputs:'Modus schema extensions · Conservation Cost Database (CCD) · PCSC farmOS module · PODS integration · USDA agreements folder (GitLab)',
+ grat:{'🌱 Grateful':18,'⭐ Valuable':15,'🔗 Used this':10},
+ links:[
+   {n:'USDA Cooperative Agreements Folder', t:'GitLab', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Conservation Cost Database (CCD)', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'PCSC farmOS Module', t:'Connected Project', u:'https://farmos.org', i:'tool'},
+   {n:'Modus / AgGateway', t:'Standard', u:'https://aggateway.org', i:'std'},
+ ]},
+];
+
+  function renderRailIdx() {
+    var r = document.getElementById('pRailIdx');
+    if (!r) return;
+    r.innerHTML = PROJS.map(function(p) {
+      var c = PAL[p.cat];
+      var bg = c ? c.bg : '#374151';
+      var org = p.lead.split('·')[0].trim();
+      return '<a class="rc-idx" href="projects.html#' + p.id + '" data-cat="' + p.cat + '">'
+           + '<div class="rc-band-idx" style="background:' + bg + ';">' + icon(p.id) + '</div>'
+           + '<div class="rc-body-idx">'
+           + '<div class="rc-t-idx">' + p.title.replace(/&amp;/g,'&') + '</div>'
+           + '<div class="rc-org-idx">' + org + '</div>'
+           + '</div>'
+           + '<div class="rc-arr-idx">↗</div>'
+           + '</a>';
+    }).join('');
+  }
+
+  function wireRailFilters() {
+    var bar = document.getElementById('projFbarIdx');
+    if (!bar) return;
+    bar.addEventListener('click', function(e) {
+      var btn = e.target.closest('.fb-idx');
+      if (!btn) return;
+      bar.querySelectorAll('.fb-idx').forEach(function(b) { b.classList.remove('on'); });
+      btn.classList.add('on');
+      var f = btn.getAttribute('data-f');
+      document.querySelectorAll('#pRailIdx .rc-idx').forEach(function(card) {
+        card.classList.toggle('rc-hidden', f !== 'all' && card.getAttribute('data-cat') !== f);
+      });
+    });
+  }
+
+  /* Run immediately — script is at bottom of body, DOM is ready */
+  renderRailIdx();
+  wireRailFilters();
+
 })();
 </script>
 </body>

@@ -14,6 +14,69 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&amp;family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="styles.css" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════════
+   INDEX PAGE PROJECT DETAIL DRAWER
+   (scoped with #idxDrawer prefix)
+══════════════════════════════════════════════ */
+#idxOverlay{position:fixed;inset:0;background:rgba(8,14,9,.52);z-index:1000;display:none;backdrop-filter:blur(3px);}
+#idxOverlay.on{display:block;}
+#idxDrawer{position:fixed;top:0;right:-780px;width:min(780px,100vw);height:100vh;background:#fff;z-index:1001;overflow-y:auto;transition:right 290ms cubic-bezier(.22,.68,0,1.1);box-shadow:-10px 0 60px rgba(0,0,0,.2);display:flex;flex-direction:column;font-family:'IBM Plex Sans',sans-serif;}
+#idxDrawer.on{right:0;}
+#idxDrawer .dr-head{padding:0;border-bottom:1px solid #ddd8ce;flex:0 0 auto;}
+#idxDrawer .dr-top{padding:14px 20px 0;display:flex;justify-content:flex-end;}
+#idxDrawer .dr-close{appearance:none;border:none;background:#ede8df;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 120ms;}
+#idxDrawer .dr-close:hover{background:#b5b0a4;}
+#idxDrawer .dr-close svg{width:15px;height:15px;}
+#idxDrawer .dr-band{height:96px;border-radius:8px;display:flex;align-items:center;gap:16px;padding:0 20px;position:relative;overflow:hidden;margin:0 20px;}
+#idxDrawer .dr-band::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.06);}
+#idxDrawer .dr-icon{width:62px;height:62px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex:0 0 62px;}
+#idxDrawer .dr-icon svg{width:36px;height:36px;}
+#idxDrawer .dr-t{font-size:21px;font-weight:700;color:#fff;letter-spacing:-.022em;line-height:1.15;}
+#idxDrawer .dr-sub{font-size:12.5px;color:rgba(255,255,255,.6);margin-top:4px;}
+#idxDrawer .dr-tabs{display:flex;border-bottom:1px solid #ddd8ce;margin-top:10px;}
+#idxDrawer .dtab-idx{appearance:none;border:none;background:transparent;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#6b6760;padding:11px 15px;cursor:pointer;border-bottom:3px solid transparent;transition:color 120ms,border-color 120ms;white-space:nowrap;}
+#idxDrawer .dtab-idx:hover{color:#1e4d2b;}
+#idxDrawer .dtab-idx.on{color:#1e4d2b;border-bottom-color:#1e4d2b;}
+#idxDrawer .dpanel-idx{display:none;padding:22px 24px 40px;flex:1;}
+#idxDrawer .dpanel-idx.on{display:block;}
+#idxDrawer .dr-desc{font-size:13.5px;color:#6b6760;line-height:1.62;margin-bottom:20px;}
+#idxDrawer .dr-sec{font-family:'IBM Plex Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#9e9a93;margin-bottom:8px;margin-top:20px;}
+#idxDrawer .dr-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px;}
+#idxDrawer .dchip-idx{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:3px;}
+#idxDrawer .dr-info{font-size:13px;color:#6b6760;line-height:1.6;}
+#idxDrawer .dr-info strong{color:#1a1a14;}
+#idxDrawer .grat-row-idx{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px;}
+#idxDrawer .gbt-idx{appearance:none;border:1px solid #ddd8ce;background:#f7f3ec;border-radius:20px;padding:7px 13px;font-size:12.5px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'IBM Plex Sans',sans-serif;transition:all 120ms;}
+#idxDrawer .gbt-idx:hover{border-color:#1e4d2b;background:#eaf3ec;}
+#idxDrawer .gbt-idx.lit{background:#d4edda;border-color:#a3d4af;color:#1e6b3a;}
+#idxDrawer .gcnt-idx{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#9e9a93;min-width:16px;}
+#idxDrawer .gcnt-idx.pop{animation:idxPop 280ms ease;}
+@keyframes idxPop{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+#idxDrawer .dr-links{display:flex;flex-direction:column;gap:8px;}
+#idxDrawer .dlink-idx{display:flex;align-items:center;gap:11px;padding:11px 13px;border:1px solid #ddd8ce;border-radius:7px;text-decoration:none;color:#1a1a14;transition:border-color 120ms,background 120ms;}
+#idxDrawer .dlink-idx:hover{border-color:#1e4d2b;background:#eaf3ec;}
+#idxDrawer .dlink-i{width:34px;height:34px;flex:0 0 34px;border-radius:7px;background:#f7f3ec;display:flex;align-items:center;justify-content:center;border:1px solid #ddd8ce;}
+#idxDrawer .dlink-i svg{width:17px;height:17px;}
+#idxDrawer .dlink-n{font-weight:700;font-size:12.5px;}
+#idxDrawer .dlink-t{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:#9e9a93;text-transform:uppercase;letter-spacing:.05em;}
+#idxDrawer .dlink-u{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:#1e4d2b;margin-left:auto;flex:0 0 auto;}
+#idxDrawer .pdf-wrap{margin-top:22px;}
+#idxDrawer .pdf-hd{padding:10px 14px;background:#1e4d2b;color:#fff;display:flex;align-items:center;justify-content:space-between;border-radius:6px 6px 0 0;}
+#idxDrawer .pdf-hd span{font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+#idxDrawer .pdf-hd a{color:rgba(255,255,255,.7);font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-decoration:none;}
+#idxDrawer .pdf-fr{width:100%;height:480px;border:1px solid #ddd8ce;border-top:none;border-radius:0 0 6px 6px;}
+#idxDrawer .cf{display:flex;flex-direction:column;gap:13px;}
+#idxDrawer .cr{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+#idxDrawer .fg{display:flex;flex-direction:column;gap:4px;}
+#idxDrawer .fg label{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1e4d2b;}
+#idxDrawer .fg input,#idxDrawer .fg select,#idxDrawer .fg textarea{padding:8px 11px;border:1px solid #ddd8ce;border-radius:5px;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#1a1a14;background:#fff;outline:none;transition:border-color 120ms;}
+#idxDrawer .fg input:focus,#idxDrawer .fg select:focus,#idxDrawer .fg textarea:focus{border-color:#1e4d2b;box-shadow:0 0 0 3px rgba(30,77,43,.09);}
+#idxDrawer .fg textarea{resize:vertical;min-height:76px;}
+#idxDrawer .sbtn-idx{appearance:none;border:2px solid #1e4d2b;background:#1e4d2b;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:10px 20px;border-radius:5px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background 120ms;align-self:flex-start;}
+#idxDrawer .sbtn-idx:hover{background:#2a6338;border-color:#2a6338;}
+#idxDrawer .conf-idx{display:none;padding:10px 13px;background:#d4edda;border:1px solid #a3d4af;border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;color:#1e6b3a;margin-top:4px;}
+</style>
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -260,6 +323,9 @@
 }
 </style>
 
+<div class="wg-project-cards__head" style="margin-top:14px;">
+<p class="muted">Swipe or scroll to browse projects. Filter by type and click ↗ to open a project.</p>
+</div>
 <div class="proj-rail-root" id="projRailRoot" style="margin-top:18px;">
   <!-- Filter buttons -->
   <div class="fbar-idx" id="projFbarIdx">
@@ -2076,7 +2142,10 @@
 })();
 </script>
 <script>
-/* ── Index page project rail ── */
+/* ════════════════════════════════════════════════
+   INDEX PAGE — Project rail + detail drawer
+   All IDs/classes prefixed idx* to avoid conflicts
+════════════════════════════════════════════════ */
 (function() {
 
 const PAL = {
@@ -2112,6 +2181,17 @@ const I={
 };
 return I[id]||`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8"><circle cx="14" cy="14" r="9"/><path d="M14 9v5l3 3"/></svg>`;
 }
+
+
+const LI={
+  doc:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2h8l3 3v9H1V2z"/><path d="M11 2v4h4"/><path d="M4 9h8M4 12h5"/></svg>`,
+  gitlab:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 10L8 14 2 10l2-7 1.5 4h5L12 3z"/></svg>`,
+  git:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="4" r="2"/><circle cx="11" cy="12" r="2"/><circle cx="11" cy="4" r="2"/><path d="M7 4h2M11 6v4"/></svg>`,
+  globe:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M2 8h12M8 2a9 9 0 0 1 0 12M8 2a9 9 0 0 0 0 12"/></svg>`,
+  tool:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2a4 4 0 0 0-4 4l-6 6a1.5 1.5 0 0 0 2 2l6-6a4 4 0 0 0 4-4z"/></svg>`,
+  std:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.5 3.5L8 10l-3 1.5.5-3.5L3 5.5 6.5 5z"/></svg>`,
+  part:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12c0-2 1.5-3 4-3s4 1 4 3"/><circle cx="8" cy="6" r="2.5"/><circle cx="2.5" cy="8" r="1.5"/><circle cx="13.5" cy="8" r="1.5"/></svg>`,
+};
 
 
 const PROJS = [
@@ -2431,13 +2511,18 @@ const PROJS = [
  ]},
 ];
 
+  /* ── gratitude state ── */
+  var idxGratState = {};
+  PROJS.forEach(function(p) { idxGratState[p.id] = Object.assign({}, p.grat); });
+
+  /* ── render the rail ── */
   function renderRailIdx() {
     var r = document.getElementById('pRailIdx');
     if (!r) return;
     r.innerHTML = PROJS.map(function(p) {
       var c = PAL[p.cat] || {bg:'#374151'};
       var org = p.lead.split('\xb7')[0].trim();
-      return '<a class="rc-idx" href="projects.html#' + p.id + '" data-cat="' + p.cat + '">'
+      return '<a class="rc-idx" href="#" data-cat="' + p.cat + '" onclick="idxOpenDrawer(\''+p.id+'\');return false;">'
            + '<div class="rc-band-idx" style="background:' + c.bg + ';">' + icon(p.id) + '</div>'
            + '<div class="rc-body-idx">'
            +   '<div class="rc-t-idx">' + p.title.replace(/&amp;/g,'&') + '</div>'
@@ -2448,6 +2533,7 @@ const PROJS = [
     }).join('');
   }
 
+  /* ── filter bar ── */
   function wireRailFilters() {
     var bar = document.getElementById('projFbarIdx');
     if (!bar) return;
@@ -2463,6 +2549,115 @@ const PROJS = [
     });
   }
 
+  /* ── drawer open / close ── */
+  window.idxOpenDrawer = function(id) {
+    var p = PROJS.find(function(x){ return x.id === id; });
+    if (!p) return;
+    var c = PAL[p.cat] || {bg:'#374151', tag:'#f3f4f6', tagc:'#374151'};
+
+    document.getElementById('idxDrBand').style.background = c.bg;
+    document.getElementById('idxDrIcon').innerHTML = icon(p.id);
+    document.getElementById('idxDrTitle').innerHTML = p.title;
+    document.getElementById('idxDrSub').textContent = p.sub;
+    document.getElementById('idxDrDesc').textContent = p.long;
+    document.getElementById('idxDrChips').innerHTML = p.tags.map(function(t) {
+      return '<span class="dchip-idx" style="background:' + c.tag + ';color:' + c.tagc + ';">' + t + '</span>';
+    }).join('');
+    document.getElementById('idxDrContrib').innerHTML = p.contrib.replace(/\n/g,'<br>');
+    document.getElementById('idxDrStatus').innerHTML =
+      '<strong>Status:</strong> ' + p.status + '<br><br><strong>Outputs:</strong> ' + p.outputs;
+
+    idxRenderGrat(id);
+
+    document.getElementById('idxDrLinks').innerHTML = p.links.map(function(l) {
+      var icon_svg = LI[l.i] || LI.doc;
+      var domain = l.u.replace('https://','').split('/')[0];
+      return '<a class="dlink-idx" href="' + l.u + '" target="_blank" rel="noopener">'
+           + '<div class="dlink-i">' + icon_svg + '</div>'
+           + '<div style="flex:1;"><div class="dlink-n">' + l.n + '</div><div class="dlink-t">' + l.t + '</div></div>'
+           + '<span class="dlink-u">' + domain + ' \u2197</span>'
+           + '</a>';
+    }).join('');
+
+    var docLink = p.links.find(function(x){ return x.u.includes('agreements.community'); });
+    if (docLink) {
+      document.getElementById('idxPdfWrap').style.display = 'block';
+      document.getElementById('idxPdfLabel').textContent = docLink.n;
+      document.getElementById('idxPdfOpen').href = docLink.u;
+      document.getElementById('idxPdfFrame').src = docLink.u;
+    } else {
+      document.getElementById('idxPdfWrap').style.display = 'none';
+      document.getElementById('idxPdfFrame').src = '';
+    }
+
+    idxSetDTab('about');
+    document.getElementById('idxSubConf').style.display = 'none';
+    document.getElementById('idxOverlay').classList.add('on');
+    document.getElementById('idxDrawer').classList.add('on');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.idxCloseDrawer = function() {
+    document.getElementById('idxOverlay').classList.remove('on');
+    document.getElementById('idxDrawer').classList.remove('on');
+    document.body.style.overflow = '';
+  };
+
+  /* ── tabs ── */
+  function idxSetDTab(name) {
+    document.querySelectorAll('#idxDrawer .dtab-idx').forEach(function(b) {
+      b.classList.toggle('on', b.getAttribute('data-dt') === name);
+    });
+    document.querySelectorAll('#idxDrawer .dpanel-idx').forEach(function(panel) {
+      panel.classList.toggle('on', panel.id === 'idxDp-' + name);
+    });
+  }
+  window.idxSetDTab = idxSetDTab;
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('#idxDrawer .dtab-idx').forEach(function(b) {
+      b.addEventListener('click', function() { idxSetDTab(b.getAttribute('data-dt')); });
+    });
+  });
+
+  /* ── gratitude ── */
+  function idxRenderGrat(id) {
+    var row = document.getElementById('idxGratRow');
+    var st = idxGratState[id];
+    row.innerHTML = Object.entries(st).map(function(entry, i) {
+      var lbl = entry[0], cnt = entry[1];
+      return '<button class="gbt-idx" data-pid="' + id + '" data-lbl="' + lbl + '" onclick="idxAddGrat(this)">'
+           + lbl + ' <span class="gcnt-idx" id="idxGc-' + id + '-' + i + '">' + cnt + '</span>'
+           + '</button>';
+    }).join('');
+  }
+  window.idxAddGrat = function(btn) {
+    if (btn.classList.contains('lit')) return;
+    btn.classList.add('lit');
+    var id = btn.getAttribute('data-pid');
+    var lbl = btn.getAttribute('data-lbl');
+    idxGratState[id][lbl]++;
+    var i = Object.keys(idxGratState[id]).indexOf(lbl);
+    var span = document.getElementById('idxGc-' + id + '-' + i);
+    if (span) {
+      span.textContent = idxGratState[id][lbl];
+      span.classList.remove('pop');
+      void span.offsetWidth;
+      span.classList.add('pop');
+    }
+  };
+
+  /* ── contribute submit ── */
+  window.idxDoSubmit = function(e) {
+    e.preventDefault();
+    document.getElementById('idxSubConf').style.display = 'block';
+  };
+
+  /* ── keyboard close ── */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') idxCloseDrawer();
+  });
+
+  /* ── init ── */
   renderRailIdx();
   wireRailFilters();
 
@@ -2496,6 +2691,81 @@ RAIL CARD INSERT (copy into index.html projects rail):
 <a href="projects.html#ne-grazing"   class="railCard">…NE Grazing Network — PASA · OpenTEAM</a>
 <a href="projects.html#usda-coop"    class="railCard">…USDA Cooperative Agreements — OpenTEAM · USDA</a>
 -->
+
+
+<!-- ════ INDEX PAGE PROJECT DETAIL DRAWER ════ -->
+<div id="idxOverlay" onclick="idxCloseDrawer()"></div>
+<div id="idxDrawer">
+  <div class="dr-head">
+    <div class="dr-top">
+      <button class="dr-close" onclick="idxCloseDrawer()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/></svg>
+      </button>
+    </div>
+    <div class="dr-band" id="idxDrBand">
+      <div class="dr-icon" id="idxDrIcon"></div>
+      <div>
+        <div class="dr-t" id="idxDrTitle"></div>
+        <div class="dr-sub" id="idxDrSub"></div>
+      </div>
+    </div>
+    <div class="dr-tabs">
+      <button class="dtab-idx on" data-dt="about">About</button>
+      <button class="dtab-idx" data-dt="resources">Resources &amp; Links</button>
+      <button class="dtab-idx" data-dt="contribute">Contribute</button>
+    </div>
+  </div>
+  <div class="dpanel-idx on" id="idxDp-about">
+    <p class="dr-desc" id="idxDrDesc"></p>
+    <div class="dr-sec">Focus areas</div>
+    <div class="dr-chips" id="idxDrChips"></div>
+    <div class="dr-sec">Lead organization &amp; contributors</div>
+    <div class="dr-info" id="idxDrContrib"></div>
+    <div class="dr-sec" style="margin-top:18px;">Status &amp; outputs</div>
+    <div class="dr-info" id="idxDrStatus"></div>
+    <div class="dr-sec" style="margin-top:22px;">Express gratitude for this work</div>
+    <div class="grat-row-idx" id="idxGratRow"></div>
+  </div>
+  <div class="dpanel-idx" id="idxDp-resources">
+    <p style="font-size:13px;color:#6b6760;margin:0 0 14px;line-height:1.5;">Documentation sites, GitLab repos, static sites, and source materials for this project.</p>
+    <div class="dr-links" id="idxDrLinks"></div>
+    <div id="idxPdfWrap" style="display:none;">
+      <div class="dr-sec" style="margin-top:22px;">Source document preview</div>
+      <div class="pdf-wrap">
+        <div class="pdf-hd">
+          <span id="idxPdfLabel">Document</span>
+          <a id="idxPdfOpen" href="#" target="_blank">Open in new tab ↗</a>
+        </div>
+        <iframe class="pdf-fr" id="idxPdfFrame" title="Document preview"></iframe>
+      </div>
+    </div>
+  </div>
+  <div class="dpanel-idx" id="idxDp-contribute">
+    <p style="font-size:13px;color:#6b6760;margin:0 0 18px;line-height:1.5;">Add a document, link, or attribution to this project. Contributions are reviewed by the OpenTEAM stewardship team before publication.</p>
+    <div class="cf">
+      <div class="cr">
+        <div class="fg"><label>Your name / org</label><input type="text" placeholder="e.g. Jane — Green Hollow Farm"></div>
+        <div class="fg"><label>Contribution type</label>
+          <select>
+            <option value="">— select —</option>
+            <option>Add a resource link</option>
+            <option>Submit a document</option>
+            <option>Add attribution</option>
+            <option>Propose update</option>
+            <option>Report an issue</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>URL or resource description</label><input type="text" placeholder="https:// or describe your contribution…"></div>
+      <div class="fg"><label>Attribution &amp; context</label><textarea placeholder="Who created this? What is it for? Any consent or access notes…"></textarea></div>
+      <button class="sbtn-idx" onclick="idxDoSubmit(event)">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        Submit Contribution
+      </button>
+      <div class="conf-idx" id="idxSubConf">✓ Contribution received — the stewardship team will review and follow up. Thank you!</div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

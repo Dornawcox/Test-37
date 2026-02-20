@@ -1,594 +1,377 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>OpenTEAM — Projects</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-<link href="styles.css" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>OpenTEAM · Projects &amp; Collabathons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-/* ─── Rich project cards (TRAC, PODS, CCD) ─── */
-.pcard--rich {
-  display: flex;
-  flex-direction: column;
-  width: 320px;
-  min-width: 320px;
-  max-width: 340px;
-  background: #fff;
-  border: 1.5px solid #ddd8ce;
-  border-radius: 10px;
-  overflow: hidden;
-  transition: border-color 150ms, box-shadow 150ms, transform 150ms;
-  scroll-snap-align: start;
+:root{
+  --forest:#1e4d2b;--forest-md:#2a6338;--forest-lt:#d4e8d8;--forest-bg:#eaf3ec;
+  --sage:#5a7f5e;--sage-lt:#c8deca;
+  --ink:#1a1a14;--white:#fff;--cream:#f7f3ec;--cream-dk:#ede8df;
+  --line:#ddd8ce;--line-dk:#b5b0a4;--dim:#6b6760;--faint:#9e9a93;
+  --amber:#92600a;--amber-bg:#fef3c7;--amber-bd:#f5d97e;
+  --sky:#1a4f7a;--sky-bg:#dbeafe;--sky-bd:#93c5fd;
+  --earth:#7a4520;--earth-bg:#fde8d0;--earth-bd:#f5c49a;
+  --good:#1e6b3a;--good-bg:#d4edda;--good-bd:#a3d4af;
+  --violet:#4c1d95;--violet-bg:#ede9fe;--violet-bd:#c4b5fd;
+  --teal:#0f766e;--teal-bg:#ccfbf1;--teal-bd:#5eead4;
+  --slate:#374151;--slate-bg:#f3f4f6;--slate-bd:#d1d5db;
+  --rose:#9f1239;--rose-bg:#fce7f3;--rose-bd:#f9a8d4;
 }
-.pcard--rich:hover {
-  border-color: #1e4d2b;
-  box-shadow: 0 6px 28px rgba(30,77,43,.13);
-  transform: translateY(-2px);
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.5;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:40;background:var(--forest);border-bottom:3px solid #16381f;box-shadow:0 2px 14px rgba(0,0,0,.28);}
+.tb-inner{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;align-items:stretch;justify-content:space-between;}
+.brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:14px;color:#fff;text-decoration:none;padding:12px 0;}
+.brand-logo{width:26px;height:26px;flex:0 0 26px;}
+.bdiv{width:1px;background:rgba(255,255,255,.2);margin:0 12px;align-self:stretch;}
+.bsub{font-weight:400;color:rgba(255,255,255,.55);font-size:12px;}
+.nav{display:flex;align-items:stretch;}
+.nav a{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);text-decoration:none;padding:0 13px;display:flex;align-items:center;border-left:1px solid rgba(255,255,255,.1);transition:color 120ms,background 120ms;}
+.nav a:hover,.nav a.cur{color:#fff;background:rgba(255,255,255,.1);}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--forest) 0%,#1e5c35 50%,var(--sage) 100%);padding:48px 24px 42px;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;right:-80px;top:-80px;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none;}
+.hero-in{max-width:1240px;margin:0 auto;position:relative;}
+.hero-ey{font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.hero-ey::before{content:'';width:22px;height:2px;background:rgba(255,255,255,.35);}
+.hero h1{font-size:34px;font-weight:700;letter-spacing:-.03em;margin:0 0 14px;line-height:1.06;color:#fff;}
+.hero h1 span{font-weight:300;color:rgba(255,255,255,.65);}
+.hero-d{font-size:14.5px;color:rgba(255,255,255,.72);max-width:660px;line-height:1.62;margin-bottom:28px;}
+.stats{display:flex;gap:0;flex-wrap:wrap;border:1px solid rgba(255,255,255,.15);border-radius:8px;overflow:hidden;display:inline-flex;}
+.stat{padding:12px 22px;border-right:1px solid rgba(255,255,255,.12);}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:700;color:#fff;letter-spacing:-.04em;line-height:1;}
+.stat-l{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:4px;}
+
+/* PARTICIPATE */
+.part-strip{background:var(--ink);padding:14px 24px;border-bottom:2px solid rgba(30,77,43,.8);}
+.part-in{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.pcard{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid rgba(255,255,255,.09);border-radius:7px;text-decoration:none;transition:background 120ms,border-color 120ms;cursor:pointer;background:transparent;}
+.pcard:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.22);}
+.pcard-ico{width:42px;height:42px;flex:0 0 42px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.pcard-ico svg{width:21px;height:21px;}
+.pcard-verb{font-family:'IBM Plex Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:2px;}
+.pcard-verb.j{color:#c8deca;}
+.pcard-verb.b{color:#f5c87a;}
+.pcard-verb.s{color:#93c5fd;}
+.pcard-verb.c{color:#c4b5fd;}
+.pcard-t{font-weight:700;font-size:13px;color:#fff;}
+.pcard-d{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px;}
+
+/* FILTER */
+.fbar{background:var(--white);border-bottom:1px solid var(--line);position:sticky;top:51px;z-index:30;}
+.fbar-in{max-width:1240px;margin:0 auto;padding:9px 24px;display:flex;align-items:center;gap:7px;overflow-x:auto;}
+.fbar-in::-webkit-scrollbar{display:none;}
+.fl{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);white-space:nowrap;flex:0 0 auto;margin-right:3px;}
+.fb{appearance:none;border:1px solid var(--line);background:var(--cream);font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);padding:5px 11px;border-radius:20px;cursor:pointer;white-space:nowrap;flex:0 0 auto;transition:all 120ms;}
+.fb:hover,.fb.on{background:var(--forest);color:#fff;border-color:var(--forest);}
+
+/* MAIN */
+.main{max-width:1240px;margin:0 auto;padding:28px 24px 80px;}
+.sh{font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);margin:0 0 16px;display:flex;align-items:center;gap:12px;}
+.sh::after{content:'';flex:1;height:1px;background:var(--line);}
+
+/* GRID */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;margin-bottom:48px;}
+
+/* PROJECT CARD */
+.pc{background:var(--white);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:border-color 150ms,box-shadow 150ms,transform 150ms;}
+.pc:hover{border-color:var(--forest);box-shadow:0 6px 28px rgba(30,77,43,.12);transform:translateY(-2px);}
+.pc.hide{display:none;}
+
+.pc-band{height:82px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:relative;overflow:hidden;}
+.pc-band::before{content:'';position:absolute;right:-20px;top:-20px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.06);}
+.pc-band::after{content:'';position:absolute;right:22px;bottom:-28px;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.04);}
+.pc-ico{width:50px;height:50px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.17);flex:0 0 50px;}
+.pc-ico svg{width:26px;height:26px;}
+.pc-band-r{text-align:right;position:relative;z-index:1;}
+.pc-badge{font-family:'IBM Plex Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.72);background:rgba(0,0,0,.22);padding:3px 8px;border-radius:11px;display:inline-block;}
+.pc-stat{font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:rgba(255,255,255,.5);margin-top:4px;font-weight:600;}
+
+.pc-body{padding:14px 16px;flex:1;display:flex;flex-direction:column;}
+.pc-title{font-size:15px;font-weight:700;margin:0 0 5px;color:var(--ink);line-height:1.2;}
+.pc-desc{font-size:12.5px;color:var(--dim);line-height:1.5;flex:1;margin-bottom:11px;}
+.pc-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:11px;}
+.pc-tag{font-family:'IBM Plex Mono',monospace;font-size:8.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:3px;}
+.pc-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:9px;}
+.pc-lead{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--dim);}
+.pc-dot{width:7px;height:7px;border-radius:50%;flex:0 0 7px;}
+.pc-lead strong{color:var(--ink);font-weight:600;}
+.pc-open{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--forest);background:var(--forest-bg);border:1px solid var(--forest-lt);padding:5px 10px;border-radius:4px;}
+
+/* DRAWER */
+.overlay{position:fixed;inset:0;background:rgba(8,14,9,.52);z-index:100;display:none;backdrop-filter:blur(3px);}
+.overlay.on{display:block;}
+.drawer{position:fixed;top:0;right:-780px;width:min(780px,100vw);height:100vh;background:var(--white);z-index:101;overflow-y:auto;transition:right 290ms cubic-bezier(.22,.68,0,1.1);box-shadow:-10px 0 60px rgba(0,0,0,.2);display:flex;flex-direction:column;}
+.drawer.on{right:0;}
+
+.dr-head{padding:0;border-bottom:1px solid var(--line);flex:0 0 auto;}
+.dr-top{padding:14px 20px 0;display:flex;justify-content:flex-end;}
+.dr-close{appearance:none;border:none;background:var(--cream-dk);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 120ms;}
+.dr-close:hover{background:var(--line-dk);}
+.dr-close svg{width:15px;height:15px;}
+.dr-band{margin:0 20px 0;height:96px;border-radius:8px;display:flex;align-items:center;gap:16px;padding:0 20px;position:relative;overflow:hidden;}
+.dr-band::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.06);}
+.dr-icon{width:62px;height:62px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex:0 0 62px;}
+.dr-icon svg{width:36px;height:36px;}
+.dr-t{font-size:21px;font-weight:700;color:#fff;letter-spacing:-.022em;line-height:1.15;}
+.dr-sub{font-size:12.5px;color:rgba(255,255,255,.6);margin-top:4px;}
+
+.dr-tabs{display:flex;border-bottom:1px solid var(--line);margin-top:10px;}
+.dtab{appearance:none;border:none;background:transparent;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);padding:11px 15px;cursor:pointer;border-bottom:3px solid transparent;transition:color 120ms,border-color 120ms;white-space:nowrap;}
+.dtab:hover{color:var(--forest);}
+.dtab.on{color:var(--forest);border-bottom-color:var(--forest);}
+
+.dpanel{display:none;padding:22px 24px 40px;flex:1;}
+.dpanel.on{display:block;}
+
+/* About panel */
+.dr-desc{font-size:13.5px;color:var(--dim);line-height:1.62;margin-bottom:20px;}
+.dr-sec{font-family:'IBM Plex Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:8px;margin-top:20px;}
+.dr-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px;}
+.dchip{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:3px;}
+.dr-info{font-size:13px;color:var(--dim);line-height:1.6;}
+.dr-info strong{color:var(--ink);}
+
+/* Gratitude */
+.grat-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px;}
+.gbt{appearance:none;border:1px solid var(--line);background:var(--cream);border-radius:20px;padding:7px 13px;font-size:12.5px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'IBM Plex Sans',sans-serif;transition:all 120ms;}
+.gbt:hover{border-color:var(--forest);background:var(--forest-bg);}
+.gbt.lit{background:var(--good-bg);border-color:var(--good-bd);color:var(--good);}
+.gcnt{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:var(--faint);min-width:16px;}
+.gcnt.pop{animation:pop 280ms ease;}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+
+/* Resources panel */
+.dr-links{display:flex;flex-direction:column;gap:8px;}
+.dlink{display:flex;align-items:center;gap:11px;padding:11px 13px;border:1px solid var(--line);border-radius:7px;text-decoration:none;color:var(--ink);transition:border-color 120ms,background 120ms;}
+.dlink:hover{border-color:var(--forest);background:var(--forest-bg);}
+.dlink-i{width:34px;height:34px;flex:0 0 34px;border-radius:7px;background:var(--cream);display:flex;align-items:center;justify-content:center;border:1px solid var(--line);}
+.dlink-i svg{width:17px;height:17px;}
+.dlink-n{font-weight:700;font-size:12.5px;}
+.dlink-t{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;}
+.dlink-u{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--forest);margin-left:auto;flex:0 0 auto;}
+
+/* PDF viewer */
+.pdf-wrap{margin-top:22px;}
+.pdf-hd{padding:10px 14px;background:var(--forest);color:#fff;display:flex;align-items:center;justify-content:space-between;border-radius:6px 6px 0 0;}
+.pdf-hd span{font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.pdf-hd a{color:rgba(255,255,255,.7);font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-decoration:none;}
+.pdf-hd a:hover{color:#fff;}
+.pdf-fr{width:100%;height:480px;border:1px solid var(--line);border-top:none;border-radius:0 0 6px 6px;background:var(--cream-dk);}
+
+/* Contribute panel */
+.cf{display:flex;flex-direction:column;gap:13px;}
+.cr{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fg label{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--forest);}
+.fg input,.fg select,.fg textarea{padding:8px 11px;border:1px solid var(--line);border-radius:5px;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:var(--ink);background:var(--white);outline:none;transition:border-color 120ms;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--forest);box-shadow:0 0 0 3px rgba(30,77,43,.09);}
+.fg textarea{resize:vertical;min-height:76px;}
+.sbtn{appearance:none;border:2px solid var(--forest);background:var(--forest);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:10px 20px;border-radius:5px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background 120ms;align-self:flex-start;}
+.sbtn svg{width:12px;height:12px;}
+.sbtn:hover{background:var(--forest-md);border-color:var(--forest-md);}
+.conf{display:none;padding:10px 13px;background:var(--good-bg);border:1px solid var(--good-bd);border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;color:var(--good);margin-top:4px;}
+
+/* RAIL */
+.rail-sec{background:var(--ink);border-top:3px solid var(--forest);padding:22px 24px 28px;}
+.rail-hd{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px;max-width:1240px;margin-left:auto;margin-right:auto;}
+.rail{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;scroll-snap-type:x mandatory;max-width:1240px;margin:0 auto;}
+.rail::-webkit-scrollbar{height:4px;}
+.rail::-webkit-scrollbar-thumb{background:#2a3a2e;border-radius:4px;}
+.rc{flex:0 0 162px;scroll-snap-align:start;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:rgba(255,255,255,.04);text-decoration:none;color:#fff;display:flex;flex-direction:column;transition:border-color 120ms,background 120ms;overflow:hidden;cursor:pointer;}
+.rc:hover{border-color:var(--sage-lt);background:rgba(255,255,255,.07);}
+.rc-band{height:54px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(255,255,255,.08);}
+.rc-band svg{width:26px;height:26px;opacity:.85;}
+.rc-body{padding:8px 10px;flex:1;}
+.rc-t{font-weight:700;font-size:11px;line-height:1.25;margin-bottom:3px;}
+.rc-org{font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.04em;font-weight:600;}
+.rc-arr{font-size:9.5px;color:rgba(255,255,255,.25);padding:0 10px 7px;align-self:flex-end;font-family:'IBM Plex Mono',monospace;}
+
+/* FOOT */
+.foot{background:var(--forest);padding:14px 24px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(255,255,255,.42);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.foot a{color:rgba(255,255,255,.7);text-decoration:none;}
+.foot a:hover{color:#fff;}
+
+code{background:rgba(30,77,43,.1);color:var(--forest);padding:1px 5px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11px;}
+
+@media(max-width:820px){
+  .pgrid{grid-template-columns:1fr;}
+  .hero h1{font-size:24px;}
+  .cr{grid-template-columns:1fr;}
+  .part-in{grid-template-columns:1fr 1fr;}
+  .drawer{width:100vw;}
 }
-.pcard__cover--rich {
-  position: relative;
-  height: 130px;
-  overflow: hidden;
-  flex: 0 0 130px;
-}
-.pcard__cover--rich img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.82) saturate(1.1);
-}
-.pcard__cover-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(30,77,43,.72) 0%, rgba(26,79,122,.55) 100%);
-  display: flex;
-  align-items: flex-end;
-  padding: 10px 12px;
-}
-.pcard__cover-badge {
-  font-family: 'IBM Plex Mono', 'Courier New', monospace;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.75);
-  background: rgba(0,0,0,.28);
-  padding: 3px 8px;
-  border-radius: 10px;
-}
-.pcard__rich-body {
-  padding: 14px 16px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-}
-.pcard__title-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-}
-.pcard__title-row .pcard__title {
-  font-size: 13.5px;
-  font-weight: 700;
-  line-height: 1.25;
-  flex: 1;
-}
-.pcard__title-row .pcard__pills {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  align-items: flex-end;
-}
-.pcard__rich-body .pcard__sub {
-  font-size: 11.5px;
-  line-height: 1.5;
-  color: #6b6760;
-  margin: 0;
-}
-.pcard__section-label {
-  font-family: 'IBM Plex Mono', 'Courier New', monospace;
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: .13em;
-  text-transform: uppercase;
-  color: #9e9a93;
-  margin-bottom: 5px;
-}
-.pcard__partner-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-.mini-pill--partner {
-  background: #eaf3ec;
-  color: #1e4d2b;
-  border: 1px solid #c8deca;
-  font-size: 9px;
-  padding: 2px 7px;
-  border-radius: 10px;
-  font-weight: 600;
-}
-.mini-pill--active {
-  background: #d4edda;
-  color: #1e6b3a;
-}
-.mini-pill--archive {
-  background: #f3f4f6;
-  color: #6b7280;
-}
-.pcard__outcome-list {
-  margin: 0;
-  padding: 0 0 0 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.pcard__outcome-list li {
-  font-size: 11.5px;
-  color: #4b4b45;
-  line-height: 1.45;
-}
-.pcard__link-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: auto;
-  padding-top: 4px;
-  border-top: 1px solid #eee;
-}
-.pcard__link-row .pill.secondary {
-  font-size: 9.5px;
-  padding: 4px 9px;
+@media(max-width:500px){
+  .part-in{grid-template-columns:1fr;}
+  .stats{flex-direction:column;}
 }
 </style>
 </head>
 <body>
-<header class="nav-shell" role="banner">
-<button aria-controls="drawer" aria-expanded="false" class="menu-button" id="menuButton">
-<span aria-hidden="true" class="menu-icon"><span></span></span>
-<span class="menu-label">MENU</span>
-</button>
-<div class="nav-title">
-<div class="nav-title-text">Open Technology Ecosystem for Agricultural Management</div>
-</div>
-<div aria-hidden="true" class="nav-logo">
-<img alt="" src="assets/openteam_logo.svg"/>
-</div>
-</header>
-<aside aria-hidden="true" class="drawer" id="drawer">
-<div class="drawer-inner">
-<div class="drawer-top">
-<div class="drawer-mark">
-<img alt="OpenTEAM logo" src="assets/openteam_logo.svg"/>
-</div>
-<div class="drawer-vertical">OpenTEAM</div>
-<button aria-label="Close menu" class="drawer-close" id="drawerClose">✕</button>
-</div>
-<nav aria-label="Site" class="drawer-links">
-<a class="drawer-link" href="index.html">HOME</a>
-<a class="drawer-link" href="index.html#initiatives">OUR WORK</a>
-<a class="drawer-link" href="index.html#pilots">COLLABATHONS</a>
-<a class="drawer-link" aria-current="page" href="projects.html">PROJECTS</a>
-<a class="drawer-link" href="index.html#library">TOOLS &amp; PLATFORMS</a>
-<a class="drawer-link" href="videos.html">VIDEOS</a>
-<a class="drawer-link" href="canonical-source-texts.html">INSPIRATIONS</a>
-<a class="drawer-link" href="calendar.html">EVENTS CALENDAR</a>
-<a class="drawer-link" href="index.html#join">JOIN</a>
-<a class="drawer-link" href="licenses.html">LICENSES</a>
-<a class="drawer-link" href="code-of-conduct.html">CODE OF CONDUCT</a>
-</nav>
-<div class="drawer-meta">
-<div class="drawer-meta-title">Contact</div>
-<a class="drawer-meta-link" href="https://www.hylo.com/groups/openteam" rel="noopener" target="_blank">Connect on Hylo ↗</a>
-</div>
-</div>
-</aside>
-<div aria-hidden="true" class="scrim" id="scrim"></div>
-<main class="page">
-<section class="hero hero--projects">
-<div class="container">
-<div class="hero__row">
-<div class="hero__text">
-<h1 class="hero__title">Projects</h1>
-<p class="hero__lede">Browse OpenTEAM working group projects and Metagov projects. Use filters to find what you need.</p>
-</div>
-<a class="pill" href="index.html">Back to index ↗</a>
-</div>
-</div>
-</section>
-<div class="container">
-<div id="rails-root"></div>
-</div>
-</main>
-<footer class="footer">
-<div class="container footer-grid">
-<div class="footer-brand">
-<img alt="OpenTEAM logo" class="footer-logo" src="assets/openteam_logo.svg"/>
-<div>
-<div class="footer-title">OpenTEAM</div>
-<div class="footer-subtitle">Open Technology Ecosystem for Agricultural Management</div>
-<div class="footer-meta">© <span id="year"></span> OpenTEAM — Built for Sharing</div>
-<div class="footer-meta" style="margin-top:4px;"><a href="code-of-conduct.html" style="color:inherit;">Code of Conduct</a></div>
-</div>
-</div>
-<div class="footer-links">
-<a href="index.html">Home</a>
-<a href="index.html#initiatives">Our Work</a>
-<a href="index.html#pilots">Collabathons</a>
-<a href="projects.html">Projects</a>
-<a href="index.html#library">Tools &amp; Platforms</a>
-<a href="videos.html">Videos</a>
-<a href="canonical-source-texts.html">Inspirations</a>
-<a href="calendar.html">Events</a>
-<a href="index.html#join">Join</a>
-<a href="licenses.html">Licenses</a>
-<a href="code-of-conduct.html">Code of Conduct</a>
-</div>
-</div>
-</footer>
-<script>
-// ==============================
-// EDIT IN GITHUB
-// - Toggle rails: show true/false
-// - Toggle search/filter per rail: showSearch/showFilters
-// - Edit filter chips per rail: filters[]
-// - Reorder rails by reordering RAILS_CONFIG
-// ==============================
-const RAILS_CONFIG = [
-  {
-    "id": "openteam",
-    "title": "All OpenTEAM Projects",
-    "show": true,
-    "showSearch": false,
-    "showFilters": true,
-    "filters": [
-      "All types",
-      "Data Trust Development",
-      "Commons & Governance",
-      "Data Sovereignty",
-      "Regenerative Economics",
-      "Interoperability",
-      "Governance in Practice"
-    ],
-    "showSort": false
-  },
-  {
-    "id": "metagov",
-    "title": "Metagov Projects",
-    "show": true,
-    "showSearch": false,
-    "showFilters": true,
-    "filterField": "category",
-    "filters": [
-      "All",
-      "Community",
-      "Convening & Experiences",
-      "Governance Funding",
-      "Governance UX",
-      "Interoperability",
-      "Mapping Governance",
-      "Network Building",
-      "Standards"
-    ],
-    "showSort": true,
-    "sortOptions": [
-      "Last updated",
-      "Alphabetical"
-    ]
-  }
-];
 
-const OPENTEAM_PROJECTS = [
-  {
-    "title": "Fair Tech Registry Collabathon",
-    "subtitle": "Co-design and collaboration activities supporting the FAIR Tech Registry.",
-    "status": "Complete",
-    "theme": "Registry",
-    "img": "assets/wg-project-card-fair-tech-registry-collabathon.jpg",
-    "links": [
-      {
-        "label": "Project site ↗",
-        "href": "https://openteamag.gitlab.io/codesign/fair-registry/"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/codesign/fair-registry"
-      }
-    ],
-    "type": "Data Trust Development"
-  },
-  {
-    "title": "FAIR Tech Registry Documentation",
-    "subtitle": "Developer-oriented documentation for the FAIR Tech Registry.",
-    "status": "Active",
-    "theme": "Docs",
-    "img": "assets/wg-project-card-fair-tech-registry-documentation.jpg",
-    "links": [
-      {
-        "label": "Project site ↗",
-        "href": "https://openteamag.gitlab.io/fair-tech-registry/devs/"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/fair-tech-registry"
-      }
-    ],
-    "type": "Data Trust Development"
-  },
-  {
-    "title": "GLCDI Documentation",
-    "subtitle": "Documentation hub for Grazing Lands Carbon Data Initiative.",
-    "status": "Active",
-    "theme": "Carbon data",
-    "img": "assets/wg-project-card-glcdi-documentation.jpg",
-    "links": [
-      {
-        "label": "Project site ↗",
-        "href": "https://openteamag.gitlab.io/codesign/grazingdata/"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/codesign/grazingdata"
-      }
-    ],
-    "type": "Interoperability"
-  },
-  {
-    "title": "Agricultural Data Use Documents",
-    "subtitle": "Ag data use agreements and related reference documents.",
-    "status": "Active",
-    "theme": "Agreements",
-    "img": "assets/wg-project-card-agricultural-data-use-documents.jpg",
-    "links": [
-      {
-        "label": "Project site ↗",
-        "href": "https://openteam-agreements.community/"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/agreements"
-      }
-    ],
-    "type": "Data Sovereignty"
-  },
-  {
-    "title": "Code of Conduct",
-    "subtitle": "Community expectations and participation guidelines.",
-    "status": "Active",
-    "theme": "Governance",
-    "img": "assets/wg-project-card-code-of-conduct.jpg",
-    "links": [
-      {
-        "label": "Project site ↗",
-        "href": "https://openteamag.gitlab.io/codesign/code-of-conduct/"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/codesign/code-of-conduct"
-      }
-    ],
-    "type": "Commons & Governance"
-  },
-  {
-    "title": "Marketplace Working Group",
-    "subtitle": "Working group charter, glossary, and shared framing for marketplace efforts.",
-    "status": "Archive",
-    "theme": "Working group",
-    "img": "assets/wg-project-card-marketplace-working-group.jpg",
-    "links": [
-      {
-        "label": "Project site ↗",
-        "href": "https://openteamag.gitlab.io/codesign/markets/"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/codesign/markets"
-      }
-    ],
-    "type": "Governance in Practice"
-  },
-  {
-    "title": "PCSC farmOS Module",
-    "subtitle": "Project space for a farmOS module and related implementation notes.",
-    "status": "Archive",
-    "theme": "farmOS",
-    "img": "assets/wg-project-card-pcsc-farmos-module.jpg",
-    "links": [
-      {
-        "label": "Project site ↗",
-        "href": "https://openteamag.gitlab.io/codesign/pcsc/"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/codesign/pcsc"
-      }
-    ],
-    "type": "Interoperability"
-  },
-  {
-    "title": "Northeast Grazing and Soil Carbon Network",
-    "subtitle": "Network hub for grazing and soil carbon collaboration materials.",
-    "status": "Archive",
-    "theme": "Soil carbon",
-    "img": "assets/wg-project-card-northeast-grazing-and-soil-carbon-network.jpg",
-    "links": [
-      {
-        "label": "Project site ↗",
-        "href": "https://openteamag.gitlab.io/codesign/grazing-SC-network/"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/codesign/grazing-SC-network"
-      }
-    ],
-    "type": "Regenerative Economics"
-  },
-  {
-    "title": "Ag Data Wallet",
-    "subtitle": "Project site for Agricultural Data Wallet materials and outcomes.",
-    "status": "Archive",
-    "theme": "Data tools",
-    "img": "assets/wg-project-card-ag-data-wallet.jpg",
-    "links": [
-      {
-        "label": "Project site ↗",
-        "href": "https://openteamag.gitlab.io/agricultural-data-wallet/"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/ag-data-wallet"
-      }
-    ],
-    "type": "Data Trust Development"
-  },
-  {
-    "title": "OpenTEAM Convention",
-    "subtitle": "Repository folder for OpenTEAM Convention materials.",
-    "status": "Active",
-    "theme": "Governance",
-    "img": "assets/wg-project-card-openteam-convention.jpg",
-    "links": [
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/ag-data-wallet/openteam-convention"
-      }
-    ],
-    "type": "Commons & Governance"
-  },
-  {
-    "title": "Documentation",
-    "subtitle": "Top-level documentation repositories and related assets.",
-    "status": "Active",
-    "theme": "Docs",
-    "img": "assets/wg-project-card-documentation.jpg",
-    "links": [
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/documentation"
-      }
-    ],
-    "type": "Data Trust Development"
-  },
-  {
-    "title": "USDA Cooperative Agreements",
-    "subtitle": "Folder for cooperative agreement materials and related project work.",
-    "status": "Archive",
-    "theme": "Agreements",
-    "img": "assets/wg-project-card-usda-cooperative-agreements.jpg",
-    "links": [
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
-      }
-    ],
-    "type": "Data Sovereignty"
-  },
-  {
-    "title": "TRAC — Tech Registry for Agricultural Conservation",
-    "subtitle": "Applying FAIR principles to NRCS tool discovery and management. A 'one-stop-shop' registry enabling authoritative listings, robust search, and community feedback for USDA conservation tools.",
-    "status": "Active",
-    "theme": "Registry",
-    "img": "assets/wg-project-card-fair-tech-registry-documentation.jpg",
-    "report_date": "September 2025",
-    "partners": ["USDA NRCS", "OpenTEAM", "Wolfe's Neck Center", "EcoData"],
-    "contacts": ["Melanie Kammerer — mkammerer@ecodata.tech", "Ben Weinberg — bweinberg@wolfesneck.org", "Dorn Cox — dorn@openteam.community"],
-    "outcomes": [
-      "User Needs Assessment summarizing NRCS priorities for a tools registry",
-      "FAIR Implementation Strategy with resources for evaluating tool alignment with FAIR principles",
-      "Functional Proof-of-Concept with interactive dashboard, commenting system, and favorites management"
-    ],
-    "links": [
-      {
-        "label": "Project Documentation ↗",
-        "href": "https://openteamag.gitlab.io/codesign/fair-registry/"
-      },
-      {
-        "label": "FAIR Tool Self-Assessment (SurveyStack) ↗",
-        "href": "https://surveystack.io"
-      },
-      {
-        "label": "Prototype Walkthrough ↗",
-        "href": "https://trac-prototype.bubbleapps.io/version-test/home/1746823554759x940046122529325000"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/fair-tech-registry"
-      }
-    ],
-    "type": "Data Trust Development"
-  },
-  {
-    "title": "PODS — Producer Operations Data System",
-    "subtitle": "Advancing interoperability of the NRCS Producer Operations Data System — an NRCS-branded farmOS instance — through standardized soil health data, the Common Farm Convention, and the Modus Lab Method Library.",
-    "status": "Active",
-    "theme": "Data infrastructure",
-    "img": "assets/wg-project-card-pcsc-farmos-module.jpg",
-    "report_date": "2025",
-    "partners": ["USDA NRCS", "OpenTEAM", "Wolfe's Neck Center", "Purdue Axi Lab", "Our Sci", "farmOS"],
-    "legislation": "2018 Farm Bill & OPEN Government Data Act",
-    "outcomes": [
-      "Common Farm Convention: data transfer standard for farm management data using farmOS's data model",
-      "Modus Lab Method Library: central repository tracking which soil testing labs use which methods",
-      "Comprehensive Needs Assessment: analysis based on 19 NRCS stakeholder interviews mapping data flows"
-    ],
-    "links": [
-      {
-        "label": "PODS Report ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
-      },
-      {
-        "label": "farmOS ↗",
-        "href": "https://farmos.org"
-      },
-      {
-        "label": "Modus / AgGateway ↗",
-        "href": "https://aggateway.org"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
-      }
-    ],
-    "type": "Interoperability"
-  },
-  {
-    "title": "CCD — Conservation Cost Data System",
-    "subtitle": "Designing an effective system for collecting, storing, and managing NRCS conservation practice cost data — enabling receipt-based collection with AI processing to improve accuracy, transparency, and payment schedules.",
-    "status": "Active",
-    "theme": "Data infrastructure",
-    "img": "assets/wg-project-card-usda-cooperative-agreements.jpg",
-    "report_date": "2025",
-    "partners": ["USDA NRCS", "OpenTEAM", "Wolfe's Neck Center", "Purdue Axi Lab", "Our Sci"],
-    "vision": "Transition NRCS to a predominantly receipt-based conservation practice cost data system leveraging AI to improve accuracy, efficiency, and transparency.",
-    "outcomes": [
-      "CCDS Conceptual Design: architecture overview and detailed module functionality",
-      "Data Structures, Conventions & Dictionaries: standards and integration architecture",
-      "Cost Data Collection CEMA: blueprint for critical data collection and storage"
-    ],
-    "links": [
-      {
-        "label": "CCD Report ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
-      },
-      {
-        "label": "USDA Cooperative Agreements ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
-      },
-      {
-        "label": "GitLab ↗",
-        "href": "https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements"
-      }
-    ],
-    "type": "Data Sovereignty"
-  }
-];
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-inner">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="assets/openteam_logo.svg" alt="OpenTEAM" style="width:110px;height:auto;filter:brightness(0) invert(1);opacity:0.92;">
+      <div class="bdiv"></div>
+      <span class="bsub">Projects &amp; Collabathons</span>
+    </a>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="#" class="cur">Projects</a>
+      <a href="index.html#library">Tools</a>
+      <a href="https://forum.goatech.org" target="_blank">Forum</a>
+      <a href="https://gitlab.com/OpenTEAMAg" target="_blank">GitLab</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-in">
+    <div class="hero-ey">OpenTEAM · Projects &amp; Collabathons</div>
+    <h1>Where community priorities<br><span>become shared projects</span></h1>
+    <p class="hero-d">Testing workflows, developing templates, and publishing reusable outputs — chosen by the community based on field relevance, interoperability, and long-term stewardship. Land steward trust and data sovereignty are front and center.</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-n">20+</div><div class="stat-l">Active Projects</div></div>
+      <div class="stat"><div class="stat-n">40+</div><div class="stat-l">Contributing Orgs</div></div>
+      <div class="stat"><div class="stat-n">8</div><div class="stat-l">Static Sites Published</div></div>
+      <div class="stat"><div class="stat-n">6</div><div class="stat-l">Focus Areas</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PARTICIPATE STRIP -->
+<div class="part-strip">
+  <div class="part-in">
+    <a class="pcard" href="https://www.hylo.com/groups/openteam" target="_blank" rel="noopener">
+      <div class="pcard-ico" style="background:#eaf3ec;">
+        <svg viewBox="0 0 22 22" fill="none" stroke="#1e4d2b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 2C6 2 2 5.6 2 10c0 2.3 1 4.4 2.7 5.9L4 20l4.3-1.4A9.3 9.3 0 0 0 11 19c5 0 9-3.6 9-8s-4-9-9-9z"/>
+          <path d="M7 10h.01M11 10h.01M15 10h.01"/>
+        </svg>
+      </div>
+      <div>
+        <div class="pcard-verb j">Join</div>
+        <div class="pcard-t">Community Calls</div>
+        <div class="pcard-d">Connect on Hylo · Shape priorities</div>
+      </div>
+    </a>
+    <a class="pcard" href="https://forum.goatech.org/c/open-technology-ecosystem-for-agricultural-management/27" target="_blank" rel="noopener">
+      <div class="pcard-ico" style="background:#fef3c7;">
+        <svg viewBox="0 0 22 22" fill="none" stroke="#92600a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 2 2 7 11 12 20 7 11 2"/>
+          <polyline points="2 17 11 22 20 17"/>
+          <polyline points="2 12 11 17 20 12"/>
+        </svg>
+      </div>
+      <div>
+        <div class="pcard-verb b">Build</div>
+        <div class="pcard-t">Collabathons</div>
+        <div class="pcard-d">Structured sprints → reusable outputs</div>
+      </div>
+    </a>
+    <a class="pcard" href="videos.html" target="_blank" rel="noopener">
+      <div class="pcard-ico" style="background:#dbeafe;">
+        <svg viewBox="0 0 22 22" fill="none" stroke="#1a4f7a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"/>
+          <circle cx="6" cy="11" r="3"/>
+          <circle cx="18" cy="17" r="3"/>
+          <line x1="8.59" y1="12.51" x2="15.42" y2="16.49"/>
+          <line x1="15.41" y1="5.51" x2="8.59" y2="9.49"/>
+        </svg>
+      </div>
+      <div>
+        <div class="pcard-verb s">Share</div>
+        <div class="pcard-t">Demos &amp; Learning</div>
+        <div class="pcard-d">Show what works · In-Depths library</div>
+      </div>
+    </a>
+    <div class="pcard" onclick="openContribPanel()" style="cursor:pointer;">
+      <div class="pcard-ico" style="background:#ede9fe;">
+        <svg viewBox="0 0 22 22" fill="none" stroke="#4c1d95" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          <line x1="11" y1="9" x2="11" y2="14"/>
+          <line x1="8.5" y1="11.5" x2="13.5" y2="11.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="pcard-verb c">Contribute</div>
+        <div class="pcard-t">Send &amp; Attribute</div>
+        <div class="pcard-d">Add docs, links, and attribution</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="fbar">
+  <div class="fbar-in">
+    <span class="fl">Filter:</span>
+    <button class="fb on" data-f="all">All</button>
+    <button class="fb" data-f="data-trust">Data Trust</button>
+    <button class="fb" data-f="commons">Commons &amp; Governance</button>
+    <button class="fb" data-f="sovereignty">Data Sovereignty</button>
+    <button class="fb" data-f="interop">Interoperability</button>
+    <button class="fb" data-f="regen-econ">Regen Economics</button>
+    <button class="fb" data-f="infrastructure">Infrastructure</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="sh" style="margin-top:2px;">Active Projects, Collabathons &amp; Resources</div>
+  <div class="pgrid" id="pgrid"></div>
+</div>
+
+<!-- RAIL -->
+<div class="rail-sec">
+  <div class="rail-hd">All Projects — Quick Navigation · Click any card to open detail</div>
+  <div class="rail" id="pRail"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     METAGOV PROJECTS RAIL
+     Retained from OpenTEAM v9 site
+═══════════════════════════════════════════════════════ -->
+<div class="main" style="padding-top:0;padding-bottom:0;">
+  <div class="sh" style="margin-top:0;">Metagov Projects</div>
+</div>
+
+<div class="rail-sec" style="padding-top:18px;">
+  <div style="max-width:1240px;margin:0 auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+      <div style="display:flex;flex-wrap:wrap;gap:6px;" id="mgFilterChips">
+        <button class="fb on" data-mg="All" style="background:#1e4d2b;color:#fff;border-color:#1e4d2b;">All</button>
+        <button class="fb" data-mg="Community">Community</button>
+        <button class="fb" data-mg="Convening &amp; Experiences">Convening &amp; Experiences</button>
+        <button class="fb" data-mg="Governance Funding">Governance Funding</button>
+        <button class="fb" data-mg="Governance UX">Governance UX</button>
+        <button class="fb" data-mg="Interoperability">Interoperability</button>
+        <button class="fb" data-mg="Mapping Governance">Mapping Governance</button>
+        <button class="fb" data-mg="Network Building">Network Building</button>
+        <button class="fb" data-mg="Standards">Standards</button>
+      </div>
+      <a class="fb" href="https://metagov.org/projects/" target="_blank" rel="noopener" style="text-decoration:none;">Metagov Projects ↗</a>
+    </div>
+    <div style="overflow-x:auto;padding-bottom:8px;" id="mgRailWrap">
+      <div id="mgRail" style="display:flex;gap:12px;min-width:0;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
 const METAGOV_PROJECTS = [
   {
     "title": "The Protopian Fiction Prize",
@@ -880,322 +663,681 @@ const METAGOV_PROJECTS = [
   }
 ];
 
-// --- utilities
-function el(tag, attrs={}, children=[]) {
-  const n = document.createElement(tag);
-  Object.entries(attrs).forEach(([k,v])=>{ if(v===null || v===undefined) return; n.setAttribute(k,v); });
-  children.forEach(c=>{ if(typeof c === "string") n.appendChild(document.createTextNode(c)); else if(c) n.appendChild(c); });
-  return n;
-}
+let mgFilter = 'All';
 
-function sortItems(scope, items){
-  const sel = document.querySelector(`.rail-sort[data-scope="${scope}"]`);
-  const mode = sel ? sel.value : "Last updated";
-  const arr = items.slice();
-  if(mode === "Alphabetical") arr.sort((a,b)=>(a.title||"").localeCompare(b.title||""));
-  return arr;
-}
-
-function renderRail(cfg, items) {
-  const section = el("section", {class:"rail-section", "data-rail":cfg.id});
-  const header = el("div", {class:"rail-header"}, [
-    el("h2", {class:"rail-title"}, [cfg.title]),
-  ]);
-
-  if(cfg.showSort){
-    const sel = el("select", {class:"rail-sort", "data-scope":cfg.id, "aria-label":"Sort projects"});
-    (cfg.sortOptions || ["Alphabetical"]).forEach((opt,i)=>{
-      sel.appendChild(el("option", {value:opt, selected: i===0 ? "selected": null}, [opt]));
-    });
-    header.appendChild(sel);
-  }
-  section.appendChild(header);
-
-  if(cfg.showSearch || cfg.showFilters) {
-    const filterWrap = el("div", {class:"rail-filter", "data-scope":cfg.id});
-    const row = el("div", {class:"filter-row"});
-    if(cfg.showSearch) {
-      row.appendChild(el("input", {
-        class:"filter-search",
-        "data-scope":cfg.id,
-        type:"search",
-        placeholder: cfg.id === "openteam" ? "Filter OpenTEAM projects…" : "Filter Metagov projects…",
-        "aria-label": cfg.id === "openteam" ? "Filter OpenTEAM projects" : "Filter Metagov projects"
-      }));
-    }
-    if(cfg.showFilters) {
-      const chips = el("div", {class:"filter-chips", "data-scope":cfg.id});
-      (cfg.filters || ["All types"]).forEach((f,i)=>{
-        chips.appendChild(el("button", {
-          class: "chip" + (i===0 ? " is-active" : ""),
-          type:"button",
-          "data-value": f
-        }, [f]));
-      });
-      row.appendChild(chips);
-    }
-    filterWrap.appendChild(row);
-    section.appendChild(filterWrap);
-  }
-
-  const railWrap = el("div", {class:"rail-wrap"});
-  const left = el("button", {class:"rail-arrow rail-arrow--left", type:"button", "aria-label":"Scroll left"}, ["‹"]);
-  const right = el("button", {class:"rail-arrow rail-arrow--right", type:"button", "aria-label":"Scroll right"}, ["›"]);
-  const rail = el("div", {class:"rail", "data-scope":cfg.id});
-  items.forEach(item=> rail.appendChild(renderCard(cfg.id, item)));
-  railWrap.appendChild(left); railWrap.appendChild(rail); railWrap.appendChild(right);
-  section.appendChild(railWrap);
-  return section;
-}
-
-function renderCard(scope, item) {
-  if(scope === "openteam") {
-    // Rich card for TRAC, PODS, CCD — items that have outcomes[] or partners[]
-    const isRich = !!(item.outcomes && item.outcomes.length);
-    const href = (item.links?.[0]?.href || "#");
-    const card = el("article", {class:"pcard" + (isRich ? " pcard--rich" : ""), "data-theme": item.type || "All types"});
-
-    if(isRich) {
-      // Rich layout: image header + full body with outcomes, partners, links
-      const cover = el("div", {class:"pcard__cover pcard__cover--rich"}, [
-        el("img", {src:item.img || "assets/wg-project-card-placeholder.jpg", alt:"", loading:"lazy",
-          onerror:"this.onerror=null;this.src='assets/wg-project-card-placeholder.jpg';"}),
-        el("div", {class:"pcard__cover-overlay"}, [
-          el("div", {class:"pcard__cover-badge"}, [item.report_date || ""])
-        ])
-      ]);
-      const richBody = el("div", {class:"pcard__rich-body"});
-
-      const titleRow = el("div", {class:"pcard__title-row"}, [
-        el("div", {class:"pcard__title"}, [item.title]),
-        el("div", {class:"pcard__pills"}, [
-          item.status ? el("span", {class:"mini-pill mini-pill--" + (item.status==="Active"?"active":"archive")}, [item.status]) : null,
-          item.type ? el("span", {class:"mini-pill mini-pill--theme"}, [item.type]) : null,
-        ].filter(Boolean))
-      ]);
-      richBody.appendChild(titleRow);
-      richBody.appendChild(el("div", {class:"pcard__sub"}, [item.subtitle || ""]));
-
-      // Partners
-      if(item.partners && item.partners.length) {
-        const pw = el("div", {class:"pcard__partners"});
-        pw.appendChild(el("div", {class:"pcard__section-label"}, ["Partners"]));
-        const pp = el("div", {class:"pcard__partner-pills"});
-        item.partners.forEach(p => pp.appendChild(el("span", {class:"mini-pill mini-pill--partner"}, [p])));
-        pw.appendChild(pp);
-        richBody.appendChild(pw);
-      }
-
-      // Outcomes
-      if(item.outcomes && item.outcomes.length) {
-        const ow = el("div", {class:"pcard__outcomes"});
-        ow.appendChild(el("div", {class:"pcard__section-label"}, ["Key Outcomes"]));
-        const ul = el("ul", {class:"pcard__outcome-list"});
-        item.outcomes.forEach(o => ul.appendChild(el("li", {}, [o])));
-        ow.appendChild(ul);
-        richBody.appendChild(ow);
-      }
-
-      // Links row
-      if(item.links && item.links.length) {
-        const lw = el("div", {class:"pcard__link-row"});
-        item.links.forEach(l => {
-          lw.appendChild(el("a", {class:"pill secondary", href:l.href, target:"_blank", rel:"noopener"}, [l.label]));
-        });
-        richBody.appendChild(lw);
-      }
-
-      card.appendChild(cover);
-      card.appendChild(richBody);
-      return card;
-    }
-
-    // Standard card (original layout)
-    const a = el("a", {class:"pcard__link", href, target:"_blank", rel:"noopener"});
-    const cover = el("div", {class:"pcard__cover"}, [
-      el("img", {src:item.img || "assets/wg-project-card-placeholder.jpg", alt:"", loading:"lazy",
-        onerror:"this.onerror=null;this.src='assets/wg-project-card-placeholder.jpg';"})
-    ]);
-    const meta = el("div", {class:"pcard__meta"}, [
-      el("div", {class:"pcard__title"}, [item.title]),
-      el("div", {class:"pcard__sub"}, [item.subtitle || ""]),
-      el("div", {class:"pcard__pills"}, [
-        item.status ? el("span", {class:"mini-pill"}, ["Status: " + item.status]) : null,
-        item.type ? el("span", {class:"mini-pill mini-pill--theme"}, [item.type]) : null,
-      ].filter(Boolean))
-    ]);
-    const actions = el("div", {class:"pcard__actions"}, [
-      el("span", {class:"pcard__arrow","aria-hidden":"true"}, ["↗"])
-    ]);
-    a.appendChild(cover); a.appendChild(meta); a.appendChild(actions);
-    card.appendChild(a);
-
-    if(item.links && item.links.length>1) {
-      const more = el("details", {class:"pcard__more"}, [
-        el("summary", {class:"pcard__morebtn"}, ["more"]),
-        el("div", {class:"pcard__morebody"}, item.links.map(l =>
-          el("a", {class:"pill secondary", href:l.href, target:"_blank", rel:"noopener"}, [l.label])
-        ))
-      ]);
-      card.appendChild(more);
-    }
-    return card;
-  }
-
-  // metagov — matches screenshot 3: left image, bold title, short desc, tag pills, More button
-  const card = el("article", {class:"pcard mg-card", "data-theme": item.category || "All"});
-
-  // Left: cover image (portrait crop matching pcard__cover dimensions)
-  const imgSrc = item.img || "assets/wg-project-card-placeholder.jpg";
-  const cover = el("div", {class:"pcard__cover"}, [
-    el("img", {src:imgSrc, alt:"", loading:"lazy",
-      onerror:"this.onerror=null;this.src='assets/wg-project-card-placeholder.jpg';"})
-  ]);
-
-  // Right: title + description (capped at 2 lines) + status/source pills
-  const statusClass = item.status === "Active" ? "mini-pill mini-pill--active"
-    : item.status === "Complete" ? "mini-pill mini-pill--active"
-    : "mini-pill mini-pill--research";
-  const pillsEl = el("div", {class:"pcard__pills"}, [
-    item.category ? el("span", {class:"mini-pill mini-pill--theme"}, [item.category]) : null,
-    item.type ? el("span", {class:"mini-pill"}, [item.type]) : null,
-  ].filter(Boolean));
-
-  const meta = el("div", {class:"pcard__meta"}, [
-    el("div", {class:"pcard__title"}, [item.title]),
-    el("div", {class:"pcard__sub mg-card__desc"}, [item.desc || "A Metagov project."]),
-    pillsEl
-  ]);
-
-  // Action: "More ↗" button linking out
-  const actions = el("div", {class:"pcard__actions"});
-  const moreBtn = el("a", {class:"mg-card__more-btn", href:item.href, target:"_blank", rel:"noopener"}, ["More ↗"]);
-  actions.appendChild(moreBtn);
-
-  // Assemble using the standard pcard__link grid (image | meta | actions)
-  const link = el("div", {class:"pcard__link pcard__link--grid"});
-  link.appendChild(cover); link.appendChild(meta); link.appendChild(actions);
-  card.appendChild(link);
-  return card;
-}
-
-function applyFilters(scope) {
-  const q = (document.querySelector(`.filter-search[data-scope="${scope}"]`)?.value || "").toLowerCase().trim();
-  const activeChip = document.querySelector(`.filter-chips[data-scope="${scope}"] .chip.is-active`);
-  const active = activeChip ? activeChip.getAttribute("data-value") : "All";
-  const allValues = ["All types", "All"];
-
-  const rail = document.querySelector(`.rail[data-scope="${scope}"]`);
+function renderMgRail() {
+  const rail = document.getElementById('mgRail');
   if(!rail) return;
-
-  rail.querySelectorAll(".pcard,.mg-card").forEach(card=>{
-    const theme = card.getAttribute("data-theme") || "All";
-    const txt = card.innerText.toLowerCase();
-    const okQ = !q || txt.includes(q);
-    const okT = allValues.includes(active) ? true : (theme === active);
-    card.style.display = (okQ && okT) ? "" : "none";
-  });
+  const items = mgFilter === 'All' ? METAGOV_PROJECTS : METAGOV_PROJECTS.filter(p=>p.category===mgFilter);
+  rail.innerHTML = items.map(p=>`
+    <a href="${p.href}" target="_blank" rel="noopener" style="flex:0 0 220px;border-radius:10px;border:1px solid #ddd8ce;background:#fff;text-decoration:none;color:#1a1a14;display:flex;flex-direction:column;overflow:hidden;transition:border-color 150ms,box-shadow 150ms,transform 150ms;" onmouseover="this.style.borderColor='#1e4d2b';this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 22px rgba(30,77,43,.11)';" onmouseout="this.style.borderColor='#ddd8ce';this.style.transform='';this.style.boxShadow='';">
+      <div style="height:100px;overflow:hidden;border-bottom:1px solid #f0ece4;">
+        <img src="${p.img}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">
+      </div>
+      <div style="padding:10px 12px;flex:1;display:flex;flex-direction:column;">
+        <div style="font-size:12.5px;font-weight:700;line-height:1.25;margin-bottom:4px;">${p.title}</div>
+        <div style="font-size:11px;color:#6b6760;line-height:1.4;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${p.desc}</div>
+        <div style="margin-top:7px;display:flex;flex-wrap:wrap;gap:4px;">
+          ${p.category ? `<span style="font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:3px;background:#eaf3ec;color:#1e4d2b;">${p.category}</span>` : ''}
+          ${p.type ? `<span style="font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:3px;background:#f3f4f6;color:#374151;">${p.type}</span>` : ''}
+        </div>
+      </div>
+    </a>`).join('');
 }
 
-function wireArrows(){
-  document.querySelectorAll(".rail-wrap").forEach(w=>{
-    const rail = w.querySelector(".rail");
-    const left = w.querySelector(".rail-arrow--left");
-    const right = w.querySelector(".rail-arrow--right");
-    const step = ()=> Math.max(280, Math.floor(rail.clientWidth*0.85));
-    left.addEventListener("click", ()=> rail.scrollBy({left:-step(), behavior:"smooth"}));
-    right.addEventListener("click", ()=> rail.scrollBy({left:step(), behavior:"smooth"}));
-    const update=()=>{
-      const max = rail.scrollWidth - rail.clientWidth - 2;
-      left.disabled = rail.scrollLeft <= 2;
-      right.disabled = rail.scrollLeft >= max;
-    };
-    rail.addEventListener("scroll", update, {passive:true});
-    window.addEventListener("resize", update);
-    update();
+document.getElementById('mgFilterChips').addEventListener('click', e=>{
+  const btn = e.target.closest('[data-mg]');
+  if(!btn) return;
+  document.querySelectorAll('#mgFilterChips [data-mg]').forEach(b=>{
+    b.classList.remove('on');
+    b.style.background='';b.style.color='';b.style.borderColor='';
   });
-}
+  btn.classList.add('on');
+  btn.style.background='#1e4d2b';btn.style.color='#fff';btn.style.borderColor='#1e4d2b';
+  mgFilter = btn.dataset.mg;
+  renderMgRail();
+});
 
-// --- Metagov enrichment (img + description)
-const METAGOV_CACHE_KEY = "metagovProjectCache_v1";
-function loadCache(){
-  try { return JSON.parse(localStorage.getItem(METAGOV_CACHE_KEY) || "{}"); } catch(e){ return {}; }
-}
-function saveCache(obj){ try { localStorage.setItem(METAGOV_CACHE_KEY, JSON.stringify(obj)); } catch(e){} }
-
-async function enrichMetagov() {
-  const cache = loadCache();
-  const cards = Array.from(document.querySelectorAll(".metagov-card"));
-  for (const card of cards) {
-    const href = card.getAttribute("data-href");
-    if(!href) continue;
-    const imgEl = card.querySelector(".pcard__cover img");
-    const descEl = card.querySelector(".pcard__sub");
-    if(cache[href]) {
-      if(cache[href].img) imgEl.src = cache[href].img;
-      if(cache[href].desc) descEl.textContent = cache[href].desc;
-      continue;
-    }
-    try {
-      const res = await fetch(href, {mode:"cors"});
-      const text = await res.text();
-      const doc = new DOMParser().parseFromString(text, "text/html");
-      const ogImg = doc.querySelector('meta[property="og:image"]')?.getAttribute("content") || "";
-      const ogDesc = doc.querySelector('meta[property="og:description"]')?.getAttribute("content") ||
-                     doc.querySelector('meta[name="description"]')?.getAttribute("content") || "";
-      const heroP = doc.querySelector("main p")?.textContent?.trim() || "";
-      const desc = (ogDesc || heroP).replace(/\s+/g," ").slice(0, 140);
-      const img = ogImg;
-      if(img) imgEl.src = img;
-      if(desc) descEl.textContent = desc;
-      cache[href] = {img, desc};
-      saveCache(cache);
-    } catch(e) {
-      // leave fallback
-      descEl.textContent = "metagov.org/projects";
-    }
-  }
-}
-
-function mount() {
-  const root = document.getElementById("rails-root");
-  root.innerHTML = "";
-  RAILS_CONFIG.forEach(cfg=>{
-    if(!cfg.show) return;
-    const raw = cfg.id === "openteam" ? OPENTEAM_PROJECTS : METAGOV_PROJECTS;
-    const items = sortItems(cfg.id, raw);
-    root.appendChild(renderRail(cfg, items));
-  });
-  wireArrows();
-
-  document.addEventListener("click", (e)=>{
-    const chip = e.target.closest(".chip");
-    if(chip) {
-      const wrap = chip.closest(".filter-chips");
-      if(wrap) {
-        wrap.querySelectorAll(".chip").forEach(c=>c.classList.remove("is-active"));
-        chip.classList.add("is-active");
-        applyFilters(wrap.getAttribute("data-scope"));
-      }
-    }
-  });
-  document.addEventListener("input", (e)=>{
-    const inp = e.target.closest(".filter-search");
-    if(inp) applyFilters(inp.getAttribute("data-scope"));
-  });
-  document.addEventListener("change", (e)=>{
-    const sel = e.target.closest(".rail-sort");
-    if(sel) mount();
-  });
-  applyFilters("openteam");
-  applyFilters("metagov");
-  // Data is inline — no async enrichment needed
-  // Data is inline — no async enrichment needed
-  // enrichMetagov() was removed; metagov cards now ship with real images and descriptions
-}
-
-mount();
+renderMgRail();
+})();
 </script>
-<script src="script.js"></script>
+
+<!-- FOOTER -->
+<div class="foot">
+  <span>OpenTEAM · <a href="index.html">openteam.community</a> · <a href="https://gitlab.com/OpenTEAMAg" target="_blank">GitLab ↗</a></span>
+  <span><a href="licenses.html" target="_blank">Licenses</a> · <a href="code-of-conduct.html" target="_blank">Code of Conduct</a> · <a href="https://www.hylo.com/groups/openteam" target="_blank">Hylo</a></span>
+</div>
+
+<!-- DRAWER -->
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="dr-head">
+    <div class="dr-top">
+      <button class="dr-close" onclick="closeDrawer()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/></svg>
+      </button>
+    </div>
+    <div class="dr-band" id="drBand" style="margin:0 20px 0;">
+      <div class="dr-icon" id="drIcon"></div>
+      <div>
+        <div class="dr-t" id="drTitle"></div>
+        <div class="dr-sub" id="drSub"></div>
+      </div>
+    </div>
+    <div class="dr-tabs">
+      <button class="dtab on" data-dt="about">About</button>
+      <button class="dtab" data-dt="resources">Resources &amp; Links</button>
+      <button class="dtab" data-dt="contribute">Contribute</button>
+    </div>
+  </div>
+
+  <div class="dpanel on" id="dp-about">
+    <p class="dr-desc" id="drDesc"></p>
+    <div class="dr-sec">Focus areas</div>
+    <div class="dr-chips" id="drChips"></div>
+    <div class="dr-sec">Lead organization &amp; contributors</div>
+    <div class="dr-info" id="drContrib"></div>
+    <div class="dr-sec" style="margin-top:18px;">Status &amp; outputs</div>
+    <div class="dr-info" id="drStatus"></div>
+    <div class="dr-sec" style="margin-top:22px;">Express gratitude for this work</div>
+    <div class="grat-row" id="gratRow"></div>
+  </div>
+
+  <div class="dpanel" id="dp-resources">
+    <p style="font-size:13px;color:var(--dim);margin:0 0 14px;line-height:1.5;">Documentation sites, GitLab repos, static sites, and source materials for this project.</p>
+    <div class="dr-links" id="drLinks"></div>
+    <div id="pdfWrap" style="display:none;">
+      <div class="dr-sec" style="margin-top:22px;">Source document preview</div>
+      <div class="pdf-wrap">
+        <div class="pdf-hd">
+          <span id="pdfLabel">Document</span>
+          <a id="pdfOpen" href="#" target="_blank">Open in new tab ↗</a>
+        </div>
+        <iframe class="pdf-fr" id="pdfFrame" title="Document preview"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="dpanel" id="dp-contribute">
+    <p style="font-size:13px;color:var(--dim);margin:0 0 18px;line-height:1.5;">Add a document, link, or attribution to this project. Contributions are reviewed by the OpenTEAM stewardship team before publication.</p>
+    <div class="cf">
+      <div class="cr">
+        <div class="fg"><label>Your name / org</label><input type="text" placeholder="e.g. Jane — Green Hollow Farm"></div>
+        <div class="fg"><label>Contribution type</label>
+          <select>
+            <option value="">— select —</option>
+            <option>Add a resource link</option>
+            <option>Submit a document</option>
+            <option>Add attribution</option>
+            <option>Propose update</option>
+            <option>Report an issue</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>URL or resource description</label><input type="text" placeholder="https:// or describe your contribution…"></div>
+      <div class="fg"><label>Attribution &amp; context</label><textarea placeholder="Who created this? What is it for? Any consent or access notes…"></textarea></div>
+      <button class="sbtn" onclick="doSubmit(event)">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        Submit Contribution
+      </button>
+      <div class="conf" id="subConf">✓ Contribution received — the stewardship team will review and follow up. Thank you!</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════ PALETTE ═══════════════════════════ */
+const PAL = {
+  'data-trust':   {bg:'#1e4d2b', tag:'#d4edda', tagc:'#1e6b3a'},
+  'commons':      {bg:'#1a4f7a', tag:'#dbeafe', tagc:'#1a4f7a'},
+  'sovereignty':  {bg:'#7a4520', tag:'#fde8d0', tagc:'#7a4520'},
+  'interop':      {bg:'#4c1d95', tag:'#ede9fe', tagc:'#4c1d95'},
+  'regen-econ':   {bg:'#0f766e', tag:'#ccfbf1', tagc:'#0f766e'},
+  'infrastructure':{bg:'#374151',tag:'#f3f4f6',tagc:'#374151'},
+};
+
+/* ═══════════════════════════ UNIQUE ICONS ═══════════════════════════ */
+function icon(id,s='white'){
+const I={
+'fair-tech':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3l2 4.5h5l-4 3 1.5 5L14 13l-4.5 2.5 1.5-5L7 7.5h5z"/><circle cx="14" cy="20.5" r="5"/><path d="M11.5 20.5l2 2 4-3.5"/></svg>`,
+'ag-data-wallet':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="22" height="16" rx="2"/><path d="M3 13h22"/><circle cx="19" cy="18" r="2.5"/><path d="M8 5l4 3 4-3"/><path d="M19 18h.01"/></svg>`,
+'trac':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3l8 3.5v7.5c0 5-3.5 9-8 10.5C9.5 23 6 19 6 14V6.5z"/><path d="M10 14.5l3 3 5.5-5.5"/></svg>`,
+'pcsc-farmos':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v9"/><circle cx="14" cy="5" r="2.5"/><path d="M8 8c-4 .5-5 4-5 6a9 9 0 0 0 11 8.7A9 9 0 0 0 25 14c0-2-1-5.5-5-6"/><path d="M6 19c0 2 2.5 4 4.5 4.5"/></svg>`,
+'glcdi':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24c2.5-5 6-8 10-8s7.5 3 10 8"/><path d="M14 3v9"/><path d="M9 7c1.5-3 3-4 5-4s3.5 1 5 4"/><path d="M5.5 16c1-2 2.5-3.5 4-3.5M22.5 16c-1-2-2.5-3.5-4-3.5"/></svg>`,
+'ag-data-use':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h14l4 4v18H3V3z"/><path d="M17 3v6h8"/><path d="M8 14h12M8 18h9M8 10h6"/></svg>`,
+'marketplace':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h20M5 12V5.5h18V12"/><path d="M4 12l2 14h16l2-14"/><path d="M10.5 12v3a2 2 0 0 0 4 0v-3"/></svg>`,
+'soil-stack':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4"  width="22" height="6" rx="1.5"/><rect x="3" y="12" width="22" height="6" rx="1.5"/><rect x="3" y="20" width="22" height="5" rx="1.5"/><circle cx="22" cy="7"  r="2" fill="${s}" stroke="none"/><circle cx="22" cy="15" r="2" fill="${s}" stroke="none"/></svg>`,
+'ubc-gov':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3L3 9.5v3h22v-3z"/><rect x="5"  y="12.5" width="4" height="10"/><rect x="12" y="12.5" width="4" height="10"/><rect x="19" y="12.5" width="4" height="10"/><path d="M3 22.5h22"/></svg>`,
+'convention':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="11"/><path d="M14 3v11l6.5 4"/><path d="M3 14h22M14 3a11 11 0 0 1 0 22M14 3a11 11 0 0 0 0 22"/></svg>`,
+'equity':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9"  cy="9"  r="4"/><circle cx="19" cy="9"  r="4"/><path d="M2 24c0-3 3-5 7-5s7 2 7 5"/><path d="M14 24c0-3 3-5 7-5"/><path d="M9 13v11"/></svg>`,
+'pods':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="14" cy="7"   rx="10" ry="4"/><path d="M4 7v7c0 2.2 4.5 4 10 4s10-1.8 10-4V7"/><path d="M4 14v7c0 2.2 4.5 4 10 4s10-1.8 10-4v-7"/></svg>`,
+'hcd':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9"  cy="8" r="3.5"/><circle cx="19" cy="8" r="3.5"/><path d="M9 11.5v3a5 5 0 0 0 10 0v-3"/><path d="M14 17.5V26M10 26h8"/></svg>`,
+'range-c':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20c3-8 6-12 11-12s8 4 11 12"/><path d="M8 20c1.5-4 3.5-6 6-6s4.5 2 6 6"/><circle cx="14" cy="6" r="3"/><path d="M14 9v3"/></svg>`,
+'env-claims':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="22" height="20" rx="2"/><path d="M3 10h22"/><path d="M9 4V10M14 4V10M19 4V10"/><path d="M7 15h14M7 19h9"/></svg>`,
+'ccd':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="20" height="22" rx="2"/><path d="M4 9h20"/><path d="M9 3v6M14 3v6M19 3v6"/><path d="M8 15h12M8 19h8"/><circle cx="20" cy="20" r="4"/><path d="M18.5 20l1 1 2-2"/></svg>`,
+'ne-grazing':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22c0-6 5-10 11-10s11 4 11 10"/><path d="M14 12V5"/><path d="M10 7c1-2 2.5-3 4-3s3 1 4 3"/><path d="M7 22c0-3 3-5 7-5s7 2 7 5"/></svg>`,
+'usda-coop':`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3l9 4v8c0 5-4 9-9 10C9 24 5 20 5 15V7z"/><path d="M9 14l3.5 3.5L19 11"/></svg>`,
+};
+return I[id]||`<svg viewBox="0 0 28 28" fill="none" stroke="${s}" stroke-width="1.8"><circle cx="14" cy="14" r="9"/><path d="M14 9v5l3 3"/></svg>`;
+}
+
+/* ═══════════════════════════ LINK ICONS ═══════════════════════════ */
+const LI={
+  doc:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2h8l3 3v9H1V2z"/><path d="M11 2v4h4"/><path d="M4 9h8M4 12h5"/></svg>`,
+  gitlab:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 10L8 14 2 10l2-7 1.5 4h5L12 3z"/></svg>`,
+  git:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="4" r="2"/><circle cx="11" cy="12" r="2"/><circle cx="11" cy="4" r="2"/><path d="M7 4h2M11 6v4"/></svg>`,
+  globe:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M2 8h12M8 2a9 9 0 0 1 0 12M8 2a9 9 0 0 0 0 12"/></svg>`,
+  tool:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2a4 4 0 0 0-4 4l-6 6a1.5 1.5 0 0 0 2 2l6-6a4 4 0 0 0 4-4z"/></svg>`,
+  std:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.5 3.5L8 10l-3 1.5.5-3.5L3 5.5 6.5 5z"/></svg>`,
+  part:`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12c0-2 1.5-3 4-3s4 1 4 3"/><circle cx="8" cy="6" r="2.5"/><circle cx="2.5" cy="8" r="1.5"/><circle cx="13.5" cy="8" r="1.5"/></svg>`,
+};
+
+/* ═══════════════════════════ PROJECT DATA ═══════════════════════════ */
+const PROJS = [
+{id:'fair-tech',cat:'data-trust',
+ title:'FAIR Tech Registry',
+ sub:'Collabathon · Documentation',
+ tags:['FAIR Principles','Registry','Assessment','Open Standards'],
+ lead:'OpenTEAM Community',lc:'#1e4d2b',
+ status:'Active · Static site published',
+ short:'A community-maintained registry applying FAIR principles (Findable, Accessible, Interoperable, Reusable) to agricultural technologies — enabling farmers and advisors to evaluate tools with trust and transparency.',
+ long:'The FAIR Tech Registry collabathon mapped the agricultural technology landscape against FAIR principles and produced a filterable, community-maintained registry. It includes the Ethical Technology Assessment (ETA) framework, interoperability scoring, and documentation standards. The collabathon output is published as a static site on GitLab and connects to the broader OpenTEAM ethical infrastructure work. Outputs include the ETA rubric now used in tool cards and dataset cards across the ecosystem.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: FarmOS · EPIC · Digital Green · LiteFarm · PASA · UBC · Soil & Water Outcomes Fund · Element 84 · Our Sci',
+ outputs:'Static site published · FAIR Tech Registry Documentation · ETA framework · Collabathon outputs on GitLab',
+ grat:{'🌱 Grateful':12,'⭐ Valuable':8,'🔗 Used this':5},
+ links:[
+   {n:'FAIR Tech Registry Documentation', t:'Static Site', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+   {n:'Fair Tech Registry Collabathon', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+ ]},
+
+{id:'ag-data-wallet',cat:'sovereignty',
+ title:'Ag Data Wallet',
+ sub:'Data Sovereignty · Producer Control',
+ tags:['Data Sovereignty','Producer Rights','Identity','Consent'],
+ lead:'OpenTEAM / Entidad',lc:'#7a4520',
+ status:'Active · Prototype in development',
+ short:'A farmer-controlled data wallet enabling producers to manage consent, share selectively, and maintain sovereignty over their agricultural data across the OpenTEAM ecosystem of tools.',
+ long:'The Ag Data Wallet gives producers a personal, portable record of their data and consent decisions. The wallet integrates with farmOS, SurveyStack, and other ecosystem tools via OAuth2/OADA. It builds on the Agriculturalists\' Bill of Data Rights and the full OpenTEAM data agreements framework. Connected to Entidad for identity and credentials, and informed by UBC ethical data governance research. The wallet is designed to be modular and field-readable — not just a legal artifact.',
+ contrib:'Lead: OpenTEAM Fellows · Entidad\n\nContributors: UBC · farmOS · SurveyStack · Our Sci · Terran Collective · EPIC · Digital Green',
+ outputs:'Prototype specification · OADA API integration · Connection to Data Use Agreements site · Entidad credential schema',
+ grat:{'🌱 Grateful':19,'⭐ Valuable':14,'🔗 Used this':7},
+ links:[
+   {n:'Ag Data Use Documents', t:'Static Site', u:'https://openteam-agreements.community/', i:'globe'},
+   {n:'Agriculturalists\' Bill of Data Rights', t:'Document', u:'https://openteam-agreements.community/billofrights/', i:'doc'},
+   {n:'Oath of Care for Ag Professionals', t:'Document', u:'https://openteam-agreements.community/oathofcare/', i:'doc'},
+   {n:'Ag Data Glossary', t:'Reference', u:'https://openteam-agreements.community/TermsandDefinitions/', i:'doc'},
+ ]},
+
+{id:'trac',cat:'data-trust',
+ title:'TRAC — Tech Registry for Agricultural Conservation',
+ sub:'USDA Cooperative Agreement · FAIR Tech Registry · October 2024–September 2025',
+ tags:['FAIR Tech Registry','NRCS Tools','Assessment','Open Standards'],
+ lead:'OpenTEAM · EcoData · Meridian · USDA NRCS',lc:'#1e4d2b',
+ status:'Complete · Proof-of-concept delivered',
+ short:'A functional FAIR Tech Registry proof-of-concept built under a USDA/NRCS cooperative agreement — enabling NRCS staff to discover, evaluate, and compare agricultural technology tools against FAIR (Findable, Accessible, Interoperable, Reusable) principles.',
+ long:'TRAC (Tech Registry for Agricultural Conservation) is formalized as a USDA/NRCS cooperative agreement (Oct 2024–Sep 2025), co-led by OpenTEAM, EcoData, and Meridian. It delivers a functional proof-of-concept FAIR Tech Registry built specifically for NRCS staff use — assessing USDA tools against the standardized FAIR criteria developed in the prior PODS Soil Health cooperative agreement. From the agreement purpose statement: \"This work is a timely contribution to agency-wide efforts towards a Common Conservation Data Management System that fully integrates key NRCS datasets (field records, soil samples, practice implementation costs) and tools to improve program implementation, track outcomes, and enable data-driven decision making.\"\n\nKey deliverables: User Needs Assessment identifying how NRCS staff discover and use tools; a FAIR Implementation Strategy with resources for evaluating tool alignment; and a functional browser-based prototype with interactive dashboard, tool filtering, commenting, and favoriting. The registry reduces duplicative development, strengthens external partnerships, and positions NRCS as a leader in open conservation technology. The FAIR Self-Assessment survey tool enables NRCS partners to self-evaluate their tools before submission.',
+ contrib:'Lead: OpenTEAM · EcoData (Melanie Kammerer) · Meridian · USDA NRCS\n\nContacts: Melanie Kammerer — mkammerer@ecodata.tech · Ben Weinberg — bweinberg@wolfesneck.org · Dorn Cox — dorn@openteam.community',
+ outputs:'User Needs Assessment · FAIR Implementation Strategy · Functional POC browser app (dashboard, filtering, commenting, favorites) · FAIR Self-Assessment survey tool · FAIR criteria framework (Appendix 10 of PODS report)',
+ grat:{'🌱 Grateful':9,'⭐ Valuable':11,'🔗 Used this':4},
+ links:[
+   {n:'TRAC Prototype (Bubble.io)', t:'Live Proof-of-Concept', u:'https://trac-prototype.bubbleapps.io/version-test/home/1746823554759x940046122529325000', i:'globe'},
+   {n:'FAIR Self-Assessment Survey', t:'Assessment Tool', u:'https://www.surveystack.io/survey/66f01dfff56bce40fc7a9c78/start', i:'tool'},
+   {n:'USDA Cooperative Agreements Folder', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements', i:'gitlab'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+ ]},
+
+{id:'pcsc-farmos',cat:'interop',
+ title:'PCSC farmOS Module',
+ sub:'Interoperability · USDA Cooperative Agreement',
+ tags:['farmOS','USDA PCSC','Interoperability','Carbon'],
+ lead:'farmOS · OpenTEAM',lc:'#4c1d95',
+ status:'Active · Module in production',
+ short:'A farmOS module developed under USDA Partnerships for Climate-Smart Commodities (PCSC) to standardize soil carbon and practice data collection across participating farms, using Modus-compliant schemas.',
+ long:'Developed through the USDA Cooperative Agreements (Modus and CCD) working group, the PCSC farmOS module extends farmOS with standardized data entry forms, Modus-compliant soil data export, and integration with the Conservation Cost Database. The module enables participating farms to contribute verified practice and outcomes data to USDA PCSC reporting pipelines while maintaining local data sovereignty. Connects directly to the PODS (Producer Operational Data System) architecture.',
+ contrib:'Lead: farmOS (Paul Weidner) · OpenTEAM\n\nContributors: USDA NRCS · Soil & Water Outcomes Fund · ESMC · Element 84',
+ outputs:'farmOS module released · Modus schema extensions · USDA PCSC data pipeline integration · USDA Cooperative Agreements folder (GitLab)',
+ grat:{'🌱 Grateful':22,'⭐ Valuable':18,'🔗 Used this':11},
+ links:[
+   {n:'farmOS', t:'Tool', u:'https://farmos.org', i:'tool'},
+   {n:'USDA Cooperative Agreements (Modus & CCD)', t:'GitLab Folder', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Modus / AgGateway Standard', t:'Standard', u:'https://aggateway.org', i:'std'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+ ]},
+
+{id:'glcdi',cat:'regen-econ',
+ title:'GLCDI',
+ sub:'Grazing Lands Carbon Data Initiative · Documentation',
+ tags:['Grazing Lands','Soil Carbon','Data Standards','Documentation'],
+ lead:'OpenTEAM · USDA NRCS',lc:'#0f766e',
+ status:'Active · Documentation site published',
+ short:'Standardizing carbon and ecological data collection across grazing land systems — enabling comparable outcomes measurement for regenerative grazing practice transitions at continental scale.',
+ long:'The Grazing Lands Carbon Data Initiative (GLCDI) builds shared data standards and field protocols for measuring soil carbon, plant diversity, and water dynamics on grazed land. Developed through OpenTEAM collabathons with NRCS, PASA, Point Blue, and Northeast Grazing Network partners. Documentation includes field methods, data dictionaries, Modus schema extensions, and integration with farmOS and SurveyStack field forms.',
+ contrib:'Lead: OpenTEAM · USDA NRCS\n\nContributors: Point Blue Conservation Science · PASA · Northeast Grazing and Soil Carbon Network · Millpont · Our Sci',
+ outputs:'GLCDI Documentation site · Field protocols · SurveyStack form templates · Modus schema extensions · Northeast Grazing Network connection',
+ grat:{'🌱 Grateful':17,'⭐ Valuable':13,'🔗 Used this':9},
+ links:[
+   {n:'GLCDI Documentation', t:'Static Site', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+   {n:'Northeast Grazing and Soil Carbon Network', t:'Project', u:'https://gitlab.com/OpenTEAMAg', i:'part'},
+   {n:'Range C and Crop C', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Conservation Cost Database (CCD)', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+ ]},
+
+{id:'ag-data-use',cat:'sovereignty',
+ title:'Ag Data Use Documents',
+ sub:'Consent Management · Legal Framework',
+ tags:['Consent','Legal Framework','Data Rights','Governance'],
+ lead:'OpenTEAM Tech Working Group',lc:'#7a4520',
+ status:'Published · Active iteration',
+ short:'A suite of human-readable, modular consent and data governance documents — Glossary, Oath of Care, Bill of Data Rights, and Hosting Agreement — the foundation for in-app consent management across the ecosystem.',
+ long:'These four documents — developed by 30+ organizations — establish the shared language and legal foundation for OpenTEAM\'s consent management system. The ultimate goal is icon-based, in-app, conditional data use agreements that keep producers in control. The suite is versioned and publicly iterated at openteam-agreements.community. Each document is linked to icons and definitions from the Ag Data Glossary.',
+ contrib:'Lead: OpenTEAM Tech Working Group\n\nContributors: Digital Green · IC-Foods · FarmOS · EPIC · Millpont · Terra Genesis · We Are For The Land Foundation · Soil & Water Outcomes Fund · Cool Farm Alliance · LandPKS · Open Rivers · LiteFarm · Open Food Network · Field to Market · Tech Matters · CFA · PASA · UBC · Point Blue · USDA-ARS · Terran Collective · ESMC · Our Sci · ReGrow · Element 84',
+ outputs:'Ag Data Glossary · Data Fiduciary Oath of Care · Agriculturalists\' Bill of Data Rights · Data Hosting & Storage Agreement · openteam-agreements.community site',
+ grat:{'🌱 Grateful':31,'⭐ Valuable':27,'🔗 Used this':16},
+ links:[
+   {n:'Agricultural Data Use Documents', t:'Static Site', u:'https://openteam-agreements.community/', i:'globe'},
+   {n:'Agriculturalists\' Bill of Data Rights', t:'Document', u:'https://openteam-agreements.community/billofrights/', i:'doc'},
+   {n:'Data Fiduciary Oath of Care', t:'Document', u:'https://openteam-agreements.community/oathofcare/', i:'doc'},
+   {n:'Data Hosting & Storage Agreement', t:'Document', u:'https://openteam-agreements.community/hostingandstorage/', i:'doc'},
+   {n:'Ag Data Glossary', t:'Reference Site', u:'https://openteam-agreements.community/TermsandDefinitions/', i:'doc'},
+ ]},
+
+{id:'marketplace',cat:'regen-econ',
+ title:'Marketplace Working Group',
+ sub:'Charter · Glossary · Regen Economics',
+ tags:['Market Infrastructure','Economics','Charter','Governance'],
+ lead:'OpenTEAM Community',lc:'#0f766e',
+ status:'Active working group',
+ short:'Developing shared vocabulary, governance patterns, and open infrastructure for transparent, equitable market mechanisms that support regenerative agriculture transitions without vendor lock-in.',
+ long:'The Marketplace Working Group is developing a charter and glossary for open, interoperable market infrastructure — covering carbon credits, ecosystem services payments, and producer-direct supply chains. The group works on preventing lock-in, enabling producer sovereignty, and connecting to the Environmental Claims Clearinghouse and Claims Engine project. Connects to PODS (Producer Operational Data System) and RegenScore.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: Field to Market · Cool Farm Alliance · ESMC · Millpont · RegenScore · Soil & Water Outcomes Fund',
+ outputs:'Charter document · Glossary · Environmental Claims Clearinghouse framework · Claims Engine spec · Connection to PODS',
+ grat:{'🌱 Grateful':8,'⭐ Valuable':12,'🔗 Used this':3},
+ links:[
+   {n:'Marketplace WG Charter & Glossary', t:'GitLab', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Environmental Claims Clearinghouse', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Producer Operational Data System', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+ ]},
+
+{id:'soil-stack',cat:'infrastructure',
+ title:'Soil Health Tech Stack',
+ sub:'Infrastructure · Interoperability Architecture',
+ tags:['Infrastructure','Soil Health','Tech Stack','Modus'],
+ lead:'OpenTEAM · farmOS · TSIP',lc:'#374151',
+ status:'Active · Architecture documented',
+ short:'A reference architecture mapping the complete open-source stack for soil health data — from field observation through analysis pipelines to reporting and market integration.',
+ long:'The Soil Health Tech Stack project documents the end-to-end open-source infrastructure for soil data: field collection (farmOS, SurveyStack, Field Methods), data standards (Modus/AgGateway, OADA), analysis (TSIP Ensemble Explorer, R/Python), and reporting (Cool Farm Tool, PCSC). Includes the Conservation Cost Database and Producer Operational Data System integration patterns. The Field Methods working group feeds directly into this stack.',
+ contrib:'Lead: farmOS · OpenTEAM · TSIP\n\nContributors: Our Sci · SurveyStack · Element 84 · USDA-ARS · Soil & Water Outcomes Fund',
+ outputs:'Architecture diagram · Integration guide · Field Methods working group outputs · Modus schema library',
+ grat:{'🌱 Grateful':14,'⭐ Valuable':11,'🔗 Used this':8},
+ links:[
+   {n:'Soil Health Tech Stack', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Field Methods Working Group', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Modus / AgGateway', t:'Standard', u:'https://aggateway.org', i:'std'},
+   {n:'TSIP Ensemble Explorer', t:'Tool', u:'https://tsip.org/tech', i:'tool'},
+ ]},
+
+{id:'ubc-gov',cat:'commons',
+ title:'UBC Ethical Data Governance',
+ sub:'Research · Commons & Governance',
+ tags:['Governance','Ethics','Research','Academic Partnership'],
+ lead:'University of British Columbia',lc:'#1a4f7a',
+ status:'Active research collaboration',
+ short:'University of British Columbia research partnership applying ethical data governance frameworks — polycentric governance, consent architecture, and Indigenous data sovereignty — to the OpenTEAM ecosystem.',
+ long:'The UBC collaboration brings academic rigor to OpenTEAM\'s governance design. Research covers polycentric data governance (building on Ostrom\'s commons theory), consent-forward architectures, Indigenous data sovereignty (OCAP principles), and trust infrastructure patterns. Outputs inform the Ag Data Wallet, TRAC credentialing system, and AKC Data & Trust framework. The HCD (Human-Centered Design) Working Group is closely connected to this work.',
+ contrib:'Lead: University of British Columbia\n\nContributors: OpenTEAM Fellows · IndigiDAO · AKC · Metagov · UBC Research teams',
+ outputs:'Research papers · Governance templates · TRAC framework integration · AKC Data Trust dimensions',
+ grat:{'🌱 Grateful':10,'⭐ Valuable':15,'🔗 Used this':4},
+ links:[
+   {n:'Ag Knowledge Concordance', t:'Partner Project', u:'https://agricultural-knowledge-concordance.github.io/Ag-Knowledge-Concordance/', i:'part'},
+   {n:'Metagov / KOI Pond', t:'Partner', u:'https://metagov.org/projects/koi-pond', i:'part'},
+   {n:'IndigiDAO', t:'Community Partner', u:'https://indigidao.org', i:'part'},
+ ]},
+
+{id:'convention',cat:'commons',
+ title:'OpenTEAM Convention',
+ sub:'Commons & Governance · Community Charter',
+ tags:['Governance','Charter','Commons','Community'],
+ lead:'OpenTEAM Community',lc:'#1a4f7a',
+ status:'Draft in community review',
+ short:'A foundational governance document establishing the principles, decision-making processes, and shared agreements that define how OpenTEAM operates as an open commons and evolving ecosystem.',
+ long:'The OpenTEAM Convention articulates the governance model for the ecosystem — covering how priorities are set, how working groups form and sunset, how conflicts are resolved, and how resources are stewarded. Draws on Sociocracy 3.0, Elinor Ostrom\'s commons design principles, and the Metagov governance pattern library. Connects to the Code of Conduct and License framework. Designed to grow alongside the community.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: Metagov · KOI Pond · UBC · Terran Collective',
+ outputs:'Convention draft · Governance patterns library · Code of Conduct integration · License framework',
+ grat:{'🌱 Grateful':7,'⭐ Valuable':9,'🔗 Used this':2},
+ links:[
+   {n:'OpenTEAM Convention', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Code of Conduct', t:'Document', u:'code-of-conduct.html', i:'doc'},
+   {n:'OpenTEAM Licenses', t:'Document', u:'licenses.html', i:'doc'},
+ ]},
+
+{id:'equity',cat:'sovereignty',
+ title:'Equity Working Group',
+ sub:'Data Sovereignty · Inclusion · Justice',
+ tags:['Equity','Indigenous Sovereignty','Inclusion','Justice'],
+ lead:'OpenTEAM Fellows · IndigiDAO',lc:'#7a4520',
+ status:'Active working group',
+ short:'Ensuring OpenTEAM technology, governance, and data practices center equity, Indigenous data sovereignty, and underrepresented farming communities at every stage of development.',
+ long:'The Equity Working Group reviews OpenTEAM projects and tools for equity implications — ensuring that open technology doesn\'t inadvertently replicate existing power imbalances. Focus areas include Indigenous OCAP principles, FPIC processes for data collection, equitable access to tools, and representation in governance. Connects to IndigiDAO, the AKC Fellows program, and the Ag Data Wallet.',
+ contrib:'Lead: OpenTEAM Fellows · IndigiDAO\n\nContributors: We Are For The Land Foundation · AKC · GIAA · Terran Collective',
+ outputs:'Equity review framework · FPIC templates · Representation guidelines · Connections to AKC Indigenous sovereignty gate',
+ grat:{'🌱 Grateful':16,'⭐ Valuable':13,'🔗 Used this':5},
+ links:[
+   {n:'Equity Working Group', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'IndigiDAO', t:'Community Partner', u:'https://indigidao.org', i:'part'},
+   {n:'GIAA Agroecology Network', t:'Partner', u:'https://www.gia-agroecology.org', i:'part'},
+ ]},
+
+{id:'pods',cat:'infrastructure',
+ title:'PODS — Producer Operational Data System',
+ sub:'USDA Cooperative Agreement · farmOS · Modus · Common Farm Convention',
+ tags:['PODS','farmOS','USDA NRCS','Modus','Data Interoperability'],
+ lead:'OpenTEAM · Purdue Axi Lab · Our Sci · farmOS · USDA NRCS',lc:'#374151',
+ status:'Complete · Report published 2025',
+ short:'A USDA/NRCS cooperative agreement advancing the interoperability of PODS — NRCS’s farmOS-based producer data system — through the Common Farm Convention data transfer standard, Modus Lab Method Library, and a comprehensive needs assessment of 19 NRCS stakeholders.',
+ long:'PODS (Producer Operations Data System) is NRCS’s branded instance of farmOS, developed under a cooperative agreement with OpenTEAM, Purdue Axi Lab, Our Sci, and farmOS. The project pursued two core goals: (1) create data interoperability in the NRCS technology ecosystem by standardizing around farmOS’s generalizable data model, and (2) enhance PODS for soil health and farm management data handling.\n\nKey deliverables:\n• The Common Farm Convention and Tools — a data transfer standard for farm management data using farmOS’s data model, enabling producers to \u201ccollect data once, use it many times\u201d while seamlessly sharing data between USDA systems.\n• The Modus Lab Method Library — a central repository tracking which soil testing labs use which methods, enabling confident cross-lab soil test result comparison via the industry-backed Modus/AgGateway standard.\n• Comprehensive Needs Assessment — interviews with 19 NRCS stakeholders mapping data flows between conservation planning, soil testing, and analysis tools.\n• Implementation Guidelines and SOPs — Version 1.0 Standard Operating Procedures for data management, quality control, and cross-team software development practices.\n• FAIR Tech Registry Framework — a structured approach for evaluating NRCS tools against FAIR principles (continued as the TRAC cooperative agreement).\n\nPODS 2.0 design elements address shortcomings in the 1.0 implementation: adopting the farmOS standard Modules for software interoperability, using the farmOS standard data model, and annotating soil lab results with Modus lab method IDs for cross-lab comparability. The vision: each producer has their own farmOS system for farm operations, management records, and farm plans — with a PODS module enabling opt-in NRCS data sharing.',
+ contrib:'Lead: OpenTEAM (Dorn Cox) · Purdue Axi Lab · Our Sci · farmOS · USDA NRCS\n\nPartners: Wolfe\'s Neck Center · SurveyStack · Element 84',
+ outputs:'Common Farm Convention and Tools · Modus Lab Method Library · Needs Assessment (19 NRCS stakeholders) · Implementation Guidelines + SOPs v1.0 · FAIR Tech Registry Framework · PODS 2.0 design specifications · Recommendations report 2025',
+ grat:{'🌱 Grateful':11,'⭐ Valuable':10,'🔗 Used this':6},
+ links:[
+   {n:'USDA Cooperative Agreements Folder', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements', i:'gitlab'},
+   {n:'Modus / AgGateway Standard', t:'Standard', u:'https://aggateway.org', i:'std'},
+   {n:'farmOS', t:'Tool', u:'https://farmos.org', i:'tool'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+   ]},
+
+{id:'ccd',cat:'interop',
+ title:'CCD — Conservation Cost Data System',
+ sub:'USDA Cooperative Agreement · NRCS · Conservation Practice Costing',
+ tags:['Conservation Costs','NRCS','Data System','FAIR Principles'],
+ lead:'OpenTEAM · Purdue Axi Lab · Our Sci · USDA NRCS',lc:'#4c1d95',
+ status:'Complete · Design report published 2025',
+ short:'A USDA cooperative agreement designing a standardized system for collecting and managing conservation practice cost data — addressing volatile costs that have caused NRCS payment schedules to diverge from actual regional prices since 2020.',
+ long:'Since 2020, conservation practice costs have become increasingly volatile, creating significant challenges for NRCS in maintaining accurate payment schedules. Producers in some regions are canceling contracts because payment schedules cover less of the actual cost, while in others, payment rates may exceed actual costs, resulting in overpayments. The CCDS addresses this disconnect.\n\nThe Conservation Cost Data System (CCDS) connects field staff, national and state economists, the Cost Data Team, and producers via a shared cost data service. Key deliverables:\n• Needs Assessment — stakeholder interviews with NRCS field staff, economists, and producers identifying pain points in cost data workflows\n• CCDS Conceptual Design — a modular architecture from field receipt collection through processing, storage, and reporting, including data flow diagrams\n• Data Structures, Conventions & Dictionaries — FAIR-aligned schemas and supporting data dictionary for conservation practice cost data\n• AI-powered Receipt Collection Tool — proof-of-concept using AI to extract and categorize line items from producer receipts and invoices, reducing administrative burden on field staff\n• CEMA Protocols — Conservation Evaluation and Monitoring Activity scoping standardized cost data collection prior to full system development, including PII handling\n\nThe CCDS integrates with PODS, the Payment Schedules App, and farmers.gov. Using FAIR principles, the system ensures regional conservation cost data can be easily discovered, accessed with appropriate permissions, integrated across platforms, and utilized for payment schedule updates, policy analysis, and producer financial planning.',
+ contrib:'Lead: OpenTEAM (Dorn Cox) · Purdue Axi Lab · Our Sci · USDA NRCS\n\nPartners: Wolfe\'s Neck Center',
+ outputs:'Needs Assessment report · CCDS Conceptual Design with architecture diagrams · FAIR-aligned data schemas and data dictionary · AI Receipt Collection Tool proof-of-concept · CEMA data collection protocols · SOPs for cost data management',
+ grat:{'🌱 Grateful':7,'⭐ Valuable':9,'🔗 Used this':4},
+ links:[
+   {n:'USDA Cooperative Agreements Folder', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg/usda-cooperative-agreements', i:'gitlab'},
+   {n:'PCSC farmOS Module', t:'Connected Project', u:'https://farmos.org', i:'tool'},
+   {n:'Modus / AgGateway Standard', t:'Standard', u:'https://aggateway.org', i:'std'},
+   {n:'OpenTEAM GitLab Archive', t:'Repository', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'git'},
+   ]}
+
+{id:'hcd',cat:'commons',
+ title:'HCD Working Group',
+ sub:'Human-Centered Design · Accessibility',
+ tags:['Design','Accessibility','Farmer UX','Community'],
+ lead:'OpenTEAM Fellows',lc:'#1a4f7a',
+ status:'Active working group',
+ short:'Applying human-centered design principles to agricultural technology — ensuring that tools, workflows, and data systems are genuinely usable by and useful for the farmers and land stewards they serve.',
+ long:'The HCD Working Group brings participatory design practices to OpenTEAM tool evaluation and development. Focuses on accessibility, language equity, and context-appropriate design — particularly for tools used in the field. Feeds into the FAIR Tech Registry ETA rubric, the Ag Data Wallet UX, and SurveyStack form design. Connected to UBC Ethical Data Governance research.',
+ contrib:'Lead: OpenTEAM Fellows\n\nContributors: UBC · SurveyStack · LiteFarm · Digital Green',
+ outputs:'HCD working group outputs · Accessibility rubric for ETA · Field UX guidelines',
+ grat:{'🌱 Grateful':6,'⭐ Valuable':8,'🔗 Used this':3},
+ links:[
+   {n:'HCD Working Group', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'FAIR Tech Registry ETA', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+ ]},
+
+{id:'range-c',cat:'regen-econ',
+ title:'Range C &amp; Crop C',
+ sub:'Carbon Quantification · Rangeland &amp; Cropland',
+ tags:['Carbon','Rangeland','Cropland','Quantification'],
+ lead:'OpenTEAM · NRCS',lc:'#0f766e',
+ status:'Active · Data integration ongoing',
+ short:'Developing harmonized carbon quantification methods and datasets for both rangeland and cropland systems — bridging NRCS practice standards with open, farmer-contributed data.',
+ long:'Range C and Crop C bridges the rangeland and cropland carbon quantification worlds — developing harmonized methods, shared schemas, and integrated datasets that work with both NRCS practice standards and open, farmer-contributed data. Connects to GLCDI, the Soil Health Tech Stack, PODS, and the USDA Cooperative Agreements. Datasets feed into the AKC Soil Carbon Composite.',
+ contrib:'Lead: OpenTEAM · USDA NRCS\n\nContributors: Millpont · TSIP · ESMC · Soil & Water Outcomes Fund · Point Blue',
+ outputs:'Carbon quantification schema · Integration with GLCDI and PODS · Feeding AKC Soil Carbon Composite dataset',
+ grat:{'🌱 Grateful':13,'⭐ Valuable':10,'🔗 Used this':7},
+ links:[
+   {n:'Range C and Crop C', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'GLCDI Documentation', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+   {n:'Conservation Cost Database', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+ ]},
+
+{id:'env-claims',cat:'regen-econ',
+ title:'Environmental Claims Clearinghouse',
+ sub:'Claims Engine · Verification Infrastructure',
+ tags:['Claims','Verification','Market Integrity','Clearinghouse'],
+ lead:'OpenTEAM Community',lc:'#0f766e',
+ status:'Architecture phase',
+ short:'Open infrastructure for verifying and clearing environmental claims — preventing greenwashing and enabling trustworthy, interoperable carbon and ecosystem service market participation.',
+ long:'The Environmental Claims Clearinghouse and Claims Engine provides open infrastructure for verifying agricultural environmental claims before they enter markets. Designed to work with multiple carbon standards and market systems, reducing vendor lock-in and greenwashing risk. Connects to the Marketplace Working Group, PODS, RegenScore, and the Cool Farm Tool integration.',
+ contrib:'Lead: OpenTEAM Community\n\nContributors: Cool Farm Alliance · ESMC · Field to Market · RegenScore · Millpont',
+ outputs:'Claims clearinghouse architecture · Claims Engine spec · Market integration patterns',
+ grat:{'🌱 Grateful':5,'⭐ Valuable':9,'🔗 Used this':2},
+ links:[
+   {n:'Environmental Claims Clearinghouse', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'Marketplace Working Group', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'RegenScore', t:'Partner Tool', u:'https://www.regenscore.org', i:'tool'},
+ ]},
+
+{id:'ne-grazing',cat:'regen-econ',
+ title:'Northeast Grazing &amp; Soil Carbon Network',
+ sub:'Regional Network · Data Collection · Farmers',
+ tags:['Grazing','Northeast','Network','Field Data'],
+ lead:'PASA · OpenTEAM',lc:'#0f766e',
+ status:'Active · Data collection ongoing',
+ short:'A regional farmer network collecting longitudinal soil carbon and grazing practice data across Northeast US farms — producing open datasets and reusable field protocols for the OpenTEAM ecosystem.',
+ long:'The Northeast Grazing and Soil Carbon Network brings together farmers, extension partners, and researchers across the Northeast to collect longitudinal soil health and grazing practice data. The network uses GLCDI field protocols and SurveyStack forms, with data flowing into farmOS and the AKC Soil Carbon Composite. Farmer-contributed data is governed by the OpenTEAM data agreements framework with full consent management.',
+ contrib:'Lead: PASA Sustainable Agriculture · OpenTEAM\n\nContributors: Cornell Cooperative Extension · University of Vermont Extension · Point Blue · Millpont',
+ outputs:'Longitudinal soil carbon dataset · GLCDI field protocol testing · SurveyStack form library · Network reports',
+ grat:{'🌱 Grateful':14,'⭐ Valuable':11,'🔗 Used this':7},
+ links:[
+   {n:'Northeast Grazing and Soil Carbon Network', t:'Project', u:'https://gitlab.com/OpenTEAMAg', i:'part'},
+   {n:'PASA Sustainable Agriculture', t:'Lead Organization', u:'https://pasafarming.org', i:'part'},
+   {n:'GLCDI Documentation', t:'Connected Project', u:'https://gitlab.com/OpenTEAMAg/open-team-1-0-archive', i:'doc'},
+ ]},
+
+{id:'usda-coop',cat:'interop',
+ title:'USDA Cooperative Agreements',
+ sub:'Modus · CCD · Federal Partnership',
+ tags:['USDA','Modus','Federal','Partnership'],
+ lead:'OpenTEAM · USDA',lc:'#4c1d95',
+ status:'Active · Agreements in place',
+ short:'Federal cooperative agreements enabling OpenTEAM to develop Modus-compliant soil data standards and the Conservation Cost Database (CCD) in collaboration with USDA agencies.',
+ long:'The USDA Cooperative Agreements provide formal partnership structure for OpenTEAM\'s work with USDA-ARS, NRCS, and PCSC programs. Key outputs include Modus schema extensions, the Conservation Cost Database, and the PCSC farmOS module. The agreements folder on GitLab documents the governance and outputs of this federal collaboration. Feeds directly into the Soil Health Tech Stack and PODS architecture.',
+ contrib:'Lead: OpenTEAM · USDA\n\nContributors: USDA-ARS · USDA NRCS · farmOS · Element 84 · Soil & Water Outcomes Fund',
+ outputs:'Modus schema extensions · Conservation Cost Database (CCD) · PCSC farmOS module · PODS integration · USDA agreements folder (GitLab)',
+ grat:{'🌱 Grateful':18,'⭐ Valuable':15,'🔗 Used this':10},
+ links:[
+   {n:'USDA Cooperative Agreements Folder', t:'GitLab', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
+   {n:'Conservation Cost Database (CCD)', t:'Repository', u:'https://gitlab.com/OpenTEAMAg', i:'git'},
+   {n:'PCSC farmOS Module', t:'Connected Project', u:'https://farmos.org', i:'tool'},
+   {n:'Modus / AgGateway', t:'Standard', u:'https://aggateway.org', i:'std'},
+ ]},
+];
+
+/* ════════════ GRATITUDE STATE ════════════ */
+let gratState = {};
+PROJS.forEach(p => { gratState[p.id] = {...p.grat}; });
+
+/* ════════════ RENDER GRID ════════════ */
+function renderGrid() {
+  const g = document.getElementById('pgrid');
+  g.innerHTML = PROJS.map(p => {
+    const c = PAL[p.cat];
+    return `<div class="pc" data-cat="${p.cat}" onclick="openDrawer('${p.id}')">
+      <div class="pc-band" style="background:${c.bg};">
+        <div class="pc-ico">${icon(p.id)}</div>
+        <div class="pc-band-r">
+          <div class="pc-badge">${p.tags[0]}</div>
+          <div class="pc-stat">${p.status.split('·')[0].trim()}</div>
+        </div>
+      </div>
+      <div class="pc-body">
+        <div class="pc-title">${p.title}</div>
+        <div class="pc-desc">${p.short}</div>
+        <div class="pc-tags">${p.tags.map(t=>`<span class="pc-tag" style="background:${c.tag};color:${c.tagc};">${t}</span>`).join('')}</div>
+        <div class="pc-foot">
+          <div class="pc-lead">
+            <span class="pc-dot" style="background:${p.lc};"></span>
+            <span><strong>${p.lead}</strong></span>
+          </div>
+          <div class="pc-open">Details ↗</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════ RENDER RAIL ════════════ */
+function renderRail() {
+  const r = document.getElementById('pRail');
+  r.innerHTML = PROJS.map(p => {
+    const c = PAL[p.cat];
+    return `<div class="rc" onclick="openDrawer('${p.id}')">
+      <div class="rc-band" style="background:${c.bg};">${icon(p.id)}</div>
+      <div class="rc-body">
+        <div class="rc-t">${p.title.replace('&amp;','&')}</div>
+        <div class="rc-org">${p.lead.split('·')[0].trim()}</div>
+      </div>
+      <div class="rc-arr">↗</div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════ DRAWER ════════════ */
+function openDrawer(id) {
+  const p = PROJS.find(x=>x.id===id);
+  if(!p) return;
+  const c = PAL[p.cat];
+
+  document.getElementById('drBand').style.background = c.bg;
+  document.getElementById('drIcon').innerHTML = icon(p.id);
+  document.getElementById('drTitle').innerHTML = p.title;
+  document.getElementById('drSub').textContent = p.sub;
+  document.getElementById('drDesc').textContent = p.long;
+  document.getElementById('drChips').innerHTML = p.tags.map(t=>
+    `<span class="dchip" style="background:${c.tag};color:${c.tagc};">${t}</span>`).join('');
+  document.getElementById('drContrib').innerHTML = p.contrib.replace(/\n/g,'<br>');
+  document.getElementById('drStatus').innerHTML =
+    `<strong>Status:</strong> ${p.status}<br><br><strong>Outputs:</strong> ${p.outputs}`;
+
+  // Gratitude
+  renderGrat(id);
+
+  // Links
+  document.getElementById('drLinks').innerHTML = p.links.map(l=>`
+    <a class="dlink" href="${l.u}" target="_blank" rel="noopener">
+      <div class="dlink-i">${LI[l.i]||LI.doc}</div>
+      <div style="flex:1;"><div class="dlink-n">${l.n}</div><div class="dlink-t">${l.t}</div></div>
+      <span class="dlink-u">${l.u.replace('https://','').split('/')[0]} ↗</span>
+    </a>`).join('');
+
+  // PDF viewer — show for agreements.community pages
+  const docLink = p.links.find(x=>x.u.includes('agreements.community') || (x.i==='doc' && x.u.includes('github')));
+  if(docLink && docLink.u.includes('agreements.community')) {
+    document.getElementById('pdfWrap').style.display='block';
+    document.getElementById('pdfLabel').textContent = docLink.n;
+    document.getElementById('pdfOpen').href = docLink.u;
+    document.getElementById('pdfFrame').src = docLink.u;
+  } else {
+    document.getElementById('pdfWrap').style.display='none';
+    document.getElementById('pdfFrame').src='';
+  }
+
+  // Reset tabs
+  setDTab('about');
+  document.getElementById('subConf').style.display='none';
+
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('drawer').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+
+function closeDrawer() {
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('drawer').classList.remove('on');
+  document.body.style.overflow='';
+}
+
+/* Drawer tabs */
+function setDTab(name) {
+  document.querySelectorAll('.dtab').forEach(b=>b.classList.toggle('on', b.dataset.dt===name));
+  document.querySelectorAll('.dpanel').forEach(p=>p.classList.toggle('on', p.id===`dp-${name}`));
+}
+document.querySelectorAll('.dtab').forEach(b=>b.addEventListener('click',()=>setDTab(b.dataset.dt)));
+
+/* ════════════ GRATITUDE ════════════ */
+function renderGrat(id) {
+  const row = document.getElementById('gratRow');
+  const st = gratState[id];
+  row.innerHTML = Object.entries(st).map(([lbl,cnt],i)=>
+    `<button class="gbt" data-pid="${id}" data-lbl="${lbl}" onclick="addGrat(this)">
+      ${lbl} <span class="gcnt" id="gc-${id}-${i}">${cnt}</span>
+    </button>`).join('');
+}
+
+function addGrat(btn) {
+  if(btn.classList.contains('lit')) return;
+  btn.classList.add('lit');
+  const id=btn.dataset.pid, lbl=btn.dataset.lbl;
+  gratState[id][lbl]++;
+  const i=Object.keys(gratState[id]).indexOf(lbl);
+  const span=document.getElementById(`gc-${id}-${i}`);
+  if(span){ span.textContent=gratState[id][lbl]; span.classList.remove('pop'); void span.offsetWidth; span.classList.add('pop'); }
+}
+
+/* ════════════ CONTRIBUTE ════════════ */
+function doSubmit(e) {
+  e.preventDefault();
+  document.getElementById('subConf').style.display='block';
+}
+
+function openContribPanel() {
+  openDrawer(PROJS[0].id);
+  setTimeout(()=>setDTab('contribute'),120);
+}
+
+/* ════════════ FILTERS ════════════ */
+document.querySelectorAll('.fb').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    const f=btn.dataset.f;
+    document.querySelectorAll('.pc').forEach(c=>c.classList.toggle('hide', f!=='all' && c.dataset.cat!==f));
+  });
+});
+
+/* ════════════ KEYBOARD ════════════ */
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+
+/* ════════════ INIT ════════════ */
+renderGrid();
+renderRail();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════
+  RAIL CARD CODE FOR index.html
+  Copy the block below and paste it into your projects rail
+  on index.html — replace the existing rail cards list.
+  Each card is 162px wide, snap-scrollable, dark themed.
+═══════════════════════════════════════════════════════ -->
+<!--
+RAIL CARD INSERT (copy into index.html projects rail):
+
+<a href="projects.html#fair-tech"    class="railCard">…Fair Tech Registry — OpenTEAM Community</a>
+<a href="projects.html#ag-data-wallet" class="railCard">…Ag Data Wallet — OpenTEAM / Entidad</a>
+<a href="projects.html#trac"         class="railCard">…TRAC: Tech Registry for Ag Conservation — OpenTEAM · EcoData · USDA NRCS</a>
+<a href="projects.html#pcsc-farmos"  class="railCard">…PCSC farmOS Module — farmOS · OpenTEAM</a>
+<a href="projects.html#glcdi"        class="railCard">…GLCDI — OpenTEAM · USDA NRCS</a>
+<a href="projects.html#ag-data-use"  class="railCard">…Ag Data Use Documents — OpenTEAM Tech WG</a>
+<a href="projects.html#marketplace"  class="railCard">…Marketplace WG — OpenTEAM Community</a>
+<a href="projects.html#soil-stack"   class="railCard">…Soil Health Tech Stack — farmOS · TSIP</a>
+<a href="projects.html#ubc-gov"      class="railCard">…UBC Ethical Data Governance — UBC</a>
+<a href="projects.html#convention"   class="railCard">…OpenTEAM Convention — OpenTEAM Community</a>
+<a href="projects.html#equity"       class="railCard">…Equity Working Group — OpenTEAM · IndigiDAO</a>
+<a href="projects.html#pods"         class="railCard">…PODS: Producer Operational Data System — OpenTEAM · USDA NRCS</a>
+<a href="projects.html#ccd"          class="railCard">…CCD: Conservation Cost Data System — OpenTEAM · USDA NRCS</a>
+<a href="projects.html#hcd"          class="railCard">…HCD Working Group — OpenTEAM Fellows</a>
+<a href="projects.html#range-c"      class="railCard">…Range C & Crop C — OpenTEAM · NRCS</a>
+<a href="projects.html#env-claims"   class="railCard">…Env. Claims Clearinghouse — OpenTEAM</a>
+<a href="projects.html#ne-grazing"   class="railCard">…NE Grazing Network — PASA · OpenTEAM</a>
+<a href="projects.html#usda-coop"    class="railCard">…USDA Cooperative Agreements — OpenTEAM · USDA</a>
+-->
+
 </body>
 </html>

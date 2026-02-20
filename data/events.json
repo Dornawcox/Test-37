@@ -1,0 +1,197 @@
+[
+  {
+    "id": "goat-ecofarm-gathering-2026-01-22",
+    "title": "Serendipitous Gathering of GOATs at Ecofarm",
+    "start": "2026-01-22T02:00:00Z",
+    "end": "2026-01-25T01:59:00Z",
+    "timezone": "UTC",
+    "location": "Monterey Bay, California, USA",
+    "url": "https://forum.goatech.org/t/serendipitous-gathering-of-goats-at-ecofarm-monterey-bay-california-jan-22-24-2026/2004",
+    "source": "GOAT",
+    "tags": [
+      "GOAT",
+      "regional-meetup",
+      "In-person"
+    ]
+  },
+  {
+    "id": "goat-mofga-2026-02-07",
+    "title": "GOATs coming to MOFGA",
+    "start": "2026-02-07T06:00:00Z",
+    "end": "2026-02-12T05:59:00Z",
+    "timezone": "UTC",
+    "location": "Portland, Maine, USA",
+    "url": "https://forum.goatech.org/t/goats-coming-to-mofga-portland-maine-feb-7-11-2026/2010",
+    "source": "GOAT",
+    "tags": [
+      "GOAT",
+      "regional-meetup",
+      "In-person"
+    ]
+  },
+  {
+    "id": "goat-monthly-call-2026-02-12",
+    "title": "GOAT Monthly Community Call",
+    "start": "2026-02-12T21:00:00Z",
+    "end": "2026-02-12T22:15:00Z",
+    "timezone": "UTC",
+    "location": "Online",
+    "url": "https://forum.goatech.org/t/2026-02-12-goat-monthly-community-call/2017",
+    "source": "GOAT",
+    "tags": [
+      "GOAT",
+      "Community call",
+      "Online"
+    ]
+  },
+  {
+    "id": "goat-asabe-aim-2026-07-12",
+    "title": "GOATs at ASABE AIM 2026",
+    "start": "2026-07-12T00:00:00Z",
+    "end": "2026-07-16T23:59:00Z",
+    "timezone": "UTC",
+    "location": "Indianapolis, Indiana, USA",
+    "url": "https://forum.goatech.org/t/goats-at-asabe-conference-indianapolis-indiana-july-12-15-2026/2009",
+    "source": "GOAT",
+    "tags": [
+      "GOAT",
+      "regional-meetup",
+      "Conference"
+    ]
+  },
+  {
+    "id": "akc-land-steward-cultural-data-preservation-s1-2026-02-13",
+    "title": "Land Steward & Cultural Data Preservation \u2014 Virtual Session 1",
+    "start": "2026-02-13T16:00:00Z",
+    "end": "2026-02-13T17:30:00Z",
+    "timezone": "UTC",
+    "location": "Online",
+    "url": "https://luma.com/event/manage/evt-5WGJ3HKFss7sRuo",
+    "source": "Ag Knowledge Concordance",
+    "tags": [
+      "Workshop",
+      "Online",
+      "Stewardship"
+    ]
+  },
+  {
+    "id": "akc-land-steward-cultural-data-preservation-s2-2026-02-14",
+    "title": "Land Steward & Cultural Data Preservation \u2014 Virtual Session 2",
+    "start": "2026-02-14T02:00:00Z",
+    "end": "2026-02-14T03:30:00Z",
+    "timezone": "UTC",
+    "location": "Online",
+    "url": "https://luma.com/event/manage/evt-pnHS2zC7em79kVm",
+    "source": "Ag Knowledge Concordance",
+    "tags": [
+      "Workshop",
+      "Online",
+      "Stewardship"
+    ]
+  },
+  {
+    "id": "akc-ai-impact-summit-2026-02-16",
+    "title": "AI Impact Summit (and AI Commons House side events)",
+    "start": "2026-02-16T00:00:00Z",
+    "end": "2026-02-21T23:59:00Z",
+    "timezone": "UTC",
+    "location": "New Delhi, India",
+    "url": "https://impact.indiaai.gov.in/",
+    "source": "Ag Knowledge Concordance",
+    "tags": [
+      "Summit",
+      "AI",
+      "In-person"
+    ]
+  },
+  {
+    "id": "giaa-digital-sovereignty-session-2bis-2026-02-03",
+    "title": "Co-development of Digital Sovereignty Curriculum (Session 2 bis)",
+    "start": "2026-02-03T09:30:00Z",
+    "end": "2026-02-03T11:00:00Z",
+    "timezone": "UTC",
+    "location": "Online",
+    "url": "https://www.gia-agroecology.org/",
+    "source": "GIAA",
+    "tags": [
+      "GIAA",
+      "Online",
+      "Working session"
+    ]
+  },
+  {
+    "id": "giaa-digital-sovereignty-session-3-2026-02-05",
+    "title": "Co-development of Digital Sovereignty Curriculum (Session 3)",
+    "start": "2026-02-05T17:00:00Z",
+    "end": "2026-02-05T18:30:00Z",
+    "timezone": "UTC",
+    "location": "Online",
+    "url": "https://www.gia-agroecology.org/",
+    "source": "GIAA",
+    "tags": [
+      "GIAA",
+      "Online",
+      "Working session"
+    ]
+  },
+  {
+    "id": "giaa-digital-sovereignty-session-1bis-2026-02-27",
+    "title": "Co-development of Digital Sovereignty Curriculum (Session 1 bis)",
+    "start": "2026-02-27T09:30:00Z",
+    "end": "2026-02-27T11:00:00Z",
+    "timezone": "UTC",
+    "location": "Online",
+    "url": "https://www.gia-agroecology.org/",
+    "source": "GIAA",
+    "tags": [
+      "GIAA",
+      "Online",
+      "Working session"
+    ]
+  },
+  {
+    "id": "giaa-digital-sovereignty-session-2-2026-02-28",
+    "title": "Co-development of Digital Sovereignty Curriculum (Session 2)",
+    "start": "2026-02-28T17:00:00Z",
+    "end": "2026-02-28T18:30:00Z",
+    "timezone": "UTC",
+    "location": "Online",
+    "url": "https://www.gia-agroecology.org/",
+    "source": "GIAA",
+    "tags": [
+      "GIAA",
+      "Online",
+      "Working session"
+    ]
+  },
+  {
+    "id": "giaa-americas-meeting-2026-02-19",
+    "title": "GIAA meeting (Americas timezone)",
+    "start": "2026-02-19T16:30:00Z",
+    "end": "2026-02-19T17:30:00Z",
+    "timezone": "UTC",
+    "location": "Online",
+    "url": "https://www.gia-agroecology.org/",
+    "source": "GIAA",
+    "tags": [
+      "GIAA",
+      "Online",
+      "Meeting"
+    ]
+  },
+  {
+    "id": "giaa-launch-webinar-head-in-the-cloud-2026-02-25",
+    "title": "LAUNCH WEBINAR | HEAD IN THE CLOUD",
+    "start": "2026-02-25T14:00:00Z",
+    "end": "2026-02-25T15:30:00Z",
+    "timezone": "UTC",
+    "location": "Online",
+    "url": "https://www.gia-agroecology.org/",
+    "source": "GIAA",
+    "tags": [
+      "GIAA",
+      "Webinar",
+      "Online"
+    ]
+  }
+]

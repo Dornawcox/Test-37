@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circles of Trust — GLCDI Data Trust Alliance</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --forest:#2E5F3E;--forest-deep:#1B3A26;--forest-light:#D5E8D5;--forest-pale:#EDF5ED;
+  --gold:#9B7B1C;--gold-light:#FBF3D9;--gold-glow:rgba(201,168,76,.35);
+  --blue:#1B4F72;--blue-light:#D6EAF8;--blue-glow:rgba(46,134,193,.3);
+  --ember:#C0392B;--slate:#2C3E50;--warm:#F7F5F0;--parchment:#FEFCF6;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--warm);color:var(--slate);overflow-x:hidden}
+
+/* ═══ HEADER ═══ */
+header{background:linear-gradient(135deg,var(--forest-deep) 0%,var(--forest) 100%);
+  padding:32px 48px 28px;position:relative;overflow:hidden}
+header::after{content:'';position:absolute;top:0;right:0;width:400px;height:100%;
+  background:radial-gradient(ellipse at 80% 50%,rgba(255,255,255,.04) 0%,transparent 70%)}
+header h1{font-family:'Fraunces',serif;color:#fff;font-size:1.65rem;font-weight:500;letter-spacing:-.01em;line-height:1.2}
+header .sub{color:rgba(255,255,255,.55);font-size:.82rem;margin-top:4px;font-style:italic}
+.stage-toggle{display:flex;gap:6px;margin-top:16px}
+.stage-btn{padding:9px 22px;border-radius:8px;border:1.5px solid rgba(255,255,255,.2);
+  background:transparent;color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;
+  font-size:.82rem;font-weight:600;cursor:pointer;transition:all .25s;position:relative}
+.stage-btn:hover{border-color:rgba(255,255,255,.4);color:#fff}
+.stage-btn.active{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.5);color:#fff}
+.stage-btn .badge{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;
+  font-size:.6rem;display:flex;align-items:center;justify-content:center;font-weight:700}
+.stage-btn[data-stage="1"] .badge{background:var(--gold);color:#fff}
+.stage-btn[data-stage="2"] .badge{background:var(--blue);color:#fff}
+.stage-btn[data-stage="both"] .badge{background:#fff;color:var(--forest)}
+
+/* ═══ LAYOUT ═══ */
+.layout{display:flex;min-height:calc(100vh - 120px)}
+.viz-area{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;position:relative}
+
+/* ═══ SVG ═══ */
+svg text{-webkit-user-select:none;user-select:none}
+
+/* ═══ RING LABELS ═══ */
+.ring-label{font-family:'Fraunces',serif;fill:var(--forest);opacity:.22;pointer-events:none;letter-spacing:.04em}
+
+/* ═══ PANEL ═══ */
+.panel{width:380px;min-width:380px;background:var(--parchment);border-left:1px solid #E8E4DA;
+  padding:24px 20px;overflow-y:auto;max-height:calc(100vh - 120px);position:sticky;top:0;
+  transition:width .3s}
+.panel h2{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--forest);margin-bottom:4px}
+.panel .hint{font-size:.75rem;color:#999;margin-bottom:16px;font-style:italic}
+
+.ring-section{margin-bottom:20px}
+.ring-section h3{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa;
+  margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid #EDE9E0}
+
+.actor-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;
+  cursor:pointer;font-size:.8rem;transition:all .15s;margin-bottom:1px}
+.actor-row:hover{background:var(--forest-pale)}
+.actor-row.active{background:var(--forest);color:#fff}
+.actor-row .dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;border:2px solid rgba(0,0,0,.08)}
+.actor-row .meta{margin-left:auto;font-size:.65rem;color:#aaa;white-space:nowrap}
+.actor-row.active .meta{color:rgba(255,255,255,.6)}
+
+.divider{height:1px;background:#EDE9E0;margin:16px 0}
+
+/* ═══ AGREEMENT CARDS IN PANEL ═══ */
+.acard{background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:10px;
+  border:1px solid #EDE9E0;cursor:pointer;transition:all .2s;position:relative}
+.acard:hover{border-color:var(--forest-light);box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.acard.active{border-color:var(--forest);box-shadow:0 2px 16px rgba(46,95,62,.12)}
+.acard .round-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.62rem;
+  font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.acard .round-tag.r1{background:var(--gold-light);color:var(--gold)}
+.acard .round-tag.r2{background:var(--blue-light);color:var(--blue)}
+.acard h4{font-family:'Fraunces',serif;font-size:.9rem;color:var(--forest);line-height:1.3;margin-bottom:4px}
+.acard .actors-list{font-size:.7rem;color:#888;line-height:1.4}
+.acard .expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #EDE9E0;
+  font-size:.78rem;color:#555;line-height:1.55}
+.acard.active .expand{display:block}
+.acard .expand strong{color:var(--forest)}
+.acard .gameplay{background:var(--forest-pale);border-radius:6px;padding:8px 10px;margin-top:8px;
+  font-size:.75rem;color:var(--forest);font-style:italic;line-height:1.45}
+
+/* ═══ TOOLTIP ═══ */
+.tip{position:fixed;z-index:500;background:var(--slate);color:#fff;padding:8px 14px;
+  border-radius:7px;font-size:.76rem;max-width:280px;pointer-events:none;
+  box-shadow:0 4px 20px rgba(0,0,0,.25);opacity:0;transition:opacity .12s;line-height:1.4}
+.tip.show{opacity:1}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1000px){
+  .panel{width:320px;min-width:320px;font-size:.9em}
+}
+@media(max-width:800px){
+  .layout{flex-direction:column}
+  .panel{width:100%;min-width:unset;max-height:unset;position:relative;border-left:none;border-top:1px solid #E8E4DA}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Concentric Circles of Trust</h1>
+  <div class="sub">GLCDI → Grazing Lands Data Trust Alliance — Stakeholder & Agreement Map</div>
+  <div class="stage-toggle">
+    <button class="stage-btn active" data-stage="1">Stage 1<span class="badge">4</span></button>
+    <button class="stage-btn" data-stage="2">Stage 2<span class="badge">4</span></button>
+    <button class="stage-btn" data-stage="both">Both Stages<span class="badge">8</span></button>
+  </div>
+</header>
+
+<div class="layout">
+  <div class="viz-area">
+    <svg id="viz" width="680" height="680"></svg>
+  </div>
+  <div class="panel" id="panel"></div>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA MODEL
+// ═══════════════════════════════════════════════════════
+const CX=340, CY=340;
+const RINGS=[
+  {id:"core",  label:"Core Governance",  r:80,  stroke:"#2E5F3E", fill:"rgba(46,95,62,.06)", dash:""},
+  {id:"c1",    label:"Circle 1 — Cohort 1 (Q1 2026)",r:160,stroke:"#4A7C5C",fill:"rgba(46,95,62,.035)",dash:""},
+  {id:"c2",    label:"Circle 2 — Cohort 2 (Q2 2026)",r:240,stroke:"#6B9E7E",fill:"rgba(46,95,62,.02)",dash:"6,4"},
+  {id:"c3",    label:"Circle 3 — Cohort 3 (Q3 2026)",r:300,stroke:"#8FBD9F",fill:"rgba(46,95,62,.012)",dash:"6,4"},
+  {id:"horizon",label:"Post-Prototype Horizon",     r:335,stroke:"#B5D4BF",fill:"none",dash:"3,6"},
+];
+
+// Actors placed by ring + angle
+const actors=[
+  // ─── CORE: Project Team + Steering Committee ───
+  {id:"kara",  name:"Kara Weinstein",    short:"KW",org:"Wolfe's Neck / GLCDI",role:"Project Direction",ring:"core",angle:270,color:"#2E7D32"},
+  {id:"david", name:"David Thomas",      short:"DT",org:"OFN / Startin'blox",role:"Operations",ring:"core",angle:330,color:"#00695C"},
+  {id:"tim",   name:"Tim Tensen",        short:"TT",org:"TerraGenesis",role:"Funding & Partnerships",ring:"core",angle:210,color:"#4E342E"},
+  {id:"alex",  name:"Alex Bourlier",     short:"AB",org:"Startin'blox",role:"Data Space Design",ring:"core",angle:150,color:"#00897B"},
+  {id:"benoit",name:"Benoît Alessandroni",short:"BA",org:"Startin'blox",role:"Tech Interop",ring:"core",angle:30,color:"#00897B"},
+
+  // ─── CIRCLE 1: Confirmed prototype participants + Steering ───
+  {id:"asher", name:"Asher Wright",      short:"AW",org:"Caney Fork Farms",role:"Producer / Steering",ring:"c1",angle:350,color:"#4CAF50"},
+  {id:"erika", name:"Erika Foster",      short:"EF",org:"Point Blue",role:"Soil Science / Steering",ring:"c1",angle:310,color:"#C62828"},
+  {id:"wblt",  name:"White Buffalo LT",  short:"WB",org:"Jalama Canyon Ranch",role:"Producer / Research",ring:"c1",angle:20,color:"#66BB6A"},
+  {id:"jesus", name:"Jesus Torres",      short:"JT",org:"Entidad",role:"Identity Authority / Steering",ring:"c1",angle:245,color:"#E65100"},
+  {id:"matthew",name:"Matthew Lange",    short:"ML",org:"IC-FOODS",role:"Vocab Standards / Steering",ring:"c1",angle:80,color:"#7B1FA2"},
+  {id:"steve", name:"Steve Francis",     short:"SF",org:"Terraso / Land PKS",role:"Soil Tools / Steering",ring:"c1",angle:145,color:"#0288D1"},
+  {id:"dorn",  name:"Dorn Cox",          short:"DC",org:"OpenTEAM",role:"Ag Data / Steering",ring:"c1",angle:185,color:"#26A69A"},
+
+  // ─── CIRCLE 2: Cohort 2 (anticipated) ───
+  {id:"tsip",  name:"TSIP",              short:"TS",org:"Soil Inventory Project",role:"Data Steward",ring:"c2",angle:55,color:"#AB47BC"},
+  {id:"pasa",  name:"PASA",              short:"PA",org:"Sustainable Ag",role:"Members Assoc.",ring:"c2",angle:110,color:"#42A5F5"},
+  {id:"ufl",   name:"Univ. of Florida",  short:"UF",org:"Joel Harley Lab",role:"Research",ring:"c2",angle:170,color:"#5C6BC0"},
+  {id:"stonebarns",name:"Stone Barns",   short:"SB",org:"Food & Agriculture",role:"Education",ring:"c2",angle:220,color:"#8D6E63"},
+  {id:"ecdysis",name:"Ecdysis / 1000 Farms",short:"EK",org:"Ecdysis Foundation",role:"Research Network",ring:"c2",angle:290,color:"#795548"},
+  {id:"csu",   name:"Colorado State",    short:"CS",org:"Soil Carbon Solutions",role:"Modeling",ring:"c2",angle:340,color:"#7E57C2"},
+
+  // ─── CIRCLE 3: Cohort 3 (institutional stress-test) ───
+  {id:"wwf",   name:"WWF",               short:"WF",org:"World Wildlife Fund",role:"NGO",ring:"c3",angle:40,color:"#2E7D32"},
+  {id:"tnc",   name:"TNC",               short:"TN",org:"Nature Conservancy",role:"NGO",ring:"c3",angle:100,color:"#388E3C"},
+  {id:"shi",   name:"Soil Health Inst.",  short:"SH",org:"Soil Health Institute",role:"Standards Body",ring:"c3",angle:165,color:"#5D4037"},
+  {id:"raft",  name:"Raft Foundation",    short:"RF",org:"Fiscal Sponsor",role:"Legal Home",ring:"c3",angle:230,color:"#78909C"},
+  {id:"walmart",name:"Walmart Foundation",short:"$W",org:"Funder",role:"Funder",ring:"c3",angle:285,color:"#0D47A1"},
+
+  // ─── HORIZON ───
+  {id:"aft",   name:"American Farmland Trust",short:"AF",org:"Producer Network",role:"Post-Prototype",ring:"horizon",angle:15,color:"#A1887F"},
+  {id:"ursb",  name:"US Roundtable SB",  short:"UR",org:"Sustainable Beef",role:"Post-Prototype",ring:"horizon",angle:75,color:"#A1887F"},
+  {id:"nglc",  name:"Nat'l Grazing Lands",short:"NG",org:"Coalition",role:"Post-Prototype",ring:"horizon",angle:135,color:"#A1887F"},
+  {id:"tribal",name:"Tribal Partners",   short:"TP",org:"Indigenous Communities",role:"Post-Prototype",ring:"horizon",angle:200,color:"#A1887F"},
+  {id:"naturex",name:"NatureX Foundation",short:"NX",org:"Institutional Host?",role:"Post-Prototype",ring:"horizon",angle:260,color:"#A1887F"},
+  {id:"metagov",name:"Metagov / CGO WG", short:"MG",org:"Governance Research",role:"Observer",ring:"horizon",angle:320,color:"#A1887F"},
+];
+
+const opportunities=[
+  // ─── STAGE 1 (Round 1: 6 months) ───
+  {id:"vocab",round:1,title:"Data Vocabulary & Label Concordance",
+    actors:["matthew","asher","erika","steve","david","dorn"],
+    desc:"Shared vocabulary pilot: farms adopt IC-FOODS vocabularies, Matthew incorporates folksonomies, Erika's Common Farm Convention bridges, David integrates via semantic API.",
+    gameplay:"Lowest-friction first agreement. Feeds Blueprint's standardization activity."},
+  {id:"trust",round:1,title:"Trust-Building Protocols & Social Ceremony",
+    actors:["kara","tim","david","asher","erika","jesus","matthew","steve","alex","wblt","dorn"],
+    desc:"Facilitated trust-building (Polycentricity Game sessions, social biographies, shared meals) before any MOU is signed. Copyfair conditional licensing based on demonstrated participation.",
+    gameplay:"Prerequisite for all others. Aligns with Cohort 1 MOU development (Blueprint Q1)."},
+  {id:"prototype",round:1,title:"GLCDI Data Space Prototype Launch",
+    actors:["david","kara","tim","alex","benoit","erika","asher","wblt","jesus"],
+    desc:"Deploy Startin'blox connector architecture with Cohort 1. Entidad as identity authority. TSIP connected as first service consumer. v0 Trust Framework produced.",
+    gameplay:"THE Blueprint prototype. Constitutional convention per Data Trust Plan."},
+  {id:"wallet",round:1,title:"Farmworker Wallet Pilot",
+    actors:["jesus","kara","tim"],
+    desc:"Pilot verified work history tool with 50–100 farmworkers across 2–3 regions. GPS-verified credentials owned by workers in decentralized wallets.",
+    gameplay:"Tests data sovereignty for most vulnerable community. Stress-tests identity infrastructure."},
+
+  // ─── STAGE 2 (Round 2: 12 months) ───
+  {id:"decision",round:2,title:"Farmer-Facing Decision Support Commons",
+    actors:["asher","matthew","steve","erika","david","tsip","csu"],
+    desc:"Federate existing tools (Land PKS, TSIP, Point Blue monitoring, IC-FOODS certification engine) into coherent farmer experience via shared connectors and vocabulary layer.",
+    gameplay:"Builds on vocabulary concordance. Blueprint's 'SaaS Services' vision realized."},
+  {id:"royalties",round:2,title:"Reciprocal Research & Data Royalties",
+    actors:["asher","matthew","jesus","erika","tim","kara","david"],
+    desc:"Copyfair conditional use licensing: contributors receive tools + co-authorship. Commercial users contribute financially. Data royalties model inspired by Jesus's music industry background.",
+    gameplay:"Governance backbone. Operationalizes Blueprint's membership model."},
+  {id:"sovereignty",round:2,title:"Decentralized Data Sovereignty Architecture",
+    actors:["jesus","kara","matthew","steve","tim","david","alex","benoit","dorn"],
+    desc:"Federated data trust: each node keeps sovereignty, contributes metadata to discovery layer. Verifiable credentials for identity. Connectors enforce policies. Tim's Regenerative Rubber Alliance handoff as model.",
+    gameplay:"Most technically ambitious. Depends on all Stage 1 agreements being underway."},
+  {id:"funding",round:2,title:"Coordinated Funding & Institutional Hosting",
+    actors:["kara","tim","erika","david","raft","walmart","naturex"],
+    desc:"Shared value propositions by funder type. Evaluate Raft Foundation as fiscal sponsor (Data Trust Plan Layer 1). Present network as coherent ecosystem. Transition planning toward organizational autonomy.",
+    gameplay:"Without this, all others remain grant-dependent. Data Trust Plan's Layer 1."},
+];
+
+// ═══════════════════════════════════════════════════════
+// GEOMETRY HELPERS
+// ═══════════════════════════════════════════════════════
+function ringR(ringId){ return RINGS.find(r=>r.id===ringId)?.r || 0; }
+function actorPos(a){
+  const r=ringR(a.ring);
+  const rad=(a.angle-90)*Math.PI/180;
+  return {x:CX+r*Math.cos(rad), y:CY+r*Math.sin(rad)};
+}
+function arcPath(x1,y1,x2,y2,bulge=.25){
+  const mx=(x1+x2)/2, my=(y1+y2)/2;
+  const dx=x2-x1, dy=y2-y1;
+  const nx=-dy*bulge, ny=dx*bulge;
+  return `M${x1},${y1} Q${mx+nx},${my+ny} ${x2},${y2}`;
+}
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let stage="1";
+let hoveredActor=null;
+let selectedOpp=null;
+const svg=document.getElementById("viz");
+const panel=document.getElementById("panel");
+const tip=document.getElementById("tip");
+
+// ═══════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════
+function render(){
+  svg.innerHTML="";
+  const visibleRounds=stage==="both"?[1,2]:stage==="1"?[1]:[2];
+  const visOpps=opportunities.filter(o=>visibleRounds.includes(o.round));
+  const oppActorIds=new Set();
+  visOpps.forEach(o=>o.actors.forEach(a=>oppActorIds.add(a)));
+
+  // ── Defs ──
+  const defs=el("defs");
+  // Radial gradient for center glow
+  const rg=el("radialGradient",{id:"coreGlow",cx:"50%",cy:"50%",r:"50%"});
+  rg.appendChild(el("stop",{offset:"0%","stop-color":"#2E5F3E","stop-opacity":".08"}));
+  rg.appendChild(el("stop",{offset:"100%","stop-color":"#2E5F3E","stop-opacity":"0"}));
+  defs.appendChild(rg);
+  // Arc glow filters
+  ["gold","blue"].forEach(c=>{
+    const f=el("filter",{id:c+"Glow",x:"-20%",y:"-20%",width:"140%",height:"140%"});
+    f.appendChild(el("feGaussianBlur",{in:"SourceGraphic",stdDeviation:"3",result:"blur"}));
+    const merge=el("feMerge");
+    merge.appendChild(el("feMergeNode",{in:"blur"}));
+    merge.appendChild(el("feMergeNode",{in:"SourceGraphic"}));
+    f.appendChild(merge);
+    defs.appendChild(f);
+  });
+  svg.appendChild(defs);
+
+  // ── Center glow ──
+  svg.appendChild(el("circle",{cx:CX,cy:CY,r:90,fill:"url(#coreGlow)"}));
+
+  // ── Concentric rings ──
+  RINGS.forEach(ring=>{
+    svg.appendChild(el("circle",{cx:CX,cy:CY,r:ring.r,fill:ring.fill,stroke:ring.stroke,
+      "stroke-width":"1","stroke-dasharray":ring.dash||"none","stroke-opacity":".3"}));
+    // Label on ring
+    if(ring.label){
+      const t=el("text",{x:CX,y:CY-ring.r+14,"text-anchor":"middle",
+        "font-size":ring.r>280?"8":"9","font-family":"'Fraunces',serif",
+        fill:ring.stroke,opacity:ring.r>300?".2":".3",
+        "letter-spacing":".04em"});
+      t.textContent=ring.label;
+      svg.appendChild(t);
+    }
+  });
+
+  // ── Agreement arcs (BEHIND nodes) ──
+  const arcGroup=el("g");
+  visOpps.forEach(opp=>{
+    const pts=opp.actors.map(id=>actors.find(a=>a.id===id)).filter(Boolean).map(a=>({...a,...actorPos(a)}));
+    if(pts.length<2) return;
+    const isActive=selectedOpp===opp.id;
+    const color=opp.round===1?"#C9A84C":"#2980B9";
+    const glowId=opp.round===1?"goldGlow":"blueGlow";
+    const opacity=selectedOpp?(isActive?.55:.04):.18;
+    const width=isActive?2.5:1.2;
+
+    // Draw arcs between all pairs (but cleverly - just sequential + hub)
+    // Use centroid as implicit hub
+    const cx2=pts.reduce((s,p)=>s+p.x,0)/pts.length;
+    const cy2=pts.reduce((s,p)=>s+p.y,0)/pts.length;
+
+    pts.forEach(p=>{
+      const bulge=.15+Math.random()*.1;
+      const path=el("path",{d:arcPath(cx2,cy2,p.x,p.y,bulge*(Math.random()>.5?1:-1)),
+        fill:"none",stroke:color,"stroke-width":width,opacity:opacity,
+        "stroke-linecap":"round"});
+      if(isActive) path.setAttribute("filter",`url(#${glowId})`);
+      arcGroup.appendChild(path);
+    });
+
+    // Centroid marker
+    const cMark=el("circle",{cx:cx2,cy:cy2,r:isActive?5:3,fill:color,opacity:isActive?.7:.2});
+    cMark.style.cursor="pointer";
+    cMark.addEventListener("click",()=>{selectedOpp=selectedOpp===opp.id?null:opp.id;render();renderPanel();});
+    cMark.addEventListener("mouseenter",ev=>showTip(ev,opp.title+(opp.round===1?" (Stage 1)":" (Stage 2)")));
+    cMark.addEventListener("mouseleave",hideTip);
+    arcGroup.appendChild(cMark);
+
+    // Tiny label near centroid
+    if(isActive){
+      const lb=el("text",{x:cx2,y:cy2-9,"text-anchor":"middle","font-size":"8",
+        "font-family":"'DM Sans',sans-serif","font-weight":"600",fill:color,opacity:".8"});
+      lb.textContent=opp.title.length>30?opp.title.substring(0,28)+"…":opp.title;
+      lb.style.pointerEvents="none";
+      arcGroup.appendChild(lb);
+    }
+  });
+  svg.appendChild(arcGroup);
+
+  // ── Actor nodes ──
+  const nodeGroup=el("g");
+  actors.forEach(a=>{
+    const pos=actorPos(a);
+    const inOpp=oppActorIds.has(a.id);
+    const ringObj=RINGS.find(r=>r.id===a.ring);
+    const baseR=a.ring==="core"?16:a.ring==="c1"?14:a.ring==="c2"?11:a.ring==="c3"?10:8;
+    const isHovered=hoveredActor===a.id;
+    const isInSelected=selectedOpp && opportunities.find(o=>o.id===selectedOpp)?.actors.includes(a.id);
+    const opacity=selectedOpp?(isInSelected?1:.15):(inOpp?1:.3);
+
+    const g=el("g");
+    g.style.cursor="pointer";
+
+    // Hover glow
+    if(isHovered||isInSelected){
+      g.appendChild(el("circle",{cx:pos.x,cy:pos.y,r:baseR+5,fill:"none",
+        stroke:a.color,"stroke-width":"1.5",opacity:".3"}));
+    }
+
+    // Main circle
+    g.appendChild(el("circle",{cx:pos.x,cy:pos.y,r:baseR,fill:a.color,opacity:opacity,
+      stroke:"rgba(255,255,255,.6)","stroke-width":"1.5"}));
+
+    // Initials
+    const txt=el("text",{x:pos.x,y:pos.y+1,"text-anchor":"middle","dominant-baseline":"central",
+      "font-size":baseR>12?"10":"8","font-weight":"700",fill:"#fff",opacity:opacity,
+      "font-family":"'DM Sans',sans-serif"});
+    txt.textContent=a.short;
+    txt.style.pointerEvents="none";
+    g.appendChild(txt);
+
+    // Name label (only for core + c1, or if hovered/selected)
+    if(a.ring==="core"||a.ring==="c1"||isHovered||isInSelected){
+      const nameEl=el("text",{x:pos.x,y:pos.y+baseR+11,"text-anchor":"middle",
+        "font-size":"9","font-weight":"600",fill:a.color,opacity:opacity*.9,
+        "font-family":"'DM Sans',sans-serif"});
+      nameEl.textContent=a.name;
+      nameEl.style.pointerEvents="none";
+      g.appendChild(nameEl);
+
+      if(a.ring==="core"){
+        const orgEl=el("text",{x:pos.x,y:pos.y+baseR+21,"text-anchor":"middle",
+          "font-size":"7.5",fill:"#888",opacity:opacity*.6,
+          "font-family":"'DM Sans',sans-serif"});
+        orgEl.textContent=a.org;
+        orgEl.style.pointerEvents="none";
+        g.appendChild(orgEl);
+      }
+    }
+
+    g.addEventListener("mouseenter",ev=>{
+      hoveredActor=a.id;
+      const myOpps=visOpps.filter(o=>o.actors.includes(a.id));
+      const oppList=myOpps.map(o=>`${o.round===1?"①":"②"} ${o.title}`).join("\n");
+      showTip(ev,`${a.name}\n${a.org} — ${a.role}${myOpps.length?"\n─────\n"+oppList:""}`);
+      render();
+    });
+    g.addEventListener("mouseleave",()=>{hoveredActor=null;hideTip();render();});
+    g.addEventListener("click",()=>{
+      // Find first opp containing this actor
+      const myOpp=visOpps.find(o=>o.actors.includes(a.id));
+      if(myOpp){selectedOpp=selectedOpp===myOpp.id?null:myOpp.id;render();renderPanel();}
+    });
+
+    nodeGroup.appendChild(g);
+  });
+  svg.appendChild(nodeGroup);
+
+  // ── Stage label watermark ──
+  const stageLabel=el("text",{x:CX,y:CY,"text-anchor":"middle","dominant-baseline":"central",
+    "font-family":"'Fraunces',serif","font-size":"14","font-weight":"300",
+    fill:stage==="1"?"#C9A84C":stage==="2"?"#2980B9":"#666",opacity:".15"});
+  stageLabel.textContent=stage==="1"?"STAGE 1 — 6 MONTHS":stage==="2"?"STAGE 2 — 12 MONTHS":"STAGES 1 & 2";
+  svg.appendChild(stageLabel);
+}
+
+// ═══════════════════════════════════════════════════════
+// PANEL
+// ═══════════════════════════════════════════════════════
+function renderPanel(){
+  const visibleRounds=stage==="both"?[1,2]:stage==="1"?[1]:[2];
+  const visOpps=opportunities.filter(o=>visibleRounds.includes(o.round));
+
+  let html=`<h2>Circles of Trust</h2>
+  <div class="hint">Click a node or agreement to explore connections</div>`;
+
+  // Ring legend
+  const ringGroups=[
+    {ring:"core",label:"Core — Project Team",actors:actors.filter(a=>a.ring==="core")},
+    {ring:"c1",label:"Circle 1 — Cohort 1 (Q1 '26)",actors:actors.filter(a=>a.ring==="c1")},
+    {ring:"c2",label:"Circle 2 — Cohort 2 (Q2 '26)",actors:actors.filter(a=>a.ring==="c2")},
+    {ring:"c3",label:"Circle 3 — Cohort 3 (Q3 '26)",actors:actors.filter(a=>a.ring==="c3")},
+    {ring:"horizon",label:"Post-Prototype Horizon",actors:actors.filter(a=>a.ring==="horizon")},
+  ];
+  ringGroups.forEach(rg=>{
+    html+=`<div class="ring-section"><h3>${rg.label}</h3>`;
+    rg.actors.forEach(a=>{
+      const inOpp=visOpps.some(o=>o.actors.includes(a.id));
+      const isInSelected=selectedOpp && opportunities.find(o=>o.id===selectedOpp)?.actors.includes(a.id);
+      html+=`<div class="actor-row${isInSelected?' active':''}" data-id="${a.id}">
+        <span class="dot" style="background:${a.color}${inOpp?'':';opacity:.3'}"></span>
+        ${a.name}<span class="meta">${a.role}</span></div>`;
+    });
+    html+=`</div>`;
+  });
+
+  html+=`<div class="divider"></div>`;
+
+  // Agreements
+  const r1=visOpps.filter(o=>o.round===1);
+  const r2=visOpps.filter(o=>o.round===2);
+
+  if(r1.length){
+    html+=`<div class="ring-section"><h3>Stage 1 — Foundation (6 months)</h3>`;
+    r1.forEach(o=>{
+      const actorNames=o.actors.map(id=>{const a=actors.find(a=>a.id===id);return a?a.name:id}).join(", ");
+      html+=`<div class="acard${selectedOpp===o.id?' active':''}" data-opp="${o.id}">
+        <span class="round-tag r1">Stage 1</span>
+        <h4>${o.title}</h4>
+        <div class="actors-list">${actorNames}</div>
+        <div class="expand">
+          <p>${o.desc}</p>
+          <div class="gameplay">💡 ${o.gameplay}</div>
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  if(r2.length){
+    html+=`<div class="ring-section"><h3>Stage 2 — Scale (12 months)</h3>`;
+    r2.forEach(o=>{
+      const actorNames=o.actors.map(id=>{const a=actors.find(a=>a.id===id);return a?a.name:id}).join(", ");
+      html+=`<div class="acard${selectedOpp===o.id?' active':''}" data-opp="${o.id}">
+        <span class="round-tag r2">Stage 2</span>
+        <h4>${o.title}</h4>
+        <div class="actors-list">${actorNames}</div>
+        <div class="expand">
+          <p>${o.desc}</p>
+          <div class="gameplay">💡 ${o.gameplay}</div>
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  panel.innerHTML=html;
+
+  // Bind panel events
+  panel.querySelectorAll(".acard").forEach(el=>{
+    el.addEventListener("click",()=>{
+      const id=el.dataset.opp;
+      selectedOpp=selectedOpp===id?null:id;
+      render();renderPanel();
+      // Scroll card into view
+      setTimeout(()=>{
+        const active=panel.querySelector(".acard.active");
+        if(active) active.scrollIntoView({behavior:"smooth",block:"nearest"});
+      },50);
+    });
+  });
+
+  panel.querySelectorAll(".actor-row").forEach(el=>{
+    el.addEventListener("mouseenter",()=>{hoveredActor=el.dataset.id;render();});
+    el.addEventListener("mouseleave",()=>{hoveredActor=null;render();});
+    el.addEventListener("click",()=>{
+      const id=el.dataset.id;
+      const visibleRounds2=stage==="both"?[1,2]:stage==="1"?[1]:[2];
+      const visOpps2=opportunities.filter(o=>visibleRounds2.includes(o.round));
+      const myOpp=visOpps2.find(o=>o.actors.includes(id));
+      if(myOpp){selectedOpp=selectedOpp===myOpp.id?null:myOpp.id;render();renderPanel();}
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════
+function el(tag,attrs){
+  const e=document.createElementNS("http://www.w3.org/2000/svg",tag);
+  if(attrs) Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,String(v)));
+  return e;
+}
+function showTip(ev,text){
+  tip.textContent=text;tip.style.whiteSpace="pre-line";
+  tip.classList.add("show");
+  const x=Math.min(ev.clientX+14,window.innerWidth-290);
+  tip.style.left=x+"px";tip.style.top=(ev.clientY-10)+"px";
+}
+function hideTip(){tip.classList.remove("show")}
+
+// ═══════════════════════════════════════════════════════
+// STAGE TOGGLE
+// ═══════════════════════════════════════════════════════
+document.querySelectorAll(".stage-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".stage-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    stage=btn.dataset.stage;
+    selectedOpp=null;
+    render();renderPanel();
+  });
+});
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+render();
+renderPanel();
+</script>
+</body>
+</html>

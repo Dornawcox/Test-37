@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GLCDI Water System — Who Builds What</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Instrument+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body, #root { height: 100%; overflow: hidden; }
+  body { background: #080e1a; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #1a2744; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const {useState,useCallback,useEffect}=React;
+
+const PARTICIPANTS = [
+  {
+    id: "asher", name: "Asher Wright", org: "Caney Fork Farms",
+    archetype: "Practitioner-Steward", color: "#5B8C5A",
+    components: ["sources", "meters", "valves"],
+    rationale: {
+      sources: "Generates multi-year soil chemistry/health/carbon datasets, farm-scale grazing & input records, and EOV ecological monitoring data directly from an 80/20 operations/research farm.",
+      meters: "Tracks Ecological Outcome Verification metrics since 2023; built the AgBase internal searchable database to monitor farm-scale impact over time.",
+      valves: "Values-based access control: shares data freely when values align, maintains data-sharing obligations with TSIP, Ecdysis, and Savory partners. Low\u2013moderate institutional trust means he gates access relationally.",
+    }
+  },
+  {
+    id: "matthew", name: "Matthew Lange", org: "IC-FOODS",
+    archetype: "Semantic Infrastructure Builder", color: "#7B5EA7",
+    components: ["filters", "treatment", "pumps"],
+    rationale: {
+      filters: "Builds ECOB vocabularies with preferred terms and defined meanings\u2014the standardization layer that makes data from different regions, labs, and systems interoperable.",
+      treatment: "Links local folksonomies to standard terms: aggregating and transforming messy local language into computable shared vocabulary. Raw data in, interoperable data out.",
+      pumps: "Designing certification reasoning engines and open-source language model integration\u2014the analytical processing that computes across distributed data to produce claims, scores, and certifications.",
+    }
+  },
+  {
+    id: "steve", name: "Steve Francis", org: "Land PKS",
+    archetype: "Global Tool-Builder", color: "#2980B9",
+    components: ["sources", "filters", "pipes", "meters"],
+    rationale: {
+      sources: "Land PKS is a primary data collection interface: cross-references global/national soil maps with user observations, helping stewards identify soils and generate monitoring data worldwide.",
+      filters: "User discrimination protocols guide non-experts through soil identification\u2014validating and quality-checking observations against known datasets before data enters the system.",
+      pipes: "Multi-language (En, Sp, Uk, Fr, Sw), mesh-network, offline-capable infrastructure\u2014the physical plumbing that gets data moving in low-connectivity global contexts.",
+      meters: "Consistent time-series land monitoring tracks how land changes based on interventions\u2014the metering of outcomes over time across 1000+ landscapes.",
+    }
+  },
+  {
+    id: "jesus", name: "Jesus Torres", org: "Entidad",
+    archetype: "Decentralized Identity Architect", color: "#C0392B",
+    components: ["valves", "pipes", "reservoirs"],
+    rationale: {
+      valves: "Core expertise\u2014verifiable credentials, consent-governed access, \u2018never reach into another\u2019s wallet\u2019 principle. Designs the permission architecture: who can open which valve, under what conditions, with what proof.",
+      pipes: "Decentralized wallet infrastructure and DID/DIDCOM protocols\u2014peer-to-peer connection architecture serving 120K+ farmworker users. Mobile-to-mobile/web interaction patterns.",
+      reservoirs: "Individual data sovereignty via decentralized wallets\u2014data lives with the person, not in a central database. GPS-verified work histories stored as verifiable credentials the worker controls.",
+    }
+  },
+  {
+    id: "kara", name: "Kara Weinstein", org: "GLCDI / Wolfe\u2019s Neck",
+    archetype: "Network Coordinator", color: "#E67E22",
+    components: ["reservoirs", "valves", "endusers"],
+    rationale: {
+      reservoirs: "Project steward for the GLCDI data space prototype\u2014the person responsible for the reservoir existing and functioning. Coordinates contracts, MOUs, and stakeholder alignment.",
+      valves: "Stewards governance framework; ensures informed consent on data ownership; models minimal-exposure governance by removing herself from direct data access. Buffers between funders and community.",
+      endusers: "Translates between technical builders and land stewards\u2014ensures the system actually serves the people it\u2019s meant to serve. Network activation across the regen ag community.",
+    }
+  },
+  {
+    id: "erika", name: "Erika Foster", org: "Point Blue",
+    archetype: "Rigorous Soil Ecologist", color: "#2C7DA0",
+    components: ["sources", "filters", "treatment", "meters"],
+    rationale: {
+      sources: "Generates standardized below & above ground ecosystem metrics at farm/ranch scale\u2014a primary scientific data source feeding the system with multi-year soil health datasets.",
+      filters: "Common Farm Convention early adopter\u2014data quality standardization, multi-level data sharing agreements linked to the Ag Oath of Care. The quality-assurance layer.",
+      treatment: "MEMS model integration via Colorado State\u2014aggregating and transforming raw soil data into regional and policy-grade ecosystem analysis. Honest estimates that prevent overstatement.",
+      meters: "Conservation agriculture practice evaluation\u2014rigorously measuring which practices work, preventing overstatement of soil carbon potential (published critique of carbon markets).",
+    }
+  },
+  {
+    id: "tim", name: "Tim Tensen", org: "TerraGenesis / GLCDI",
+    archetype: "Supply Chain Translator", color: "#1A535C",
+    components: ["endusers", "pumps", "valves"],
+    rationale: {
+      endusers: "Works directly across the full supply chain\u2014small farmers to corporations, indigenous cooperatives to retailers, across six continents. THE person who knows who actually drinks the water.",
+      pumps: "Processes the translation between local cultural practices (Wanakaset, combe beet) and institutional frameworks\u2014the analytical engine that transforms community knowledge into forms capital can recognize.",
+      valves: "Bridges trust between farm communities and institutional finance\u2014controls whether capital and data actually flow between these worlds. Named \u2018provincialism\u2019 as the systemic blockage in the valves.",
+    }
+  },
+  {
+    id: "david", name: "David Thomas", org: "OFN Canada / Startin\u2019blox",
+    archetype: "Interoperability Operator", color: "#8E44AD",
+    components: ["pipes", "reservoirs", "treatment", "valves"],
+    rationale: {
+      pipes: "Core expertise\u2014Startin\u2019blox connector architecture, Beckn and DFC interoperability protocols. THE pipe engineer: implements the physical connectors between data spaces, commerce networks, and ag systems.",
+      reservoirs: "Data space deployment and configuration via SOLID-based architecture\u2014the technical implementation of where data actually lives (producer pods) and how it\u2019s accessed through semantic APIs.",
+      treatment: "Translation between European data space standards (DFC, Gaia-X lineage) and North American agricultural/regulatory context\u2014transforming data formats across institutional regimes.",
+      valves: "Consent-governed connectors ensuring producer data sovereignty\u2014the technical implementation of permission controls through SOLID pods and Startin\u2019blox access management.",
+    }
+  },
+  {
+    id: "dorn", name: "Dorn Cox", org: "Tuckaway Farm / OpenTEAM",
+    archetype: "Ecosystem Architect", color: "#26A69A",
+    components: ["sources", "pipes", "filters", "reservoirs", "pumps", "endusers"],
+    rationale: {
+      sources: "Generates farm-scale soil, grazing, and field trial data from Tuckaway Farm (multi-generational). Also stewards the OpenTEAM archive and Farm Hack tool registry\u2014the aggregated knowledge production of a decade of community-built open-source ag tools.",
+      pipes: "Designed the enabling infrastructure for knowledge exchange\u2014the social, technical, legal, and financial architectures that connect data stewards. OpenTEAM\u2019s entire purpose was to be the plumbing between ag tech projects. Now building Talk to the Land as a new voice-to-text data entry pipe.",
+      filters: "Community-governed ontologies as a defense against language appropriation. Actively works to maintain the integrity of terms like \u2018regenerative,\u2019 \u2018ag data wallet,\u2019 \u2018innovation\u2019\u2014filtering out co-opted meanings to preserve the community\u2019s original intent.",
+      reservoirs: "Archiving OpenTEAM\u2019s body of work using FAIR principles so it survives organizational transitions. Building the reservoir of institutional memory: what was built, by whom, under what conditions, and how to reactivate dormant projects.",
+      pumps: "The Talk to the Land concept transforms voice interviews into structured, ontology-mapped data\u2014an analytical engine that converts conversation into computable knowledge with provenance. Excited about IC-FOODS integration for this.",
+      endusers: "Operates at three scales of community simultaneously: local New England food systems (FarmBQue with 700+ people), national regen ag networks (NACD board), and global agroecology movements (Grassroots Innovation Assembly, FAO task forces). Connects end users across all scales.",
+    }
+  }
+];
+
+const COMPONENTS = [
+  { id: "sources", label: "Sources", dataLabel: "Data Origins", desc: "Soil sensors, grazing logs, rancher records", icon: "\uD83D\uDCA7", hue: 210, x: 8, y: 44 },
+  { id: "pipes", label: "Pipes", dataLabel: "Data Connectors", desc: "Infrastructure & connectors", icon: "\uD83D\uDD27", hue: 215, x: 23, y: 27 },
+  { id: "valves", label: "Valves", dataLabel: "Access Control", desc: "Permissions, consent, access control", icon: "\uD83D\uDD34", hue: 0, x: 36, y: 57 },
+  { id: "filters", label: "Filters", dataLabel: "Data Quality", desc: "Standardization, validation", icon: "\uD83D\uDFE0", hue: 30, x: 48, y: 30 },
+  { id: "reservoirs", label: "Reservoirs", dataLabel: "Data Spaces", desc: "Data storage / data spaces", icon: "\uD83D\uDFE3", hue: 270, x: 55, y: 63 },
+  { id: "pumps", label: "Pumps", dataLabel: "Analytics & AI", desc: "Analytics, processing, AI models", icon: "\u2699\uFE0F", hue: 50, x: 65, y: 30 },
+  { id: "treatment", label: "Treatment", dataLabel: "Transformation", desc: "Aggregation, anonymization, transformation", icon: "\uD83E\uDDEA", hue: 150, x: 76, y: 55 },
+  { id: "meters", label: "Meters", dataLabel: "Monitoring", desc: "Usage tracking, value measurement", icon: "\uD83D\uDCCA", hue: 160, x: 85, y: 30 },
+  { id: "endusers", label: "End Users", dataLabel: "Consumers", desc: "Ranchers, scientists, retailers, supply chain", icon: "\uD83C\uDF3E", hue: 40, x: 94, y: 52 }
+];
+
+const FLOWS = [
+  ["sources","pipes"],["pipes","filters"],["pipes","valves"],
+  ["valves","reservoirs"],["filters","pumps"],["filters","reservoirs"],
+  ["reservoirs","treatment"],["pumps","treatment"],
+  ["treatment","meters"],["meters","endusers"],["treatment","endusers"]
+];
+
+function getPeopleAt(cid) { return PARTICIPANTS.filter(p => p.components.includes(cid)); }
+
+function App() {
+  const [selC, setSelC] = useState(null);
+  const [selP, setSelP] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
+
+  const clickC = useCallback(id => { setSelP(null); setSelC(p => p===id?null:id); }, []);
+  const clickP = useCallback(id => { setSelC(null); setSelP(p => p===id?null:id); }, []);
+
+  const person = selP ? PARTICIPANTS.find(p=>p.id===selP) : null;
+  const comp = selC ? COMPONENTS.find(c=>c.id===selC) : null;
+  const litComps = person ? person.components : selC ? [selC] : [];
+  const litPeople = comp ? getPeopleAt(comp.id).map(p=>p.id) : selP ? [selP] : [];
+  const cMap = {}; COMPONENTS.forEach(c => cMap[c.id]=c);
+
+  return (
+    <div style={{height:"100vh",display:"flex",flexDirection:"column",background:"#080e1a",color:"#b0c4d8",fontFamily:"'Courier Prime','Courier New',monospace",overflow:"hidden"}}>
+      <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Instrument+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+      <div style={{position:"fixed",inset:0,opacity:0.035,pointerEvents:"none",backgroundImage:"linear-gradient(rgba(80,150,220,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(80,150,220,.4) 1px,transparent 1px)",backgroundSize:"48px 48px"}}/>
+
+      <header style={{padding:"14px 22px 10px",borderBottom:"1px solid #14243a",position:"relative",zIndex:2}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",flexWrap:"wrap",gap:8}}>
+          <div>
+            <div style={{fontSize:9,letterSpacing:3,color:"#2d6090",marginBottom:3}}>GLCDI STEERING COMMITTEE WORKSHOP \u2014 FEBRUARY 2026</div>
+            <h1 style={{margin:0,fontSize:21,fontFamily:"'Instrument Sans',sans-serif",fontWeight:700,color:"#dce8f4",letterSpacing:-.5}}>
+              The Water System <span style={{color:"#2d6090"}}>\u2014</span> <span style={{fontWeight:400,color:"#7a9ab8"}}>Who Builds What</span>
+            </h1>
+          </div>
+          <div style={{display:"flex",gap:12,fontSize:9,color:"#2d6090",flexWrap:"wrap"}}>
+            {["\uD83D\uDCA7 WATER = DATA","\uD83D\uDD27 PIPES = CONNECTORS","\uD83D\uDD34 VALVES = CONSENT","\uD83E\uDDEA TREATMENT = TRANSFORMATION"].map(t=>(
+              <span key={t} style={{padding:"2px 7px",border:"1px solid #14243a",borderRadius:3,background:"#0b1525"}}>{t}</span>
+            ))}
+          </div>
+        </div>
+        <p style={{margin:"5px 0 0",fontSize:11,color:"#4a7090",maxWidth:620,lineHeight:1.5,fontFamily:"'Instrument Sans',sans-serif"}}>
+          Click a <strong style={{color:"#8ab0cc"}}>component</strong> to see who brings expertise, or a <strong style={{color:"#8ab0cc"}}>participant</strong> to trace their roles across the system.
+        </p>
+      </header>
+
+      <div style={{flex:1,display:"flex",overflow:"hidden"}}>
+        <aside style={{width:205,borderRight:"1px solid #14243a",display:"flex",flexDirection:"column",flexShrink:0}}>
+          <div style={{padding:"9px 12px 5px",fontSize:9,letterSpacing:2.5,color:"#2d6090"}}>PARTICIPANTS</div>
+          <div style={{flex:1,overflowY:"auto"}}>
+            {PARTICIPANTS.map((p,i) => {
+              const on = selP===p.id || litPeople.includes(p.id);
+              return (
+                <div key={p.id} onClick={()=>clickP(p.id)} style={{
+                  padding:"7px 12px",cursor:"pointer",
+                  borderLeft:`3px solid ${on?p.color:"transparent"}`,
+                  background:on?`${p.color}10`:"transparent",
+                  transition:"all .2s",opacity:loaded?1:0,transform:loaded?"none":"translateX(-16px)",
+                  transitionDelay:`${i*50}ms`
+                }}>
+                  <div style={{display:"flex",alignItems:"center",gap:6}}>
+                    <div style={{width:8,height:8,borderRadius:"50%",background:p.color,opacity:on?1:.4,flexShrink:0,transition:"opacity .2s"}}/>
+                    <div style={{minWidth:0}}>
+                      <div style={{fontSize:11.5,fontWeight:on?700:400,color:on?"#dce8f4":"#6a8aa6",fontFamily:"'Instrument Sans',sans-serif",transition:"color .2s",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{p.name}</div>
+                      <div style={{fontSize:8.5,color:"#2d6090",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{p.archetype}</div>
+                    </div>
+                  </div>
+                  {on && <div style={{marginTop:4,marginLeft:14,display:"flex",flexWrap:"wrap",gap:2}}>
+                    {p.components.map(cid=>{const c=cMap[cid];return c?<span key={cid} style={{fontSize:7.5,padding:"1px 4px",borderRadius:2,background:`hsla(${c.hue},40%,35%,.2)`,color:`hsl(${c.hue},55%,62%)`,letterSpacing:.3}}>{c.icon} {c.label}</span>:null;})}
+                  </div>}
+                </div>
+              );
+            })}
+          </div>
+          <div style={{borderTop:"1px solid #14243a",padding:"8px 12px"}}>
+            <div style={{fontSize:8.5,letterSpacing:2,color:"#2d6090",marginBottom:5}}>COVERAGE DENSITY</div>
+            {[...COMPONENTS].sort((a,b)=>getPeopleAt(b.id).length-getPeopleAt(a.id).length).map(c=>{
+              const n=getPeopleAt(c.id).length;const on=litComps.includes(c.id);
+              return <div key={c.id} style={{display:"flex",alignItems:"center",gap:4,marginBottom:2.5,cursor:"pointer",opacity:on?1:.55,transition:"opacity .2s"}} onClick={()=>clickC(c.id)}>
+                <span style={{fontSize:8,width:16,textAlign:"center"}}>{c.icon}</span>
+                <div style={{flex:1,height:4,background:"#111d30",borderRadius:2,overflow:"hidden"}}>
+                  <div style={{width:`${n/5*100}%`,height:"100%",background:`hsl(${c.hue},50%,45%)`,borderRadius:2,opacity:on?1:.55,transition:"all .3s"}}/>
+                </div>
+                <span style={{fontSize:8,color:"#4a7090",width:8,textAlign:"right"}}>{n}</span>
+              </div>;
+            })}
+          </div>
+        </aside>
+
+        <main style={{flex:1,position:"relative"}}>
+          <div style={{position:"absolute",top:7,left:"50%",transform:"translateX(-50%)",display:"flex",alignItems:"center",gap:8,zIndex:1,opacity:.3}}>
+            {["COLLECTION","\u2192 \u2192 \u2192","PROCESSING","\u2192 \u2192 \u2192","DELIVERY"].map((t,i)=>(
+              <span key={i} style={{fontSize:8.5,letterSpacing:i%2?0:2,color:i%2?"#14243a":"#2d6090"}}>{t}</span>
+            ))}
+          </div>
+
+          <svg width="100%" height="100%" style={{position:"absolute",inset:0}}>
+            <defs>
+              {COMPONENTS.map(c=>(
+                <radialGradient key={c.id} id={`glow-${c.id}`}>
+                  <stop offset="0%" stopColor={`hsl(${c.hue},50%,50%)`} stopOpacity="0.15"/>
+                  <stop offset="100%" stopColor={`hsl(${c.hue},50%,50%)`} stopOpacity="0"/>
+                </radialGradient>
+              ))}
+            </defs>
+
+            {FLOWS.map(([f,t],i)=>{
+              const a=cMap[f],b=cMap[t];if(!a||!b)return null;
+              const lit=litComps.includes(f)&&litComps.includes(t);
+              return <line key={i} x1={`${a.x}%`} y1={`${a.y}%`} x2={`${b.x}%`} y2={`${b.y}%`}
+                stroke={lit?`hsl(${a.hue},45%,50%)`:"#14243a"} strokeWidth={lit?2.5:1}
+                strokeDasharray={lit?"":"5,5"} opacity={lit?.65:.45} style={{transition:"all .35s"}}/>;
+            })}
+
+            {COMPONENTS.map(c=>{
+              const pp=getPeopleAt(c.id); const on=litComps.includes(c.id); const tgt=selC===c.id;
+              const r=30+pp.length*5;
+              return <g key={c.id} style={{cursor:"pointer"}} onClick={()=>clickC(c.id)}>
+                {on && <circle cx={`${c.x}%`} cy={`${c.y}%`} r={r*2.5} fill={`url(#glow-${c.id})`}/>}
+                <circle cx={`${c.x}%`} cy={`${c.y}%`} r={r+7} fill="none"
+                  stroke={`hsl(${c.hue},45%,38%)`} strokeWidth={tgt?1.8:.4}
+                  strokeDasharray={tgt?"":"3,4"} opacity={on?.55:.18} style={{transition:"all .3s"}}/>
+                <circle cx={`${c.x}%`} cy={`${c.y}%`} r={r}
+                  fill={on?`hsla(${c.hue},40%,18%,.85)`:`hsla(${c.hue},25%,12%,.55)`}
+                  stroke={`hsl(${c.hue},45%,${on?52:30}%)`} strokeWidth={tgt?2.5:1}
+                  style={{transition:"all .3s"}}/>
+                <text x={`${c.x}%`} y={`${c.y-1.5}%`} textAnchor="middle" dominantBaseline="middle"
+                  style={{fontSize:21,pointerEvents:"none"}}>{c.icon}</text>
+                <text x={`${c.x}%`} y={`${c.y+5.8}%`} textAnchor="middle"
+                  style={{fontSize:8.5,fontWeight:700,fill:on?`hsl(${c.hue},55%,72%)`:"#4a7090",fontFamily:"'Instrument Sans',sans-serif",letterSpacing:.8,pointerEvents:"none",transition:"fill .3s",textTransform:"uppercase"}}>{c.label}</text>
+                <text x={`${c.x}%`} y={`${c.y+8.8}%`} textAnchor="middle"
+                  style={{fontSize:7.5,fill:"#2d6090",fontFamily:"'Courier Prime',monospace",pointerEvents:"none"}}>{c.dataLabel}</text>
+                {pp.map((p,pi)=>{
+                  const a=((pi/pp.length)*Math.PI*2)-Math.PI/2; const orb=r+14;
+                  const dx=Math.cos(a)*orb; const dy=Math.sin(a)*orb;
+                  const pOn=litPeople.includes(p.id);
+                  return <g key={p.id}>
+                    <circle cx={`calc(${c.x}% + ${dx}px)`} cy={`calc(${c.y}% + ${dy}px)`}
+                      r={pOn?6.5:4} fill={pOn?p.color:`${p.color}44`}
+                      stroke={pOn?"#dce8f4":"none"} strokeWidth={pOn?1.2:0}
+                      style={{transition:"all .25s"}}/>
+                    {pOn && <text x={`calc(${c.x}% + ${dx+(dx>0?11:-11)}px)`} y={`calc(${c.y}% + ${dy}px)`}
+                      textAnchor={dx>0?"start":"end"} dominantBaseline="central"
+                      style={{fontSize:7.5,fill:p.color,fontFamily:"'Instrument Sans',sans-serif",fontWeight:600,pointerEvents:"none"}}>{p.name.split(" ")[0]}</text>}
+                  </g>;
+                })}
+                <circle cx={`calc(${c.x}% + ${r-1}px)`} cy={`calc(${c.y}% - ${r-1}px)`} r={8.5}
+                  fill={`hsl(${c.hue},45%,35%)`} opacity={.85}/>
+                <text x={`calc(${c.x}% + ${r-1}px)`} y={`calc(${c.y}% - ${r-1}px)`}
+                  textAnchor="middle" dominantBaseline="central"
+                  style={{fontSize:8,fontWeight:700,fill:"#dce8f4",pointerEvents:"none"}}>{pp.length}</text>
+              </g>;
+            })}
+          </svg>
+
+          {(comp||person) && <div style={{
+            position:"absolute",bottom:10,left:10,right:10,
+            background:"rgba(8,14,26,.97)",backdropFilter:"blur(14px)",
+            border:"1px solid #14243a",borderRadius:8,padding:"14px 18px",
+            maxHeight:"42%",overflowY:"auto",zIndex:10
+          }}>
+            {comp && <>
+              <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:9}}>
+                <span style={{fontSize:21}}>{comp.icon}</span>
+                <div>
+                  <div style={{fontSize:14,fontWeight:700,color:`hsl(${comp.hue},55%,68%)`,fontFamily:"'Instrument Sans',sans-serif"}}>{comp.label}</div>
+                  <div style={{fontSize:9.5,color:"#4a7090"}}>{comp.dataLabel} \u2014 {comp.desc}</div>
+                </div>
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(250px,1fr))",gap:7}}>
+                {getPeopleAt(comp.id).map(p=>(
+                  <div key={p.id} style={{background:`${p.color}0B`,border:`1px solid ${p.color}22`,borderRadius:5,padding:"7px 9px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
+                      <div style={{width:6,height:6,borderRadius:"50%",background:p.color}}/>
+                      <span style={{fontSize:10.5,fontWeight:700,color:p.color,fontFamily:"'Instrument Sans',sans-serif"}}>{p.name}</span>
+                      <span style={{fontSize:8.5,color:"#2d6090"}}>({p.org})</span>
+                    </div>
+                    <div style={{fontSize:10,color:"#8aaccc",lineHeight:1.5,fontFamily:"'Instrument Sans',sans-serif"}}>{p.rationale[comp.id]}</div>
+                  </div>
+                ))}
+              </div>
+            </>}
+            {person && <>
+              <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:9}}>
+                <div style={{width:13,height:13,borderRadius:"50%",background:person.color,flexShrink:0}}/>
+                <div>
+                  <div style={{fontSize:14,fontWeight:700,color:person.color,fontFamily:"'Instrument Sans',sans-serif"}}>{person.name}</div>
+                  <div style={{fontSize:9.5,color:"#4a7090"}}>{person.org} \u2014 {person.archetype}</div>
+                </div>
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(250px,1fr))",gap:7}}>
+                {person.components.map(cid=>{const c=cMap[cid];return c?
+                  <div key={cid} style={{background:`hsla(${c.hue},28%,18%,.3)`,border:`1px solid hsla(${c.hue},35%,35%,.22)`,borderRadius:5,padding:"7px 9px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
+                      <span style={{fontSize:14}}>{c.icon}</span>
+                      <span style={{fontSize:10.5,fontWeight:700,color:`hsl(${c.hue},50%,62%)`,fontFamily:"'Instrument Sans',sans-serif"}}>{c.label}</span>
+                      <span style={{fontSize:8.5,color:"#2d6090"}}>{c.dataLabel}</span>
+                    </div>
+                    <div style={{fontSize:10,color:"#8aaccc",lineHeight:1.5,fontFamily:"'Instrument Sans',sans-serif"}}>{person.rationale[cid]}</div>
+                  </div>:null;
+                })}
+              </div>
+            </>}
+          </div>}
+        </main>
+      </div>
+    </div>
+  );
+}
+
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+</body>
+</html>

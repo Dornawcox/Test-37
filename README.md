@@ -1,49 +1,33 @@
-# OpenTEAM Website
+# OpenTEAM Option 1 Demo (GitHub-native, data-driven cards)
 
-Open Technology Ecosystem for Agricultural Management — static site.
+This repo is a *testable* starter that:
+- Stores content as JSON in `src/content/**`
+- Builds static pages with Eleventy (11ty)
+- Provides a no-code Admin UI at `/admin` via Decap CMS
+- Deploys to GitHub Pages automatically (GitHub Actions)
 
-## Structure
-
+## Run locally
+```bash
+npm install
+npm run dev
 ```
-index.html                          ← Main page (hero, our work, collabathons, events, join)
-projects.html                       ← OpenTEAM + Metagov project rails
-canonical-source-texts.html         ← Inspirations library (book/paper rails by theme)
-videos.html                         ← In-Depths video archive
-calendar.html                       ← Shared events calendar (month view)
-licenses.html                       ← Licensing guidance
-script.js                           ← Shared JS: nav drawer, rail scrolling, calendar loader
-styles.css                          ← Shared stylesheet
-assets/                             ← Images and logos
-data/events.json                    ← Shared calendar event feed (edit to add events)
-```
+Open: http://localhost:8080
 
-## GitHub Pages
+## Deploy to GitHub Pages
+1. Create a new GitHub repo and push this code to the `main` branch.
+2. GitHub → **Settings → Pages** → Source: **GitHub Actions**
+3. Push to `main`. The included workflow builds and deploys.
 
-This site is ready for GitHub Pages hosting with no build step required.
+## Admin UI (Decap CMS)
+1. Edit `src/admin/config.yml` and set:
+   - `repo: YOUR_GITHUB_USER/YOUR_REPO`
+2. Commit + push.
+3. Visit:
+   - `https://YOUR_GITHUB_USER.github.io/YOUR_REPO/admin/`
 
-1. Push this repository to GitHub
-2. Go to **Settings → Pages**
-3. Set source to **main branch / root**
-4. Your site will be live at `https://<org>.github.io/<repo>/`
+> Decap’s GitHub backend requires OAuth configuration. If you want, I can provide a “copy/paste” OAuth setup checklist for GitHub Pages.
 
-The `.nojekyll` file tells GitHub Pages to skip Jekyll processing.
-
-## Editing content
-
-- **Events**: edit `data/events.json` — follow the existing schema (id, title, start, end, url, source, tags)
-- **Projects**: edit the `OPENTEAM_PROJECTS` array in `projects.html`
-- **Metagov projects**: edit `METAGOV_PROJECTS` in `projects.html`
-- **Inspirations / Books**: edit the `THEMES` object in `canonical-source-texts.html`
-- **Navigation**: the drawer nav is consistent across all pages
-
-## External dependencies
-
-- Google Fonts (Oswald, Crimson Pro, Poppins) — loaded from CDN
-- Google Favicon API — used for tool/platform logos in the TCP rail
-- Metagov.org images — fetched at runtime in projects.html (CORS permitting)
-
-All other code and assets are local.
-
----
-
-Built for OpenTEAM — fiscally sponsored project of Raft Foundation Inc, a 501(c)(3).
+## Content structure
+- Projects: `src/content/projects/*.json`
+- Tools: `src/content/tools/*.json` (includes `assessment` object)
+- Datasets: `src/content/datasets/*.json` (includes `assessment` object)

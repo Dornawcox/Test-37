@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenTEAM Soil Health Measurement Decision Tool</title>
+<meta name="description" content="Find the right in-field soil health measurement protocol for your goals, budget, and conditions. Based on OpenTEAM Field Methods Working Group protocols.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Source+Serif+4:wght@400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:linear-gradient(170deg,#f7f5f2 0%,#eae6df 50%,#f0ece6 100%);min-height:100vh;color:#333}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.serif{font-family:'Source Serif 4',Georgia,serif}
+button{font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all 0.2s}
+button:disabled{cursor:default;opacity:0.5}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const {useState,useEffect,useRef}=React;
+
+const METHODS_DATA={
+  infiltration:{
+    label:"Water Infiltration",color:"#5B9BD5",colorLight:"#E8F0FA",
+    description:"Measures how quickly water moves through soil — an indicator of soil structure, macropores, and impacts of organic matter on runoff and erosion.",
+    methods:[
+      {id:"runoff",name:"Runoff",measures:"Fate of precipitation from rainfall events",cost:1,costLabel:"Free–$",complexity:1,demoValue:5,monitoringValue:2,time:"3 min",personMin:"3 min",simultaneousMeasurements:1,accuracyRunoff:2,accuracyCompare:4,precisionChange:2,constants:"Amount of water, rate of application, soil moisture content",notes:"Powerful for side-by-side / nearby comparisons.",equipment:["5 gallon bucket","Water"],steps:["Fill a 5 gallon bucket with water","Pour bucket of water","Observe water flow patterns across the land"],bestFor:["Quick demonstration","Side-by-side comparisons","Lowest budget"]},
+      {id:"ponded-constant",name:"Ponded Constant Head",measures:"Soil compaction via relative rate of water infiltration (pre-wet and saturated)",cost:2,costLabel:"$+ assembly",complexity:2,demoValue:4,monitoringValue:5,time:"60 min",personMin:"7.5 min",simultaneousMeasurements:8,accuracyRunoff:2,accuracyCompare:2,precisionChange:5,constants:"Ring diameter, ring insertion depth, water depth",notes:"Easier than falling head method. Results in relatively lower (closer to actual) rates.",equipment:["Field transect","Six infiltrometer rings","Six terrycloth towels","Cups","Plastic sheets","Five gallons of water","Ruler","Stopwatch","Infiltration bottles","Clipboard","Single-ring Infiltrometer","Data forms"],steps:["Determine locations & record vegetation","Remove above-ground vegetation","Pre-wet soil to 1.5 in depth","Insert ring to 3 cm","Add water without disturbing soil","Place bottle in ring","Adjust pipette to maintain 3 cm water","Wait for 50mm drop","Record end time and distance"],bestFor:["Highest monitoring value","Most simultaneous measurements (8)","Best precision for monitoring change"]},
+      {id:"ponded-falling",name:"Ponded Falling Head",measures:"Soil compaction via relative rate of water infiltration (pre-wet and saturated)",cost:2,costLabel:"$+ assembly",complexity:2,demoValue:2,monitoringValue:3,time:"60 min",personMin:"60 min",simultaneousMeasurements:1,accuracyRunoff:2,accuracyCompare:3,precisionChange:3,constants:"Ring diameter, ring insertion depth, water depth",notes:"Easier to employ but slightly less accurate than constant head. Observer must determine when infiltration is complete.",equipment:["Field transect","Five gallons of water","Ruler","Stopwatch","Clipboard","Single-ring Infiltrometer","Data forms"],steps:["Determine locations","Record vegetation class","Remove above-ground vegetation","Pre-wet soil to 1.5 in","Insert ring to 3 cm","Add water without disturbing soil","Record water height every 30 sec","Record end time and distance"],bestFor:["Simpler alternative to constant head","Less equipment needed"]},
+      {id:"tension-minidisk",name:"Tension \u201CMinidisk\u201D",measures:"Rate of water infiltration into unsaturated soils for specific pore diameters",cost:3,costLabel:"$100",complexity:2,demoValue:4,monitoringValue:4,time:"60 min",personMin:"15 min",simultaneousMeasurements:4,accuracyRunoff:2,accuracyCompare:4,precisionChange:3,constants:"Surface preparation, infiltrometer-soil contact, water contact, disk cleanliness",notes:"Can be difficult to standardize if soil is not perfectly smooth.",equipment:["Minidisk infiltrometer","Water"],steps:["Fill the reservoir","Set the suction","Start measuring infiltration"],bestFor:["Unsaturated soil measurement","Pore-size specific data","Multiple simultaneous readings (4)"]},
+      {id:"cornell-sprinkler",name:"Cornell (Small) Sprinkler",measures:"Close to actual infiltration rate under natural conditions",cost:3,costLabel:"$1,450",complexity:3,demoValue:5,monitoringValue:4,time:"75 min",personMin:"75 min",simultaneousMeasurements:1,accuracyRunoff:4,accuracyCompare:5,precisionChange:5,constants:"Ring diameter, insertion depth, gaps, water application rate, emitter cleanliness",notes:"Most realistic method listed; less realistic than runoff plots. Combines ponded ring infiltration and simulated rainfall advantages.",equipment:["Portable rainfall simulator","Infiltration ring","Water","Timer"],steps:["Set up portable rainfall simulator on infiltration ring","Calibrate water application rate","Measure infiltration parameters"],bestFor:["Most realistic simulation","Highest accuracy for comparing soils","Research-grade data"]},
+      {id:"rainfall-plots",name:"Rainfall Plots & Research Simulators",measures:"Actual infiltration rates under natural conditions",cost:4,costLabel:"$$\u2013$$$",complexity:3,demoValue:5,monitoringValue:4,time:"\u221E (continuous)",personMin:"\u221E",simultaneousMeasurements:"<1",accuracyRunoff:4,accuracyCompare:5,precisionChange:5,constants:"Many factors",notes:"Most resource-intensive option. Worth it if improving hydrology is an objective.",equipment:["Varies \u2014 large-scale installation"],steps:["Design and install runoff plot","Calibrate rainfall simulator","Collect data over time"],bestFor:["Highest accuracy","Long-term monitoring","Research programs"]}
+    ]
+  },
+  aggregate:{
+    label:"Aggregate Stability",color:"#C8A951",colorLight:"#F5EDD6",
+    description:"Measures soil structural stability to assess erosion/crusting resistance. Correlated with total organic matter, biological activity, and actively cycling organic matter.",
+    methods:[
+      {id:"slakes",name:"Slakes App",measures:"Water dispersion via slaking image recognition (stability = initial area / 10-min dispersal area)",cost:1,costLabel:"$",complexity:1,demoValue:3,monitoringValue:4,time:"10 min",personMin:"10 min",simultaneousMeasurements:1,accuracy:3,precisionChange:"?",constants:"Soil texture",notes:"Uses smartphone image recognition software.",equipment:["Smartphone","Slakes app"],steps:["Download Slakes app","Place soil aggregate in water","App photographs and measures dispersal over 10 min"],bestFor:["Lowest cost","Least complex","Smartphone-based"]},
+      {id:"soil-stability",name:"Soil Stability Test",measures:"Degree of soil structural development and erosion resistance; stability when exposed to rapid wetting",cost:2,costLabel:"$\u2013$$",complexity:3,demoValue:4,monitoringValue:4,time:"10 min",personMin:"~2 min",simultaneousMeasurements:18,accuracy:5,precisionChange:3,constants:"Soil texture",notes:"Reflects soil biotic integrity \u2014 organic matter \u2018glue\u2019 must be renewed by organisms and roots.",equipment:["Soil stability kit","Two plastic boxes (18 sections)","Eighteen 2.5-cm sieves","Small spatula","Distilled water","Data form","Stopwatch"],steps:["Collect soil samples in kit sections","Immerse in water","Rate stability on standardized scale"],bestFor:["Most accurate","Most simultaneous measurements (18)","Best precision for change"]},
+      {id:"mason-jar",name:"Mason Jar Demonstration (NRCS)",measures:"Ability of soil to hold structure in water \u2014 shows ped strength",cost:1,costLabel:"$",complexity:1,demoValue:5,monitoringValue:5,time:"<5 min",personMin:"~2 min",simultaneousMeasurements:"1+",accuracy:2,precisionChange:2,constants:"More difficult to standardize",notes:"Soil high in organic matter stays intact with clear water. Low organic matter slakes rapidly, water becomes cloudy.",equipment:["Hardware cloth","2 glass jars"],steps:["Cut hardware cloth to support a clod at jar top","Choose two soils with different organic matter","Observe different stability in water"],bestFor:["Best demonstration value","Fastest","Highest monitoring value","Easiest to understand"]}
+    ]
+  },
+  bulk:{
+    label:"Bulk Density",color:"#B07B8E",colorLight:"#F0E0E6",
+    description:"Weight of soil per volume \u2014 measures compaction. Essential for adjusting soil carbon estimates. Higher density = less pore space for water, roots, and germination.",
+    methods:[
+      {id:"steel-pipe",name:"Steel Pipe Method",measures:"Bulk Density = dry soil weight / soil volume (adjusts carbon estimates)",cost:1,costLabel:"$10",complexity:1,demoValue:3,monitoringValue:4,time:"10 min collect + drying",personMin:"20 min",simultaneousMeasurements:1,accuracy:4,precisionChange:4,constants:"Sampling handling, soil moisture, soil type, rock content",notes:"Vertic soils should be sampled when moist. Larger diameter is generally better. Core should match targeted sample height.",equipment:["3-inch diameter ring","Hand sledge","Wood block","Garden trowel","Flat-bladed knife","Sealable bags","Scale (0.1g)","Measuring scoop","Paper cups","Metal rod","Microwave oven"],steps:["Drive ring into soil","Remove 3-inch ring","Remove excess soil","Place in bag and label","Weigh and record","Extract subsample for water content","Weigh subsample","Dry subsample"],bestFor:["Lowest cost","Simplest method","Standard soils"]},
+      {id:"excavation",name:"Excavation Method",measures:"Bulk Density = dry soil weight / soil volume (for gravelly/rocky soils)",cost:1,costLabel:"$10",complexity:2,demoValue:4,monitoringValue:4,time:"45 min collect + drying",personMin:"25 min",simultaneousMeasurements:1,accuracy:4,precisionChange:3,constants:"Wall stability, surface leveling",notes:"Use when gravel, rocks, crumbles, or high clay prevent steel pipe use.",equipment:["Plastic wrap","140-cc syringe","Garden trowel","Sealable bags","2-mm sieve","Scale (0.1g)","Measuring scoop","Paper cup","Microwave oven"],steps:["Dig and line a hole","Add water to the hole","Weigh and record sample","Extract subsample","Weigh subsample","Dry subsample"],bestFor:["Rocky/gravelly soils","High clay soils","When steel pipe won\u2019t work"]},
+      {id:"clod-paraffin",name:"Clod Paraffin Method",measures:"Bulk Density via paraffin-coated clod displacement",cost:1,costLabel:"$10",complexity:2,demoValue:3,monitoringValue:4,time:"45 min",personMin:"30 min",simultaneousMeasurements:1,accuracy:5,precisionChange:5,constants:"Sample selection, transport handling",notes:"Less susceptible to error than other methods. Coat clod in field or transport carefully.",equipment:["Paraffin","Scale","Water"],steps:["Oven-dry the clods","Coat with paraffin","Weigh clods in water","Weigh clods in air","Calculate bulk density"],bestFor:["Highest accuracy","Best precision","Less error-prone"]},
+      {id:"clod-photo",name:"Clod Photogrammetry",measures:"Weight-to-volume ratio via photo-stitched 3D model",cost:2,costLabel:"$50",complexity:3,demoValue:4,monitoringValue:4,time:"45 min",personMin:"15 min",simultaneousMeasurements:1,accuracy:5,precisionChange:5,constants:"Sample selection, transport handling",notes:"Requires 3D-printed turntable and two smartphones. Less susceptible to error.",equipment:["Cameras (2 smartphones)","Photogrammetry software","3D-printed turntable"],steps:["Place ped on turntable","Capture overlapping photos from two angles","Process in photogrammetry software","Calculate volume and density"],bestFor:["Highest accuracy (tied)","Modern/tech approach","Best precision (tied)"]},
+      {id:"penetrometer-strain",name:"Penetrometer Strain Gauge",measures:"Soil hardness (compaction monitoring)",cost:3,costLabel:"$250\u2013$2,000",complexity:1,demoValue:4,monitoringValue:4,time:"1 min",personMin:"1 min",simultaneousMeasurements:1,accuracy:2,precisionChange:4,constants:"Soil moisture (air dry or field capacity)",notes:"Measures compaction, not bulk density directly. Best with consistent moisture and insertion speed.",equipment:["Strain gauge penetrometer"],steps:["Insert penetrometer at consistent speed","Read strain gauge measurement","Record depth profile"],bestFor:["Fastest measurement (1 min)","Compaction screening","Field-portable"]},
+      {id:"penetrometer-impact",name:"Penetrometer Impact",measures:"Soil hardness (compaction monitoring)",cost:3,costLabel:"$250\u2013$1,500",complexity:1,demoValue:4,monitoringValue:4,time:"35 min",personMin:"2 min",simultaneousMeasurements:1,accuracy:2,precisionChange:4,constants:"Soil moisture, wall stability",notes:"Penetration resistance calculated from hammer kinetic energy divided by penetration distance.",equipment:["Penetrometer cone","Hammer"],steps:["Position penetrometer cone","Drive with successive hammer blows","Record penetration distance per blow"],bestFor:["Impact-based measurement","Compaction monitoring"]}
+    ]
+  }
+};
+
+const PRIORITIES=[
+  {id:"cheapest",label:"Lowest cost",icon:"\uD83D\uDCB0"},
+  {id:"fastest",label:"Quickest measurement",icon:"\u26A1"},
+  {id:"simplest",label:"Least complex",icon:"\uD83C\uDFAF"},
+  {id:"accurate",label:"Most accurate",icon:"\uD83D\uDD2C"},
+  {id:"precise",label:"Best precision for monitoring change",icon:"\uD83D\uDCCA"},
+  {id:"demo",label:"Best for demonstrations",icon:"\uD83D\uDC65"},
+  {id:"monitoring",label:"Best monitoring value",icon:"\uD83D\uDC41"},
+  {id:"simultaneous",label:"Most measurements at once",icon:"\u2699\uFE0F"}
+];
+
+function scoreMethod(method,priorities){
+  let score=0;const weights={0:5,1:3,2:1};
+  priorities.forEach((pId,idx)=>{const w=weights[idx]||1;
+    switch(pId){
+      case"cheapest":score+=(6-method.cost)*w;break;
+      case"fastest":{const t=parseInt(method.time)||100;score+=Math.max(0,(100-t)/20)*w;break}
+      case"simplest":score+=(4-method.complexity)*w;break;
+      case"accurate":score+=(method.accuracy||method.accuracyCompare||3)*w;break;
+      case"precise":{const p=method.precisionChange==="?"?2:method.precisionChange;score+=p*w;break}
+      case"demo":score+=method.demoValue*w;break;
+      case"monitoring":score+=method.monitoringValue*w;break;
+      case"simultaneous":{const s=parseInt(method.simultaneousMeasurements)||1;score+=Math.min(s,5)*w;break}
+    }
+  });return score;
+}
+
+function RatingDots({value,max=5,color}){
+  return React.createElement("div",{style:{display:"flex",gap:3}},
+    Array.from({length:max}).map((_,i)=>React.createElement("div",{key:i,style:{width:10,height:10,borderRadius:"50%",background:i<value?color:"#ddd",transition:"background 0.3s"}}))
+  );
+}
+
+function MethodCard({method,category,rank,isTop}){
+  const[expanded,setExpanded]=useState(false);
+  const cat=METHODS_DATA[category];
+  return React.createElement("div",{onClick:()=>setExpanded(!expanded),style:{background:isTop?cat.colorLight:"#fff",border:isTop?`2px solid ${cat.color}`:"1.5px solid #e0e0e0",borderRadius:14,padding:"20px 24px",cursor:"pointer",transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",boxShadow:isTop?`0 4px 20px ${cat.color}30`:"0 1px 4px rgba(0,0,0,0.06)",position:"relative",overflow:"hidden"}},
+    isTop&&React.createElement("div",{style:{position:"absolute",top:0,right:0,background:cat.color,color:"#fff",padding:"4px 14px 4px 18px",borderRadius:"0 12px 0 14px",fontSize:11,fontWeight:700,letterSpacing:"0.05em",textTransform:"uppercase"}},"\u2605 Best Match"),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:12,marginBottom:8}},
+      React.createElement("div",{style:{width:32,height:32,borderRadius:"50%",background:cat.color,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:14,flexShrink:0}},rank),
+      React.createElement("h3",{style:{margin:0,fontSize:18,fontWeight:700,color:"#1a1a1a"}},method.name)
+    ),
+    React.createElement("p",{className:"serif",style:{margin:"0 0 14px 44px",fontSize:13,color:"#555",lineHeight:1.5}},method.measures),
+    React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(130px, 1fr))",gap:10,marginLeft:44,marginBottom:expanded?16:0}},
+      [{label:"Cost",value:method.costLabel},{label:"Time",value:method.time},{label:"Person-min",value:method.personMin},{label:"Simultaneous",value:String(method.simultaneousMeasurements)}].map(item=>
+        React.createElement("div",{key:item.label,style:{fontSize:12}},
+          React.createElement("span",{style:{color:"#888",fontWeight:500}},item.label+": "),
+          React.createElement("span",{style:{color:"#333",fontWeight:700}},item.value)
+        )
+      )
+    ),
+    React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(150px, 1fr))",gap:8,marginLeft:44,marginTop:10}},
+      [{label:"Demo Value",val:method.demoValue},{label:"Monitoring",val:method.monitoringValue},{label:"Accuracy",val:method.accuracy||method.accuracyCompare||0},{label:"Precision \u0394",val:method.precisionChange==="?"?0:method.precisionChange}].map(r=>
+        React.createElement("div",{key:r.label,style:{display:"flex",alignItems:"center",gap:6,fontSize:11}},
+          React.createElement("span",{style:{color:"#888",minWidth:72}},r.label),
+          React.createElement(RatingDots,{value:r.val,color:cat.color})
+        )
+      )
+    ),
+    expanded&&React.createElement("div",{style:{marginTop:16,marginLeft:44,paddingTop:16,borderTop:`1px solid ${cat.color}40`,animation:"fadeIn 0.3s ease"}},
+      React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}},
+        React.createElement("div",null,
+          React.createElement("h4",{style:{margin:"0 0 8px",fontSize:13,fontWeight:700,color:cat.color,textTransform:"uppercase",letterSpacing:"0.05em"}},"Protocol Steps"),
+          React.createElement("ol",{className:"serif",style:{margin:0,paddingLeft:18,fontSize:13,color:"#444",lineHeight:1.8}},method.steps.map((s,i)=>React.createElement("li",{key:i},s)))
+        ),
+        React.createElement("div",null,
+          React.createElement("h4",{style:{margin:"0 0 8px",fontSize:13,fontWeight:700,color:cat.color,textTransform:"uppercase",letterSpacing:"0.05em"}},"Equipment Needed"),
+          React.createElement("ul",{className:"serif",style:{margin:0,paddingLeft:18,fontSize:13,color:"#444",lineHeight:1.8}},method.equipment.map((e,i)=>React.createElement("li",{key:i},e)))
+        )
+      ),
+      method.notes&&React.createElement("div",{className:"serif",style:{marginTop:14,padding:"10px 14px",background:`${cat.color}12`,borderRadius:8,fontSize:12,color:"#555",lineHeight:1.6}},
+        React.createElement("strong",{style:{color:cat.color}},"Note: "),method.notes
+      ),
+      React.createElement("div",{style:{marginTop:10,display:"flex",flexWrap:"wrap",gap:6}},
+        method.bestFor.map(tag=>React.createElement("span",{key:tag,style:{padding:"3px 10px",background:`${cat.color}20`,color:cat.color,borderRadius:20,fontSize:11,fontWeight:600}},tag))
+      )
+    ),
+    React.createElement("div",{style:{textAlign:"center",marginTop:10,fontSize:11,color:"#aaa"}},expanded?"\u25B2 Click to collapse":"\u25BC Click for protocol details")
+  );
+}
+
+function App(){
+  const[step,setStep]=useState(0);
+  const[selectedCategory,setSelectedCategory]=useState(null);
+  const[selectedPriorities,setSelectedPriorities]=useState([]);
+  const[soilCondition,setSoilCondition]=useState(null);
+  const[results,setResults]=useState(null);
+  const resultsRef=useRef(null);
+
+  useEffect(()=>{if(results&&resultsRef.current)resultsRef.current.scrollIntoView({behavior:"smooth",block:"start"})},[results]);
+
+  const togglePriority=id=>{setSelectedPriorities(prev=>{if(prev.includes(id))return prev.filter(p=>p!==id);if(prev.length>=3)return prev;return[...prev,id]})};
+
+  const calculateResults=()=>{
+    const cat=METHODS_DATA[selectedCategory];
+    let methods=[...cat.methods];
+    if(selectedCategory==="bulk"&&soilCondition==="rocky")methods=methods.filter(m=>m.id!=="steel-pipe");
+    const scored=methods.map(m=>({...m,score:scoreMethod(m,selectedPriorities)}));
+    scored.sort((a,b)=>b.score-a.score);
+    setResults(scored);setStep(3);
+  };
+
+  const reset=()=>{setStep(0);setSelectedCategory(null);setSelectedPriorities([]);setSoilCondition(null);setResults(null)};
+
+  const catColor=selectedCategory?METHODS_DATA[selectedCategory]?.color:"#6BBF59";
+
+  return React.createElement("div",{style:{minHeight:"100vh"}},
+    // Header
+    React.createElement("div",{style:{background:"linear-gradient(135deg,#3a3a3a 0%,#2a2a2a 100%)",padding:"36px 32px 32px",position:"relative",overflow:"hidden"}},
+      React.createElement("div",{style:{position:"absolute",bottom:0,left:0,right:0,height:4,background:"linear-gradient(90deg,#5B9BD5,#C8A951,#B07B8E,#6BBF59)"}}),
+      React.createElement("div",{style:{maxWidth:800,margin:"0 auto"}},
+        React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6}},
+          React.createElement("div",{style:{width:8,height:8,borderRadius:"50%",background:"#6BBF59",boxShadow:"0 0 8px #6BBF5980"}}),
+          React.createElement("span",{style:{fontSize:11,fontWeight:700,letterSpacing:"0.12em",textTransform:"uppercase",color:"#6BBF59"}},"OpenTEAM Field Methods")
+        ),
+        React.createElement("h1",{style:{margin:"0 0 6px",fontSize:28,fontWeight:800,color:"#fff",letterSpacing:"-0.02em"}},"Soil Health Measurement",React.createElement("br"),"Decision Tool"),
+        React.createElement("p",{className:"serif",style:{margin:0,fontSize:14,color:"#aaa",maxWidth:520,lineHeight:1.6}},"Find the right in-field measurement protocol for your goals, budget, and conditions.")
+      )
+    ),
+
+    // Progress
+    React.createElement("div",{style:{maxWidth:800,margin:"0 auto",padding:"20px 32px 0"}},
+      React.createElement("div",{style:{display:"flex",gap:6,marginBottom:28}},
+        ["Measurement","Priorities","Conditions","Results"].map((label,i)=>
+          React.createElement("div",{key:label,style:{flex:1}},
+            React.createElement("div",{style:{height:3,borderRadius:2,background:i<=step?catColor:"#ddd",transition:"background 0.4s"}}),
+            React.createElement("div",{style:{fontSize:10,fontWeight:600,color:i<=step?"#555":"#bbb",marginTop:5,letterSpacing:"0.03em",textTransform:"uppercase"}},label)
+          )
+        )
+      )
+    ),
+
+    React.createElement("div",{style:{maxWidth:800,margin:"0 auto",padding:"0 32px 60px"}},
+
+      // Step 0
+      step===0&&React.createElement("div",{style:{animation:"slideUp 0.5s ease"}},
+        React.createElement("h2",{style:{fontSize:20,fontWeight:700,color:"#2a2a2a",margin:"0 0 6px"}},"What do you want to measure?"),
+        React.createElement("p",{className:"serif",style:{fontSize:14,color:"#777",margin:"0 0 24px"}},"Select a soil health indicator to explore available field methods."),
+        React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:12}},
+          Object.entries(METHODS_DATA).map(([key,cat])=>
+            React.createElement("div",{key,onClick:()=>{setSelectedCategory(key);setStep(1)},
+              style:{padding:"22px 24px",background:"#fff",border:`2px solid ${cat.color}30`,borderRadius:14,cursor:"pointer",transition:"all 0.25s",position:"relative",overflow:"hidden"},
+              onMouseEnter:e=>{e.currentTarget.style.borderColor=cat.color;e.currentTarget.style.boxShadow=`0 4px 20px ${cat.color}25`;e.currentTarget.style.transform="translateY(-2px)"},
+              onMouseLeave:e=>{e.currentTarget.style.borderColor=`${cat.color}30`;e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="translateY(0)"}},
+              React.createElement("div",{style:{position:"absolute",left:0,top:0,bottom:0,width:4,background:cat.color,borderRadius:"14px 0 0 14px"}}),
+              React.createElement("h3",{style:{margin:"0 0 4px",fontSize:17,fontWeight:700,color:"#1a1a1a"}},cat.label),
+              React.createElement("p",{className:"serif",style:{margin:0,fontSize:13,color:"#666",lineHeight:1.5,maxWidth:560}},cat.description),
+              React.createElement("div",{style:{marginTop:8,fontSize:12,color:cat.color,fontWeight:600}},cat.methods.length+" methods available \u2192")
+            )
+          )
+        ),
+        React.createElement("div",{className:"serif",style:{marginTop:28,padding:"16px 20px",background:"#f5f5f0",borderRadius:10,fontSize:12,color:"#888",lineHeight:1.7,borderLeft:"3px solid #ccc"}},
+          React.createElement("strong",{style:{color:"#666"}},"Note: "),"Soil Carbon measurement methods are coming soon. Based on OpenTEAM In-Field Soil Health Measurement Protocols (June 2021)."
+        )
+      ),
+
+      // Step 1
+      step===1&&React.createElement("div",{style:{animation:"slideUp 0.5s ease"}},
+        React.createElement("h2",{style:{fontSize:20,fontWeight:700,color:"#2a2a2a",margin:"0 0 6px"}},"What matters most to you?"),
+        React.createElement("p",{className:"serif",style:{fontSize:14,color:"#777",margin:"0 0 24px"}},"Select up to 3 priorities in order of importance. First selected = highest weight."),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
+          PRIORITIES.map(p=>{
+            const idx=selectedPriorities.indexOf(p.id);const selected=idx>=0;
+            return React.createElement("div",{key:p.id,onClick:()=>togglePriority(p.id),
+              style:{padding:"14px 16px",background:selected?`${catColor}15`:"#fff",border:`2px solid ${selected?catColor:"#e0e0e0"}`,borderRadius:12,cursor:"pointer",transition:"all 0.2s",display:"flex",alignItems:"center",gap:12,opacity:!selected&&selectedPriorities.length>=3?0.4:1}},
+              React.createElement("div",{style:{width:28,height:28,borderRadius:"50%",background:selected?catColor:"#eee",color:selected?"#fff":"#aaa",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,transition:"all 0.2s"}},selected?idx+1:""),
+              React.createElement("div",{style:{fontSize:14,fontWeight:600,color:"#333"}},p.icon+" "+p.label)
+            )
+          })
+        ),
+        React.createElement("div",{style:{display:"flex",gap:12,marginTop:24}},
+          React.createElement("button",{onClick:()=>setStep(0),style:{padding:"12px 24px",background:"#f0f0f0",borderRadius:10,fontSize:14,fontWeight:600,color:"#666"}},"\u2190 Back"),
+          React.createElement("button",{onClick:()=>setStep(2),disabled:selectedPriorities.length===0,style:{padding:"12px 28px",background:selectedPriorities.length>0?catColor:"#ccc",borderRadius:10,fontSize:14,fontWeight:700,color:"#fff"}},"Continue \u2192")
+        )
+      ),
+
+      // Step 2
+      step===2&&React.createElement("div",{style:{animation:"slideUp 0.5s ease"}},
+        React.createElement("h2",{style:{fontSize:20,fontWeight:700,color:"#2a2a2a",margin:"0 0 6px"}},"Site conditions"),
+        React.createElement("p",{className:"serif",style:{fontSize:14,color:"#777",margin:"0 0 24px"}},"These help refine the recommendation."),
+        selectedCategory==="bulk"?React.createElement("div",{style:{marginBottom:20}},
+          React.createElement("label",{style:{fontSize:14,fontWeight:600,color:"#444",display:"block",marginBottom:10}},"Does your soil have significant rocks or gravel?"),
+          React.createElement("div",{style:{display:"flex",gap:10}},
+            [{val:"normal",label:"No \u2014 standard soil"},{val:"rocky",label:"Yes \u2014 rocky or gravelly"}].map(opt=>
+              React.createElement("div",{key:opt.val,onClick:()=>setSoilCondition(opt.val),
+                style:{padding:"12px 20px",background:soilCondition===opt.val?`${catColor}15`:"#fff",border:`2px solid ${soilCondition===opt.val?catColor:"#e0e0e0"}`,borderRadius:10,cursor:"pointer",fontSize:14,fontWeight:600,color:"#333",transition:"all 0.2s"}},opt.label)
+            )
+          )
+        ):React.createElement("div",{className:"serif",style:{padding:20,background:"#fff",borderRadius:12,border:"1.5px solid #e0e0e0",fontSize:14,color:"#666",lineHeight:1.6}},
+          "No additional site conditions needed for "+METHODS_DATA[selectedCategory]?.label+" methods. Click \u201CGet Recommendations\u201D to see your results."
+        ),
+        React.createElement("div",{style:{display:"flex",gap:12,marginTop:24}},
+          React.createElement("button",{onClick:()=>setStep(1),style:{padding:"12px 24px",background:"#f0f0f0",borderRadius:10,fontSize:14,fontWeight:600,color:"#666"}},"\u2190 Back"),
+          React.createElement("button",{onClick:calculateResults,style:{padding:"12px 28px",background:catColor,borderRadius:10,fontSize:14,fontWeight:700,color:"#fff"}},"Get Recommendations \u2192")
+        )
+      ),
+
+      // Step 3
+      step===3&&results&&React.createElement("div",{ref:resultsRef,style:{animation:"slideUp 0.5s ease"}},
+        React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20,flexWrap:"wrap",gap:12}},
+          React.createElement("div",null,
+            React.createElement("h2",{style:{fontSize:20,fontWeight:700,color:"#2a2a2a",margin:"0 0 4px"}},"Recommended "+METHODS_DATA[selectedCategory]?.label+" Methods"),
+            React.createElement("p",{className:"serif",style:{fontSize:13,color:"#888",margin:0}},"Ranked by your priorities: "+selectedPriorities.map((p,i)=>(i+1)+". "+PRIORITIES.find(pr=>pr.id===p)?.label).join(" \u00B7 "))
+          ),
+          React.createElement("button",{onClick:reset,style:{padding:"8px 18px",background:"#f0f0f0",borderRadius:8,fontSize:13,fontWeight:600,color:"#666",flexShrink:0}},"\u21BB Start Over")
+        ),
+        React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:14}},
+          results.map((method,i)=>React.createElement(MethodCard,{key:method.id,method,category:selectedCategory,rank:i+1,isTop:i===0}))
+        ),
+        React.createElement("div",{style:{marginTop:28,padding:"18px 22px",background:"#fff",borderRadius:12,border:"1.5px solid #e0e0e0"}},
+          React.createElement("h3",{style:{margin:"0 0 8px",fontSize:14,fontWeight:700,color:"#444"}},"Key Factors to Keep Constant"),
+          React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+            results.slice(0,3).map(m=>
+              React.createElement("div",{key:m.id,className:"serif",style:{fontSize:12,color:"#666",lineHeight:1.5}},
+                React.createElement("strong",{style:{color:catColor}},m.name+": "),m.constants
+              )
+            )
+          )
+        ),
+        React.createElement("div",{className:"serif",style:{marginTop:16,padding:"16px 20px",background:"#f5f5f0",borderRadius:10,fontSize:12,color:"#888",lineHeight:1.7,borderLeft:`3px solid ${catColor}`}},
+          React.createElement("strong",{style:{color:"#666"}},"Source: "),"OpenTEAM In-Field Soil Health Measurement Protocols, June 2021. Developed by the OpenTEAM Field Methods Working Group. Click any method card for full protocol steps and equipment lists."
+        )
+      )
+    )
+  );
+}
+
+ReactDOM.render(React.createElement(App),document.getElementById("root"));
+</script>
+</body>
+</html>

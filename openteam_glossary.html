@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenTEAM Ag Data Glossary — Interactive · Versioned</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1c1c1a;--ink-dim:#5a5a54;--ink-faint:#9a9a92;
+  --cream:#f5f0e8;--cream-dk:#ede6d8;--cream-dkr:#e2d9c8;--white:#fff;
+  --forest:#1b4332;--forest-md:#2d6a4f;--forest-lt:#74c69d;--forest-pale:#d8f3dc;
+  --sage:#52796f;--sage-lt:#84a98c;
+  --gold:#b5892a;--gold-lt:#e9c46a;--gold-pale:#fdf5d9;
+  --rust:#9b3a1a;--rust-pale:#fde8e0;
+  --sky:#1d4e89;--sky-pale:#dbeafe;
+  --plum:#5b21b6;--plum-pale:#f0e8ff;
+  --line:#d5cec0;--line-dk:#b8b0a0;
+  --shadow:0 2px 16px rgba(27,67,50,.09);
+  --shadow-lg:0 8px 40px rgba(27,67,50,.14);
+  --r:8px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:"DM Sans",sans-serif;line-height:1.6;min-height:100vh}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:200;background:var(--forest);border-bottom:3px solid #0d2818;box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.topbar-inner{max-width:1140px;margin:0 auto;display:flex;align-items:stretch;justify-content:space-between;padding:0 24px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;padding:14px 0}
+.brand-logo{width:36px;height:36px;background:rgba(255,255,255,.12);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"DM Mono",monospace;font-size:13px;font-weight:500;color:var(--forest-lt);flex:0 0 36px}
+.brand-name{font-size:14px;font-weight:600;color:white;line-height:1;display:block}
+.brand-sub{font-family:"DM Mono",monospace;font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.12em;text-transform:uppercase;margin-top:3px;display:block}
+.topbar-right{display:flex;align-items:stretch;gap:0}
+.topbar-nav{display:flex;align-items:stretch}
+.topbar-nav a{font-family:"DM Mono",monospace;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none;padding:0 16px;display:flex;align-items:center;border-left:1px solid rgba(255,255,255,.1);transition:all .15s}
+.topbar-nav a:hover{color:white;background:rgba(255,255,255,.08)}
+.topbar-nav a.active{color:var(--forest-lt)}
+.version-tag{display:flex;align-items:center;padding:0 16px;border-left:1px solid rgba(255,255,255,.1)}
+.vtag-inner{font-family:"DM Mono",monospace;font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:color .15s}
+.vtag-inner:hover{color:rgba(255,255,255,.7)}
+.vtag-badge{background:rgba(181,137,42,.25);border:1px solid rgba(181,137,42,.4);border-radius:3px;padding:2px 7px;font-size:8.5px;color:var(--gold-lt);margin-left:6px}
+
+/* VERSION MODAL */
+.vmodal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:flex-start;justify-content:flex-end;padding:70px 24px 24px}
+.vmodal-overlay.open{display:flex}
+.vmodal{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow-lg);width:420px;max-height:80vh;overflow-y:auto}
+.vmodal-head{padding:20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.vmodal-title{font-family:"DM Serif Display",serif;font-size:18px;font-weight:400}
+.vmodal-close{width:28px;height:28px;border:none;background:transparent;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:18px}
+.vmodal-close:hover{background:var(--cream);color:var(--ink)}
+.vmodal-body{padding:16px 20px}
+.version-entry{border:1px solid var(--line);border-radius:6px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all .15s}
+.version-entry:hover{border-color:var(--forest-md);background:var(--forest-pale)}
+.version-entry.current{border-color:var(--forest);background:var(--forest-pale)}
+.ve-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.ve-ver{font-family:"DM Mono",monospace;font-size:11px;font-weight:500;color:var(--forest);background:var(--forest-pale);border:1px solid rgba(45,106,79,.25);border-radius:4px;padding:2px 9px}
+.ve-date{font-family:"DM Mono",monospace;font-size:10px;color:var(--ink-faint)}
+.ve-badge{font-family:"DM Mono",monospace;font-size:9px;color:white;background:var(--forest);border-radius:3px;padding:1px 6px;margin-left:auto}
+.ve-desc{font-size:12.5px;color:var(--ink-dim);line-height:1.5}
+.ve-changes{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+.ve-change{font-size:11.5px;color:var(--ink-dim);display:flex;gap:7px;margin-bottom:4px}
+.ve-change::before{content:"→";color:var(--forest-lt);flex:0 0 12px}
+.vmodal-contrib{padding:16px 20px;border-top:1px solid var(--line);background:var(--cream);border-radius:0 0 var(--r) var(--r)}
+.vmodal-contrib p{font-size:12.5px;color:var(--ink-dim);margin-bottom:10px}
+.contrib-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:5px;border:1.5px solid var(--forest-md);color:var(--forest-md);font-family:"DM Mono",monospace;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:all .15s}
+.contrib-btn:hover{background:var(--forest);color:white;border-color:var(--forest)}
+
+/* HERO */
+.hero{background:linear-gradient(150deg,var(--forest) 0%,#0d4a2a 55%,#163d25 100%);padding:56px 24px 48px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")}
+.hero-inner{max-width:1140px;margin:0 auto;position:relative;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(116,198,157,.15);border:1px solid rgba(116,198,157,.3);border-radius:20px;padding:5px 14px;font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--forest-lt);margin-bottom:18px}
+.hero-badge::before{content:"◆";font-size:8px}
+.hero h1{font-family:"DM Serif Display",serif;font-size:clamp(2rem,4.5vw,3.2rem);font-weight:400;color:white;line-height:1.1;letter-spacing:-.02em;margin-bottom:10px}
+.hero h1 em{font-style:italic;color:var(--forest-lt)}
+.hero-sub{font-size:15.5px;color:rgba(255,255,255,.6);max-width:540px;margin-bottom:24px;line-height:1.6}
+.hero-stats{display:flex;flex-wrap:wrap;gap:20px}
+.hero-stat{font-family:"DM Mono",monospace;font-size:10.5px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.hero-stat::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--forest-lt);flex:0 0 6px}
+.hero-right{text-align:right}
+.purpose-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:20px;max-width:300px;font-size:13px;color:rgba(255,255,255,.6);line-height:1.6}
+.purpose-box strong{color:rgba(255,255,255,.85);display:block;margin-bottom:8px;font-family:"DM Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr}.hero-right{display:none}}
+
+/* CONTROLS */
+.controls-bar{background:var(--white);border-bottom:1px solid var(--line);padding:14px 24px;position:sticky;top:67px;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.controls-inner{max-width:1140px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search-wrap{position:relative;flex:1;min-width:220px}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--ink-faint);fill:none;pointer-events:none}
+#search-input{width:100%;padding:9px 14px 9px 36px;border:1.5px solid var(--line);border-radius:var(--r);font-family:"DM Sans",sans-serif;font-size:13.5px;color:var(--ink);background:var(--cream);outline:none;transition:all .15s}
+#search-input:focus{border-color:var(--forest-md);box-shadow:0 0 0 3px var(--forest-pale)}
+.filter-pills{display:flex;flex-wrap:wrap;gap:5px}
+.filter-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:20px;font-family:"DM Mono",monospace;font-size:9.5px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;border:1.5px solid var(--line);background:transparent;cursor:pointer;transition:all .15s;color:var(--ink-dim)}
+.filter-pill:hover{border-color:var(--forest-md);color:var(--forest)}
+.filter-pill.active{background:var(--forest);border-color:var(--forest);color:white}
+.filter-pill .dot{width:6px;height:6px;border-radius:50%;flex:0 0 6px}
+.count-badge{font-family:"DM Mono",monospace;font-size:11px;color:var(--ink-faint);white-space:nowrap;margin-left:auto}
+
+/* BODY LAYOUT */
+.page-body{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:200px 1fr;gap:0;padding:28px 24px 80px;align-items:start}
+@media(max-width:768px){.page-body{grid-template-columns:1fr}}
+
+/* ALPHA NAV */
+.alpha-nav{position:sticky;top:128px;padding-right:20px}
+.alpha-nav-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--line-dk);padding:6px 8px 4px}
+.alpha-nav a{font-family:"DM Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);text-decoration:none;padding:4px 8px;border-radius:4px;display:flex;align-items:center;gap:6px;transition:all .12s}
+.alpha-nav a:hover{background:var(--cream-dk);color:var(--forest)}
+.alpha-nav a.active{background:var(--forest-pale);color:var(--forest);font-weight:600}
+.alpha-nav a .ac{margin-left:auto;font-size:9.5px;color:var(--ink-faint)}
+@media(max-width:768px){.alpha-nav{display:none}}
+
+/* GLOSSARY MAIN */
+.glossary-main{}
+.letter-section{margin-bottom:44px}
+.letter-anchor{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.letter-glyph{font-family:"DM Serif Display",serif;font-size:46px;font-weight:400;color:var(--line-dk);line-height:1;flex:0 0 40px}
+.letter-rule{flex:1;height:1px;background:var(--line)}
+.letter-count{font-family:"DM Mono",monospace;font-size:10px;color:var(--ink-faint)}
+
+/* TERM CARD */
+.term-card{background:var(--white);border:1px solid var(--line);border-radius:var(--r);margin-bottom:10px;overflow:hidden;transition:box-shadow .15s,border-color .15s}
+.term-card:hover{box-shadow:var(--shadow);border-color:var(--line-dk)}
+.tc-strip{height:3px;background:linear-gradient(90deg,var(--forest),var(--sage))}
+.term-header{display:flex;align-items:flex-start;gap:13px;padding:16px 18px 13px;cursor:pointer;user-select:none}
+.term-accent{width:34px;height:34px;border-radius:6px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-top:1px}
+.th-body{flex:1;min-width:0}
+.term-name{font-family:"DM Serif Display",serif;font-size:18px;font-weight:400;color:var(--ink);line-height:1.2;margin-bottom:4px;letter-spacing:-.01em}
+.term-def{font-size:13px;color:var(--ink-dim);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.term-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.term-tag{display:inline-flex;padding:2px 8px;border-radius:10px;font-family:"DM Mono",monospace;font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.tag-fair{background:var(--sky-pale);color:var(--sky);border:1px solid rgba(29,78,137,.2)}
+.tag-gdpr{background:var(--rust-pale);color:var(--rust);border:1px solid rgba(155,58,26,.2)}
+.tag-eta{background:var(--forest-pale);color:var(--forest-md);border:1px solid rgba(45,106,79,.2)}
+.tag-dtap{background:var(--gold-pale);color:var(--gold);border:1px solid rgba(181,137,42,.2)}
+.tag-role{background:var(--plum-pale);color:var(--plum);border:1px solid rgba(91,33,182,.2)}
+.tag-data{background:var(--cream-dkr);color:var(--ink-dim);border:1px solid var(--line)}
+.tag-cert{background:#fef3c7;color:#92400e;border:1px solid rgba(146,64,14,.2)}
+.tag-reg{background:#fee2e2;color:#7f1d1d;border:1px solid rgba(127,29,29,.2)}
+.term-toggle{flex:0 0 26px;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:3px}
+.term-toggle svg{width:9px;height:9px;stroke:var(--ink-dim);fill:none;transition:transform .2s}
+.term-card.open .term-toggle{border-color:var(--forest-md);background:var(--forest-pale)}
+.term-card.open .term-toggle svg{stroke:var(--forest);transform:rotate(180deg)}
+
+/* EXPANDED BODY */
+.term-body{display:none;border-top:1px solid var(--line);background:var(--cream)}
+.term-card.open .term-body{display:block}
+.term-body-inner{padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.term-body-inner{grid-template-columns:1fr}}
+.detail-block{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:13px 15px}
+.detail-block.full{grid-column:1/-1}
+.dl{font-family:"DM Mono",monospace;font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.dl::before{content:"";width:3px;height:3px;border-radius:50%;background:var(--forest-lt);flex:0 0 3px}
+.dc{font-size:12.5px;color:var(--ink-dim);line-height:1.6}
+.dc a{color:var(--forest-md);text-decoration:none;word-break:break-all}
+.dc a:hover{text-decoration:underline}
+.dc p{margin-bottom:7px}.dc p:last-child{margin:0}
+.rpill{display:inline-flex;padding:2px 9px;margin:2px;border-radius:10px;font-family:"DM Mono",monospace;font-size:10px;background:var(--forest-pale);color:var(--forest-md);border:1px solid rgba(45,106,79,.2);cursor:pointer;text-decoration:none;transition:background .12s}
+.rpill:hover{background:var(--forest-pale);border-color:var(--forest-md)}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;color:var(--ink-faint);display:none}
+.empty-state.visible{display:block}
+.es-icon{font-size:44px;opacity:.3;margin-bottom:16px}
+.es-title{font-family:"DM Serif Display",serif;font-size:22px;font-weight:400;color:var(--ink-dim);margin-bottom:8px}
+
+/* CONTRIBUTE PANEL */
+.contrib-panel{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:24px}
+.cp-title{font-family:"DM Mono",monospace;font-size:9.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.cp-title::before{content:"";width:3px;height:3px;border-radius:50%;background:var(--forest-lt)}
+.cp-body{font-size:13px;color:var(--ink-dim);line-height:1.6;margin-bottom:14px}
+.cp-actions{display:flex;gap:8px;flex-wrap:wrap}
+.cp-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:5px;font-family:"DM Mono",monospace;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border:1.5px solid;transition:all .15s}
+.cp-btn.primary{background:var(--forest);border-color:var(--forest);color:white}
+.cp-btn.primary:hover{background:var(--forest-md)}
+.cp-btn.secondary{border-color:var(--line);color:var(--ink-dim);background:transparent}
+.cp-btn.secondary:hover{border-color:var(--forest-md);color:var(--forest)}
+
+/* FOOTER */
+footer{background:var(--forest);padding:32px 24px}
+.foot-inner{max-width:1140px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:24px}
+.foot-brand{color:white;font-family:"DM Serif Display",serif;font-size:18px;font-weight:400;margin-bottom:6px}
+.foot-sub{font-family:"DM Mono",monospace;font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase}
+.foot-links{display:flex;flex-direction:column;gap:4px}
+.foot-links a{font-family:"DM Mono",monospace;font-size:10.5px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .12s}
+.foot-links a:hover{color:white}
+.foot-links h4{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:6px}
+.foot-bottom{max-width:1140px;margin:20px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);font-family:"DM Mono",monospace;font-size:10px;color:rgba(255,255,255,.25);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#">
+      <div class="brand-logo">OT</div>
+      <div>
+        <span class="brand-name">OpenTEAM</span>
+        <span class="brand-sub">Ag Data Glossary</span>
+      </div>
+    </a>
+    <div class="topbar-right">
+      <div class="topbar-nav">
+        <a href="#" class="active">Glossary</a>
+        <a href="eta_glossary.html">ETA Terms</a>
+        <a href="https://openteam-agreements.community/" target="_blank">Agreements</a>
+      </div>
+      <div class="version-tag">
+        <div class="vtag-inner" onclick="toggleVersionModal()">
+          Versions <span class="vtag-badge" id="cur-ver-badge">v2.1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- VERSION MODAL -->
+<div class="vmodal-overlay" id="vmodal-overlay" onclick="if(event.target===this)toggleVersionModal()">
+  <div class="vmodal">
+    <div class="vmodal-head">
+      <span class="vmodal-title">Version History</span>
+      <button class="vmodal-close" onclick="toggleVersionModal()">✕</button>
+    </div>
+    <div class="vmodal-body" id="vmodal-body"></div>
+    <div class="vmodal-contrib">
+      <p>This glossary is community-maintained. Definitions evolve as our understanding of agricultural data use deepens.</p>
+      <a class="contrib-btn" href="https://openteam-agreements.community/glossaryabout/" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 1v5M6 9v1M1 6h1M10 6h1M2.6 2.6l.7.7M8.7 8.7l.7.7M2.6 9.4l.7-.7M8.7 3.3l.7-.7"/></svg>
+        Suggest a Change
+      </a>
+      <a class="contrib-btn" href="https://github.com/openteam-agreements/community" target="_blank" style="margin-left:8px">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="6" cy="6" r="5"/><path d="M4 9.5C4 8 4.5 7 6 7c1.5 0 2 1 2 2.5"/><circle cx="6" cy="4" r="1.5"/></svg>
+        View on GitHub
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">OpenTEAM Ag Data Use Agreements</div>
+      <h1>Ag Data <em>Glossary</em></h1>
+      <p class="hero-sub">A shared language for agricultural data use — for technologists, technical assistance providers, land stewards, and policy-makers. Versioned, community-maintained, and openly licensed.</p>
+      <div class="hero-stats">
+        <span class="hero-stat" id="term-count-hero">Loading…</span>
+        <span class="hero-stat">Version 2.1 · February 2026</span>
+        <span class="hero-stat">Openly Licensed</span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="purpose-box">
+        <strong>Purpose</strong>
+        These definitions build community alignment for terminology within OpenTEAM's Suite of Ag Data Use Agreements. They do not necessarily reflect definitions outside this context.
+        <br><br>
+        Drawn from: GDPR, Australian Farm Data Code, CARE Principles, FAIR Principles, CCPA.
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- CONTROLS -->
+<div class="controls-bar">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Search terms, definitions, examples…" aria-label="Search glossary">
+    </div>
+    <div class="filter-pills" id="filter-pills">
+      <button class="filter-pill active" data-filter="all">All</button>
+      <button class="filter-pill" data-filter="FAIR Principles"><span class="dot" style="background:#1d4e89"></span>FAIR</button>
+      <button class="filter-pill" data-filter="GDPR"><span class="dot" style="background:#9b3a1a"></span>GDPR</button>
+      <button class="filter-pill" data-filter="ETA"><span class="dot" style="background:#2d6a4f"></span>ETA</button>
+      <button class="filter-pill" data-filter="DTAP"><span class="dot" style="background:#b5892a"></span>DTAP</button>
+      <button class="filter-pill" data-filter="Roles"><span class="dot" style="background:#5b21b6"></span>Roles</button>
+      <button class="filter-pill" data-filter="Data"><span class="dot" style="background:#6b7280"></span>Data</button>
+      <button class="filter-pill" data-filter="Certifications"><span class="dot" style="background:#92400e"></span>Certs</button>
+    </div>
+    <span class="count-badge" id="count-badge">Loading…</span>
+  </div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-body">
+
+  <!-- ALPHA NAV -->
+  <nav class="alpha-nav" id="alpha-nav">
+    <div class="alpha-nav-label">Jump to</div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="glossary-main">
+    
+    <!-- CONTRIBUTE -->
+    <div class="contrib-panel">
+      <div class="cp-title">Community Maintained</div>
+      <div class="cp-body">
+        These definitions are updated as our societal understanding of agricultural data use evolves. We rely on technologists, land stewards, policy-makers, academics, and thought leaders to help us version and maintain these definitions.
+      </div>
+      <div class="cp-actions">
+        <a class="cp-btn primary" href="https://openteam-agreements.community/glossaryabout/" target="_blank">Suggest a Definition</a>
+        <a class="cp-btn secondary" onclick="toggleVersionModal()">View Version History</a>
+        <a class="cp-btn secondary" href="eta_glossary.html">ETA Subset →</a>
+      </div>
+    </div>
+
+    <div id="glossary-content"></div>
+    <div class="empty-state" id="empty-state">
+      <div class="es-icon">🔍</div>
+      <div class="es-title">No matching terms</div>
+      <p>Try a different search or clear your filters.</p>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <div>
+      <div class="foot-brand">OpenTEAM Ag Data Glossary</div>
+      <div class="foot-sub">Version 2.1 · February 2026</div>
+    </div>
+    <div>
+      <div class="foot-links">
+        <h4>Agreements</h4>
+        <a href="https://openteam-agreements.community/oathofcare/" target="_blank">Oath of Care</a>
+        <a href="https://openteam-agreements.community/billofrights/" target="_blank">Bill of Data Rights</a>
+        <a href="https://openteam-agreements.community/hostingandstorage/" target="_blank">Hosting Agreement</a>
+      </div>
+    </div>
+    <div>
+      <div class="foot-links">
+        <h4>Tools</h4>
+        <a href="eta_glossary.html">ETA Glossary</a>
+        <a href="eta_unified.html">ETA Tool</a>
+        <a href="https://openteam-agreements.community/" target="_blank">openteam-agreements.community</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© OpenTEAM · Openly Licensed · Community Maintained</span>
+    <span>Drawn from GDPR, CARE, FAIR, CCPA, Australian Farm Data Code</span>
+  </div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════
+// VERSION HISTORY DATA
+// ══════════════════════════════════════════════════════════════════════
+const VERSIONS = [
+  {
+    version: "v2.1",
+    date: "February 2026",
+    current: true,
+    description: "Added ETA and DTAP framework terms. Expanded digital technology and AI sections. GitHub hosting with versioned JSON.",
+    changes: [
+      "Added 18 new terms for ETA & DTAP frameworks",
+      "Added Confidence Tier, ETA Score, DTAP Score, Entry Gate terms",
+      "Added ETA category definitions (Commons Fit, Resource Ethics, Resilience, Social Ethics)",
+      "Added individual DTAP dimension entries (D1–D6)",
+      "Updated Data Sovereignty with ETA cross-references",
+      "Added Versioning and Lock-in terms",
+      "Interactive page with search, filter, and per-term expandable details"
+    ]
+  },
+  {
+    version: "v2.0",
+    date: "March 2025",
+    current: false,
+    description: "Major expansion including AI ethics terms, Indigenous data governance, and expanded role definitions.",
+    changes: [
+      "Added CARE Principles of Indigenous Data Governance",
+      "Added Data Justice, Privacy by Design",
+      "Expanded GDPR cross-references throughout",
+      "Separated Data Governance and Data Management",
+      "Added Machine Readable, Data Portability"
+    ]
+  },
+  {
+    version: "v1.5",
+    date: "October 2024",
+    current: false,
+    description: "Added CCPA section, expanded FAIR Principles, added Australian Farm Data Code.",
+    changes: [
+      "Added California Consumer Privacy Act (CCPA)",
+      "Added Australian Farm Data Code",
+      "Added Ag Data Transparent certification",
+      "Expanded FAIR Principles with sub-criteria",
+      "Added Agricultural Advisor and Technical Assistance Provider roles"
+    ]
+  },
+  {
+    version: "v1.0",
+    date: "January 2024",
+    current: false,
+    description: "Initial publication of OpenTEAM Ag Data Glossary with core terms from GDPR and FAIR Principles.",
+    changes: [
+      "Core GDPR data protection principles (A–T)",
+      "FAIR Principles (Findable, Accessible, Interoperable, Reusable)",
+      "Agricultural Data, Agricultural Advisor, Land Stewards",
+      "Data roles: Controller, Processor, Steward, Subject, Originator",
+      "Consent, Anonymization, De-identification, Data Privacy"
+    ]
+  }
+];
+
+function renderVersionModal(){
+  const body = document.getElementById("vmodal-body");
+  body.innerHTML = VERSIONS.map(v => `
+    <div class="version-entry ${v.current?"current":""}">
+      <div class="ve-top">
+        <span class="ve-ver">${v.version}</span>
+        <span class="ve-date">${v.date}</span>
+        ${v.current?'<span class="ve-badge">Current</span>':''}
+      </div>
+      <div class="ve-desc">${v.description}</div>
+      <div class="ve-changes">
+        ${v.changes.map(c=>`<div class="ve-change">${c}</div>`).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+
+function toggleVersionModal(){
+  const overlay = document.getElementById("vmodal-overlay");
+  overlay.classList.toggle("open");
+  if(overlay.classList.contains("open")) renderVersionModal();
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// GLOSSARY DATA (full OpenTEAM content from TermsandDefinitions)
+// ══════════════════════════════════════════════════════════════════════
+const TERMS = [
+  // ── A ──
+  {l:"A",name:"Accessible (FAIR Principle)",emoji:"🔓",bg:"#dbeafe",
+   tags:["FAIR Principles"],
+   def:"There should be clear means of viewing and using data, metadata, or infrastructure of interest. Once the user finds data, they need to know how it can be accessed — possibly including authentication and authorization.",
+   altDef:"FAIR sub-criteria: A1 — (meta)data are retrievable by identifier using a standardized communications protocol; A1.1 — protocol is open, free, and universally implementable; A1.2 — protocol allows for authentication where necessary; A2 — metadata accessible even when data is no longer available. (Wilkinson et al. 2016, Nature)",
+   agExample:"Data should be 'As Open as Possible, As Closed as Necessary.' The USDA National Agricultural Library's Ag Data Commons is an example of open-access agricultural research data. Not all data needs to be open, but restricted data should be as open as possible.",
+   related:["Open Data","Findable (FAIR Principle)","Interoperable (FAIR Principle)","Reusable (FAIR Principles)"],
+   refs:["https://www.go-fair.org/fair-principles/"],
+   steward:"GO FAIR"},
+  {l:"A",name:"Accountable",emoji:"⚖️",bg:"#fde8e0",
+   tags:["GDPR"],
+   def:"All parties involved in the collection, storage, and use of agricultural data must be held responsible for their engagement in data management and be subject to appropriate regulation and oversight. If data is found to be incorrect or misleading, reasonable steps are taken to correct it.",
+   altDef:"GDPR: accountability means to be 'responsible for, and be able to demonstrate compliance with' principles and regulations of data protection.",
+   agExample:"Those involved in the collection, storage, and use of agricultural data, such as soil moisture levels, are responsible for ensuring the data are accurate and complete, and may be responsible for ensuring compliance with regulations or standards.",
+   related:["Data Governance","Data Transparency","Data Management"],
+   refs:["https://edps.europa.eu/data-protection/our-work/subjects/accountability_en"],
+   steward:"EU AI Act / GDPR"},
+  {l:"A",name:"Accuracy",emoji:"🎯",bg:"#d8f3dc",
+   tags:["GDPR"],
+   def:"Ensuring that data is correct and not misleading. Reasonable steps must be taken to ensure data that is inaccurate or out of date is corrected or erased.",
+   altDef:"UK GDPR Art. 5(1)(d): 'accurate and, where necessary, kept up to date; every reasonable step must be taken to ensure that personal data that are inaccurate… are erased or rectified without delay.' Also the scientific/technical sense: the extent to which an observation aligns with the correct value.",
+   agExample:"Reasonable steps should be taken to ensure data from sensors is not incorrect or misleading. If a sensor is found to be miscalibrated or remote sensing data is outdated, reasonable steps are taken to correct or erase the data.",
+   related:["Accountable","GDPR"],
+   refs:["https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/principles/accuracy/"],
+   steward:"UK ICO / GDPR"},
+  {l:"A",name:"Ag Data Transparent",emoji:"🏷️",bg:"#fef3c7",
+   tags:["Certifications and Guidelines"],
+   def:"A certification and set of guidelines for companies collecting, storing, analyzing, and using agricultural data. Core principles include education, ownership, collection, access and control, notice, transparency and consistency, choice, portability, terms, and definitions.",
+   altDef:"Ag Data Transparent outlines 11 core principles: Education, Ownership, Collection, Access and Control, Notice, Transparency and Consistency, Choice, Portability, Terms and Definitions, Disclosure, Use and Sale Limitation, Data Retention and Availability, Contract Termination, Unlawful or Anti-Competitive Activities, Liability & Security Safeguards.",
+   agExample:"",
+   related:["Data Transparency"],
+   refs:["https://www.agdatatransparent.com/"],
+   steward:"Ag Data Transparency Evaluator, Inc."},
+  {l:"A",name:"Aggregate Data",emoji:"🧮",bg:"#d8f3dc",
+   tags:["Data"],
+   def:"A combined dataset made up of a diversity of sources (e.g., sensors, systems, farmers, data platforms). This combination can provide additional value — benchmarking, analytics, identifying trends — compared to data from a single source.",
+   altDef:"Aggregate data usually has different conditions in data use agreements than farm data or personal information, because it is no longer associated with an individual or specific operation.",
+   agExample:"Aggregate data on crop yield and regional prices could determine if a new crop variety could be successful in a certain area. It is common to remove personal information when aggregating, so data can provide public value in an anonymized way.",
+   related:["Anonymization","De-identification","Personal Data","Agricultural Data"],
+   refs:[],steward:""},
+  {l:"A",name:"Agricultural Advisor",emoji:"👩‍🌾",bg:"#f0e8ff",
+   tags:["Roles"],
+   def:"A professional who provides advice and support to farmers, ranchers, land stewards, and other actors in the agricultural sector. They may work independently or as part of an organization such as an extension service.",
+   altDef:"Also called: agricultural service provider.",
+   agExample:"An agricultural advisor may have expertise in crop production, soil sciences, or agribusiness to provide advice on crop selection, pest management, or financial management.",
+   related:["Technical Assistance Provider (TAP)","Land Stewards"],
+   refs:[],steward:""},
+  {l:"A",name:"Agricultural Data",emoji:"🌾",bg:"#d8f3dc",
+   tags:["Data"],
+   def:"A broad category of data types related to agricultural activities, including data about the land (soil, geospatial), data about on-farm crops and animals (seed type, yield, feed, animal health), data generated by farm equipment (model, fuel consumption, yield maps), and farm management information (commodity price, revenue, employment).",
+   altDef:"Most data-related policy focuses on 'personal information' (GDPR, CCPA), leaving agricultural data governance ambiguous. Agricultural data can sometimes also be considered 'personal data' when it makes a specific person or operation identifiable.",
+   agExample:"",
+   related:["Data","Personal data","Aggregate Data"],
+   refs:[],steward:""},
+  {l:"A",name:"Anonymization",emoji:"🎭",bg:"#ede6d8",
+   tags:["Data"],
+   def:"All personal or identifiable information is removed from a dataset such that it is impossible for any user to gain insights about a discrete individual. It is an expectation of anonymization that the data could never be re-identified.",
+   altDef:"",
+   agExample:"A farmer shares soil test results with a third party for analysis. The service provider removes identifying information and assigns a unique identifier. In agricultural contexts, additional farm operation information may need to be removed or concealed to ensure land stewards cannot be identified.",
+   related:["De-identification","Confidentiality","Personal Data","Data Privacy"],
+   refs:[],steward:""},
+  {l:"A",name:"Australian Farm Data Code",emoji:"🇦🇺",bg:"#fef3c7",
+   tags:["Certifications and Guidelines"],
+   def:"Developed by the National Farmers' Federation in Australia, this code offers guidelines for those managing data on farmers' behalf: 'intended to inform the data management policies of service providers' and a 'yardstick by which farmers can evaluate the policies of those providers.'",
+   altDef:"Objectives: raise awareness; improve transparency; encourage fair and equitable collection, use and sharing; build trust; allow flexible implementation.",
+   agExample:"",
+   related:["Data Governance","GDPR","California Consumer Privacy Act (CCPA)"],
+   refs:["https://nff.org.au/programs/australian-farm-data-code/"],
+   steward:"National Farmers' Federation"},
+
+  // ── C ──
+  {l:"C",name:"California Consumer Privacy Act (CCPA)",emoji:"🏛️",bg:"#fee2e2",
+   tags:["Regulations"],
+   def:"A data privacy law in effect since 2020 giving California residents the right to ask businesses to disclose personal information held about them, what they do with it, to correct inaccuracies, and to request deletion or non-sale to third parties.",
+   altDef:"Rights: Right to know, Right to delete, Right to opt-out of sale or sharing, Right to correct, Right to limit use of sensitive personal information.",
+   agExample:"",
+   related:["GDPR","Personal data"],
+   refs:["https://oag.ca.gov/privacy/ccpa"],
+   steward:"State of California Department of Justice"},
+  {l:"C",name:"CARE Principles of Indigenous Data Governance",emoji:"🏕️",bg:"#f0e8ff",
+   tags:["Data"],
+   def:"Stewarded by The Global Indigenous Data Alliance, the CARE Principles outline four requirements for data management supporting Indigenous Data Sovereignty and self-determination: Collective Benefits, Authority to Control, Responsibility, Ethics.",
+   altDef:"CARE was designed to be complementary with FAIR but not necessarily applied together. When working with Indigenous communities, there are additional considerations for ethical and responsible data governance. Note: Non-Indigenous people can learn from CARE, but it was developed specifically to protect Indigenous Peoples' data sovereignty.",
+   agExample:"'Do the data management and governance approaches for agricultural data acknowledge and address power differentials and historical contexts (e.g., colonialism)?'",
+   related:["Data Sovereignty","FAIR Principles","Data Justice"],
+   refs:[],
+   steward:"Global Indigenous Data Alliance"},
+  {l:"C",name:"Commercial Use",emoji:"💰",bg:"#fef3c7",
+   tags:["Data"],
+   def:"The data can be used for a commercial or economic purpose (e.g., as part of a transaction, as a form of capital, or to inform R&D or advertising).",
+   altDef:"",
+   agExample:"Using agricultural data to produce insights in a commercial farm management platform sold as a service to farmers. Climate FieldView Terms of Use outline many commercial uses including R&D, targeted advertising, and product improvement.",
+   related:["Non-commercial Data Use","Conditional Use"],
+   refs:[],steward:""},
+  {l:"C",name:"Conditional Use",emoji:"📋",bg:"#ede6d8",
+   tags:["Data"],
+   def:"Use of the data is subject to certain rules or constraints (e.g., not for commercial purposes).",
+   altDef:"",
+   agExample:"A farmer may be comfortable sharing de-identified agricultural data for research by an academic institution, but not for companies to use for commercial purposes such as targeted marketing of agricultural inputs.",
+   related:["Commercial Use","Non-commercial Data Use","Purpose Limitation"],
+   refs:[],steward:""},
+  {l:"C",name:"Confidentiality",emoji:"🔒",bg:"#e2d9c8",
+   tags:["GDPR"],
+   def:"Protection of data from unauthorized access or use. Under GDPR, personal data must be processed with appropriate security measures against unauthorized or unlawful processing and against accidental loss, destruction, or damage.",
+   altDef:"GDPR 'integrity and confidentiality' principle (Art. 5(f)): 'processed in a manner that ensures appropriate security of the personal data, including protection against unauthorised or unlawful processing and against accidental loss, destruction or damage.'",
+   agExample:"When a land steward reviews the data use agreement for a new digital tool, they may want to know what protections keep their personal information and agricultural data safe from use by third parties.",
+   related:["Anonymization","Data Privacy","Data Management"],
+   refs:[],steward:"GDPR"},
+  {l:"C",name:"Consent",emoji:"✋",bg:"#d8f3dc",
+   tags:["GDPR","Data"],
+   def:"Freely given and informed statement that signifies agreement to an action related to an individual's or organization's data and their operations.",
+   altDef:"GDPR: consent must be 'freely given, specific, informed and unambiguous indication of the data subject's wishes by which he or she, by a statement or by a clear affirmative action, signifies agreement to the processing of personal data.'",
+   agExample:"When using a digital farm management tool, data use agreements outline data collection, use, storage, and portability processes. In most cases, using the tool implies legal agreement ('consent') to the tool's terms and conditions.",
+   related:["GDPR","Data Sovereignty","D1 — Consent Dimension"],
+   refs:["https://gdpr-info.eu/art-4-gdpr/"],
+   steward:"GDPR"},
+
+  // ── D ──
+  {l:"D",name:"Data",emoji:"💾",bg:"#ede6d8",
+   tags:["Data"],
+   def:"Digital, electronic, or physical representation of information.",
+   altDef:"",agExample:"",
+   related:["Agricultural Data","Personal data","Metadata"],
+   refs:[],steward:""},
+  {l:"D",name:"Data Architect",emoji:"🏗️",bg:"#f0e8ff",
+   tags:["Roles","Data"],
+   def:"The professional(s) responsible for designing, creating, integrating, and managing data management systems, and/or producing products that utilize data for analytics.",
+   altDef:"",
+   agExample:"A data architect may design and manage the database structure for a farm management software application — handling large amounts of data and managing appropriate fields and relationships between data.",
+   related:["Data Controller","Data Fiduciary","Data Processor","Data Steward"],
+   refs:[],steward:""},
+  {l:"D",name:"Data Controller",emoji:"🎛️",bg:"#f0e8ff",
+   tags:["GDPR","Roles"],
+   def:"A person or group that decides why and how data is collected, processed, and used. The data controller is often the data subject unless they have authorized and reassigned control to a proxy.",
+   altDef:"GDPR Art. 4: 'the natural or legal person, public authority, agency, or other body which, alone or jointly with others, determines the purposes and means of the processing of personal data.'",
+   agExample:"A farmer may act as the data controller, deciding how data about the farm — soil health and crop yields — is accessed, used, and shared. They may also assign these decisions to another individual serving as a proxy.",
+   related:["Data Processor","Data Fiduciary","Data Originator","Proxy"],
+   refs:["https://gdpr-info.eu/art-4-gdpr/"],
+   steward:"GDPR"},
+  {l:"D",name:"Data Fiduciary",emoji:"🤝",bg:"#f0e8ff",
+   tags:["GDPR","Roles"],
+   def:"A person or group that has access to and manages data on behalf of the data originator. The data fiduciary is legally bound to act ethically and in the best interest of their client.",
+   altDef:"India's Digital Personal Data Protection Bill 2022: 'any person who alone or in conjunction with other persons determines the purpose and means of processing of personal data.'",
+   agExample:"A technical assistance provider who collects, processes, and stores data related to a farmer's agricultural operations on their behalf. They have an obligation to use the data only for the purpose it was collected.",
+   related:["Data Controller","Data Originator","Proxy","Data Steward"],
+   refs:[],steward:""},
+  {l:"D",name:"Data Governance",emoji:"🏛️",bg:"#ede6d8",
+   tags:["Data"],
+   def:"Data governance involves both: (1) the technological and logistical management of data within an application or organization, and (2) the political structures and systems that direct the data management within or across organizations.",
+   altDef:"",agExample:"",
+   related:["Data Management","Data Sovereignty"],
+   refs:[],steward:""},
+  {l:"D",name:"Data Justice",emoji:"⚖️",bg:"#fde8e0",
+   tags:["Data"],
+   def:"Acknowledging and creating action around the way data collection and dissemination have previously harmed and continue to harm historically marginalized communities. Recognizes the relationship between data and social justice, aiming to represent diverse communities and promote autonomy and trust.",
+   altDef:"'To speak of data justice is to recognise not only how data impacts on society, but also that datafication is enabled by particular forms of political and economic organization that advance a normative vision of how social issues should be understood and resolved.' (Dencik & Sanchez-Monedero 2022)",
+   agExample:"A data-justice informed project should: (1) represent and make visible the challenges and strengths of the community; (2) treat data in ways that promote community self-determination; (3) proactively consider potential harm; (4) make critical consideration of the value of invisibility for certain communities.",
+   related:["CARE Principles of Indigenous Data Governance","Data Sovereignty"],
+   refs:["https://datajusticelab.org/"],
+   steward:"Data Justice Lab"},
+  {l:"D",name:"Data Management",emoji:"📂",bg:"#d8f3dc",
+   tags:["GDPR","Data"],
+   def:"The process of collecting, organizing, analyzing, and accessing data.",
+   altDef:"",
+   agExample:"Data management may include collecting farm-level data like soil samples and crop information, overseeing how and where it is stored and organized, and determining the means for accessing and analyzing that data securely.",
+   related:["Data Architect","Data Controller","Data Steward","Data Governance"],
+   refs:[],steward:""},
+  {l:"D",name:"Data Minimization",emoji:"✂️",bg:"#ede6d8",
+   tags:["GDPR"],
+   def:"The practice of limiting the collection of personal data. Data being processed should be adequate and relevant to fulfill the stated purpose and not hold more data than is needed.",
+   altDef:"EDPS: 'the principle of data minimisation means that a data controller should limit the collection of personal information to what is directly relevant and necessary to accomplish a specified purpose.'",
+   agExample:"Collecting data from sensors to understand how soil conditions affect crop yield does not require collecting personal data about farm employees.",
+   related:["Purpose Limitation","Storage Limitation","Data Privacy"],
+   refs:["https://edps.europa.eu/"],
+   steward:"GDPR / EDPS"},
+  {l:"D",name:"Data Originator",emoji:"👤",bg:"#f0e8ff",
+   tags:["Roles","Data"],
+   def:"The person or group purposefully providing data. At OpenTEAM, we believe the land steward should be legally and procedurally recognized as the data originator.",
+   altDef:"EU Code of Conduct on Agricultural Data Sharing: 'the person or entity that can claim the exclusive right to license access to the data and control its downstream use or re-use; the party that the data is attributed to.'",
+   agExample:"A farmer who collects data about the land they are farming, including crop variety, crop yields, and soil conditions.",
+   related:["Data Controller","Data Fiduciary","Land Stewards","Data Sovereignty"],
+   refs:["https://fefac.eu/wp-content/uploads/2020/07/eu_code_of_conduct_on_agricultural_data_sharing-1.pdf"],
+   steward:"EU Code of Conduct"},
+  {l:"D",name:"Data Ownership",emoji:"🏡",bg:"#f0e8ff",
+   tags:["GDPR","Roles","Data"],
+   def:"The legal and ethical rights of individuals or organizations over data related to their activities. In agricultural contexts, OpenTEAM advocates that land stewards should own and control their farm data.",
+   altDef:"",agExample:"",
+   related:["Data Sovereignty","Data Controller","Data Originator","Data Subject"],
+   refs:[],steward:""},
+  {l:"D",name:"Data Portability",emoji:"📦",bg:"#d8f3dc",
+   tags:["Data"],
+   def:"The ability of an individual or organization to 'move' their data from one place, platform, or software to another.",
+   altDef:"",
+   agExample:"Data portability includes the ability to easily export data, such as yield maps or soil test results, from one platform and import it into another without losing information or needing to manually re-enter data.",
+   related:["Data Sovereignty","Open Data","Data Ownership"],
+   refs:[],steward:""},
+  {l:"D",name:"Data Privacy",emoji:"🔐",bg:"#ede6d8",
+   tags:["Data"],
+   def:"The rules for how, and by whom, data can be collected, shared, and used. Protects personal data from unauthorized access and use, handling data in compliance with relevant data protection laws and regulations.",
+   altDef:"",
+   agExample:"Data privacy is important when a farmer processes personal employee data to comply with payroll requirements, ensuring personal data is collected, processed, and stored in compliance with privacy principles to protect employees.",
+   related:["Data Governance","Personal Data","Confidentiality","GDPR"],
+   refs:[],steward:""},
+  {l:"D",name:"Data Processing",emoji:"⚙️",bg:"#ede6d8",
+   tags:["Data"],
+   def:"Any operation or set of operations performed on data or datasets, whether by automated means or not — including collection, recording, organisation, storage, adaptation, retrieval, consultation, use, disclosure, dissemination, alignment, combination, restriction, erasing, or destruction.",
+   altDef:"EU Code of Conduct on Agricultural Data Sharing definition covers the full range of operations performed on data.",
+   agExample:"",
+   related:["Data Processor","Data Controller","Data Management"],
+   refs:["https://gdpr-info.eu/art-4-gdpr/"],
+   steward:"GDPR"},
+  {l:"D",name:"Data Processor",emoji:"🖥️",bg:"#f0e8ff",
+   tags:["GDPR","Roles"],
+   def:"The person or group responsible for handling or performing actions on data on behalf of the data controller.",
+   altDef:"",
+   agExample:"A data processor may be a farm management software company that provides tools for managing farm data such as crop yields and soil quality.",
+   related:["Data Controller","Data Architect","Data Fiduciary","Data Management"],
+   refs:[],steward:"GDPR"},
+  {l:"D",name:"Data Sharing",emoji:"📡",bg:"#d8f3dc",
+   tags:["Data"],
+   def:"The process of making data available and accessible to others.",
+   altDef:"",
+   agExample:"A group of farmers in a region agree to share crop yield data with one another to compare yields, identify best practices, and make more informed decisions. This could take place through a centralized platform or a more informal setting.",
+   related:["Open Data","Conditional Use","Data Portability"],
+   refs:[],steward:""},
+  {l:"D",name:"Data Sovereignty",emoji:"🏡",bg:"#f0e8ff",
+   tags:["Data"],
+   def:"An individual's ability to create, control, and manage their own data. Ensures that the individual or community has knowledge of and meaningful consent over how their information is used and shared, with tools to control, interpret, and act on their own data.",
+   altDef:"Addresses who has control over, ownership, and management of data or databases and under what conditions. NOTE: used differently by different groups — lacks a universal definition.",
+   agExample:"Organizations such as the Global Indigenous Data Alliance have worked with indigenous communities to develop data collection and management strategies that prioritize community control and ownership.",
+   related:["CARE Principles","Data Governance","Data Ownership","Data Originator","Consent"],
+   refs:[],steward:"Global Indigenous Data Alliance"},
+  {l:"D",name:"Data Steward",emoji:"👷",bg:"#f0e8ff",
+   tags:["Roles","Data"],
+   def:"The person or group responsible for managing and maintaining data, ensuring it is accurate, complete, secure, and adheres to governmental and organizational policy.",
+   altDef:"",
+   agExample:"A food company that manages and maintains data from its producer supply chain is considered a data steward. Data accountability and data protection are closely tied to a data steward's responsibilities.",
+   related:["Data Controller","Data Governance","Data Management","Accountable"],
+   refs:[],steward:""},
+  {l:"D",name:"Data Storage",emoji:"🗄️",bg:"#ede6d8",
+   tags:["Data"],
+   def:"The process of saving information, including how and where it is stored, ensuring that it is accessible and retrievable when needed.",
+   altDef:"",
+   agExample:"A data controller may choose which ag data platform or software to store farm data on, depending on what is most suitable for their use.",
+   related:["Data Management","Confidentiality","Data Governance"],
+   refs:[],steward:""},
+  {l:"D",name:"Data Subject",emoji:"🧑",bg:"#f0e8ff",
+   tags:["GDPR","Roles"],
+   def:"The person, entity, or thing that is the focus of inquiry and about whom data is collected.",
+   altDef:"GDPR: a data subject is an individual who can be identified directly or indirectly by reference to a personal identifier such as a name, identification number, location data, or online identifier.",
+   agExample:"A data subject may be an individual farmer, rancher, or land steward. It may also be crops, livestock, or the land itself. Data may include name, address, contact information, or land attributes like crop data.",
+   related:["Data Controller","Personal Data","GDPR","Data Originator"],
+   refs:[],steward:"GDPR"},
+  {l:"D",name:"Data Transparency",emoji:"🪟",bg:"#d8f3dc",
+   tags:["Data"],
+   def:"The condition in which individuals are informed and have access to adequate and comprehensive information regarding their data — what is being collected, how it is used, and who has access.",
+   altDef:"Could include transparency on the conditions and protocol for data collection to ascertain the accuracy and credibility of the information.",
+   agExample:"A software provider may include features to allow farmers to view their data in a clear and understandable format and provide an explanation of how the software collects, uses, and shares data.",
+   related:["Ag Data Transparent","Data Privacy","Data Governance"],
+   refs:[],steward:""},
+  {l:"D",name:"Data User",emoji:"👥",bg:"#f0e8ff",
+   tags:["Roles"],
+   def:"A person or group that receives data from the data originator or data provider, via an agreement with the data originator.",
+   altDef:"",
+   agExample:"A data user could be a farm management software company that uses data collected from farmers to provide analytics and insights to improve the farmer's operations.",
+   related:["Data Originator","Data Controller","Data Processor"],
+   refs:[],steward:""},
+  {l:"D",name:"De-identification",emoji:"🎭",bg:"#ede6d8",
+   tags:["Data"],
+   def:"Removing all or a subset of personally identifying information from a dataset to prevent users from deducing personal information about any individual. A strategy to protect privacy while preserving the usefulness of data.",
+   altDef:"",
+   agExample:"To protect a farmer's privacy when sharing yield data with researchers, personally identifiable information (names, addresses) can be removed. Additional farm operation information (location) may also need removal to ensure land stewards cannot be identified.",
+   related:["Anonymization","Personal Data","Data Privacy"],
+   refs:[],steward:""},
+
+  // ── E ──
+  {l:"E",name:"Entry Gate (ETA)",emoji:"🚪",bg:"#d8f3dc",
+   tags:["ETA"],
+   def:"One of four binary pass/fail criteria in the ETA framework (G1–G4), each worth 10 points. All four must pass for a tool to receive a positive ETA score. Gates represent non-negotiable minimum standards.",
+   altDef:"G1 Transparency · G2 Rights & Control · G3 No Abuse / No Lock-in · G4 Safety & Stewardship. Gates account for 40 of 100 possible ETA points.",
+   agExample:"A powerful soil analysis tool with a proprietary data format preventing farmer export would fail Gate G2 and cannot pass ETA regardless of high scores on other categories.",
+   related:["ETA Score","G1 — Transparency","G2 — Rights & Control","G3 — No Abuse","G4 — Safety & Stewardship"],
+   refs:[],steward:"OpenTEAM"},
+  {l:"E",name:"ETA Score",emoji:"⭐",bg:"#d8f3dc",
+   tags:["ETA"],
+   def:"The 0–100 composite score from the Ethical Technology Assessment, combining 40 gate points (binary) and 60 category points (scored 0–5 per question), adjusted by confidence tier modifier.",
+   altDef:"Score ≥70 = Eligible; 50–69 = Conditional; <50 or any gate fail = Ineligible. Confidence modifiers: self-assessed ×0.92, peer reviewed ×1.00, ecosystem steward ×1.04.",
+   agExample:"A farmOS tool passing all 4 gates (40 pts) and averaging 3.5/5 across category questions earns approximately 82 before confidence adjustment at Tier 2.",
+   related:["Confidence Tier","Entry Gate (ETA)","DTAP Score","Assessment Card"],
+   refs:[],steward:"OpenTEAM / Ag Knowledge Concordance"},
+
+  // ── F ──
+  {l:"F",name:"FAIR Principles",emoji:"📐",bg:"#dbeafe",
+   tags:["FAIR Principles"],
+   def:"Guidelines for 'good data management' that improve the discovery and (re)use of scholarly data by humans and computers. Four foundational principles: Findable, Accessible, Interoperable, Reusable.",
+   altDef:"",
+   agExample:"Creating a digital repository of soil data that is: Findable (identifiers assigned, descriptive metadata tied to data); Accessible (user-friendly interface); Interoperable (standard formats); Reusable (open access licensing).",
+   related:["Findable (FAIR Principle)","Accessible (FAIR Principle)","Interoperable (FAIR Principle)","Reusable (FAIR Principles)"],
+   refs:["https://www.go-fair.org/fair-principles/"],
+   steward:"GO FAIR"},
+  {l:"F",name:"Fairness",emoji:"⚖️",bg:"#d8f3dc",
+   tags:["GDPR"],
+   def:"The principle that data collection and processing must be fair to the individuals involved — not used in ways that are detrimental, unexpected, or misleading to data subjects.",
+   altDef:"GDPR data protection principle. Data must be processed fairly, lawfully, and transparently.",
+   agExample:"",
+   related:["Accountable","Data Transparency","Lawfulness","GDPR"],
+   refs:[],steward:"GDPR"},
+  {l:"F",name:"Findable (FAIR Principle)",emoji:"🔍",bg:"#dbeafe",
+   tags:["FAIR Principles"],
+   def:"Data, metadata, and infrastructure should be easy to find for both humans and computers. Each dataset should have a persistent identifier and rich descriptive metadata.",
+   altDef:"FAIR: 'Metadata and data should be easy to find for both humans and computers. Machine-readable metadata are essential for automatic discovery.'",
+   agExample:"Publishing a dataset on crop yields in a specific region using rich metadata makes the data easily discoverable to researchers and data users, increasing its potential for reuse.",
+   related:["FAIR Principles","Accessible (FAIR Principle)","Metadata","Open Data"],
+   refs:["https://www.go-fair.org/fair-principles/"],
+   steward:"GO FAIR"},
+
+  // ── G ──
+  {l:"G",name:"General Data Protection Regulation (GDPR)",emoji:"🇪🇺",bg:"#fee2e2",
+   tags:["Regulations","GDPR"],
+   def:"The European Union's law on protecting personal data and privacy of all people in the European Union, whether or not the data management takes place in Europe.",
+   altDef:"Art. 1: 'This Regulation lays down rules relating to the protection of natural persons with regard to the processing of personal data and rules relating to the free movement of personal data.'",
+   agExample:"A farm in the EU collecting personal data from workers, such as names and addresses, must follow GDPR guidelines — including obtaining consent — for storing and using that data.",
+   related:["California Consumer Privacy Act (CCPA)","Personal Data","Consent","Data Privacy"],
+   refs:["https://gdpr-info.eu/"],
+   steward:"European Commission"},
+
+  // ── I ──
+  {l:"I",name:"Interoperable (FAIR Principle)",emoji:"🔌",bg:"#dbeafe",
+   tags:["FAIR Principles"],
+   def:"A dataset's ability to be aggregated with other datasets in meaningful ways and to work with applications and workflows. For systems and software, the ability to exchange and make use of information or operate in conjunction with one another.",
+   altDef:"FAIR: 'The data usually need to be integrated with other data. In addition, the data need to interoperate with applications or workflows for analysis, storage, and processing.'",
+   agExample:"Interoperability allows a farmer acting as data controller to input farm data once and use it across multiple platforms for benchmarking or accessing agricultural transition incentives.",
+   related:["FAIR Principles","Commons Fit (ETA)","Open Source","Open Data"],
+   refs:["https://www.go-fair.org/fair-principles/"],
+   steward:"GO FAIR"},
+
+  // ── L ──
+  {l:"L",name:"Land Stewards",emoji:"🌱",bg:"#d8f3dc",
+   tags:["Roles"],
+   def:"A person or group who works with or adjacent to the land, regardless of ownership, with the goal of implementing environmentally, culturally, and socially responsible agricultural practices.",
+   altDef:"A land steward could be someone working directly on the land, such as a farmer, or someone who supports those working on the land, such as a technical assistance provider.",
+   agExample:"A land steward could be a farmer who manages rented land from a landowner to grow crops, implementing practices such as crop rotation, cover cropping, or natural fertilizers.",
+   related:["Data Originator","Agricultural Advisor","Technical Assistance Provider (TAP)"],
+   refs:[],steward:"OpenTEAM"},
+  {l:"L",name:"Lawfulness",emoji:"⚖️",bg:"#fde8e0",
+   tags:["GDPR"],
+   def:"Establishing an appropriate legal basis for the processing of data that is in compliance with relevant laws and regulations.",
+   altDef:"GDPR Art. 6 outlines six lawful bases for processing personal data, including consent, contract necessity, legal obligation, vital interests, public task, and legitimate interests.",
+   agExample:"A provider collecting and processing personal data from EU farmers may only collect this data if the farmer has given explicit consent, fulfilling the GDPR lawfulness requirement.",
+   related:["GDPR","Consent","Data Processing"],
+   refs:[],steward:"GDPR"},
+
+  // ── M ──
+  {l:"M",name:"Machine Readable",emoji:"🤖",bg:"#dbeafe",
+   tags:["Data"],
+   def:"Data in a form that a computer, artificial intelligence, or algorithm can process — such as CSV, JSON, XML, NetCDF, etc.",
+   altDef:"Open Data Handbook: 'Data in a format that can be automatically read and processed by a computer. Machine-readable data must be structured data.'",
+   agExample:"Planting dates entered into a spreadsheet in a standard format are machine readable. The same data kept in a notebook or table in a PDF are not, despite being legible to humans.",
+   related:["Interoperable (FAIR Principle)","Open Data","FAIR Principles","D4 — Machine-Readability (DTAP)"],
+   refs:["https://opendatahandbook.org/glossary/en/terms/machine-readable/"],
+   steward:"Open Data Handbook"},
+  {l:"M",name:"Metadata",emoji:"🏷️",bg:"#ede6d8",
+   tags:["Data"],
+   def:"Information about a piece of data or dataset — including title, description, area, and time period covered. 'Data about data' that aids findability and usability.",
+   altDef:"",
+   agExample:"Metadata could provide information about field data, including when and where data was captured, or information about the equipment or methods used to collect samples.",
+   related:["FAIR Principles","Findable (FAIR Principle)","Data Management"],
+   refs:[],steward:""},
+
+  // ── N ──
+  {l:"N",name:"Non-commercial Data Use",emoji:"🚫",bg:"#ede6d8",
+   tags:["Data"],
+   def:"The data cannot be used for commercial purposes (i.e., not intended to make a profit).",
+   altDef:"",
+   agExample:"Non-commercial uses of data include government activities, research (academic or government), philanthropy and advocacy, individual interest, etc.",
+   related:["Commercial Use","Conditional Use","Purpose Limitation"],
+   refs:[],steward:""},
+
+  // ── O ──
+  {l:"O",name:"Open Data",emoji:"🌐",bg:"#d8f3dc",
+   tags:["Data"],
+   def:"Data that is available to be freely accessed, used, modified, and shared for any purpose, often only subject to a requirement to attribute the data's source.",
+   altDef:"'Open data initiatives seek to increase government transparency and accountability by proactively releasing datasets and making them freely available to anyone for use and republishing.' (IPC Ontario 2016)",
+   agExample:"Open data may be a freely shareable dataset for making informed decisions about farming practices — including weather data, soil moisture data, and crop yield data available to anyone.",
+   related:["Open Source","FAIR Principles","Accessible (FAIR Principle)","Data Sharing"],
+   refs:["http://opendatahandbook.org/"],
+   steward:"Berlin Declaration on Open Access"},
+  {l:"O",name:"Open Source",emoji:"📂",bg:"#d8f3dc",
+   tags:["Data"],
+   def:"A publicly accessible software or hardware tool that can be modified and shared by all users. This allows the tool to be designed, inspected, and enhanced by multiple contributors, enabling control, security, stability, training, and community building.",
+   altDef:"",
+   agExample:"An agricultural software platform that can be modified or built upon to suit the specific needs of a farming operation.",
+   related:["Open Data","Commons Fit (ETA)","Interoperable (FAIR Principle)"],
+   refs:[],steward:"OSI"},
+
+  // ── P ──
+  {l:"P",name:"Personal data",emoji:"🧑",bg:"#fde8e0",
+   tags:["GDPR","Data"],
+   def:"Any information that directly identifies an individual or that could be used to identify the individual, either alone or in conjunction with other information (e.g., name, location, or factors specific to the person's physical, genetic, economic, or cultural identity).",
+   altDef:"CCPA: 'information that identifies, relates to, describes, is reasonably capable of being associated with, or could reasonably be linked, directly or indirectly, with a particular consumer or household.' GDPR: 'any information relating to an identified or identifiable natural person.'",
+   agExample:"Personal data may be information related to the farmer's identity, such as name, contact information, social security number, or financial information. Sometimes, agricultural data is also personal data when it makes a person identifiable.",
+   related:["Data Subject","GDPR","California Consumer Privacy Act (CCPA)","Anonymization","De-identification"],
+   refs:["https://gdpr-info.eu/art-4-gdpr/"],
+   steward:"GDPR / CCPA"},
+  {l:"P",name:"Privacy by Design",emoji:"🛡️",bg:"#ede6d8",
+   tags:["GDPR","Data"],
+   def:"The concept that data is best protected when data privacy is integrated into a technology's design from the outset — not added as an afterthought.",
+   altDef:"'Data protection through technology design.' Privacy by Design means data protection should already be integrated in the technology when created.",
+   agExample:"Developers of a mobile app for farmers that collects personal data should design it with encryption and features allowing farmers to delete their data or control who has access — by default, not by request.",
+   related:["Data Privacy","Data Governance","Data Management","GDPR"],
+   refs:["https://gdpr-info.eu/issues/privacy-by-design/"],
+   steward:"GDPR / Ann Cavoukian"},
+  {l:"P",name:"Proxy",emoji:"🔁",bg:"#f0e8ff",
+   tags:["Roles"],
+   def:"An individual or group authorized and given rights by the data originator or data controller to act on their behalf with regards to their data, including collection, processing, and sharing. Proxy rights are granted via a Proxy Agreement.",
+   altDef:"",
+   agExample:"A farmer (the data originator) may authorize an agricultural advisor to act as their proxy with respect to farming data. That person is then responsible for ensuring the farmer's data is collected and processed in accordance with the farmer's preferences.",
+   related:["Data Controller","Data Originator","Data Fiduciary"],
+   refs:[],steward:"OpenTEAM"},
+  {l:"P",name:"Purpose Limitation",emoji:"🎯",bg:"#fde8e0",
+   tags:["GDPR"],
+   def:"The principle that personal data is only collected for specific and legitimate purposes, made explicit at collection, and not used in a manner beyond the original purpose without fresh consent.",
+   altDef:"GDPR Art. 5: data shall be 'collected for specified, explicit and legitimate purposes and not further processed in a manner that is incompatible with those purposes.'",
+   agExample:"Data collected from sensors installed on a farm for optimizing irrigation must not be used for marketing or any other purpose without explicit consent from land stewards.",
+   related:["Data Minimization","Storage Limitation","Consent","GDPR"],
+   refs:["https://gdpr-info.eu/art-5-gdpr/"],
+   steward:"GDPR"},
+
+  // ── R ──
+  {l:"R",name:"Reusable (FAIR Principles)",emoji:"♻️",bg:"#dbeafe",
+   tags:["FAIR Principles"],
+   def:"Data and metadata should be optimized and formatted to be easily shared, combined with other data, or used for new purposes, with clear usage licenses and rights.",
+   altDef:"FAIR: 'The ultimate goal of FAIR is to optimise the reuse of data. To achieve this, metadata and data should be well-described so that they can be replicated and/or combined in different settings.'",
+   agExample:"A database of crop yield information input in a standardized format, with clear metadata and documentation, allows it to be easily reusable by other farmers, researchers, or policymakers.",
+   related:["FAIR Principles","Open Data","Accessible (FAIR Principle)","Findable (FAIR Principle)"],
+   refs:["https://www.go-fair.org/fair-principles/"],
+   steward:"GO FAIR"},
+
+  // ── S ──
+  {l:"S",name:"Service Providers",emoji:"🏢",bg:"#f0e8ff",
+   tags:["Roles"],
+   def:"A company or organization that offers services related to data management, storage, processing, analysis, or other related activities.",
+   altDef:"",
+   agExample:"A service provider could be a company offering technology — such as soil moisture sensors or operational management software — to help farmers collect and analyze data to optimize resource use.",
+   related:["Data Processor","Agricultural Advisor","Technical Assistance Provider (TAP)"],
+   refs:[],steward:""},
+  {l:"S",name:"Storage Limitation",emoji:"⏳",bg:"#ede6d8",
+   tags:["GDPR"],
+   def:"The principle that personal data is only held for as long as the original purpose for collecting that data is unfulfilled. It should not be held after it has served its purpose.",
+   altDef:"",
+   agExample:"A software platform holds onto personal data only as long as necessary to achieve its purpose — such as generating irrigation optimization suggestions. Once the purpose is fulfilled, the software deletes or anonymizes the data.",
+   related:["Purpose Limitation","Data Minimization","Data Privacy","GDPR"],
+   refs:[],steward:"GDPR"},
+
+  // ── T ──
+  {l:"T",name:"Technical Assistance Provider (TAP)",emoji:"🔧",bg:"#f0e8ff",
+   tags:["Roles"],
+   def:"An individual or organization (including government agencies, non-profits, or private companies) that provides support to farmers, ranchers, and land stewards in areas such as crop or livestock management, soil health, irrigation, pest management, technology adoption, and data management.",
+   altDef:"",
+   agExample:"A TAP may be a specialist from an extension office who works directly with farmers to implement sustainable farming practices — such as reducing water usage — by offering resources, advice, and technical support.",
+   related:["Agricultural Advisor","Service Providers","Land Stewards"],
+   refs:[],steward:""}
+];
+
+// ══════════════════════════════════════════════════════════════════════
+// RENDER ENGINE
+// ══════════════════════════════════════════════════════════════════════
+const TAG_MAP = {
+  "FAIR Principles":     {cls:"tag-fair",  lbl:"FAIR"},
+  "GDPR":                {cls:"tag-gdpr",  lbl:"GDPR"},
+  "ETA":                 {cls:"tag-eta",   lbl:"ETA"},
+  "DTAP":                {cls:"tag-dtap",  lbl:"DTAP"},
+  "Roles":               {cls:"tag-role",  lbl:"Role"},
+  "Data":                {cls:"tag-data",  lbl:"Data"},
+  "Certifications and Guidelines": {cls:"tag-cert", lbl:"Cert"},
+  "Regulations":         {cls:"tag-reg",   lbl:"Reg"},
+};
+function tagHtml(t){const m=TAG_MAP[t]||{cls:"tag-data",lbl:t};return `<span class="term-tag ${m.cls}">${m.lbl}</span>`;}
+
+function renderAll(terms){
+  const container = document.getElementById("glossary-content");
+  const letters = [...new Set(terms.map(t=>t.l))].sort();
+  container.innerHTML = "";
+  letters.forEach(letter=>{
+    const lt = terms.filter(t=>t.l===letter);
+    const sec = document.createElement("div");
+    sec.className = "letter-section";
+    sec.id = `letter-${letter}`;
+    sec.innerHTML = `<div class="letter-anchor">
+      <span class="letter-glyph">${letter}</span>
+      <div class="letter-rule"></div>
+      <span class="letter-count">${lt.length} term${lt.length!==1?"s":""}</span>
+    </div>`;
+    lt.forEach(term => sec.appendChild(makeCard(term)));
+    container.appendChild(sec);
+  });
+  rebuildAlphNav(terms);
+  const n = terms.length;
+  document.getElementById("count-badge").textContent = `${n} term${n!==1?"s":""}`;
+  document.getElementById("term-count-hero").textContent = `${n} Terms Defined`;
+  document.getElementById("empty-state").classList.toggle("visible", n===0);
+}
+
+function makeCard(term){
+  const div = document.createElement("div");
+  div.className = "term-card";
+  div.dataset.l = term.l;
+  div.dataset.tags = (term.tags||[]).join("|").toLowerCase();
+  div.dataset.text = (term.name+" "+term.def+" "+(term.altDef||"")+" "+(term.agExample||"")).toLowerCase();
+  const tagsHtml = (term.tags||[]).map(tagHtml).join("");
+  const relHtml = (term.related||[]).map(r=>`<a class="rpill" href="#" onclick="searchFor('${r.replace(/'/g,"\'")}');return false">${r}</a>`).join("");
+  const refsHtml = (term.refs||[]).filter(Boolean).map(r=>`<a href="${r}" target="_blank" rel="noopener">${r}</a>`).join("<br>");
+  div.innerHTML = `
+    <div class="tc-strip"></div>
+    <div class="term-header" onclick="toggleCard(this)">
+      <div class="term-accent" style="background:${term.bg}">${term.emoji}</div>
+      <div class="th-body">
+        <div class="term-name">${term.name}</div>
+        <div class="term-def">${term.def}</div>
+        <div class="term-tags">${tagsHtml}</div>
+      </div>
+      <button class="term-toggle" aria-label="Expand">
+        <svg viewBox="0 0 10 10" stroke-width="2" stroke-linecap="round"><path d="M2 4l3 3 3-3"/></svg>
+      </button>
+    </div>
+    <div class="term-body">
+      <div class="term-body-inner">
+        <div class="detail-block full"><div class="dl">Definition</div><div class="dc">${term.def}</div></div>
+        ${term.altDef?`<div class="detail-block full"><div class="dl">Alternative / Framework Definitions</div><div class="dc">${term.altDef}</div></div>`:""}
+        ${term.agExample?`<div class="detail-block full"><div class="dl">Agricultural Example</div><div class="dc">${term.agExample}</div></div>`:""}
+        ${relHtml?`<div class="detail-block"><div class="dl">Related Terms</div><div class="dc">${relHtml}</div></div>`:""}
+        ${refsHtml?`<div class="detail-block"><div class="dl">References</div><div class="dc">${refsHtml}</div></div>`:""}
+        ${term.steward?`<div class="detail-block"><div class="dl">Steward</div><div class="dc">${term.steward}</div></div>`:""}
+      </div>
+    </div>`;
+  return div;
+}
+
+function toggleCard(header){
+  header.closest(".term-card").classList.toggle("open");
+}
+
+function rebuildAlphNav(terms){
+  const nav = document.getElementById("alpha-nav");
+  nav.innerHTML = '<div class="alpha-nav-label">Jump to</div>';
+  const letters = [...new Set(terms.map(t=>t.l))].sort();
+  const all = [...new Set(TERMS.map(t=>t.l))].sort();
+  all.forEach(letter=>{
+    const count = terms.filter(t=>t.l===letter).length;
+    const a = document.createElement("a");
+    a.href = `#letter-${letter}`;
+    a.dataset.letter = letter;
+    a.innerHTML = `${letter} <span class="ac">${count||""}</span>`;
+    a.style.opacity = count?"1":"0.3";
+    a.style.pointerEvents = count?"":"none";
+    nav.appendChild(a);
+  });
+}
+
+// SEARCH & FILTER
+let activeFilter = "all";
+let searchQ = "";
+
+function applyFilters(){
+  const q = searchQ.toLowerCase().trim();
+  const filtered = TERMS.filter(term=>{
+    const matchF = activeFilter==="all" || (term.tags||[]).some(t=>t.toLowerCase()===activeFilter.toLowerCase()) ||
+      (activeFilter==="ETA" && term.tags.includes("ETA")) ||
+      (activeFilter==="DTAP" && term.tags.includes("DTAP"));
+    const matchQ = !q || term.name.toLowerCase().includes(q) ||
+      term.def.toLowerCase().includes(q) ||
+      (term.altDef||"").toLowerCase().includes(q) ||
+      (term.agExample||"").toLowerCase().includes(q) ||
+      (term.related||[]).some(r=>r.toLowerCase().includes(q));
+    return matchF && matchQ;
+  });
+  renderAll(filtered);
+}
+
+document.getElementById("search-input").addEventListener("input",function(){
+  searchQ=this.value; applyFilters();
+});
+document.querySelectorAll(".filter-pill").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".filter-pill").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    activeFilter=btn.dataset.filter;
+    applyFilters();
+  });
+});
+function searchFor(term){
+  const input=document.getElementById("search-input");
+  input.value=term; searchQ=term; activeFilter="all";
+  document.querySelectorAll(".filter-pill").forEach(b=>b.classList.remove("active"));
+  document.querySelector("[data-filter='all']").classList.add("active");
+  applyFilters();
+  input.focus();
+  window.scrollTo({top:200,behavior:"smooth"});
+}
+
+// ALPHA NAV SCROLL HIGHLIGHT
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const l=e.target.id.replace("letter-","");
+      document.querySelectorAll("#alpha-nav a").forEach(a=>a.classList.toggle("active",a.dataset.letter===l));
+    }
+  });
+},{threshold:.2,rootMargin:"-100px 0px -60% 0px"});
+
+// INIT
+renderAll(TERMS);
+document.querySelectorAll(".letter-section").forEach(s=>obs.observe(s));
+document.getElementById("cur-ver-badge").textContent = VERSIONS.find(v=>v.current)?.version || "v2.1";
+</script>
+</body>
+</html>

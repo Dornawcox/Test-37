@@ -221,7 +221,7 @@ code{background:rgba(30,77,43,.1);color:var(--forest);padding:1px 5px;border-rad
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="tb-inner">
-    <a class="brand" href="https://dornawcox.github.io/Test-36/index.html" target="_blank" rel="noopener">
+    <a class="brand" href="index.html">
       <svg class="brand-logo" viewBox="0 0 28 28" fill="none">
         <circle cx="14" cy="14" r="13" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
         <circle cx="14" cy="7"  r="3" fill="rgba(255,255,255,0.9)"/>
@@ -236,9 +236,12 @@ code{background:rgba(30,77,43,.1);color:var(--forest);padding:1px 5px;border-rad
       <span class="bsub">Projects &amp; Collabathons</span>
     </a>
     <nav class="nav">
-      <a href="https://dornawcox.github.io/Test-36/index.html" target="_blank">Home</a>
+      <a href="index.html">Home</a>
       <a href="#" class="cur">Projects</a>
-      <a href="https://dornawcox.github.io/Test-36/index.html#library" target="_blank">Tools</a>
+      <a href="index.html#library">Tools</a>
+      <a href="videos.html">Videos</a>
+      <a href="canonical-source-texts.html">Inspirations</a>
+      <a href="calendar.html">Events</a>
       <a href="https://forum.goatech.org" target="_blank">Forum</a>
       <a href="https://gitlab.com/OpenTEAMAg" target="_blank">GitLab</a>
     </nav>
@@ -290,7 +293,7 @@ code{background:rgba(30,77,43,.1);color:var(--forest);padding:1px 5px;border-rad
         <div class="pcard-d">Structured sprints → reusable outputs</div>
       </div>
     </a>
-    <a class="pcard" href="https://dornawcox.github.io/Test-36/videos.html" target="_blank" rel="noopener">
+    <a class="pcard" href="videos.html">
       <div class="pcard-ico" style="background:#dbeafe;">
         <svg viewBox="0 0 22 22" fill="none" stroke="#1a4f7a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="18" cy="5" r="3"/>
@@ -349,10 +352,116 @@ code{background:rgba(30,77,43,.1);color:var(--forest);padding:1px 5px;border-rad
   <div class="rail" id="pRail"></div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════
+     METAGOV PROJECTS RAIL
+     Retained from OpenTEAM projects page
+═══════════════════════════════════════════════════════ -->
+<div class="main" style="padding-top:0;padding-bottom:0;">
+  <div class="sh" style="margin-top:0;">Metagov Projects</div>
+</div>
+
+<div class="rail-sec" style="padding-top:18px;">
+  <div style="max-width:1240px;margin:0 auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+      <div style="display:flex;flex-wrap:wrap;gap:6px;" id="mgFilterChips">
+        <button class="fb on" data-mg="All" style="background:#1e4d2b;color:#fff;border-color:#1e4d2b;">All</button>
+        <button class="fb" data-mg="Community">Community</button>
+        <button class="fb" data-mg="Convening &amp; Experiences">Convening &amp; Experiences</button>
+        <button class="fb" data-mg="Governance Funding">Governance Funding</button>
+        <button class="fb" data-mg="Governance UX">Governance UX</button>
+        <button class="fb" data-mg="Interoperability">Interoperability</button>
+        <button class="fb" data-mg="Mapping Governance">Mapping Governance</button>
+        <button class="fb" data-mg="Network Building">Network Building</button>
+        <button class="fb" data-mg="Standards">Standards</button>
+      </div>
+      <a class="fb" href="https://metagov.org/projects/" target="_blank" rel="noopener" style="text-decoration:none;">Metagov Projects ↗</a>
+    </div>
+    <div style="overflow-x:auto;padding-bottom:8px;" id="mgRailWrap">
+      <div id="mgRail" style="display:flex;gap:12px;min-width:0;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+const METAGOV_PROJECTS = [
+  {"title":"The Protopian Fiction Prize","href":"https://metagov.org/projects/protopian","img":"https://metagov.org/media/pages/projects/protopian/21feed2742-1768435511/globe-dithered-434x235-crop.png","desc":"Write the story of humanity's future.","category":"Convening & Experiences","type":"Publication","status":"Active"},
+  {"title":"Atlas Computing","href":"https://metagov.org/projects/atlas-computing","img":"https://metagov.org/media/pages/projects/atlas-computing/13c84f76f9-1756312156/atlascomputing-434x235-crop.jpg","desc":"Mapping the way to human governance of AI.","category":"Mapping Governance","type":"R&D","status":"Active"},
+  {"title":"Attention Economy","href":"https://metagov.org/projects/attentionecon","img":"https://metagov.org/media/pages/projects/attentionecon/820fb35067-1751175556/default_shaded-434x235-crop.png","desc":"Exploring the intersection of attention economies and governance experience design.","category":"Governance UX","type":"R&D","status":"Active"},
+  {"title":"Governable Spacemakers Fellowship","href":"https://metagov.org/projects/governable-spacemakers-fellowship","img":"https://metagov.org/media/pages/projects/governable-spacemakers-fellowship/f3062d056c-1748540628/space-makers-moving-434x235-crop.gif","desc":"Where and how governance happens online is evolving.","category":"Network Building","type":"Community of Practice","status":"Active"},
+  {"title":"Theory + Practice","href":"https://metagov.org/projects/theory-practice","img":"https://metagov.org/media/pages/projects/theory-practice/d6d274c0c3-1743615321/t-p-3-small-434x235-crop.png","desc":"Connecting new political theory with new democratic practice.","category":"Convening & Experiences","type":"Roundtable","status":"Active"},
+  {"title":"KOI Pond","href":"https://metagov.org/projects/koi-pond","img":"https://metagov.org/media/pages/projects/koi-pond/01f7edd29a-1741974414/koi-434x235-crop.png","desc":"Experiments in online community self-governance using an LLM-mediated Knowledge Organization Infrastructure.","category":"Governance UX","type":"Tool","status":"Active"},
+  {"title":"Cryptoeconomic Systems","href":"https://metagov.org/projects/cryptoeconomic-systems","img":"https://metagov.org/media/pages/projects/cryptoeconomic-systems/f24d711554-1733076312/screen-shot-2024-12-01-at-12.04.47-pm-434x235-crop.png","desc":"Academic journal and conference on cryptoeconomic design and token governance.","category":"Convening & Experiences","type":"Publication","status":"Active"},
+  {"title":"Interoperable Deliberative Tools","href":"https://metagov.org/projects/interop","img":"https://metagov.org/media/pages/projects/interop/5b4d99e38e-1732556125/interop-434x235-crop.jpg","desc":"Homebase for interoperable deliberative tools.","category":"Interoperability","type":"Tool","status":"Active"},
+  {"title":"Mathematics for Governance Design","href":"https://metagov.org/projects/mathematics-for-governance-design","img":"https://metagov.org/media/pages/projects/mathematics-for-governance-design/aac7795227-1732560935/screen-shot-2024-11-25-at-10.55.06-am-434x235-crop.png","desc":"Applying mathematics to the design of governance systems.","category":"Mapping Governance","type":"R&D","status":"Active"},
+  {"title":"Constitutions of Web3","href":"https://metagov.org/projects/constitutions-of-web3","img":"https://metagov.org/media/pages/projects/constitutions-of-web3/2fe8adbaef-1709309833/constit-434x235-crop.png","desc":"Analysis and guides for DAO constitutions.","category":"Mapping Governance","type":"Publication","status":"Active"},
+  {"title":"Cryptopolitics","href":"https://metagov.org/projects/cryptopolitics","img":"https://metagov.org/media/pages/projects/cryptopolitics/06905a4367-1709252374/cryptopolitics_all_stickers-434x235-crop.jpg","desc":"A study of politics and ideology in crypto.","category":"Mapping Governance","type":"Publication","status":"Active"},
+  {"title":"D20 Governance","href":"https://metagov.org/projects/d20-governance","img":"https://metagov.org/media/pages/projects/d20-governance/a9f69b3650-1709111871/d20_governance-434x235-crop.jpg","desc":"LLM-mediated modular governance games on Discord.","category":"Governance UX","type":"Tool","status":"Active"},
+  {"title":"DAO Science","href":"https://metagov.org/projects/dao-science","img":"https://metagov.org/media/pages/projects/dao-science/4711ccfb1f-1709253730/dao_science-434x235-crop.png","desc":"A survey paper and community site for DAO research.","category":"Mapping Governance","type":"Data Set","status":"Active"},
+  {"title":"DAOchem","href":"https://metagov.org/projects/daochem","img":"https://metagov.org/media/pages/projects/daochem/8afeee59c6-1709254113/dao_chem-434x235-crop.png","desc":"A holistic view of DAO governance.","category":"Mapping Governance","type":"Data Set","status":"Active"},
+  {"title":"Governance Ecologies","href":"https://metagov.org/projects/governance-ecologies","img":"https://metagov.org/media/pages/projects/governance-ecologies/8ddab38fa9-1746131858/goveco-removebg-preview-434x235-crop.png","desc":"An exploration of historical governance practices across communities.","category":"Mapping Governance","type":"R&D","status":"Active"},
+  {"title":"Governance Experience Design","href":"https://metagov.org/projects/governance-experience-design","img":"https://metagov.org/media/pages/projects/governance-experience-design/fd8fd40671-1709253305/gov_ex_design-434x235-crop.jpg","desc":"A living manifesto for online spaces.","category":"Governance UX","type":"Publication","status":"Active"},
+  {"title":"Groundwork Fellowship","href":"https://metagov.org/projects/groundwork-fellowship","img":"https://metagov.org/media/pages/projects/groundwork-fellowship/d83f500c02-1713925134/groundwork-photo_collage-bgs-434x235-crop.png","desc":"An internet infrastructure design and marginalization fellowship.","category":"Network Building","type":"Community of Practice","status":"Active"},
+  {"title":"Grant Innovation Lab","href":"https://metagov.org/projects/grant-lab","img":"https://metagov.org/media/pages/projects/grant-lab/71336c0026-1727039843/final@2x-1-434x235-crop.png","desc":"Research, resources, and community to help advance granting and impact measurement.","category":"Governance Funding","type":"Community of Practice","status":"Active"},
+  {"title":"CommunityRule","href":"https://metagov.org/projects/communityrule","img":"https://metagov.org/media/pages/projects/communityrule/d529c89347-1709247984/community_rule-434x235-crop.jpg","desc":"A user-friendly governance toolkit for great communities.","category":"Community","type":"Tool","status":"Active"},
+  {"title":"Modpol","href":"https://metagov.org/projects/modpol","img":"https://metagov.org/media/pages/projects/modpol/7680a60fcf-1709132695/modpol-434x235-crop.png","desc":"A governance mod for Minetest.","category":"Community","type":"Tool","status":"Active"},
+  {"title":"Modular Politics","href":"https://metagov.org/projects/modular-politics","img":"https://metagov.org/media/pages/projects/modular-politics/a3826a143b-1709249866/modular_politics-434x235-crop.jpg","desc":"A paper outlining a governance layer for the internet.","category":"Interoperability","type":"Publication","status":"Active"},
+  {"title":"Calm Technology","href":"https://metagov.org/projects/calm-technology","img":"https://metagov.org/media/pages/projects/calm-technology/c2ea4fe649-1716293567/calm-tech-institute-logo-434x235-crop.png","desc":"A standards body for aligning attention with technology.","category":"Standards","type":"Technical Standard","status":"Active"},
+  {"title":"Govbase Dataset","href":"https://metagov.org/projects/govbase-dataset","img":"https://metagov.org/media/pages/projects/govbase-dataset/075d836730-1708447035/govbase_data-434x235-crop.jpg","desc":"A set of research datasets in online governance.","category":"Mapping Governance","type":"Data Set","status":"Active"},
+  {"title":"Metagov Gateway","href":"https://metagov.org/projects/metagov-gateway","img":"https://metagov.org/media/pages/projects/metagov-gateway/089efc0288-1705328802/gateway-434x235-crop.jpg","desc":"An API gateway for digital governance services.","category":"Interoperability","type":"Tool","status":"Active"},
+  {"title":"MetagovDAO","href":"https://metagov.org/projects/metagovdao","img":"https://metagov.org/media/pages/projects/metagovdao/cd2fa49472-1708447035/metagov_dao-434x235-crop.jpg","desc":"A funding body for qualitative governance research on DAOs.","category":"Governance Funding","type":"Fundraising","status":"Active"},
+  {"title":"Metagov Seminar","href":"https://metagov.org/projects/metagovernance-seminar","img":"https://metagov.org/media/pages/projects/metagovernance-seminar/ac83387cf7-1708447035/metagov_seminar-434x235-crop.jpg","desc":"A weekly seminar on digital governance.","category":"Convening & Experiences","type":"Roundtable","status":"Active"},
+  {"title":"PolicyKit","href":"https://metagov.org/projects/policykit","img":"https://metagov.org/media/pages/projects/policykit/da151d8deb-1708447035/policykit-434x235-crop.jpg","desc":"An engine for building governance in online communities.","category":"Community","type":"Tool","status":"Active"},
+  {"title":"Public AI","href":"https://metagov.org/projects/public-ai","img":"https://metagov.org/media/pages/projects/public-ai/64b06615f3-1708447035/publicai-434x235-crop.jpg","desc":"A new political economy for AI.","category":"Mapping Governance","type":"R&D","status":"Active"},
+  {"title":"Telescope","href":"https://metagov.org/projects/telescope","img":"https://metagov.org/media/pages/projects/telescope/c72b993c45-1708447035/telescope-434x235-crop.jpg","desc":"A Discord bot for ethical, responsive digital ethnography.","category":"Community","type":"Tool","status":"Active"},
+  {"title":"Agreement Engine","href":"https://metagov.org/projects/agreement-engine","img":"https://metagov.org/media/pages/projects/agreement-engine/f7114d2c94-1700846822/net-native-agreement-systems-434x235-crop.jpg","desc":"A tool for building net-native agreement systems.","category":"Interoperability","type":"Tool","status":"Active"},
+  {"title":"DAOstar","href":"https://metagov.org/projects/daostar","img":"https://metagov.org/media/pages/projects/daostar/42f57ad6f1-1700846822/daostar-434x235-crop.jpg","desc":"The standards body of the DAO ecosystem.","category":"Standards","type":"Technical Standard","status":"Active"},
+  {"title":"OSS Transitions","href":"https://metagov.org/projects/oss-transitions","img":"https://metagov.org/media/pages/projects/oss-transitions/59c519349a-1708447035/default-434x235-crop.png","desc":"An NSF-funded collaboration studying open-source governance transitions.","category":"Mapping Governance","type":"R&D","status":"Active"}
+];
+
+let mgFilter = 'All';
+
+function renderMgRail() {
+  const rail = document.getElementById('mgRail');
+  if(!rail) return;
+  const items = mgFilter === 'All' ? METAGOV_PROJECTS : METAGOV_PROJECTS.filter(p=>p.category===mgFilter);
+  rail.innerHTML = items.map(p=>`
+    <a href="${p.href}" target="_blank" rel="noopener" style="flex:0 0 220px;border-radius:10px;border:1px solid #ddd8ce;background:#fff;text-decoration:none;color:#1a1a14;display:flex;flex-direction:column;overflow:hidden;transition:border-color 150ms,box-shadow 150ms,transform 150ms;" onmouseover="this.style.borderColor='#1e4d2b';this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 22px rgba(30,77,43,.11)';" onmouseout="this.style.borderColor='#ddd8ce';this.style.transform='';this.style.boxShadow='';">
+      <div style="height:100px;overflow:hidden;border-bottom:1px solid #f0ece4;">
+        <img src="${p.img}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">
+      </div>
+      <div style="padding:10px 12px;flex:1;display:flex;flex-direction:column;">
+        <div style="font-size:12.5px;font-weight:700;line-height:1.25;margin-bottom:4px;">${p.title}</div>
+        <div style="font-size:11px;color:#6b6760;line-height:1.4;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${p.desc}</div>
+        <div style="margin-top:7px;display:flex;flex-wrap:wrap;gap:4px;">
+          ${p.category ? `<span style="font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:3px;background:#eaf3ec;color:#1e4d2b;">${p.category}</span>` : ''}
+          ${p.type ? `<span style="font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:3px;background:#f3f4f6;color:#374151;">${p.type}</span>` : ''}
+        </div>
+      </div>
+    </a>`).join('');
+}
+
+document.getElementById('mgFilterChips').addEventListener('click', e=>{
+  const btn = e.target.closest('[data-mg]');
+  if(!btn) return;
+  document.querySelectorAll('#mgFilterChips [data-mg]').forEach(b=>{
+    b.classList.remove('on');
+    b.style.background='';b.style.color='';b.style.borderColor='';
+  });
+  btn.classList.add('on');
+  btn.style.background='#1e4d2b';btn.style.color='#fff';btn.style.borderColor='#1e4d2b';
+  mgFilter = btn.dataset.mg;
+  renderMgRail();
+});
+
+renderMgRail();
+})();
+</script>
+
 <!-- FOOTER -->
 <div class="foot">
   <span>OpenTEAM · A fiscally sponsored project of <a href="https://raft.foundation" target="_blank">Raft Foundation Inc.</a> · <a href="https://gitlab.com/OpenTEAMAg" target="_blank">GitLab ↗</a></span>
-  <span><a href="https://dornawcox.github.io/Test-36/licenses.html" target="_blank">Licenses</a> · <a href="https://openteamag.gitlab.io/codesign/code-of-conduct/" target="_blank">Code of Conduct</a> · <a href="https://www.hylo.com/groups/openteam" target="_blank">Hylo</a></span>
+  <span><a href="licenses.html">Licenses</a> · <a href="code-of-conduct.html">Code of Conduct</a> · <a href="https://www.hylo.com/groups/openteam" target="_blank">Hylo</a></span>
 </div>
 
 <!-- DRAWER -->
@@ -661,7 +770,7 @@ const PROJS = [
    {n:'OpenTEAM Convention', t:'GitLab Repository', u:'https://gitlab.com/OpenTEAMAg', i:'gitlab'},
    {n:'Code of Conduct', t:'Static Site', u:'https://openteamag.gitlab.io/codesign/code-of-conduct/', i:'globe'},
    {n:'OpenTEAM Kumu Map', t:'Ecosystem Relationships', u:'https://kumu.io/OpenTEAM/open-team-public-web', i:'globe'},
-   {n:'OpenTEAM Licenses', t:'Document', u:'https://dornawcox.github.io/Test-36/licenses.html', i:'doc'},
+   {n:'OpenTEAM Licenses', t:'Document', u:'licenses.html', i:'doc'},
  ]},
 
 {id:'equity',cat:'sovereignty',

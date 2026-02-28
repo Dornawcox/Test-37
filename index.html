@@ -13,7 +13,21 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&amp;family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;0,700&family=IBM+Plex+Sans:wght@0,300;0,400;0,600;0,700&display=swap" rel="stylesheet"/>
 <link href="styles.css" rel="stylesheet"/>
+<style>
+/* ── Topbar (matches projects page) ── */
+.topbar{position:sticky;top:0;z-index:60;background:#1e4d2b;border-bottom:3px solid #16381f;box-shadow:0 2px 14px rgba(0,0,0,.28);}
+.tb-inner{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;align-items:stretch;justify-content:space-between;}
+.brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:14px;color:#fff;text-decoration:none;padding:12px 0;font-family:'IBM Plex Sans',sans-serif;}
+.brand-logo{width:26px;height:26px;flex:0 0 26px;}
+.bdiv{width:1px;background:rgba(255,255,255,.2);margin:0 12px;align-self:stretch;}
+.bsub{font-weight:400;color:rgba(255,255,255,.55);font-size:12px;}
+.topnav{display:flex;align-items:stretch;}
+.topnav a{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);text-decoration:none;padding:0 13px;display:flex;align-items:center;border-left:1px solid rgba(255,255,255,.1);transition:color 120ms,background 120ms;}
+.topnav a:hover,.topnav a.cur{color:#fff;background:rgba(255,255,255,.1);}
+@media(max-width:860px){.topnav{display:none;}.brand .bsub,.brand .bdiv{display:none;}}
+</style>
 <style>
 /* ══════════════════════════════════════════════
    INDEX PAGE PROJECT DETAIL DRAWER
@@ -80,19 +94,48 @@
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
-<!-- OEDP-inspired: sticky header + over-left drawer -->
-<header class="nav-shell" role="banner">
+<!-- Topbar matching projects page design -->
+<div class="topbar">
+  <div class="tb-inner">
+    <a class="brand" href="index.html">
+      <svg class="brand-logo" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="13" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+        <circle cx="14" cy="7"  r="3" fill="rgba(255,255,255,0.9)"/>
+        <circle cx="7"  cy="19" r="3" fill="rgba(255,255,255,0.9)"/>
+        <circle cx="21" cy="19" r="3" fill="rgba(255,255,255,0.9)"/>
+        <line x1="14" y1="10" x2="7"  y2="16" stroke="rgba(255,255,255,0.5)" stroke-width="1.3"/>
+        <line x1="14" y1="10" x2="21" y2="16" stroke="rgba(255,255,255,0.5)" stroke-width="1.3"/>
+        <line x1="7"  y1="19" x2="21" y2="19" stroke="rgba(255,255,255,0.5)" stroke-width="1.3"/>
+      </svg>
+      OpenTEAM
+      <div class="bdiv"></div>
+      <span class="bsub">Open Technology Ecosystem for Agricultural Management</span>
+    </a>
+    <nav class="topnav">
+      <a href="index.html" class="cur">Home</a>
+      <a href="projects-page-updated4.html">Projects</a>
+      <a href="index.html#library">Tools</a>
+      <a href="videos.html">Videos</a>
+      <a href="canonical-source-texts.html">Inspirations</a>
+      <a href="calendar.html">Events</a>
+      <a href="https://forum.goatech.org" target="_blank">Forum</a>
+      <a href="https://gitlab.com/OpenTEAMAg" target="_blank">GitLab</a>
+    </nav>
+  </div>
+</div>
+<!-- Mobile hamburger menu (hidden on desktop, shown on mobile) -->
+<header class="nav-shell" role="banner" style="display:none;">
 <button aria-controls="drawer" aria-expanded="false" class="menu-button" id="menuButton">
 <span aria-hidden="true" class="menu-icon"><span></span></span>
 <span class="menu-label">MENU</span>
 </button>
-<div class="nav-title">
-<div class="nav-title-text">Open Technology Ecosystem for Agricultural Management</div>
-</div>
-<div aria-hidden="true" class="nav-logo">
-<img alt="" src="assets/openteam_logo.svg"/>
-</div>
 </header>
+<style>
+@media(max-width:860px){
+  .topbar .topnav{display:none;}
+  .nav-shell{display:flex !important;position:sticky;top:51px;z-index:55;padding:10px 16px;background:rgba(243,251,245,0.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(43,43,43,0.14);justify-content:flex-start;}
+}
+</style>
 <aside aria-hidden="true" class="drawer" id="drawer">
 <div class="drawer-inner">
 <div class="drawer-top">
@@ -106,7 +149,7 @@
 <a class="drawer-link" aria-current="page" href="index.html">HOME</a>
 <a class="drawer-link" href="index.html#initiatives">OUR WORK</a>
 <a class="drawer-link" href="index.html#pilots">COLLABATHONS</a>
-<a class="drawer-link" href="projects.html">PROJECTS</a>
+<a class="drawer-link" href="projects-page-updated4.html">PROJECTS</a>
 <a class="drawer-link" href="index.html#library">TOOLS &amp; PLATFORMS</a>
 <a class="drawer-link" href="videos.html">VIDEOS</a>
 <a class="drawer-link" href="canonical-source-texts.html">INSPIRATIONS</a>
@@ -193,7 +236,7 @@
 </article>
 <article class="card card-mycelium">
 <h3>Facilitate</h3>
-<p>Collabathons and working groups map actors, develop shared needs assesments, and pressure-test ideas across communities.</p>
+<p>Collabathons and working groups map actors, develop shared needs assessments, and pressure-test ideas across communities.</p>
 <p class="muted">Structured, longer-form collaboration.</p>
 </article>
 <article class="card card-fieldpatterns">
@@ -342,7 +385,7 @@
   <div class="rail-sec-idx">
     <div class="rail-hd-idx">
       All Projects — Quick Navigation · Click any card to open detail
-      <a href="projects.html">Full projects page ↗</a>
+      <a href="projects-page-updated4.html">Full projects page ↗</a>
     </div>
     <div class="rail-idx" id="pRailIdx"></div>
   </div>
@@ -1890,169 +1933,72 @@
 <button aria-label="Scroll left" class="wg-edge-arrow wg-edge-arrow--left" data-attr-scroll="prev" type="button">‹</button>
 <button aria-label="Scroll right" class="wg-edge-arrow wg-edge-arrow--right" data-attr-scroll="next" type="button">›</button>
 <div class="attr-rail" data-attr-rail="">
-<article class="attr-card">
-<a class="attr-card__link" href="https://11thhourproject.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=11thhourproject.org&amp;sz=64"/>
-<div class="attr-card__name">11th Hour Project</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://noregretsfoundation.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=noregretsfoundation.org&amp;sz=64"/>
-<div class="attr-card__name">No Regrets Foundation</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://techmatters.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=techmatters.org&amp;sz=64"/>
-<div class="attr-card__name">Tech Matters</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://farmhack.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=farmhack.org&amp;sz=64"/>
-<div class="attr-card__name">FarmHack</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://pasafarming.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=pasafarming.org&amp;sz=64"/>
-<div class="attr-card__name">PASA</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://goatech.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=goatech.org&amp;sz=64"/>
-<div class="attr-card__name">GOAT</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://caneyforkfarmtn.com/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=caneyforkfarmtn.com&amp;sz=64"/>
-<div class="attr-card__name">Canney Fork Farm</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://paicinesranch.com/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=paicinesranch.com&amp;sz=64"/>
-<div class="attr-card__name">Paicines Ranch</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://pointblue.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=pointblue.org&amp;sz=64"/>
-<div class="attr-card__name">Point Blue Conservation</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://www.icfoods.com/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.icfoods.com&amp;sz=64"/>
-<div class="attr-card__name">IC Foods</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://www.ubc.ca/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.ubc.ca&amp;sz=64"/>
-<div class="attr-card__name">UBC</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://foundationfar.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=foundationfar.org&amp;sz=64"/>
-<div class="attr-card__name">FFAR</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://www.terra-genesis.com/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.terra-genesis.com&amp;sz=64"/>
-<div class="attr-card__name">Terra Genesis</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://www.regen.network/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.regen.network&amp;sz=64"/>
-<div class="attr-card__name">Regen Network</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://regenfoundation.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=regenfoundation.org&amp;sz=64"/>
-<div class="attr-card__name">Regen Foundation</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://quiviracoalition.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=quiviracoalition.org&amp;sz=64"/>
-<div class="attr-card__name">Quivira Coalition</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://regenscore.com/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=regenscore.com&amp;sz=64"/>
-<div class="attr-card__name">Regen Score</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://terraethics.com/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=terraethics.com&amp;sz=64"/>
-<div class="attr-card__name">Terra Ethics</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://www.terren.co/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.terren.co&amp;sz=64"/>
-<div class="attr-card__name">Terren Collective</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://www.zerofoodprint.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.zerofoodprint.org&amp;sz=64"/>
-<div class="attr-card__name">Zero Food Print</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://openfoodnetwork.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=openfoodnetwork.org&amp;sz=64"/>
-<div class="attr-card__name">Open Food Network</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://ctic.org/" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=ctic.org&amp;sz=64"/>
-<div class="attr-card__name">CTIC</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card">
-<a class="attr-card__link" href="https://engineering.purdue.edu/OATSCenter" rel="noopener" target="_blank">
-<img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=engineering.purdue.edu&amp;sz=64"/>
-<div class="attr-card__name">Purdue OATS Center</div>
-<div aria-hidden="true" class="attr-card__arrow">↗</div>
-</a>
-</article>
-<article class="attr-card"><a class="attr-card__link" href="https://startinblox.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=startinblox.com&amp;sz=64"/><div class="attr-card__name">Startin'blox</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article><article class="attr-card"><a class="attr-card__link" href="https://www.gia-agroecology.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.gia-agroecology.org&amp;sz=64"/><div class="attr-card__name">GIAA</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article><article class="attr-card"><a class="attr-card__link" href="https://prolinnova.net/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=prolinnova.net&amp;sz=64"/><div class="attr-card__name">Prolinnova</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article><article class="attr-card"><a class="attr-card__link" href="https://metagov.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=metagov.org&amp;sz=64"/><div class="attr-card__name">Metagov</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article><article class="attr-card"><a class="attr-card__link" href="https://www.block.science/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.block.science&amp;sz=64"/><div class="attr-card__name">Block Science</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
-<article class="attr-card"><a class="attr-card__link" href="https://regenfarmers.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=regenfarmers.org&sz=64"/><div class="attr-card__name">Regen Farmers Mutual</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article><article class="attr-card"><a class="attr-card__link" href="https://whitebuffalolandtrust.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=whitebuffalolandtrust.org&sz=64"/><div class="attr-card__name">White Buffalo Land Trust</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article></div>
+<article class="attr-card"><a class="attr-card__link" href="https://www.wolfesneck.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=wolfesneck.org&amp;sz=64"/><div class="attr-card__name">Wolfe's Neck Center</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://11thhourproject.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=11thhourproject.org&amp;sz=64"/><div class="attr-card__name">11th Hour Project</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://noregretsfoundation.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=noregretsfoundation.org&amp;sz=64"/><div class="attr-card__name">No Regrets Foundation</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://techmatters.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=techmatters.org&amp;sz=64"/><div class="attr-card__name">Tech Matters</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://farmhack.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=farmhack.org&amp;sz=64"/><div class="attr-card__name">FarmHack</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.stonyfield.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=stonyfield.com&amp;sz=64"/><div class="attr-card__name">Stonyfield</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.ars.usda.gov/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=ars.usda.gov&amp;sz=64"/><div class="attr-card__name">USDA-ARS</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://msu.edu/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=msu.edu&amp;sz=64"/><div class="attr-card__name">Michigan State University</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.generalmills.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=generalmills.com&amp;sz=64"/><div class="attr-card__name">General Mills</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://pasafarming.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=pasafarming.org&amp;sz=64"/><div class="attr-card__name">PASA</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://goatech.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=goatech.org&amp;sz=64"/><div class="attr-card__name">GOAT</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://farmos.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=farmos.org&amp;sz=64"/><div class="attr-card__name">farmOS</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://caneyforkfarmtn.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=caneyforkfarmtn.com&amp;sz=64"/><div class="attr-card__name">Caney Fork Farms</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://paicinesranch.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=paicinesranch.com&amp;sz=64"/><div class="attr-card__name">Paicines Ranch</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://pointblue.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=pointblue.org&amp;sz=64"/><div class="attr-card__name">Point Blue Conservation</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.icfoods.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.icfoods.com&amp;sz=64"/><div class="attr-card__name">IC Foods</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.ubc.ca/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.ubc.ca&amp;sz=64"/><div class="attr-card__name">UBC</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://foundationfar.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=foundationfar.org&amp;sz=64"/><div class="attr-card__name">FFAR</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.terra-genesis.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.terra-genesis.com&amp;sz=64"/><div class="attr-card__name">Terra Genesis</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.regen.network/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.regen.network&amp;sz=64"/><div class="attr-card__name">Regen Network</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://regenfoundation.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=regenfoundation.org&amp;sz=64"/><div class="attr-card__name">Regen Foundation</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://quiviracoalition.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=quiviracoalition.org&amp;sz=64"/><div class="attr-card__name">Quivira Coalition</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://regenscore.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=regenscore.com&amp;sz=64"/><div class="attr-card__name">Regen Score</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://terraethics.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=terraethics.com&amp;sz=64"/><div class="attr-card__name">Terra Ethics</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.terren.co/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.terren.co&amp;sz=64"/><div class="attr-card__name">Terren Collective</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.zerofoodprint.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.zerofoodprint.org&amp;sz=64"/><div class="attr-card__name">Zero Foodprint</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://openfoodnetwork.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=openfoodnetwork.org&amp;sz=64"/><div class="attr-card__name">Open Food Network</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://ctic.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=ctic.org&amp;sz=64"/><div class="attr-card__name">CTIC</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://engineering.purdue.edu/OATSCenter" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=engineering.purdue.edu&amp;sz=64"/><div class="attr-card__name">Purdue OATS Center</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://startinblox.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=startinblox.com&amp;sz=64"/><div class="attr-card__name">Startin'blox</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.gia-agroecology.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.gia-agroecology.org&amp;sz=64"/><div class="attr-card__name">GIAA</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://prolinnova.net/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=prolinnova.net&amp;sz=64"/><div class="attr-card__name">Prolinnova</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://metagov.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=metagov.org&amp;sz=64"/><div class="attr-card__name">Metagov</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.block.science/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=www.block.science&amp;sz=64"/><div class="attr-card__name">Block Science</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://regenfarmers.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=regenfarmers.org&sz=64"/><div class="attr-card__name">Regen Farmers Mutual</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://whitebuffalolandtrust.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=whitebuffalolandtrust.org&sz=64"/><div class="attr-card__name">White Buffalo Land Trust</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<!-- NEW: orgs from openteam.community/our-community not previously listed -->
+<article class="attr-card"><a class="attr-card__link" href="http://cometfarm.nrel.colostate.edu/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=colostate.edu&amp;sz=64"/><div class="attr-card__name">COMET-Farm</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.regrow.ag/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=regrow.ag&amp;sz=64"/><div class="attr-card__name">Regrow</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.colorado.edu/silc/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=colorado.edu&amp;sz=64"/><div class="attr-card__name">SILC (CU Boulder)</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://coolfarmtool.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=coolfarmtool.org&amp;sz=64"/><div class="attr-card__name">Cool Farm Alliance</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://landpotential.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=landpotential.org&amp;sz=64"/><div class="attr-card__name">LandPKS</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.our-sci.net/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=our-sci.net&amp;sz=64"/><div class="attr-card__name">Our Sci</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://nori.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=nori.com&amp;sz=64"/><div class="attr-card__name">Nori</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="http://www.foodshot.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=foodshot.org&amp;sz=64"/><div class="attr-card__name">Foodshot Global</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.heartlandstg.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=heartlandstg.org&amp;sz=64"/><div class="attr-card__name">Heartland STG</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.organicvalley.coop/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=organicvalley.coop&amp;sz=64"/><div class="attr-card__name">Organic Valley</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://pasturemap.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=pasturemap.com&amp;sz=64"/><div class="attr-card__name">PastureMap</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://madagriculture.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=madagriculture.org&amp;sz=64"/><div class="attr-card__name">Mad Agriculture</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://litefarm.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=litefarm.org&amp;sz=64"/><div class="attr-card__name">LiteFarm</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://fieldtomarket.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=fieldtomarket.org&amp;sz=64"/><div class="attr-card__name">Field to Market</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.risd.edu/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=risd.edu&amp;sz=64"/><div class="attr-card__name">RISD</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.open-rivers.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=open-rivers.com&amp;sz=64"/><div class="attr-card__name">Open Rivers</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.digitalgreen.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=digitalgreen.org&amp;sz=64"/><div class="attr-card__name">Digital Green</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.thelexicon.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=thelexicon.org&amp;sz=64"/><div class="attr-card__name">The Lexicon</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.propagateventures.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=propagateventures.com&amp;sz=64"/><div class="attr-card__name">Propagate Ventures</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="http://lookin.to/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=lookin.to&amp;sz=64"/><div class="attr-card__name">INTO</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.cibotechnologies.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=cibotechnologies.com&amp;sz=64"/><div class="attr-card__name">CiBO Technologies</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="http://www.wearefortheland.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=wearefortheland.org&amp;sz=64"/><div class="attr-card__name">We Are For The Land</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://carbonalist.com/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=carbonalist.com&amp;sz=64"/><div class="attr-card__name">Carbon A List</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.blackfarmerfund.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=blackfarmerfund.org&amp;sz=64"/><div class="attr-card__name">Black Farmer Fund</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://nefoclandtrust.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=nefoclandtrust.org&amp;sz=64"/><div class="attr-card__name">NEFOC Land Trust</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://carcd.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=carcd.org&amp;sz=64"/><div class="attr-card__name">CARCD</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://planetarycare.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=planetarycare.org&amp;sz=64"/><div class="attr-card__name">Planetary Care</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+<article class="attr-card"><a class="attr-card__link" href="https://www.bionutrientinstitute.org/" rel="noopener" target="_blank"><img alt="" class="attr-card__logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=bionutrientinstitute.org&amp;sz=64"/><div class="attr-card__name">Bionutrient Institute</div><div aria-hidden="true" class="attr-card__arrow">↗</div></a></article>
+</div>
 <div aria-hidden="true" class="wg-rail-fade wg-rail-fade--left"></div>
 <div aria-hidden="true" class="wg-rail-fade wg-rail-fade--right"></div>
 </div>
@@ -2079,7 +2025,7 @@
 <a href="index.html">Home</a>
 <a href="index.html#initiatives">Our Work</a>
 <a href="index.html#pilots">Collabathons</a>
-<a href="projects.html">Projects</a>
+<a href="projects-page-updated4.html">Projects</a>
 <a href="index.html#library">Tools &amp; Platforms</a>
 <a href="videos.html">Videos</a>
 <a href="canonical-source-texts.html">Inspirations</a>

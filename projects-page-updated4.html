@@ -32,9 +32,20 @@ body{margin:0;background:var(--cream);color:var(--ink);font-family:'IBM Plex San
 .brand-logo{width:26px;height:26px;flex:0 0 26px;}
 .bdiv{width:1px;background:rgba(255,255,255,.2);margin:0 12px;align-self:stretch;}
 .bsub{font-weight:400;color:rgba(255,255,255,.55);font-size:12px;}
-.nav{display:flex;align-items:stretch;}
-.nav a{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);text-decoration:none;padding:0 13px;display:flex;align-items:center;border-left:1px solid rgba(255,255,255,.1);transition:color 120ms,background 120ms;}
+/* nav bar replaced by hamburger */
+
 .nav a:hover,.nav a.cur{color:#fff;background:rgba(255,255,255,.1);}
+
+.topbar-menu-btn{display:flex;align-items:center;gap:8px;appearance:none;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);padding:8px 12px;border-radius:8px;cursor:pointer;color:#fff;margin-right:14px;flex:0 0 auto;transition:background 120ms;}
+.topbar-menu-btn:hover{background:rgba(255,255,255,.15);}
+.topbar-hamburger{width:16px;height:11px;position:relative;display:inline-block;}
+.topbar-hamburger::before,.topbar-hamburger::after,.topbar-hamburger span{content:"";position:absolute;left:0;right:0;height:2px;background:#fff;border-radius:2px;}
+.topbar-hamburger::before{top:0}
+.topbar-hamburger::after{bottom:0}
+.topbar-hamburger span{top:50%;transform:translateY(-50%);}
+.topbar-menu-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+@media(max-width:640px){.bsub,.bdiv{display:none;}}
+
 
 /* HERO */
 .hero{background:linear-gradient(135deg,var(--forest) 0%,#1e5c35 50%,var(--sage) 100%);padding:48px 24px 42px;position:relative;overflow:hidden;}
@@ -235,18 +246,42 @@ code{background:rgba(30,77,43,.1);color:var(--forest);padding:1px 5px;border-rad
       <div class="bdiv"></div>
       <span class="bsub">Projects &amp; Collabathons</span>
     </a>
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="#" class="cur">Projects</a>
-      <a href="index.html#library">Tools</a>
-      <a href="videos.html">Videos</a>
-      <a href="canonical-source-texts.html">Inspirations</a>
-      <a href="calendar.html">Events</a>
-      <a href="https://forum.goatech.org" target="_blank">Forum</a>
-      <a href="https://gitlab.com/OpenTEAMAg" target="_blank">GitLab</a>
-    </nav>
+    <button class="topbar-menu-btn" id="siteMenuBtn" onclick="document.getElementById('siteDrawer').classList.toggle('open');document.getElementById('siteScrim').classList.toggle('open');">
+      <span class="topbar-hamburger"><span></span></span>
+      <span class="topbar-menu-label">MENU</span>
+    </button>
   </div>
 </div>
+
+<!-- SITE NAV DRAWER -->
+<div class="siteScrim" id="siteScrim" onclick="this.classList.remove('open');document.getElementById('siteDrawer').classList.remove('open');"></div>
+<aside class="siteDrawer" id="siteDrawer">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.12);">
+    <span style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;color:#fff;font-size:15px;">OpenTEAM</span>
+    <button onclick="document.getElementById('siteDrawer').classList.remove('open');document.getElementById('siteScrim').classList.remove('open');" style="appearance:none;border:1px solid rgba(255,255,255,.18);background:transparent;color:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:14px;">✕</button>
+  </div>
+  <nav style="display:flex;flex-direction:column;gap:2px;padding:12px;">
+    <a href="index.html" style="display:block;padding:10px 14px;border-radius:8px;color:#fff;text-decoration:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;">Home</a>
+    <a href="projects-page-updated4.html" style="display:block;padding:10px 14px;border-radius:8px;color:#fff;text-decoration:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;background:rgba(255,255,255,.08);">Projects</a>
+    <a href="index.html#library" style="display:block;padding:10px 14px;border-radius:8px;color:rgba(255,255,255,.7);text-decoration:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;">Tools &amp; Platforms</a>
+    <a href="videos.html" style="display:block;padding:10px 14px;border-radius:8px;color:rgba(255,255,255,.7);text-decoration:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;">Videos</a>
+    <a href="canonical-source-texts.html" style="display:block;padding:10px 14px;border-radius:8px;color:rgba(255,255,255,.7);text-decoration:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;">Inspirations</a>
+    <a href="calendar.html" style="display:block;padding:10px 14px;border-radius:8px;color:rgba(255,255,255,.7);text-decoration:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;">Events</a>
+    <a href="https://forum.goatech.org" target="_blank" style="display:block;padding:10px 14px;border-radius:8px;color:rgba(255,255,255,.7);text-decoration:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;">Forum ↗</a>
+    <a href="https://gitlab.com/OpenTEAMAg" target="_blank" style="display:block;padding:10px 14px;border-radius:8px;color:rgba(255,255,255,.7);text-decoration:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;">GitLab ↗</a>
+    <a href="licenses.html" style="display:block;padding:10px 14px;border-radius:8px;color:rgba(255,255,255,.7);text-decoration:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;">Licenses</a>
+    <a href="code-of-conduct.html" style="display:block;padding:10px 14px;border-radius:8px;color:rgba(255,255,255,.7);text-decoration:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;">Code of Conduct</a>
+  </nav>
+  <div style="margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.12);font-size:12px;color:rgba(255,255,255,.4);font-family:'IBM Plex Mono',monospace;">
+    <a href="https://www.hylo.com/groups/openteam" target="_blank" style="color:rgba(255,255,255,.6);text-decoration:none;">Connect on Hylo ↗</a>
+  </div>
+</aside>
+<style>
+.siteScrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity 200ms;z-index:90;}
+.siteScrim.open{opacity:1;pointer-events:auto;}
+.siteDrawer{position:fixed;top:0;left:0;width:300px;max-width:85vw;height:100vh;background:#2b2b2b;transform:translateX(-110%);transition:transform 240ms ease;z-index:100;display:flex;flex-direction:column;overflow-y:auto;}
+.siteDrawer.open{transform:translateX(0);}
+</style>
 
 <!-- HERO -->
 <div class="hero">
@@ -344,12 +379,6 @@ code{background:rgba(30,77,43,.1);color:var(--forest);padding:1px 5px;border-rad
 <div class="main">
   <div class="sh" style="margin-top:2px;">Active Projects, Collabathons &amp; Resources</div>
   <div class="pgrid" id="pgrid"></div>
-</div>
-
-<!-- RAIL -->
-<div class="rail-sec">
-  <div class="rail-hd">All Projects — Quick Navigation · Click any card to open detail</div>
-  <div class="rail" id="pRail"></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
@@ -1073,7 +1102,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
 
 /* ════════════ INIT ════════════ */
 renderGrid();
-renderRail();
+// renderRail(); // removed
 </script>
 
 <!-- ═══════════════════════════════════════════════════════

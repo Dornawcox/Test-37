@@ -23,10 +23,21 @@
 .brand-logo{width:26px;height:26px;flex:0 0 26px;}
 .bdiv{width:1px;background:rgba(255,255,255,.2);margin:0 12px;align-self:stretch;}
 .bsub{font-weight:400;color:rgba(255,255,255,.55);font-size:12px;}
-.topnav{display:flex;align-items:stretch;}
-.topnav a{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);text-decoration:none;padding:0 13px;display:flex;align-items:center;border-left:1px solid rgba(255,255,255,.1);transition:color 120ms,background 120ms;}
-.topnav a:hover,.topnav a.cur{color:#fff;background:rgba(255,255,255,.1);}
-@media(max-width:860px){.topnav{display:none;}.brand .bsub,.brand .bdiv{display:none;}}
+
+
+
+
+/* Hamburger button inside topbar */
+.topbar-menu-btn{display:flex;align-items:center;gap:8px;appearance:none;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);padding:8px 12px;border-radius:8px;cursor:pointer;color:#fff;margin-right:14px;flex:0 0 auto;transition:background 120ms;}
+.topbar-menu-btn:hover{background:rgba(255,255,255,.15);}
+.topbar-hamburger{width:16px;height:11px;position:relative;display:inline-block;}
+.topbar-hamburger::before,.topbar-hamburger::after,.topbar-hamburger span{content:"";position:absolute;left:0;right:0;height:2px;background:#fff;border-radius:2px;}
+.topbar-hamburger::before{top:0}
+.topbar-hamburger::after{bottom:0}
+.topbar-hamburger span{top:50%;transform:translateY(-50%);}
+.topbar-menu-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+
+@media(max-width:640px){.brand .bsub,.brand .bdiv{display:none;}}
 </style>
 <style>
 /* ══════════════════════════════════════════════
@@ -94,9 +105,13 @@
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
-<!-- Topbar matching projects page design -->
+<!-- Dark green topbar with hamburger menu -->
 <div class="topbar">
   <div class="tb-inner">
+    <button aria-controls="drawer" aria-expanded="false" class="topbar-menu-btn" id="menuButton">
+      <span class="topbar-hamburger"><span></span></span>
+      <span class="topbar-menu-label">MENU</span>
+    </button>
     <a class="brand" href="index.html">
       <svg class="brand-logo" viewBox="0 0 28 28" fill="none">
         <circle cx="14" cy="14" r="13" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
@@ -111,31 +126,8 @@
       <div class="bdiv"></div>
       <span class="bsub">Open Technology Ecosystem for Agricultural Management</span>
     </a>
-    <nav class="topnav">
-      <a href="index.html" class="cur">Home</a>
-      <a href="projects-page-updated4.html">Projects</a>
-      <a href="index.html#library">Tools</a>
-      <a href="videos.html">Videos</a>
-      <a href="canonical-source-texts.html">Inspirations</a>
-      <a href="calendar.html">Events</a>
-      <a href="https://forum.goatech.org" target="_blank">Forum</a>
-      <a href="https://gitlab.com/OpenTEAMAg" target="_blank">GitLab</a>
-    </nav>
   </div>
 </div>
-<!-- Mobile hamburger menu (hidden on desktop, shown on mobile) -->
-<header class="nav-shell" role="banner" style="display:none;">
-<button aria-controls="drawer" aria-expanded="false" class="menu-button" id="menuButton">
-<span aria-hidden="true" class="menu-icon"><span></span></span>
-<span class="menu-label">MENU</span>
-</button>
-</header>
-<style>
-@media(max-width:860px){
-  .topbar .topnav{display:none;}
-  .nav-shell{display:flex !important;position:sticky;top:51px;z-index:55;padding:10px 16px;background:rgba(243,251,245,0.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(43,43,43,0.14);justify-content:flex-start;}
-}
-</style>
 <aside aria-hidden="true" class="drawer" id="drawer">
 <div class="drawer-inner">
 <div class="drawer-top">
@@ -216,39 +208,6 @@
 </a>
 </div>
 <div class="hero-caption"><strong>OpenTEAM is an Evolving Ecosystem.</strong> Land steward trust and data sovereignty are front and center</div>
-</div>
-</div>
-</section>
-<!-- INITIATIVES -->
-<section class="section" id="initiatives">
-<div class="container">
-<div class="section-head">
-<h2>Our Work</h2>
-<p>
-            Discover tools, frameworks, and knowledge developed and stewarded by our community.
-          </p>
-</div>
-<div class="cards">
-<article class="card card-covercrop">
-<h3>Convene</h3>
-<p>In-Depths series and library—orientation, primers, glossary updates, and stories that make community work accessible.</p>
-<p class="muted"><a href="videos.html">Watch the In-Depths video library ↗</a></p>
-</article>
-<article class="card card-mycelium">
-<h3>Facilitate</h3>
-<p>Collabathons and working groups map actors, develop shared needs assessments, and pressure-test ideas across communities.</p>
-<p class="muted">Structured, longer-form collaboration.</p>
-</article>
-<article class="card card-fieldpatterns">
-<h3>Steward shared infrastructure</h3>
-<p>Ethical technical infrastructure and practical governance patterns to provide choice and reduce vendor lock-in.</p>
-<p class="muted">Open standards and interoperability.</p>
-</article>
-<article class="card card-malawi">
-<h3>Celebrate collaborators</h3>
-<p> Make visible allied efforts, communities, and projects and highlight shared learning and inspiration.</p>
-<p class="muted">An ecosystem approach.</p>
-</article>
 </div>
 </div>
 </section>
@@ -607,74 +566,51 @@
 </section>
 <section class="section" id="join">
 <div class="container">
-<div class="section-head participate-head">
-<div class="participate-title-row">
-  <h2 style="margin:0;">Participate</h2>
-  <img src="assets/collab-header.png" alt="Collabathon: collaboration + sprint = structured outcomes" class="participate-icon" loading="lazy"/>
+<div class="section-head"><h2>Participate</h2><p>Bring your experience, your tools, your questions, and your needs.</p></div>
+<div style="background:#1a1a14;border-radius:10px;padding:16px 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;">
+  <a style="display:flex;align-items:center;gap:11px;padding:11px 14px;border:1px solid rgba(255,255,255,.09);border-radius:7px;text-decoration:none;transition:background 120ms;cursor:pointer;" href="https://www.hylo.com/groups/openteam" target="_blank" rel="noopener" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background=''">
+    <div style="width:38px;height:38px;flex:0 0 38px;border-radius:8px;background:#eaf3ec;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 22 22" width="19" height="19" fill="none" stroke="#1e4d2b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2C6 2 2 5.6 2 10c0 2.3 1 4.4 2.7 5.9L4 20l4.3-1.4A9.3 9.3 0 0 0 11 19c5 0 9-3.6 9-8s-4-9-9-9z"/><path d="M7 10h.01M11 10h.01M15 10h.01"/></svg>
+    </div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#c8deca;margin-bottom:2px;">Join</div>
+      <div style="font-weight:700;font-size:13px;color:#fff;">Community Calls</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:1px;">Connect on Hylo · Shape priorities</div>
+    </div>
+  </a>
+  <a style="display:flex;align-items:center;gap:11px;padding:11px 14px;border:1px solid rgba(255,255,255,.09);border-radius:7px;text-decoration:none;transition:background 120ms;cursor:pointer;" href="https://forum.goatech.org/c/open-technology-ecosystem-for-agricultural-management/27" target="_blank" rel="noopener" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background=''">
+    <div style="width:38px;height:38px;flex:0 0 38px;border-radius:8px;background:#fef3c7;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 22 22" width="19" height="19" fill="none" stroke="#92600a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 2 2 7 11 12 20 7 11 2"/><polyline points="2 17 11 22 20 17"/><polyline points="2 12 11 17 20 12"/></svg>
+    </div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#f5c87a;margin-bottom:2px;">Build</div>
+      <div style="font-weight:700;font-size:13px;color:#fff;">Collabathons</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:1px;">Structured sprints → reusable outputs</div>
+    </div>
+  </a>
+  <a style="display:flex;align-items:center;gap:11px;padding:11px 14px;border:1px solid rgba(255,255,255,.09);border-radius:7px;text-decoration:none;transition:background 120ms;cursor:pointer;" href="videos.html" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background=''">
+    <div style="width:38px;height:38px;flex:0 0 38px;border-radius:8px;background:#dbeafe;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 22 22" width="19" height="19" fill="none" stroke="#1a4f7a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="11" r="3"/><circle cx="18" cy="17" r="3"/><line x1="8.59" y1="12.51" x2="15.42" y2="16.49"/><line x1="15.41" y1="5.51" x2="8.59" y2="9.49"/></svg>
+    </div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#93c5fd;margin-bottom:2px;">Share</div>
+      <div style="font-weight:700;font-size:13px;color:#fff;">Demos &amp; Learning</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:1px;">Show what works · In-Depths library</div>
+    </div>
+  </a>
+  <a style="display:flex;align-items:center;gap:11px;padding:11px 14px;border:1px solid rgba(255,255,255,.09);border-radius:7px;text-decoration:none;transition:background 120ms;cursor:pointer;" href="https://forum.goatech.org/c/open-technology-ecosystem-for-agricultural-management/27" target="_blank" rel="noopener" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background=''">
+    <div style="width:38px;height:38px;flex:0 0 38px;border-radius:8px;background:#ede9fe;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 22 22" width="19" height="19" fill="none" stroke="#4c1d95" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="11" y1="9" x2="11" y2="14"/><line x1="8.5" y1="11.5" x2="13.5" y2="11.5"/></svg>
+    </div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#c4b5fd;margin-bottom:2px;">Contribute</div>
+      <div style="font-weight:700;font-size:13px;color:#fff;">Send &amp; Attribute</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:1px;">Add docs, links, and attribution</div>
+    </div>
+  </a>
 </div>
-<p>Bring your experience, your tools, your questions, and your needs.</p>
-<div class="note" style="background: rgba(255,255,255,0.96); border: 1px solid rgba(0,0,0,0.14);"><div class="note-title" style="color: rgba(0,0,0,0.92);">Video archive</div><div class="note-body" style="color: rgba(0,0,0,0.88);"><a href="videos.html" style="color: rgba(0,0,0,0.95); text-decoration: underline; font-weight: 900;">browse our extensive archive of in-depth videos ↗</a></div></div></div><details class="participate-ways" style="margin-top: 18px;">
-<summary class="participate-ways__summary">
-  <span class="participate-ways__label">Ways to participate</span>
-  <span class="participate-ways__chev" aria-hidden="true">▾</span>
-</summary>
-<div class="events" style="margin-top: 14px;">
+<style>@media(max-width:860px){#join [style*="grid-template-columns:repeat(4"]{grid-template-columns:repeat(2,1fr) !important;}}@media(max-width:520px){#join [style*="grid-template-columns:repeat(4"]{grid-template-columns:1fr !important;}}</style>
 
-<div class="event">
-<div class="event-date">
-<div class="event-month"><span aria-hidden="true" class="event-icon"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="16"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="3"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a3 3 0 0 1 0 5.74"></path></svg></span>JOIN</div>
-<div class="event-day">•</div>
-</div>
-<div class="event-body">
-<h3>Community calls</h3>
-<p class="muted">Connect with a collaborative network and shape priorities together.</p>
-</div>
-</div>
-<div class="event">
-<div class="event-date">
-<div class="event-month"><span aria-hidden="true" class="event-icon"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="16"><path d="M14.7 6.3a1 1 0 0 1 1.4 0l1.6 1.6a1 1 0 0 1 0 1.4l-8.8 8.8L6 20l.5-3.9 8.2-8.2z"></path><path d="M12 20h9"></path></svg></span>BUILD</div>
-<div class="event-day">•</div>
-</div>
-<div class="event-body">
-<h3>Collabathons</h3>
-<p class="muted">Structured collaboration to map needs, test ideas, and publish outputs.</p>
-</div>
-</div>
-<div class="event">
-<div class="event-date">
-<div class="event-month"><span aria-hidden="true" class="event-icon"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="16"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="M8.6 13.5l6.8 3.9"></path><path d="M15.4 6.6L8.6 10.5"></path></svg></span>SHARE</div>
-<div class="event-day">•</div>
-</div>
-<div class="event-body">
-<h3>Demos &amp; learning sessions</h3>
-<p class="muted">Show what’s working and document what’s learned.</p>
-</div>
-</div>
-</div>
-</details></div></div>
-<div class="container">
-<!-- OpenTEAM forum callout (styled like “How we choose”) -->
-<article aria-label="OpenTEAM forum" class="panel panel-help">
-<p style="margin:0; color: var(--ink);">OpenTEAM forum @ (GOATech.org): Join the GOAT forum (Gathering for Open Ag Tech) to share updates, ask questions, and connect with the broader ecosystem.</p>
-<div style="margin-top: 12px;">
-<a class="btn small goat-btn" href="https://forum.goatech.org/c/open-technology-ecosystem-for-agricultural-management/27" rel="noopener" target="_blank">
-<img alt="" class="btn-logo" loading="lazy" src="https://www.google.com/s2/favicons?domain=forum.goatech.org&amp;sz=64"/>
-<span>Join the conversation</span>
-</a>
-</div>
-</article>
-<div class="cards two">
-<article class="card card-covercrop">
-<h3>Join a community call</h3>
-<p>Stay connected and help shape OpenTEAM’s priorities and working groups.</p>
-<a class="btn small" href="https://www.hylo.com/" rel="noopener" target="_blank">Connect on Hylo ↗</a>
-</article>
-<article class="card card-malawi">
-<h3>Partner or propose a working group</h3>
-<p>Bring a pilot idea, integration need, or stewardship challenge and collaborate with the community.</p>
-<a class="btn small" href="https://www.hylo.com/" rel="noopener" target="_blank">Connect on Hylo ↗</a>
-</article>
-</div>
 <!-- Shared Calendar of Events (OpenTEAM network) -->
 <section class="section" id="events" style="margin-top: 26px;">
 <div class="container">
@@ -1917,6 +1853,40 @@
 </div>
 </div>
 </section>
+<!-- INITIATIVES -->
+<section class="section" id="initiatives">
+<div class="container">
+<div class="section-head">
+<h2>Our Work</h2>
+<p>
+            Discover tools, frameworks, and knowledge developed and stewarded by our community.
+          </p>
+</div>
+<div class="cards">
+<article class="card card-covercrop">
+<h3>Convene</h3>
+<p>In-Depths series and library—orientation, primers, glossary updates, and stories that make community work accessible.</p>
+<p class="muted"><a href="videos.html">Watch the In-Depths video library ↗</a></p>
+</article>
+<article class="card card-mycelium">
+<h3>Facilitate</h3>
+<p>Collabathons and working groups map actors, develop shared needs assessments, and pressure-test ideas across communities.</p>
+<p class="muted">Structured, longer-form collaboration.</p>
+</article>
+<article class="card card-fieldpatterns">
+<h3>Steward shared infrastructure</h3>
+<p>Ethical technical infrastructure and practical governance patterns to provide choice and reduce vendor lock-in.</p>
+<p class="muted">Open standards and interoperability.</p>
+</article>
+<article class="card card-malawi">
+<h3>Celebrate collaborators</h3>
+<p> Make visible allied efforts, communities, and projects and highlight shared learning and inspiration.</p>
+<p class="muted">An ecosystem approach.</p>
+</article>
+</div>
+</div>
+</section>
+
 <section class="section" id="institutional-home">
 <div class="container">
 <div class="callout">
@@ -2010,30 +1980,28 @@
 </div>
 </section>
 </main>
-<footer class="footer">
-<div class="container footer-grid">
-<div class="footer-brand">
-<img alt="OpenTEAM logo" class="footer-logo" src="assets/openteam_logo.svg"/>
-<div>
-<div class="footer-title">OpenTEAM</div>
-<div class="footer-subtitle">Open Technology Ecosystem for Agricultural Management</div>
-<div class="footer-meta">© <span id="year"></span> OpenTEAM — Built for Sharing</div>
-<div class="footer-meta" style="margin-top:4px;"><a href="code-of-conduct.html" style="color:inherit;">Code of Conduct</a></div>
+<footer class="footer" style="padding:18px 0 14px;border-top:2px solid #1e4d2b;">
+<div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 24px;">
+<div style="display:flex;align-items:center;gap:10px;flex:0 0 auto;">
+  <img alt="OpenTEAM logo" src="assets/openteam_logo.svg" style="width:32px;height:32px;object-fit:contain;"/>
+  <div>
+    <div style="font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:13px;color:var(--text);">OpenTEAM</div>
+    <div style="font-size:11px;color:var(--muted);">© <span id="year"></span> Raft Foundation Inc. — Built for Sharing</div>
+  </div>
 </div>
-</div>
-<div class="footer-links">
-<a href="index.html">Home</a>
-<a href="index.html#initiatives">Our Work</a>
-<a href="index.html#pilots">Collabathons</a>
-<a href="projects-page-updated4.html">Projects</a>
-<a href="index.html#library">Tools &amp; Platforms</a>
-<a href="videos.html">Videos</a>
-<a href="canonical-source-texts.html">Inspirations</a>
-<a href="calendar.html">Events</a>
-<a href="index.html#join">Join</a>
-<a href="licenses.html">Licenses</a>
-<a href="code-of-conduct.html">Code of Conduct</a>
-</div>
+<nav style="display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12px;">
+  <a href="index.html" style="color:var(--muted);text-decoration:none;">Home</a>
+  <a href="index.html#initiatives" style="color:var(--muted);text-decoration:none;">Our Work</a>
+  <a href="index.html#pilots" style="color:var(--muted);text-decoration:none;">Collabathons</a>
+  <a href="projects-page-updated4.html" style="color:var(--muted);text-decoration:none;">Projects</a>
+  <a href="index.html#library" style="color:var(--muted);text-decoration:none;">Tools</a>
+  <a href="videos.html" style="color:var(--muted);text-decoration:none;">Videos</a>
+  <a href="canonical-source-texts.html" style="color:var(--muted);text-decoration:none;">Inspirations</a>
+  <a href="calendar.html" style="color:var(--muted);text-decoration:none;">Events</a>
+  <a href="index.html#join" style="color:var(--muted);text-decoration:none;">Join</a>
+  <a href="licenses.html" style="color:var(--muted);text-decoration:none;">Licenses</a>
+  <a href="code-of-conduct.html" style="color:var(--muted);text-decoration:none;">Code of Conduct</a>
+</nav>
 </div>
 </footer>
 <script src="script.js"></script>

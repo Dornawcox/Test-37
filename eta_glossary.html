@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETA Glossary — Ethical Technology Assessment · OpenTEAM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1c1c1a;
+  --ink-dim:#5a5a54;
+  --ink-faint:#9a9a92;
+  --cream:#f5f0e8;
+  --cream-dk:#ede6d8;
+  --cream-dkr:#e2d9c8;
+  --white:#ffffff;
+  --forest:#1b4332;
+  --forest-md:#2d6a4f;
+  --forest-lt:#74c69d;
+  --forest-pale:#d8f3dc;
+  --sage:#52796f;
+  --sage-lt:#84a98c;
+  --gold:#b5892a;
+  --gold-lt:#e9c46a;
+  --gold-pale:#fdf5d9;
+  --rust:#9b3a1a;
+  --rust-pale:#fde8e0;
+  --sky:#1d4e89;
+  --sky-pale:#dbeafe;
+  --line:#d5cec0;
+  --line-dk:#b8b0a0;
+  --shadow:0 2px 16px rgba(27,67,50,.09);
+  --shadow-lg:0 8px 40px rgba(27,67,50,.14);
+  --r:8px;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.6;min-height:100vh}
+
+/* ── TOPBAR ─────────────────────────────────────── */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:var(--forest);
+  border-bottom:3px solid #0d2818;
+  box-shadow:0 2px 20px rgba(0,0,0,.3);
+  padding:0;
+}
+.topbar-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:stretch;justify-content:space-between;
+  padding:0 24px;
+}
+.brand{
+  display:flex;align-items:center;gap:12px;
+  text-decoration:none;padding:14px 0;
+}
+.brand-logo{
+  width:36px;height:36px;background:rgba(255,255,255,.12);
+  border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--forest-lt);
+  letter-spacing:.02em;flex:0 0 36px;
+}
+.brand-text{
+  display:flex;flex-direction:column;
+}
+.brand-name{
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:white;
+  letter-spacing:.01em;line-height:1;
+}
+.brand-sub{
+  font-family:'DM Mono',monospace;font-size:9.5px;color:rgba(255,255,255,.5);
+  letter-spacing:.12em;text-transform:uppercase;margin-top:3px;
+}
+.topbar-nav{display:flex;align-items:stretch;gap:0}
+.topbar-nav a{
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);text-decoration:none;
+  padding:0 16px;display:flex;align-items:center;
+  border-left:1px solid rgba(255,255,255,.1);
+  transition:color .15s,background .15s;
+}
+.topbar-nav a:hover{color:white;background:rgba(255,255,255,.08)}
+.topbar-nav a.active{color:var(--forest-lt)}
+
+/* ── HERO ─────────────────────────────────────── */
+.hero{
+  background:linear-gradient(155deg, var(--forest) 0%, #0d4a2a 60%, #163d25 100%);
+  padding:64px 24px 56px;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-inner{max-width:1100px;margin:0 auto;position:relative}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(116,198,157,.15);border:1px solid rgba(116,198,157,.3);
+  border-radius:20px;padding:5px 14px;
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--forest-lt);
+  margin-bottom:20px;
+}
+.hero-badge::before{content:'◆';font-size:8px}
+.hero h1{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.2rem,5vw,3.6rem);
+  font-weight:400;color:white;line-height:1.1;
+  letter-spacing:-.02em;margin-bottom:8px;
+}
+.hero h1 em{font-style:italic;color:var(--forest-lt)}
+.hero-sub{
+  font-size:17px;color:rgba(255,255,255,.65);
+  max-width:580px;line-height:1.6;margin-bottom:32px;
+}
+.hero-meta{
+  display:flex;flex-wrap:wrap;gap:20px;align-items:center;
+  font-family:'DM Mono',monospace;font-size:10.5px;color:rgba(255,255,255,.4);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.hero-meta span{display:flex;align-items:center;gap:6px}
+.hero-meta span::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--forest-lt);flex:0 0 6px;
+}
+
+/* ── SEARCH & FILTERS ─────────────────────────────────────── */
+.controls-bar{
+  background:var(--white);
+  border-bottom:1px solid var(--line);
+  padding:16px 24px;
+  position:sticky;top:67px;z-index:90;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.controls-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+}
+.search-wrap{position:relative;flex:1;min-width:240px}
+.search-wrap svg{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:16px;height:16px;stroke:var(--ink-faint);fill:none;
+  pointer-events:none;
+}
+#search-input{
+  width:100%;padding:10px 14px 10px 38px;
+  border:1.5px solid var(--line);border-radius:var(--r);
+  font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);
+  background:var(--cream);outline:none;transition:border .15s,box-shadow .15s;
+}
+#search-input:focus{border-color:var(--forest-md);box-shadow:0 0 0 3px var(--forest-pale)}
+.filter-pills{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.filter-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 14px;border-radius:20px;
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:500;
+  letter-spacing:.09em;text-transform:uppercase;
+  border:1.5px solid var(--line);background:transparent;
+  cursor:pointer;transition:all .15s;color:var(--ink-dim);
+}
+.filter-pill:hover{border-color:var(--forest-md);color:var(--forest)}
+.filter-pill.active{background:var(--forest);border-color:var(--forest);color:white}
+.filter-pill .dot{
+  width:7px;height:7px;border-radius:50%;flex:0 0 7px;
+}
+.count-badge{
+  font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-faint);
+  margin-left:auto;white-space:nowrap;
+}
+
+/* ── LAYOUT ─────────────────────────────────────── */
+.page-body{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:220px 1fr;
+  gap:0;padding:32px 24px 80px;
+  align-items:start;
+}
+@media(max-width:768px){.page-body{grid-template-columns:1fr}}
+
+/* ── ALPHA SIDEBAR ─────────────────────────────────────── */
+.alpha-nav{
+  position:sticky;top:130px;
+  display:flex;flex-direction:column;gap:2px;
+  padding-right:24px;
+}
+.alpha-nav a{
+  font-family:'DM Mono',monospace;font-size:11px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-faint);text-decoration:none;
+  padding:5px 10px;border-radius:5px;
+  transition:all .12s;display:flex;align-items:center;gap:8px;
+}
+.alpha-nav a:hover{background:var(--cream-dk);color:var(--forest)}
+.alpha-nav a.active{background:var(--forest-pale);color:var(--forest);font-weight:600}
+.alpha-nav a .alpha-count{
+  margin-left:auto;font-size:10px;color:var(--ink-faint);
+}
+.alpha-section-label{
+  font-family:'DM Mono',monospace;font-size:9px;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--line-dk);padding:10px 10px 4px;
+}
+@media(max-width:768px){.alpha-nav{display:none}}
+
+/* ── GLOSSARY LIST ─────────────────────────────────────── */
+.glossary-main{}
+.letter-section{margin-bottom:48px}
+.letter-anchor{
+  display:flex;align-items:center;gap:14px;margin-bottom:20px;
+}
+.letter-glyph{
+  font-family:'DM Serif Display',serif;
+  font-size:52px;font-weight:400;
+  color:var(--line-dk);line-height:1;
+  flex:0 0 44px;
+}
+.letter-rule{flex:1;height:1px;background:var(--line)}
+
+/* ── TERM CARD ─────────────────────────────────────── */
+.term-card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  margin-bottom:12px;
+  overflow:hidden;
+  transition:box-shadow .15s,border-color .15s;
+}
+.term-card:hover{
+  box-shadow:var(--shadow);
+  border-color:var(--line-dk);
+}
+.term-card.hidden{display:none}
+
+.term-header{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:18px 20px 14px;
+  cursor:pointer;
+  user-select:none;
+}
+.term-accent{
+  width:36px;height:36px;border-radius:6px;
+  flex:0 0 36px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;
+  margin-top:1px;
+}
+.term-header-text{flex:1;min-width:0}
+.term-name{
+  font-family:'DM Serif Display',serif;
+  font-size:19px;font-weight:400;
+  color:var(--ink);line-height:1.2;
+  margin-bottom:4px;
+  letter-spacing:-.01em;
+}
+.term-def{
+  font-size:13.5px;color:var(--ink-dim);
+  line-height:1.55;display:-webkit-box;
+  -webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.term-def.expanded{-webkit-line-clamp:unset;overflow:visible}
+.term-tags{
+  display:flex;flex-wrap:wrap;gap:5px;
+  margin-top:8px;
+}
+.term-tag{
+  display:inline-flex;align-items:center;
+  padding:2px 9px;border-radius:12px;
+  font-family:'DM Mono',monospace;font-size:9.5px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.tag-eta{background:var(--forest-pale);color:var(--forest-md);border:1px solid rgba(45,106,79,.2)}
+.tag-dtap{background:var(--gold-pale);color:var(--gold);border:1px solid rgba(181,137,42,.2)}
+.tag-fair{background:var(--sky-pale);color:var(--sky);border:1px solid rgba(29,78,137,.2)}
+.tag-gdpr{background:var(--rust-pale);color:var(--rust);border:1px solid rgba(155,58,26,.2)}
+.tag-role{background:#f0e8ff;color:#5b21b6;border:1px solid rgba(91,33,182,.2)}
+.tag-data{background:var(--cream-dkr);color:var(--ink-dim);border:1px solid var(--line)}
+
+.term-toggle{
+  flex:0 0 28px;width:28px;height:28px;
+  border-radius:50%;border:1.5px solid var(--line);
+  background:transparent;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;margin-top:4px;
+}
+.term-toggle svg{
+  width:10px;height:10px;stroke:var(--ink-dim);fill:none;
+  transition:transform .2s;
+}
+.term-card.open .term-toggle svg{transform:rotate(180deg)}
+.term-card.open .term-toggle{border-color:var(--forest-md);background:var(--forest-pale)}
+.term-card.open .term-toggle svg{stroke:var(--forest)}
+
+/* ── EXPANDED BODY ─────────────────────────────────────── */
+.term-body{
+  display:none;
+  border-top:1px solid var(--line);
+  background:var(--cream);
+}
+.term-card.open .term-body{display:block}
+.term-body-inner{
+  padding:20px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+@media(max-width:600px){.term-body-inner{grid-template-columns:1fr}}
+
+.detail-block{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:14px 16px;
+}
+.detail-block.full{grid-column:1/-1}
+.detail-label{
+  font-family:'DM Mono',monospace;font-size:9px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;
+}
+.detail-label::before{
+  content:'';width:3px;height:3px;border-radius:50%;
+  background:var(--forest-lt);flex:0 0 3px;
+}
+.detail-content{font-size:13px;color:var(--ink-dim);line-height:1.6}
+.detail-content a{color:var(--forest-md);text-decoration:none}
+.detail-content a:hover{text-decoration:underline}
+.detail-content strong{color:var(--ink);font-weight:600}
+.detail-content p{margin-bottom:8px}
+.detail-content p:last-child{margin:0}
+
+/* Related terms pills */
+.related-pill{
+  display:inline-flex;align-items:center;
+  padding:3px 10px;margin:2px;
+  border-radius:12px;
+  font-family:'DM Mono',monospace;font-size:10px;
+  background:var(--forest-pale);color:var(--forest-md);
+  border:1px solid rgba(45,106,79,.2);
+  cursor:pointer;text-decoration:none;
+  transition:background .12s;
+}
+.related-pill:hover{background:var(--forest-pale);border-color:var(--forest-md)}
+
+/* ETA score indicator strip */
+.eta-strip{
+  background:linear-gradient(90deg, var(--forest), var(--sage));
+  height:3px;
+  border-radius:0 0 2px 2px;
+}
+
+/* ── VERSION BANNER ─────────────────────────────────────── */
+.version-banner{
+  background:var(--gold-pale);
+  border:1px solid rgba(181,137,42,.25);
+  border-radius:var(--r);
+  padding:14px 18px;
+  margin-bottom:24px;
+  display:flex;align-items:center;gap:14px;
+  font-size:13px;
+}
+.version-banner .vb-icon{
+  width:32px;height:32px;flex:0 0 32px;
+  border-radius:6px;background:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  color:white;font-size:16px;
+}
+.version-banner .vb-text{flex:1}
+.version-banner .vb-label{
+  font-family:'DM Mono',monospace;font-size:9.5px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:2px;
+}
+.version-banner .vb-desc{color:var(--ink-dim)}
+
+/* ── EMPTY STATE ─────────────────────────────────────── */
+.empty-state{
+  text-align:center;padding:60px 20px;
+  color:var(--ink-faint);
+  display:none;
+}
+.empty-state.visible{display:block}
+.empty-state-icon{font-size:48px;margin-bottom:16px;opacity:.3}
+.empty-state h3{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--ink-dim);margin-bottom:8px}
+
+/* ── FOOTER ─────────────────────────────────────── */
+footer{
+  background:var(--forest);
+  padding:32px 24px;
+  margin-top:40px;
+}
+.foot-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  font-family:'DM Mono',monospace;font-size:10.5px;
+  color:rgba(255,255,255,.4);
+}
+.foot-inner a{color:rgba(255,255,255,.6);text-decoration:none}
+.foot-inner a:hover{color:white}
+
+/* ── SCROLL ANIMATION ─────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.term-card{animation:fadeUp .3s ease both}
+.letter-section:nth-child(1) .term-card{animation-delay:.05s}
+.letter-section:nth-child(2) .term-card{animation-delay:.1s}
+
+/* ── HIGHLIGHT MATCH ─────────────────────────────────────── */
+.hl{background:var(--gold-pale);border-radius:2px;color:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar" aria-label="Site navigation">
+  <div class="topbar-inner">
+    <a class="brand" href="#">
+      <div class="brand-logo">OT</div>
+      <div class="brand-text">
+        <span class="brand-name">OpenTEAM</span>
+        <span class="brand-sub">ETA Glossary</span>
+      </div>
+    </a>
+    <div class="topbar-nav">
+      <a href="#" class="active">Glossary</a>
+      <a href="eta_unified.html">ETA Tool</a>
+      <a href="https://openteam-agreements.community/TermsandDefinitions/" target="_blank">Full Glossary</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">ETA Framework v1.0</div>
+    <h1>Ethical Technology<br><em>Assessment Glossary</em></h1>
+    <p class="hero-sub">Key terms and definitions for the ETA & DTAP frameworks — covering transparency, data sovereignty, commons fit, interoperability, and assessment methodology.</p>
+    <div class="hero-meta">
+      <span>37 Terms Defined</span>
+      <span>ETA + DTAP Frameworks</span>
+      <span>OpenTEAM · Ag Knowledge Concordance</span>
+    </div>
+  </div>
+</header>
+
+<!-- CONTROLS -->
+<div class="controls-bar" role="search">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Search terms, definitions, tags…" aria-label="Search glossary">
+    </div>
+    <div class="filter-pills" role="group" aria-label="Filter by framework">
+      <button class="filter-pill active" data-filter="all">All</button>
+      <button class="filter-pill" data-filter="eta"><span class="dot" style="background:#2d6a4f"></span>ETA</button>
+      <button class="filter-pill" data-filter="dtap"><span class="dot" style="background:#b5892a"></span>DTAP</button>
+      <button class="filter-pill" data-filter="fair"><span class="dot" style="background:#1d4e89"></span>FAIR</button>
+      <button class="filter-pill" data-filter="role"><span class="dot" style="background:#5b21b6"></span>Roles</button>
+    </div>
+    <span class="count-badge" id="count-badge">37 terms</span>
+  </div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-body">
+  
+  <!-- ALPHA NAV -->
+  <nav class="alpha-nav" aria-label="Alphabetical navigation">
+    <div class="alpha-section-label">Jump to</div>
+    <a href="#letter-A" data-letter="A">A <span class="alpha-count"></span></a>
+    <a href="#letter-C" data-letter="C">C <span class="alpha-count"></span></a>
+    <a href="#letter-D" data-letter="D">D <span class="alpha-count"></span></a>
+    <a href="#letter-E" data-letter="E">E <span class="alpha-count"></span></a>
+    <a href="#letter-F" data-letter="F">F <span class="alpha-count"></span></a>
+    <a href="#letter-G" data-letter="G">G <span class="alpha-count"></span></a>
+    <a href="#letter-I" data-letter="I">I <span class="alpha-count"></span></a>
+    <a href="#letter-L" data-letter="L">L <span class="alpha-count"></span></a>
+    <a href="#letter-M" data-letter="M">M <span class="alpha-count"></span></a>
+    <a href="#letter-O" data-letter="O">O <span class="alpha-count"></span></a>
+    <a href="#letter-P" data-letter="P">P <span class="alpha-count"></span></a>
+    <a href="#letter-R" data-letter="R">R <span class="alpha-count"></span></a>
+    <a href="#letter-S" data-letter="S">S <span class="alpha-count"></span></a>
+    <a href="#letter-T" data-letter="T">T <span class="alpha-count"></span></a>
+    <a href="#letter-V" data-letter="V">V <span class="alpha-count"></span></a>
+  </nav>
+
+  <!-- GLOSSARY TERMS -->
+  <main class="glossary-main" id="glossary-main">
+    
+    <div class="version-banner">
+      <div class="vb-icon">📋</div>
+      <div class="vb-text">
+        <div class="vb-label">Version 1.0 · February 2026</div>
+        <div class="vb-desc">Terms specific to the Ethical Technology Assessment (ETA) and Data Trust Assessment Protocol (DTAP) frameworks. For the full OpenTEAM Ag Data Glossary, see the <a href="openteam-glossary.html">complete glossary</a>.</div>
+      </div>
+    </div>
+    
+    <div id="glossary-content"></div>
+    <div class="empty-state" id="empty-state">
+      <div class="empty-state-icon">🔍</div>
+      <h3>No matching terms</h3>
+      <p>Try a different search or clear your filters.</p>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <span>OpenTEAM · ETA Glossary v1.0 · February 2026</span>
+    <div style="display:flex;gap:20px">
+      <a href="eta_unified.html">ETA Tool</a>
+      <a href="openteam-glossary.html">Full Glossary</a>
+      <a href="https://openteam-agreements.community/" target="_blank">openteam-agreements.community</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── GLOSSARY DATA ──────────────────────────────────────────────────────────
+const TERMS = [
+  {
+    letter: "A",
+    name: "Accessible (FAIR Principle)",
+    emoji: "🔓",
+    accentBg: "#dbeafe",
+    tags: ["fair"],
+    shortDef: "There should be clear means of viewing and using data, metadata, or infrastructure. Once found, data should be retrievable via open, standardized protocols.",
+    altDefs: "The FAIR Principles: 'Once the user finds the required data, they need to know how they can be accessed.' Protocols must be open, free, and universally implementable (A1.1). Metadata must remain accessible even when data is no longer available (A2).",
+    agExample: "Data should be 'As Open as Possible, As Closed as Necessary.' In ETA assessments, G2 (Rights & Control) evaluates whether a tool's outputs and data are accessible without unjustified lock-in.",
+    etaRelevance: "Central to Gate G2 — Rights & Control. Tools must not require proprietary viewers or lock farmers into closed data formats to pass ETA review.",
+    related: ["Findable (FAIR)","Interoperable (FAIR)","Reusable (FAIR)","Open Data","Data Portability","G2 Rights & Control"],
+    refs: ["https://www.go-fair.org/fair-principles/"],
+    steward: "GO FAIR",
+    framework: ["fair","eta"]
+  },
+  {
+    letter: "A",
+    name: "Accountability",
+    emoji: "⚖️",
+    accentBg: "#fde8e0",
+    tags: ["eta","gdpr"],
+    shortDef: "All parties involved in collection, storage, and use of agricultural data must be held responsible for their engagement in data management and subject to appropriate oversight.",
+    altDefs: "GDPR: accountability means to be 'responsible for, and be able to demonstrate compliance with' principles and regulations of data protection.",
+    agExample: "A software platform certified under ETA must demonstrate accountability through auditable logs, documented data flows, and a named point of contact — contributing to G4 (Stewardship).",
+    etaRelevance: "Directly scored in Gate G4 (Safety & Stewardship) and the Governance category of DTAP. Lack of a named contact or oversight process triggers a flag.",
+    related: ["Data Governance","Data Transparency","G4 Safety & Stewardship","Data Steward"],
+    refs: ["https://edps.europa.eu/data-protection/our-work/subjects/accountability_en"],
+    steward: "GDPR / EU AI Act",
+    framework: ["eta","dtap"]
+  },
+  {
+    letter: "A",
+    name: "Accuracy",
+    emoji: "🎯",
+    accentBg: "#d8f3dc",
+    tags: ["eta","gdpr"],
+    shortDef: "Ensuring that data collected, processed, and reported within a tool or dataset is correct, complete, and not misleading.",
+    altDefs: "UK GDPR Art. 5(1)(d): personal data shall be 'accurate and, where necessary, kept up to date; every reasonable step must be taken to ensure that inaccurate data is erased or rectified.'",
+    agExample: "In DTAP, accuracy is assessed under D2 (Provenance) — whether datasets document calibration methods, known error bounds, and correction protocols.",
+    etaRelevance: "Scored in D2 Provenance (DTAP) and flagged when documentation is insufficient to verify data quality. In ETA, inaccurate claims about tool capabilities may fail G1 (Transparency).",
+    related: ["Provenance","Data Quality","G1 Transparency","D2 Provenance"],
+    refs: ["https://ico.org.uk/for-organisations/guide-to-data-protection/"],
+    steward: "UK ICO / GDPR",
+    framework: ["eta","dtap"]
+  },
+  {
+    letter: "C",
+    name: "Confidence Tier",
+    emoji: "🏅",
+    accentBg: "#fdf5d9",
+    tags: ["eta"],
+    shortDef: "A 3-level system in the ETA/DTAP framework indicating how independently a score has been validated. Tier 1 = self-assessed, Tier 2 = peer reviewed, Tier 3 = ecosystem steward / auditor.",
+    altDefs: "Each tier applies a score modifier: Steward self-assessment ×0.92, Peer review ×1.00, Auditor/ecosystem steward ×1.04.",
+    agExample: "A farmOS deployment self-assessed at Score 78 becomes 71.8 at Tier 1 confidence. If peer-reviewed, it stays 78. If audited by an ecosystem steward, it becomes 81.",
+    etaRelevance: "Core to the ETA scoring system. Encourages external validation. Displayed on every published ETA/DTAP card.",
+    related: ["ETA Score","DTAP Score","Reviewer Role","Assessment Card"],
+    refs: [],
+    steward: "OpenTEAM / Ag Knowledge Concordance",
+    framework: ["eta","dtap"]
+  },
+  {
+    letter: "C",
+    name: "Commons Fit",
+    emoji: "🌐",
+    accentBg: "#d8f3dc",
+    tags: ["eta"],
+    shortDef: "A scored ETA category (0–5) measuring whether a tool supports shared infrastructure, interoperability with open standards, and avoids creating data silos or proprietary lock-in.",
+    altDefs: "Commons Fit asks: Does this tool strengthen the agricultural data commons? Can communities build collective knowledge from it? Does it mesh with open protocols like ISOBUS, AgGateway, or LDP?",
+    agExample: "A soil sensor with a closed API that only connects to its own cloud platform scores low on Commons Fit. An open-source sensor with MQTT output and documented schemas scores high.",
+    etaRelevance: "One of 4 scored categories in ETA Hardware/Software (15 pts max). Also assessed in DTAP as the alignment of dataset licensing with open reuse.",
+    related: ["Interoperable (FAIR)","Open Source","Open Data","ETA Score","Lock-in"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "C",
+    name: "Consent",
+    emoji: "✋",
+    accentBg: "#fde8e0",
+    tags: ["dtap","eta","gdpr"],
+    shortDef: "Freely given, specific, informed, and unambiguous agreement by a data subject to the collection, processing, or sharing of their data.",
+    altDefs: "GDPR: consent must be 'freely given, specific, informed and unambiguous.' In DTAP, D1 evaluates whether data collection from farmers or land stewards followed documented consent protocols.",
+    agExample: "A dataset compiled from farm sensor networks must document whether farmers consented to data aggregation, external sharing, or commercial use. Absent documentation scores 0 in D1 (Consent).",
+    etaRelevance: "First of 6 DTAP dimensions (D1 Consent, 10 pts). Also relevant to G2 (Rights & Control) in ETA, which checks for clear data control rights.",
+    related: ["Data Sovereignty","GDPR","CARE Principles","D1 Consent","G2 Rights & Control"],
+    refs: ["https://gdpr-info.eu/art-4-gdpr/"],
+    steward: "GDPR / OpenTEAM",
+    framework: ["dtap","eta"]
+  },
+  {
+    letter: "D",
+    name: "Data Ethics",
+    emoji: "🧭",
+    accentBg: "#d8f3dc",
+    tags: ["eta"],
+    shortDef: "A scored ETA category for software (0–5) measuring whether a tool protects farmers' data rights, limits secondary use, and avoids exploitative data practices.",
+    altDefs: "Covers: purpose limitation, no unauthorized secondary sale of farm data, clear opt-out mechanisms, and alignment with farmer data sovereignty principles.",
+    agExample: "A farm management platform that sells anonymized farm data to input companies without farmer opt-out fails Data Ethics scoring and may fail Gate G3 (No Abuse).",
+    etaRelevance: "One of 4 scored categories in ETA Software (15 pts max). No equivalent in Hardware ETA — replaced by Resource Ethics.",
+    related: ["Data Sovereignty","Purpose Limitation","GDPR","G3 No Abuse","Data Minimization"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "D",
+    name: "Data Sovereignty",
+    emoji: "🏡",
+    accentBg: "#f0e8ff",
+    tags: ["dtap","eta"],
+    shortDef: "A farmer's or community's ability to create, control, and manage their own data — including knowledge of and meaningful consent over how it is used by others.",
+    altDefs: "Closely related to Indigenous Data Sovereignty as defined by the CARE Principles. In agricultural contexts, extends to all land stewards regardless of Indigenous status.",
+    agExample: "A land steward who can export all their farm data in an open format at any time, revoke access, and view exactly what data a platform holds about them has meaningful data sovereignty.",
+    etaRelevance: "Central value underlying ETA Gate G2 (Rights & Control) and DTAP D1 (Consent) and D3 (Access). Tools that prevent data export or lock in data fail ETA review.",
+    related: ["Consent","Open Data","Data Portability","CARE Principles","G2 Rights & Control","D3 Access"],
+    refs: [],
+    steward: "OpenTEAM / Global Indigenous Data Alliance",
+    framework: ["dtap","eta"]
+  },
+  {
+    letter: "D",
+    name: "DTAP Score",
+    emoji: "📊",
+    accentBg: "#fdf5d9",
+    tags: ["dtap"],
+    shortDef: "The 0–100 composite score produced by the Data Trust Assessment Protocol, averaging scores across 6 dimensions: Consent, Provenance, Access, Machine-Readability, Longitudinal Integrity, and Governance.",
+    altDefs: "Calculated as: avg(Q1+Q2) × (100/30) × confidence_modifier for each dimension pair, then summed. Each dimension contributes up to ~16.7 points to the total.",
+    agExample: "A USDA open dataset with documented consent protocols, clear provenance, full public API, CSV format, 15-year history, and a named data steward might score 82–90 DTAP.",
+    etaRelevance: "The primary output of a DTAP assessment. Published alongside the dataset record in the OpenTEAM FAIR registry.",
+    related: ["Confidence Tier","D1 Consent","D2 Provenance","D3 Access","D4 Machine-Readability","D5 Longitudinal","D6 Governance"],
+    refs: [],
+    steward: "OpenTEAM / Ag Knowledge Concordance",
+    framework: ["dtap"]
+  },
+  {
+    letter: "D",
+    name: "D1 — Consent Dimension",
+    emoji: "✅",
+    accentBg: "#fdf5d9",
+    tags: ["dtap"],
+    shortDef: "First DTAP dimension (10 pts). Evaluates whether data collection from individuals or communities followed documented, freely given, and revocable consent procedures.",
+    altDefs: "Q1: Is consent documented and accessible? Q2: Do subjects have the right to withdraw or limit future use?",
+    agExample: "A dataset where farmers agreed verbally but no written consent exists scores low. One with a signed data sharing agreement that includes opt-out provisions scores high.",
+    etaRelevance: "Scored 0–5 per question (Q1, Q2). Averaged to dimension score. Feeds into DTAP total.",
+    related: ["Consent","Data Sovereignty","DTAP Score","GDPR"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["dtap"]
+  },
+  {
+    letter: "D",
+    name: "D2 — Provenance",
+    emoji: "📍",
+    accentBg: "#fdf5d9",
+    tags: ["dtap"],
+    shortDef: "Second DTAP dimension (10 pts). Evaluates whether the dataset's origin, collection methods, calibration history, and known error sources are documented.",
+    altDefs: "Q3: Is collection methodology documented? Q4: Are known errors, biases, or calibration issues disclosed?",
+    agExample: "A soil carbon dataset that documents sensor models, calibration dates, and identifies spatial gaps in coverage scores high on D2.",
+    etaRelevance: "Critical for datasets used in AI/ML training or policy analysis. Poor provenance inflates false precision.",
+    related: ["Accuracy","Metadata","DTAP Score","Machine Readable"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["dtap"]
+  },
+  {
+    letter: "D",
+    name: "D3 — Access",
+    emoji: "🔑",
+    accentBg: "#fdf5d9",
+    tags: ["dtap"],
+    shortDef: "Third DTAP dimension (10 pts). Evaluates whether data is accessible to the public, under clear licensing terms, and without prohibitive barriers to download or use.",
+    altDefs: "Q5: Is data publicly accessible (open or with free registration)? Q6: Is the license clearly stated and permissive for research use?",
+    agExample: "A USDA open-access database with a CC0 license scores high. A dataset requiring institutional purchase agreement scores low.",
+    etaRelevance: "Reflects FAIR Accessible principle and OpenTEAM's commitment to farmer data access.",
+    related: ["Accessible (FAIR)","Open Data","Data Sovereignty","D1 Consent","DTAP Score"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["dtap"]
+  },
+  {
+    letter: "D",
+    name: "D4 — Machine-Readability",
+    emoji: "🤖",
+    accentBg: "#fdf5d9",
+    tags: ["dtap"],
+    shortDef: "Fourth DTAP dimension (10 pts). Evaluates whether data is available in structured, machine-processable formats (CSV, JSON, GeoJSON, NetCDF) rather than PDF or paper only.",
+    altDefs: "Q7: Is data available in at least one structured format? Q8: Is an API or bulk download available?",
+    agExample: "A crop yield database available as PDFs only scores 0. One available as CSV with a REST API scores 10.",
+    etaRelevance: "Required for data to be usable in AI/ML pipelines, interoperability tools, or automated reporting. Scores feed directly into DTAP.",
+    related: ["Machine Readable","Interoperable (FAIR)","Open Data","API","DTAP Score"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["dtap"]
+  },
+  {
+    letter: "D",
+    name: "D5 — Longitudinal Integrity",
+    emoji: "📅",
+    accentBg: "#fdf5d9",
+    tags: ["dtap"],
+    shortDef: "Fifth DTAP dimension (10 pts). Evaluates whether the dataset spans sufficient time for trend analysis, and whether historical records are maintained consistently.",
+    altDefs: "Q9: Does the dataset span ≥5 years of consistent coverage? Q10: Are version history and data changes documented?",
+    agExample: "A 15-year soil health dataset with annual versioning and change logs scores high. A 2-year pilot dataset with no archiving scores low.",
+    etaRelevance: "Essential for climate-smart agriculture assessments, carbon accounting, and conservation practice evaluation.",
+    related: ["Metadata","Provenance","Data Governance","DTAP Score"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["dtap"]
+  },
+  {
+    letter: "D",
+    name: "D6 — Governance",
+    emoji: "🏛️",
+    accentBg: "#fdf5d9",
+    tags: ["dtap"],
+    shortDef: "Sixth DTAP dimension (10 pts). Evaluates whether a named steward, documented update protocol, and community feedback mechanism exist for the dataset.",
+    altDefs: "Q11: Is there a named data steward or custodian organization? Q12: Is there a documented process for corrections, feedback, or version updates?",
+    agExample: "USDA NASS CDL scores high: named steward, annual release process, and documented correction workflows. An orphaned research dataset with no current maintainer scores low.",
+    etaRelevance: "Governance without stewardship is fragile. DTAP flags datasets with no named contact.",
+    related: ["Data Steward","Data Governance","Accountability","D5 Longitudinal","DTAP Score"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["dtap"]
+  },
+  {
+    letter: "E",
+    name: "Entry Gate",
+    emoji: "🚪",
+    accentBg: "#d8f3dc",
+    tags: ["eta"],
+    shortDef: "One of four binary pass/fail criteria in the ETA framework (G1–G4), each worth 10 points. Failing any gate prevents a tool from receiving a passing ETA score regardless of category scores.",
+    altDefs: "G1 Transparency · G2 Rights & Control · G3 No Abuse · G4 Safety & Stewardship. All four must pass for a tool to be ETA-eligible. Gates account for 40 of 100 possible points.",
+    agExample: "A powerful soil analysis tool with a proprietary data format that prevents farmer export would fail Gate G2 (Rights & Control) and cannot pass ETA regardless of other scores.",
+    etaRelevance: "The gate structure ensures minimum standards are non-negotiable. A tool scoring 60/60 on categories but failing one gate receives a failed ETA status.",
+    related: ["G1 Transparency","G2 Rights & Control","G3 No Abuse","G4 Safety & Stewardship","ETA Score"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "E",
+    name: "ETA Score",
+    emoji: "⭐",
+    accentBg: "#d8f3dc",
+    tags: ["eta"],
+    shortDef: "The 0–100 composite score from the Ethical Technology Assessment, combining 40 gate points (binary) and 60 category points (scored 0–5 per question), adjusted by confidence tier.",
+    altDefs: "Score = Σ(gate_pts) + Σ(cat_scores × 3) × confidence_modifier. Scores ≥70 = Eligible, 50–69 = Conditional, <50 or any gate fail = Ineligible.",
+    agExample: "A farmOS tool passing all 4 gates (40 pts) and averaging 3.5/5 across 12 category questions earns 40 + (3.5×12×5/3)=82 before confidence adjustment.",
+    etaRelevance: "The primary output of an ETA assessment. Published on the ETA card and used in the OpenTEAM FAIR registry to rank and filter tools.",
+    related: ["Confidence Tier","Entry Gate","ETA Card","Assessment Card","DTAP Score"],
+    refs: [],
+    steward: "OpenTEAM / Ag Knowledge Concordance",
+    framework: ["eta"]
+  },
+  {
+    letter: "F",
+    name: "FAIR Principles",
+    emoji: "📐",
+    accentBg: "#dbeafe",
+    tags: ["fair","eta"],
+    shortDef: "Guidelines for 'good data management' that improve discovery and reuse of data by humans and computers. The four principles: Findable, Accessible, Interoperable, Reusable.",
+    altDefs: "Developed by Wilkinson et al. (2016, Nature). Each principle has specific sub-criteria for identifiers, protocols, metadata standards, and licensing.",
+    agExample: "The USDA registry applies FAIR principles by requiring tools and datasets to have stable URLs, documented APIs, standard formats, and clear reuse licenses.",
+    etaRelevance: "DTAP is grounded in FAIR. ETA also draws on FAIR through its Interoperability category and Commons Fit scoring.",
+    related: ["Findable (FAIR)","Accessible (FAIR)","Interoperable (FAIR)","Reusable (FAIR)","DTAP Score","Commons Fit"],
+    refs: ["https://www.go-fair.org/fair-principles/"],
+    steward: "GO FAIR",
+    framework: ["fair","eta","dtap"]
+  },
+  {
+    letter: "F",
+    name: "Findable (FAIR Principle)",
+    emoji: "🔎",
+    accentBg: "#dbeafe",
+    tags: ["fair"],
+    shortDef: "Data and metadata should be easy to find for both humans and computers. Each dataset should have a persistent, globally unique identifier and rich metadata.",
+    altDefs: "FAIR sub-criteria: F1 (persistent identifier), F2 (rich metadata), F3 (identifier in metadata), F4 (indexed in a searchable resource).",
+    agExample: "A soil health dataset registered in the OpenTEAM FAIR registry with a DOI and tagged metadata is findable. A CSV emailed by a researcher is not.",
+    etaRelevance: "Supports DTAP D2 (Provenance) — datasets must have stable identifiers and searchable metadata to score well.",
+    related: ["FAIR Principles","Accessible (FAIR)","Metadata","Open Data"],
+    refs: ["https://www.go-fair.org/fair-principles/"],
+    steward: "GO FAIR",
+    framework: ["fair"]
+  },
+  {
+    letter: "G",
+    name: "G1 — Transparency",
+    emoji: "💡",
+    accentBg: "#d8f3dc",
+    tags: ["eta"],
+    shortDef: "First ETA Entry Gate (10 pts). The tool must have accessible, honest documentation describing what it does, who built it, how it processes data, and what its limitations are.",
+    altDefs: "Q: Is there a public URL documenting the tool's purpose, methods, and data flows? Is the documentation accurate and up to date?",
+    agExample: "A farm software app with a detailed user guide, open changelog, and published API docs passes G1. One with only a sales landing page fails.",
+    etaRelevance: "Gate G1 is a prerequisite for ETA eligibility. Connects to FAIR Findable (F2 metadata) and EU AI Act transparency requirements.",
+    related: ["Entry Gate","Data Transparency","ETA Score","G2 Rights & Control"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "G",
+    name: "G2 — Rights & Control",
+    emoji: "🛡️",
+    accentBg: "#d8f3dc",
+    tags: ["eta"],
+    shortDef: "Second ETA Entry Gate (10 pts). Farmers must retain meaningful control over their data: right to export, right to delete, right to see what is collected, no unauthorized secondary sale.",
+    altDefs: "Q: Does the tool allow full data export in an open format? Can users delete their data? Are data rights clearly stated?",
+    agExample: "A platform that locks yield maps into its proprietary format without export fails G2. One offering CSV/GeoJSON export on demand passes.",
+    etaRelevance: "Directly protects data sovereignty. Connects to GDPR rights (access, portability, erasure) and OpenTEAM's Ag Data Bill of Rights.",
+    related: ["Data Sovereignty","Data Portability","Consent","G1 Transparency","G3 No Abuse","ETA Score"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "G",
+    name: "G3 — No Abuse / No Lock-in",
+    emoji: "🚫",
+    accentBg: "#d8f3dc",
+    tags: ["eta"],
+    shortDef: "Third ETA Entry Gate (10 pts). The tool must not exploit data for purposes beyond the stated agreement, must not create anticompetitive lock-in, and must not surveil or manipulate users.",
+    altDefs: "Q: Does the tool sell farm data to third parties without consent? Does it create artificial switching costs? Does it use dark patterns to retain users?",
+    agExample: "A seed company app that uses yield data to adjust input pricing against the same farmer fails G3. An open platform with standard export formats passes.",
+    etaRelevance: "Targets the most harmful data practices. Connects to Purpose Limitation (GDPR) and data justice principles.",
+    related: ["Purpose Limitation","Data Ethics","Data Justice","G2 Rights & Control","Conditional Use"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "G",
+    name: "G4 — Safety & Stewardship",
+    emoji: "🧑‍🔧",
+    accentBg: "#d8f3dc",
+    tags: ["eta"],
+    shortDef: "Fourth ETA Entry Gate (10 pts). There must be a named point of contact, documented maintenance plan, and reasonable security practices protecting user data.",
+    altDefs: "Q: Is there a named maintainer or steward organization? Is there a security disclosure policy? Is the tool actively maintained?",
+    agExample: "An abandoned open-source tool with no maintainer and unpatched vulnerabilities fails G4. One with a named maintainer and regular security releases passes.",
+    etaRelevance: "Ensures tools are not orphaned risks. Connects to DTAP D6 (Governance) and Accountability principles.",
+    related: ["Accountability","Data Steward","Data Governance","G1 Transparency","ETA Score"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "I",
+    name: "Interoperable (FAIR Principle)",
+    emoji: "🔌",
+    accentBg: "#dbeafe",
+    tags: ["fair","eta"],
+    shortDef: "A dataset's or system's ability to work with other datasets, applications, or workflows using shared standards. Key to the FAIR Principles and ETA's Interoperability category.",
+    altDefs: "FAIR: 'data need to be integrated with other data and to interoperate with applications or workflows for analysis, storage, and processing.'",
+    agExample: "A soil sensor using LoRaWAN with an MQTT broker and documented JSON schema is interoperable. One with a proprietary radio protocol and closed data format is not.",
+    etaRelevance: "One of 4 scored categories in ETA Software (15 pts max). Also scored in Commons Fit for both Hardware and Software.",
+    related: ["FAIR Principles","Commons Fit","Open Source","Open Data","API"],
+    refs: ["https://www.go-fair.org/fair-principles/"],
+    steward: "GO FAIR",
+    framework: ["fair","eta"]
+  },
+  {
+    letter: "L",
+    name: "Lock-in",
+    emoji: "🔐",
+    accentBg: "#fde8e0",
+    tags: ["eta"],
+    shortDef: "A condition where a user cannot easily switch to an alternative tool or export their data without significant cost, data loss, or technical barrier — typically created by proprietary formats.",
+    altDefs: "Vendor lock-in in agriculture often manifests as: proprietary data formats, no data export, platform-only APIs, or contractual barriers to switching.",
+    agExample: "Climate FieldView's proprietary shape file format for field boundaries creates mild lock-in. A platform with no export at all creates strong lock-in and fails ETA Gate G2.",
+    etaRelevance: "Gate G3 explicitly addresses lock-in as an abusive practice. Low Commons Fit scores often correlate with lock-in.",
+    related: ["G2 Rights & Control","G3 No Abuse","Commons Fit","Data Portability","Open Source"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "M",
+    name: "Machine Readable",
+    emoji: "🤖",
+    accentBg: "#dbeafe",
+    tags: ["dtap","fair"],
+    shortDef: "Data available in a format that a computer, AI, or algorithm can process automatically — such as CSV, JSON, GeoJSON, XML, or NetCDF.",
+    altDefs: "Open Data Handbook: 'Machine-readable data must be structured data. Data in a format that can be automatically read and processed by a computer.'",
+    agExample: "Planting dates entered in a CSV are machine readable. The same data in a scanned PDF are not, even if legible to humans.",
+    etaRelevance: "Scored in DTAP D4 (Machine-Readability, 10 pts). Also relevant to ETA Interoperability category.",
+    related: ["Interoperable (FAIR)","D4 Machine-Readability","FAIR Principles","Open Data","Metadata"],
+    refs: ["https://opendatahandbook.org/glossary/en/terms/machine-readable/"],
+    steward: "Open Data Handbook",
+    framework: ["dtap","fair"]
+  },
+  {
+    letter: "O",
+    name: "Open Source",
+    emoji: "📂",
+    accentBg: "#d8f3dc",
+    tags: ["eta"],
+    shortDef: "Software or hardware designs that are publicly accessible and can be modified and shared by all users, enabling transparency, community inspection, and collaborative improvement.",
+    altDefs: "Common open-source licenses relevant to ETA: GPL v3, AGPL, Apache 2.0, MIT (software); CERN OHL, TAPR OHL (hardware); CC BY, CC BY-SA (documentation/data).",
+    agExample: "farmOS is open source (GPLv2), inspectable and self-hostable. This earns strong ETA scores in G1 (Transparency) and Commons Fit.",
+    etaRelevance: "Open source is not required by ETA but strongly favors G1, G2, G3, Commons Fit, and Accessibility scores. Source-available or proprietary tools must demonstrate equivalent openness to score well.",
+    related: ["Commons Fit","G1 Transparency","G2 Rights & Control","Open Data","Lock-in"],
+    refs: [],
+    steward: "OSI / OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "P",
+    name: "Provenance",
+    emoji: "🗂️",
+    accentBg: "#fdf5d9",
+    tags: ["dtap"],
+    shortDef: "The documented history of how data was collected, processed, and curated — including collection methods, instruments, calibration records, and any transformations applied.",
+    altDefs: "W3C PROV standard defines provenance as 'information about entities, activities, and people involved in producing a piece of data or thing.'",
+    agExample: "A crop yield dataset with documented GPS equipment models, calibration intervals, combine settings, and known field-edge artifacts has strong provenance.",
+    etaRelevance: "DTAP D2 (Provenance) directly scores this dimension. Weak provenance is one of the most common DTAP flags.",
+    related: ["D2 Provenance","Accuracy","Metadata","DTAP Score","Machine Readable"],
+    refs: [],
+    steward: "OpenTEAM / W3C PROV",
+    framework: ["dtap"]
+  },
+  {
+    letter: "P",
+    name: "Purpose Limitation",
+    emoji: "🎯",
+    accentBg: "#fde8e0",
+    tags: ["eta","gdpr"],
+    shortDef: "The principle that personal or agricultural data is only collected for specific, explicit, and legitimate purposes and is not used beyond those stated purposes without fresh consent.",
+    altDefs: "GDPR Art. 5: data shall be 'collected for specified, explicit and legitimate purposes and not further processed in a manner that is incompatible with those purposes.'",
+    agExample: "Using precision irrigation sensor data to generate targeted marketing for pesticides — without farmer consent — violates purpose limitation and fails ETA Gate G3.",
+    etaRelevance: "Evaluated in ETA Gate G3 (No Abuse) and DTAP D1 (Consent). A clear statement of data use purpose is required to pass G1 (Transparency).",
+    related: ["G3 No Abuse","Consent","Data Ethics","Data Minimization","GDPR"],
+    refs: ["https://gdpr-info.eu/art-5-gdpr/"],
+    steward: "GDPR / OpenTEAM",
+    framework: ["eta","dtap"]
+  },
+  {
+    letter: "R",
+    name: "Resilience",
+    emoji: "💪",
+    accentBg: "#d8f3dc",
+    tags: ["eta"],
+    shortDef: "A scored ETA Hardware category (0–5) measuring whether a tool can be repaired, maintained, and operated by its users without dependence on a single vendor or service for continued operation.",
+    altDefs: "Resilience asks: Can farmers fix this tool? Are spare parts available? Does it work offline? Would it survive the vendor closing?",
+    agExample: "A soil moisture sensor with an open repair manual, standard connectors, and local data storage scores high on Resilience. One requiring factory servicing for any repair scores low.",
+    etaRelevance: "One of 4 scored categories in ETA Hardware (15 pts max). Reflects right-to-repair principles and long-term agricultural technology resilience.",
+    related: ["Commons Fit","Open Source","G4 Safety & Stewardship","Lock-in"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "R",
+    name: "Resource Ethics",
+    emoji: "🌱",
+    accentBg: "#d8f3dc",
+    tags: ["eta"],
+    shortDef: "A scored ETA Hardware category (0–5) measuring the environmental impact of a tool: energy use, materials sourcing, end-of-life disposal, and lifecycle footprint.",
+    altDefs: "Resource Ethics covers: embedded carbon in manufacturing, energy draw during operation, repairability, recyclability, and conflict mineral sourcing.",
+    agExample: "A solar-powered soil sensor made from standard components with a published disassembly guide scores high. A battery-hungry sensor with non-replaceable proprietary batteries scores low.",
+    etaRelevance: "One of 4 scored categories in ETA Hardware only (15 pts max). No equivalent in Software ETA — replaced by Data Ethics.",
+    related: ["Commons Fit","Resilience","ETA Score"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "R",
+    name: "Reusable (FAIR Principle)",
+    emoji: "♻️",
+    accentBg: "#dbeafe",
+    tags: ["fair","dtap"],
+    shortDef: "Data and metadata should be well-described, clearly licensed, and formatted to enable (re)use, replication, and combination with other datasets in different settings.",
+    altDefs: "FAIR: 'the ultimate goal of FAIR is to optimise the reuse of data.' Requires rich provenance, clear licenses, and domain-relevant community standards.",
+    agExample: "A yield dataset released under CC0 with ISO 11783 field codes, documented methodology, and complete metadata is reusable. One with no license and ad-hoc column names is not.",
+    etaRelevance: "Supports DTAP D3 (Access) and D6 (Governance). Tools enabling reusable data output earn higher ETA Commons Fit scores.",
+    related: ["FAIR Principles","Accessible (FAIR)","Open Data","D3 Access","Metadata"],
+    refs: ["https://www.go-fair.org/fair-principles/"],
+    steward: "GO FAIR",
+    framework: ["fair","dtap"]
+  },
+  {
+    letter: "S",
+    name: "Social Ethics",
+    emoji: "🤝",
+    accentBg: "#f0e8ff",
+    tags: ["eta"],
+    shortDef: "A scored ETA Hardware category (0–5) measuring whether a tool's design, supply chain, and deployment respect worker rights, community equity, and inclusive access.",
+    altDefs: "Social Ethics asks: Were workers involved in manufacturing fairly treated? Does the tool accommodate diverse users including those with limited connectivity or tech literacy?",
+    agExample: "A hardware tool designed with small-scale farmer input, manufactured without conflict minerals, with a multilingual interface scores high on Social Ethics.",
+    etaRelevance: "One of 4 scored categories in ETA Hardware (15 pts max). Connects to data justice and the CARE Principles.",
+    related: ["Data Justice","CARE Principles","Accessibility","ETA Score","Resource Ethics"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["eta"]
+  },
+  {
+    letter: "T",
+    name: "Transparency",
+    emoji: "🪟",
+    accentBg: "#d8f3dc",
+    tags: ["eta","gdpr"],
+    shortDef: "The condition in which individuals are informed and have access to comprehensive information about their data — what is being collected, how it is used, and who has access.",
+    altDefs: "EU AI Act Principle: systems must be transparent about their capabilities and limitations. GDPR: lawful basis for processing must be communicated clearly.",
+    agExample: "An ETA-compliant tool publishes a plain-language data use policy, explains its AI/ML methods, and notifies farmers of data sharing before it occurs.",
+    etaRelevance: "The foundation of ETA Gate G1. Also measured in Commons Fit (tool documentation) and Data Ethics (secondary use disclosure).",
+    related: ["G1 Transparency","Data Transparency","Accountability","Open Source"],
+    refs: [],
+    steward: "EU AI Act / OpenTEAM / GDPR",
+    framework: ["eta","dtap"]
+  },
+  {
+    letter: "V",
+    name: "Versioning",
+    emoji: "🔄",
+    accentBg: "#fdf5d9",
+    tags: ["dtap","eta"],
+    shortDef: "The practice of tracking and documenting changes to a tool, dataset, or glossary over time — enabling reproducibility, comparison, and transparent evolution of content.",
+    altDefs: "Semantic versioning (v1.0.0): Major.Minor.Patch. ETA framework documents use this convention. Dataset versioning typically follows calendar versioning (YYYY.MM).",
+    agExample: "DTAP D5 (Longitudinal Integrity) scores datasets that maintain version history with changelogs. ETA cards include the framework version used for the assessment.",
+    etaRelevance: "Required for DTAP D5 (Longitudinal Integrity) scoring. Recommended for all ETA assessments to enable comparison over time.",
+    related: ["D5 Longitudinal Integrity","DTAP Score","Assessment Card","Metadata"],
+    refs: [],
+    steward: "OpenTEAM",
+    framework: ["dtap","eta"]
+  }
+];
+
+// ── RENDER ──────────────────────────────────────────────────────────────────
+function tagClass(t){
+  return {eta:'tag-eta',dtap:'tag-dtap',fair:'tag-fair',gdpr:'tag-gdpr',role:'tag-role',data:'tag-data'}[t]||'tag-data';
+}
+function tagLabel(t){
+  return {eta:'ETA',dtap:'DTAP',fair:'FAIR',gdpr:'GDPR',role:'Role',data:'Data'}[t]||t;
+}
+
+function renderGlossary(terms){
+  const container = document.getElementById('glossary-content');
+  const letters = [...new Set(terms.map(t=>t.letter))].sort();
+  container.innerHTML = '';
+  
+  letters.forEach(letter => {
+    const letterTerms = terms.filter(t=>t.letter===letter);
+    const section = document.createElement('div');
+    section.className = 'letter-section';
+    section.id = `letter-${letter}`;
+    section.innerHTML = `
+      <div class="letter-anchor">
+        <span class="letter-glyph">${letter}</span>
+        <div class="letter-rule"></div>
+      </div>
+    `;
+    letterTerms.forEach(term => {
+      section.appendChild(termCard(term));
+    });
+    container.appendChild(section);
+  });
+  
+  updateAlphaCounts(terms);
+  document.getElementById('count-badge').textContent = `${terms.length} term${terms.length!==1?'s':''}`;
+  document.getElementById('empty-state').classList.toggle('visible', terms.length===0);
+}
+
+function termCard(term){
+  const div = document.createElement('div');
+  div.className = 'term-card';
+  div.dataset.name = term.name.toLowerCase();
+  div.dataset.def = (term.shortDef+' '+term.altDefs).toLowerCase();
+  div.dataset.tags = term.tags.join(',');
+  div.dataset.framework = (term.framework||[]).join(',');
+  
+  const tagsHtml = term.tags.map(t=>`<span class="term-tag ${tagClass(t)}">${tagLabel(t)}</span>`).join('');
+  const relatedHtml = (term.related||[]).map(r=>`<a class="related-pill" href="#" onclick="searchFor('${r}');return false">${r}</a>`).join('');
+  const refsHtml = (term.refs||[]).filter(r=>r).map(r=>`<a href="${r}" target="_blank" rel="noopener">${r}</a>`).join('<br>');
+  
+  div.innerHTML = `
+    <div class="eta-strip"></div>
+    <div class="term-header" onclick="toggleCard(this)">
+      <div class="term-accent" style="background:${term.accentBg}">${term.emoji}</div>
+      <div class="term-header-text">
+        <div class="term-name">${term.name}</div>
+        <div class="term-def">${term.shortDef}</div>
+        <div class="term-tags">${tagsHtml}</div>
+      </div>
+      <button class="term-toggle" aria-label="Expand term">
+        <svg viewBox="0 0 10 10" stroke-width="2" stroke-linecap="round"><path d="M2 4l3 3 3-3"/></svg>
+      </button>
+    </div>
+    <div class="term-body">
+      <div class="term-body-inner">
+        <div class="detail-block full">
+          <div class="detail-label">Full Definition</div>
+          <div class="detail-content">${term.shortDef}</div>
+        </div>
+        ${term.altDefs ? `<div class="detail-block full">
+          <div class="detail-label">Alternative / Framework Definitions</div>
+          <div class="detail-content">${term.altDefs}</div>
+        </div>` : ''}
+        ${term.agExample ? `<div class="detail-block full">
+          <div class="detail-label">Agricultural / ETA Example</div>
+          <div class="detail-content">${term.agExample}</div>
+        </div>` : ''}
+        ${term.etaRelevance ? `<div class="detail-block">
+          <div class="detail-label">ETA/DTAP Relevance</div>
+          <div class="detail-content">${term.etaRelevance}</div>
+        </div>` : ''}
+        ${relatedHtml ? `<div class="detail-block">
+          <div class="detail-label">Related Terms</div>
+          <div class="detail-content">${relatedHtml}</div>
+        </div>` : ''}
+        ${refsHtml ? `<div class="detail-block">
+          <div class="detail-label">References</div>
+          <div class="detail-content">${refsHtml}</div>
+        </div>` : ''}
+        ${term.steward ? `<div class="detail-block">
+          <div class="detail-label">Steward</div>
+          <div class="detail-content">${term.steward}</div>
+        </div>` : ''}
+      </div>
+    </div>
+  `;
+  return div;
+}
+
+function toggleCard(header){
+  const card = header.closest('.term-card');
+  const isOpen = card.classList.contains('open');
+  // Optionally close others
+  card.classList.toggle('open', !isOpen);
+}
+
+function updateAlphaCounts(terms){
+  document.querySelectorAll('.alpha-nav a[data-letter]').forEach(a=>{
+    const letter = a.dataset.letter;
+    const count = terms.filter(t=>t.letter===letter).length;
+    a.querySelector('.alpha-count').textContent = count || '';
+    a.style.opacity = count ? '1' : '0.3';
+    a.style.pointerEvents = count ? '' : 'none';
+  });
+}
+
+// ── SEARCH & FILTER ──────────────────────────────────────────────────────────
+let activeFilter = 'all';
+let searchQuery = '';
+
+function applyFilters(){
+  const q = searchQuery.toLowerCase().trim();
+  const filtered = TERMS.filter(term => {
+    const matchFilter = activeFilter === 'all' || (term.framework||[]).includes(activeFilter) || term.tags.includes(activeFilter);
+    const matchSearch = !q || 
+      term.name.toLowerCase().includes(q) ||
+      term.shortDef.toLowerCase().includes(q) ||
+      (term.altDefs||'').toLowerCase().includes(q) ||
+      (term.agExample||'').toLowerCase().includes(q) ||
+      (term.tags||[]).some(t=>t.includes(q));
+    return matchFilter && matchSearch;
+  });
+  renderGlossary(filtered);
+}
+
+document.getElementById('search-input').addEventListener('input', function(){
+  searchQuery = this.value;
+  applyFilters();
+});
+
+document.querySelectorAll('.filter-pill').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.filter-pill').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    applyFilters();
+  });
+});
+
+function searchFor(term){
+  const input = document.getElementById('search-input');
+  input.value = term;
+  searchQuery = term;
+  activeFilter = 'all';
+  document.querySelectorAll('.filter-pill').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  applyFilters();
+  input.focus();
+  window.scrollTo({top:200,behavior:'smooth'});
+}
+
+// ── ALPHA NAV ACTIVE STATE ────────────────────────────────────────────────────
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const letter = e.target.id.replace('letter-','');
+      document.querySelectorAll('.alpha-nav a').forEach(a=>a.classList.toggle('active', a.dataset.letter===letter));
+    }
+  });
+},{threshold:.3,rootMargin:'-100px 0px -60% 0px'});
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+renderGlossary(TERMS);
+document.querySelectorAll('.letter-section').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

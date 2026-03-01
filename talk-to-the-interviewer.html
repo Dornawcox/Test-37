@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Talk to the... — Interviewer Guide</title>
+  <meta name="description" content="Participatory ecosystem mapping interview tool from OpenTEAM, Farm Hack, and the Agricultural Knowledge Concordance." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Georgia,'Times New Roman',serif;background:#FDFAF5;color:#1A1A1A}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    textarea:focus,input:focus,select:focus{border-color:#52B788!important;box-shadow:0 0 0 2px rgba(82,183,136,.15)}
+    button{cursor:pointer}button:active{transform:scale(.98)}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#D4DDD8;border-radius:3px}
+    .hdr{background:linear-gradient(135deg,#1B4332,#2D6A4F);padding:18px 24px 14px;color:#fff}
+    .hdr h1{font-size:22px;font-weight:700;letter-spacing:-.02em;font-style:italic}
+    .hdr p{font-size:13px;opacity:.8;margin-top:2px}
+    .mn{max-width:740px;margin:0 auto;padding:20px 16px 40px}
+    .cd{background:#fff;border-radius:12px;box-shadow:0 1px 6px rgba(0,0,0,.06);padding:24px 28px;margin-bottom:18px;border:1px solid #E8E0D4;animation:fadeUp .25s ease}
+    .tg{font-size:11px;font-weight:700;letter-spacing:.08em;color:#52B788;text-transform:uppercase;margin-bottom:6px}
+    .mt{font-size:14px;color:#6B7C73}.sm{font-size:12px}
+    .qt{font-size:19px;font-weight:600;color:#1B4332;line-height:1.45;margin-bottom:12px}
+    .pb{font-size:14px;color:#6B7C73;font-style:italic;line-height:1.5;margin-bottom:16px;padding:10px 14px;background:#F8F5EF;border-radius:8px;border-left:3px solid #E8A838}
+    textarea{width:100%;min-height:88px;border:1px solid #D4DDD8;border-radius:8px;padding:12px;font-family:inherit;font-size:15px;resize:vertical;outline:none;line-height:1.5}
+    input,select{width:100%;padding:10px 12px;border:1px solid #D4DDD8;border-radius:8px;font-family:inherit;font-size:14px;outline:none;background:#fff}
+    .fld{margin-bottom:14px}.fld label{font-size:13px;font-weight:600;color:#1B4332;display:block;margin-bottom:4px}
+    .br{display:flex;gap:10px;margin-top:16px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+    .br.r{justify-content:flex-end}
+    .bt{padding:10px 20px;border-radius:8px;border:none;font-family:inherit;font-size:14px;font-weight:600;transition:all .15s}
+    .bt.s{padding:6px 14px;font-size:12px}
+    .bt.p{background:#2D6A4F;color:#fff}.bt.sc{background:#E8F0E8;color:#2D6A4F}
+    .bt.d{background:#C1121F;color:#fff}.bt.g{background:transparent;color:#6B7C73;border:1px solid #D4DDD8}
+    .bt:disabled{opacity:.4;cursor:default}
+    .snv{display:flex;gap:6px;padding:10px 16px;background:#F0F7F4;border-bottom:1px solid #D4E5DC;flex-wrap:wrap;overflow-x:auto}
+    .nb{padding:5px 12px;border-radius:20px;border:1px solid #B7CFC2;background:#fff;color:#2D6A4F;font-size:11px;font-weight:600;font-family:inherit;transition:all .15s;white-space:nowrap}
+    .nb.a{border:2px solid #2D6A4F;background:#2D6A4F;color:#fff}
+    .rc{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#F0F7F4;border-radius:10px;margin-bottom:14px;border:1px solid #D4E5DC}
+    .rc.on{background:#FFF0F0;border-color:#E8A0A0}
+    .rd{width:12px;height:12px;border-radius:50%;background:#999;flex-shrink:0}
+    .rd.on{background:#C1121F;animation:pulse 1.5s infinite}
+    .rl{font-size:13px;flex:1}.rl.on{font-weight:700;color:#C1121F}
+    .pg{height:4px;background:#ffffff33;border-radius:2px;margin-top:10px}
+    .pf{height:100%;background:linear-gradient(90deg,#52B788,#95D5B2);border-radius:2px;transition:width .3s}
+    .ds{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+    .dt{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:1px solid #D4DDD8;background:#fff;color:#999;font-family:inherit;transition:all .15s}
+    .dt.a{border:2px solid #1B4332;background:#E8F0E8;color:#1B4332}
+    .dt.f{background:#52B788;color:#fff;border-color:#52B788}
+    .so{padding:14px 18px;border-radius:10px;margin-bottom:8px;cursor:pointer;transition:all .15s;border:1px solid #D4DDD8;background:#fff}
+    .so.a{border:2px solid #2D6A4F;background:#F0F7F4}.so:hover{border-color:#52B788}
+    .sn{font-weight:700;font-size:16px;color:#1B4332}
+    @media(max-width:600px){.cd{padding:18px 16px}.qt{font-size:17px}.mn{padding:16px 12px 32px}}
+  </style>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useRef,useCallback,useEffect}=React;
+const QS={
+"core":{name:"Core Questions",v:"1.0",desc:"Universal question set for all Talk to the... deployments",icon:"\u{1F5FA}\uFE0F",
+sections:[
+{id:"pre",title:"Pre-Questions",sub:"Ask before recording begins",qs:[
+{id:"pre-1",t:"Who are you?",p:"Let them introduce themselves however feels natural. Note name, role, affiliation."},
+{id:"pre-2",t:"Do I have your consent to record this interview?",p:"Explain: audio transcribed, they control public vs internal, can pause/stop anytime."},
+{id:"pre-3",t:"How would you describe your work and your project?",p:"Listen for how they frame their own work \u2014 use their language in the profile."},
+{id:"pre-4",t:"Who do you consider your community?",p:"Note named organizations, networks, geographic communities."},
+{id:"pre-5",t:"What geographic region do you work in?",p:"Ask about location granularity preference: exact, watershed, county, region, or general area."}]},
+{id:"quick",title:"Quick Pass",sub:"5\u201310 minutes \u2014 creates a minimal profile card",qs:[
+{id:"q-1",t:"In 1\u20132 sentences: what knowledge, data, or practice do you steward, and for whom?",p:"This becomes the lead line of their profile card."},
+{id:"q-2",t:"What do you love about your community right now?",p:"Listen for values and what\u2019s thriving. Tag with keywords."},
+{id:"q-3",t:"One decision you made recently about data, practices, sharing, access, or governance.",p:"Captures a concrete recent action \u2014 grounds the profile in specifics."},
+{id:"q-4",t:"Single most limiting constraint: capacity, funding, policy, tech, risk, trust, or other?",p:"One constraint. If they list many, ask: which one would you remove first?"},
+{id:"q-5",t:"One \u2018reuse opportunity\u2019 you wish more people would take advantage of.",p:"Surfaces hidden resources and connects them to potential users."},
+{id:"q-6",t:"Easiest next collaboration: who or what would make your work easier in the next season?",p:"Creates actionable connection points for the network map."},
+{id:"q-7",t:"Three most important books, events, or papers that have inspired your journey here?",p:"Reveals intellectual lineage and shared references across the community."}]},
+{id:"d1",title:"Section 1 \u2014 Community & Story of Change",sub:"Deep interview begins here",qs:[
+{id:"d1-1",t:"Story of change: Tell a short story that captures what your community/landscape/work is like now and how it has changed.",p:"This is the richest question. Give it time. Don\u2019t rush to the next prompt."},
+{id:"d1-2",t:"Who are your primary communities or beneficiaries? Who are downstream users?",p:"Note named organizations and unnamed categories."},
+{id:"d1-3",t:"What are the biggest misunderstandings outsiders have about your work?",p:"Reveals framing tensions and where the narrative map needs care."},
+{id:"d1-4",t:"Do you have a short story that illustrates this?",p:"The story will produce better quotes than the summary."}]},
+{id:"d2",title:"Section 2 \u2014 Workflows & Decision-Making",sub:"",qs:[
+{id:"d2-1",t:"How is knowledge/data collected or contributed in your context?",p:"Map the workflow: from field \u2192 to storage \u2192 to sharing."},
+{id:"d2-2",t:"What makes something \u2018good enough\u2019 to share, publish, or act on?",p:"Captures quality thresholds \u2014 different for every community."},
+{id:"d2-3",t:"Where does it live? (repos, portals, community archives, personal drives)",p:"Note specific platform names and URLs for the structural map."},
+{id:"d2-4",t:"What breaks, what drifts, what requires ongoing care? Who are the key stewards?",p:"The maintenance reality. This is where sustainability lives or dies."}]},
+{id:"d3",title:"Section 3 \u2014 Interoperability",sub:"",qs:[
+{id:"d3-1",t:"What standards, vocabularies, or formats do you use (or avoid), and why?",p:"Note specific standard names for the structural map."},
+{id:"d3-2",t:"What are the hardest translation problems?",p:"Metadata, semantics, units, provenance, context \u2014 which dimension is hardest?"},
+{id:"d3-3",t:"What would make your work more reusable without increasing risk?",p:"The tension between openness and safety. Listen for conditions."}]},
+{id:"d4",title:"Section 4 \u2014 Trust, Power & Risk",sub:"",qs:[
+{id:"d4-1",t:"Trust map: which institutions/partners do you trust, and where is trust fragile?",p:"Name names if they\u2019re willing. Builds the trust layer of the structural map."},
+{id:"d4-2",t:"Risk posture: what are you willing to share openly vs. restrict? Why?",p:"Captures the logic behind their sharing decisions."},
+{id:"d4-3",t:"What harms are you actively preventing?",p:"Misuse, extraction, misinterpretation, surveillance \u2014 which ones are real?"}]},
+{id:"d5",title:"Section 5 \u2014 Governance & Reciprocity",sub:"",qs:[
+{id:"d5-1",t:"Who gets to decide access, terms, and updates?",p:"Formal authority vs. actual authority. Note the gap."},
+{id:"d5-2",t:"What reciprocity do you expect from users?",p:"Attribution, share-backs, co-authorship, funding, participation."},
+{id:"d5-3",t:"What enforcement feels real \u2014 not symbolic?",p:"Licenses, agreements, community norms, technical controls."}]},
+{id:"d6",title:"Section 6 \u2014 Offers, Asks & Futures",sub:"",qs:[
+{id:"d6-1",t:"What can you offer the network?",p:"Tools, templates, training, hosting, review capacity, introductions."},
+{id:"d6-2",t:"What would help you move faster or more safely in the next 6 months?",p:"Concrete asks. Connect to other participants\u2019 offers."},
+{id:"d6-3",t:"Plausible better future: if we looked back 2\u20133 years from now, what would tell us we made progress together?",p:"End on a forward-looking note."}]}]},
+"grazing":{name:"Talk to the Land \u2014 Grazing",v:"1.0",desc:"For place-based stewards, graziers, and conservation districts",icon:"\u{1F33E}",
+sections:[
+{id:"gp",title:"Pre-Questions",sub:"Before recording",qs:[
+{id:"gp-1",t:"Who are you?",p:"Name, operation, landscape."},
+{id:"gp-2",t:"Do I have your consent to record?",p:"Explain outputs: land profile, community map, possible data trust."},
+{id:"gp-3",t:"How would you describe your landscape and work?",p:"Listen for how they name their place."},
+{id:"gp-4",t:"Who is your community?",p:"Ranchers, agencies, tribes, neighbors, districts."},
+{id:"gp-5",t:"Geographic region?",p:"Exact ranch, watershed, county, region, or general area."}]},
+{id:"gq",title:"Grazing Quick Pass",sub:"5\u20137 minutes",qs:[
+{id:"gq-1",t:"Your grazing landscape in 1\u20132 sentences: What should we call this place on the map?",p:"The name they give becomes the map label."},
+{id:"gq-2",t:"What do you love about it right now?",p:"What\u2019s thriving, what\u2019s meaningful \u2014 from their perspective."},
+{id:"gq-3",t:"One decision you made recently about grazing management.",p:"Timing, rotation, stocking, rest, infrastructure, fire, water, seeding."},
+{id:"gq-4",t:"One key signal you watch.",p:"Soil cover, plants, erosion, water, animal health, invasives, drought, wildlife."},
+{id:"gq-5",t:"Single most limiting constraint.",p:"Capacity, money, permits, climate, infrastructure, conflict, data access, trust."},
+{id:"gq-6",t:"Easiest next collaboration?",p:"Who/what would make stewardship easier next season?"}]},
+{id:"gc",title:"Land, Community & Governance",sub:"Deep interview",qs:[
+{id:"gc-1",t:"Story of change: what is this landscape like now and how has it changed?",p:"Give it time. The story is the richest data."},
+{id:"gc-2",t:"Who is part of stewardship here?",p:"Ranchers, tribes, agencies, permittees, neighbors, districts, researchers, NGOs."},
+{id:"gc-3",t:"What are the decision arenas?",p:"Private, public allotments, communal, easements, leases."},
+{id:"gc-4",t:"Where does authority sit? Where does legitimacy sit?",p:"Often different. Note the gap."}]},
+{id:"gpr",title:"Practices & Decision Triggers",sub:"",qs:[
+{id:"gpr-1",t:"What is your grazing approach today?",p:"Rotation, rest, timing, stocking, infrastructure, adaptive triggers."},
+{id:"gpr-2",t:"What are your decision triggers?",p:"Rainfall, forage height, utilization, soil moisture, phenology, drought declarations."},
+{id:"gpr-3",t:"What tradeoffs are you managing?",p:"Production vs habitat, short vs long term, labor vs monitoring."},
+{id:"gpr-4",t:"What do you monitor formally? Informally?",p:"The gap between formal and informal is where useful knowledge lives."},
+{id:"gpr-5",t:"What counts as \u2018credible\u2019 evidence here \u2014 and to whom?",p:"Different audiences, different standards."}]},
+{id:"gt",title:"Trust, Sharing & Data Trust",sub:"",qs:[
+{id:"gt-1",t:"Where is trust strong vs fragile?",p:"Institutions, neighbors, agencies, researchers, markets."},
+{id:"gt-2",t:"What data sharing feels safe? What feels extractive?",p:"The extractive question surfaces governance requirements."},
+{id:"gt-3",t:"If we built a data trust, what must it protect?",p:"Red lines, sacred knowledge, enforcement risks, competitive info."},
+{id:"gt-4",t:"Who should be beneficiaries? Who should be stewards?",p:"Beneficiaries \u2260 stewards. Note the distinction."},
+{id:"gt-5",t:"Acceptable access tiers?",p:"Public / members / approved research / steward-only."},
+{id:"gt-6",t:"What would make you opt in? Opt out?",p:"Conditions for participation. Critical for governance."},
+{id:"gt-7",t:"What enforcement would feel real?",p:"Community norms, legal, technical controls, reputation."}]},
+{id:"gf",title:"Offers, Asks & Futures",sub:"",qs:[
+{id:"gf-1",t:"What can you offer the network?",p:"Land access, monitoring data, mentorship, hosting, equipment, knowledge."},
+{id:"gf-2",t:"What would help you move faster or more safely?",p:"Concrete asks for next 6 months."},
+{id:"gf-3",t:"What would you never want misunderstood out of context?",p:"Critical for redaction and narrative map framing."}]}]},
+"lwg":{name:"Conservation District LWG",v:"1.0",desc:"Adapted for NRCS Local Working Group conservation needs assessments",icon:"\u{1F3DB}\uFE0F",
+sections:[
+{id:"lp",title:"Pre-Questions",sub:"Before recording",qs:[
+{id:"lp-1",t:"Who are you and your connection to this conservation district?",p:"Role, organization, how long involved."},
+{id:"lp-2",t:"Do I have your consent to record? Input feeds the Conservation Needs Assessment.",p:"Explain how input will be used."}]},
+{id:"lm",title:"Resource Concerns & Priorities",sub:"Feeds the Conservation Needs Assessment Report",qs:[
+{id:"lm-1",t:"Top three natural resource concerns in this area right now?",p:"Let them prioritize. Note order. Maps to NRCS categories."},
+{id:"lm-2",t:"Where do you see those concerns on the landscape?",p:"Invite pointing on a map. Note geographic specificity."},
+{id:"lm-3",t:"What practices are working here that aren\u2019t captured in current reporting?",p:"Innovation below the reporting threshold."},
+{id:"lm-4",t:"What data does this district collect? What\u2019s missing?",p:"Gap analysis for needs assessment."},
+{id:"lm-5",t:"What programs (EQIP, CSP, ACEP, RCPP) have been most useful?",p:"And: what\u2019s not reaching the people who need it?"},
+{id:"lm-6",t:"If you could change one thing about conservation TA delivery here?",p:"Policy recommendation for State Technical Committee."},
+{id:"lm-7",t:"What local knowledge should inform planning that currently doesn\u2019t?",p:"Situated knowledge that doesn\u2019t fit a database field."},
+{id:"lm-8",t:"Who are the key stewards \u2014 irreplaceable landscape knowledge?",p:"Names for structural map."},
+{id:"lm-9",t:"What does successful conservation look like here in 3 years?",p:"Progress indicators. Feeds 3-year plan."}]},
+{id:"lf",title:"Funding & Program Recommendations",sub:"",qs:[
+{id:"lf-1",t:"Estimated funding needs over 3 years for top resource concerns?",p:"Break down local, state, federal. Feeds funding table."},
+{id:"lf-2",t:"Ranking criteria for prioritizing applications?",p:"Feeds CART ranking for State Technical Committee."},
+{id:"lf-3",t:"Multi-county coordination opportunities?",p:"Regional issues crossing LWG boundaries."},
+{id:"lf-4",t:"New conservation initiatives you\u2019d recommend?",p:"Innovative practices, new approaches, pilot opportunities."}]}]},
+"farmhack":{name:"Talk to the Farm \u2014 Farm Hack",v:"1.0",desc:"Farmer-to-farmer knowledge, open source tools, community hardware",icon:"\u{1F527}",
+sections:[
+{id:"fp",title:"Pre-Questions",sub:"Before recording",qs:[
+{id:"fp-1",t:"Who are you?",p:"Name, farm/project, what you grow/build/fix."},
+{id:"fp-2",t:"Consent to record?",p:"Output: tool card and/or practitioner profile."},
+{id:"fp-3",t:"What\u2019s your farm or project?",p:"Scale, location, what it produces."}]},
+{id:"fq",title:"Quick Pass",sub:"5\u201310 minutes",qs:[
+{id:"fq-1",t:"What tool, hack, or technique are you most proud of?",p:"Centerpiece of their tool card."},
+{id:"fq-2",t:"Walk me through solving a problem with no commercial solution.",p:"Problem \u2192 experiment \u2192 result narrative."},
+{id:"fq-3",t:"What documentation exists? (Plans, photos, instructions, parts, costs)",p:"Note what exists and where. The reuse pathway."},
+{id:"fq-4",t:"Has anyone replicated or adapted it?",p:"Replication stories are strongest evidence."},
+{id:"fq-5",t:"What would make it easier for the next farmer to build/use this?",p:"Gap between \u2018works for me\u2019 and \u2018someone else could do this.\u2019"},
+{id:"fq-6",t:"What commercial tool needs an open-source alternative?",p:"Demand signal for the community."},
+{id:"fq-7",t:"Most useful thing learned from another farmer (not an institution)?",p:"Peer-to-peer knowledge \u2014 the heart of Farm Hack."}]},
+{id:"fd",title:"Deeper \u2014 Tools, Knowledge & Sharing",sub:"",qs:[
+{id:"fd-1",t:"What knowledge do you have that\u2019s hard to write down?",p:"Tacit knowledge needing demonstration, not docs."},
+{id:"fd-2",t:"What data do you collect on your farm? What do you wish you collected?",p:"Tools, gaps, frustrations with platforms."},
+{id:"fd-3",t:"What would make you share farm data with a research project?",p:"Conditions for trust. Consent architecture."},
+{id:"fd-4",t:"What\u2019s broken about how ag knowledge moves from research to practice?",p:"The extension gap from their perspective."},
+{id:"fd-5",t:"What can you offer the Farm Hack network?",p:"Skills, tools, hosting, testing, mentorship, land, docs."},
+{id:"fd-6",t:"What would help you most next growing season?",p:"Concrete ask. Connect to others\u2019 offers."}]}]},
+"gosh":{name:"GOSH / Open Science Hardware",v:"1.0",desc:"Open source scientific instruments, hardware docs, calibration",icon:"\u{1F52C}",
+sections:[
+{id:"ghp",title:"Pre-Questions",sub:"Before recording",qs:[
+{id:"ghp-1",t:"Who are you?",p:"Name, affiliation, field."},
+{id:"ghp-2",t:"Consent to record?",p:"Output: hardware registry entry and community map."},
+{id:"ghp-3",t:"What\u2019s your project or instrument?",p:"What it measures, who uses it, status."}]},
+{id:"ghm",title:"Hardware, Documentation & Adoption",sub:"",qs:[
+{id:"ghm-1",t:"What instrument/hardware have you built, adapted, or documented for open use?",p:"Lead of their tool card in the registry."},
+{id:"ghm-2",t:"Current state of documentation?",p:"Build instructions, calibration protocols, validation data."},
+{id:"ghm-3",t:"Where in the design \u2192 prototype \u2192 validated \u2192 production pipeline?",p:"Maturity level for reuse decisions."},
+{id:"ghm-4",t:"Biggest barrier to adoption of open hardware in your field?",p:"Cost, trust, certification, support, awareness."},
+{id:"ghm-5",t:"QA/calibration challenges unique to community-built instruments?",p:"Gap between \u2018works in my lab\u2019 and \u2018trusted by regulators.\u2019"},
+{id:"ghm-6",t:"Institutional barriers to open hardware in regulatory contexts?",p:"Policy barriers. Note specific agencies."},
+{id:"ghm-7",t:"Relationship between your hardware community and the data it generates?",p:"Do data and hardware communities know about each other?"},
+{id:"ghm-8",t:"What can you offer?",p:"Designs, calibration data, protocols, mentorship, manufacturing."},
+{id:"ghm-9",t:"What would help you move faster?",p:"Funding, partners, certification, documentation support."}]}]}
+};
+const CF=[
+{id:"display_name",label:"Display name",ph:"Name or pseudonym",ty:"text"},
+{id:"location",label:"Location",ph:"Region, county, or general area",ty:"text"},
+{id:"visibility",label:"Profile visibility",opts:["Internal only","Members only","Public summary OK"],ty:"select"},
+{id:"quotes",label:"Quoting permissions",opts:["No quotes","Quotes with my approval","Quotes without approval"],ty:"select"},
+{id:"audio_store",label:"Store audio/transcript?",opts:["Yes","No"],ty:"select"},
+{id:"sensitive",label:"Sensitive categories?",opts:["No","Yes \u2014 cultural protocols","Yes \u2014 threatened species","Yes \u2014 conflict/tenure","Yes \u2014 enforcement risk","Yes \u2014 personal safety"],ty:"select"}
+];
+
+function App(){
+const[sel,setSel]=useState("core");
+const[cSec,setCSec]=useState(0);
+const[cQ,setCQ]=useState(0);
+const[notes,setNotes]=useState({});
+const[hl,setHl]=useState("");
+const[con,setCon]=useState({});
+const[rec,setRec]=useState(false);
+const[rt,setRt]=useState(0);
+const[fb,setFb]=useState("");
+const[fbs,setFbs]=useState(false);
+const[vw,setVw]=useState("setup");
+const tmr=useRef(null);const mr=useRef(null);const ch=useRef([]);
+
+const qs=QS[sel];const secs=qs.sections;const sec=secs[cSec];const q=sec?sec.qs[cQ]:null;
+const tot=secs.reduce((a,s)=>a+s.qs.length,0);
+const ans=Object.keys(notes).filter(k=>notes[k]&&notes[k].trim()).length;
+
+useEffect(()=>{if(rec){tmr.current=setInterval(()=>setRt(t=>t+1),1000)}else{clearInterval(tmr.current)}return()=>clearInterval(tmr.current)},[rec]);
+const fm=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+const startRec=useCallback(async()=>{try{const s=await navigator.mediaDevices.getUserMedia({audio:true});mr.current=new MediaRecorder(s);ch.current=[];mr.current.ondataavailable=e=>ch.current.push(e.data);mr.current.start();setRec(true);setRt(0)}catch(e){alert("Mic access denied.")}},[]);
+const stopRec=useCallback(()=>{if(mr.current&&rec){mr.current.stop();mr.current.stream.getTracks().forEach(t=>t.stop());setRec(false)}},[rec]);
+
+const dlAudio=useCallback(()=>{if(!ch.current.length)return;const b=new Blob(ch.current,{type:"audio/webm"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=`${new Date().toISOString().slice(0,10)}_${sel}_${(con.display_name||"participant").replace(/\s+/g,"-")}_audio.webm`;a.click();URL.revokeObjectURL(u)},[con.display_name,sel]);
+
+const dlTxt=useCallback(()=>{const d=new Date().toISOString().slice(0,10);const nm=con.display_name||"participant";
+let x=`Talk to the... Interview Transcript\nQuestion Set: ${qs.name} v${qs.v}\nDate: ${d}\nParticipant: ${nm}\nLocation: ${con.location||"\u2014"}\nVisibility: ${con.visibility||"\u2014"}\nQuoting: ${con.quotes||"\u2014"}\nAudio: ${con.audio_store||"\u2014"}\nSensitive: ${con.sensitive||"\u2014"}\n\n${"═".repeat(60)}\n\nHEADLINE: ${hl||"(not captured)"}\n\n`;
+secs.forEach(s=>{x+=`\u2500\u2500 ${s.title} \u2500\u2500\n\n`;s.qs.forEach(q=>{x+=`Q: ${q.t}\nA: ${notes[q.id]||"(no notes)"}\n\n`})});
+if(fb)x+=`\n\u2500\u2500 FEEDBACK \u2500\u2500\n${fb}\n`;x+=`\n${"═".repeat(60)}\nExported: ${new Date().toISOString()}\n`;
+const b=new Blob([x],{type:"text/plain"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=`${d}_${sel}_${nm.replace(/\s+/g,"-")}_transcript.txt`;a.click();URL.revokeObjectURL(u)},[notes,hl,con,secs,qs,sel,fb]);
+
+const nx=()=>{if(cQ<sec.qs.length-1)setCQ(cQ+1);else if(cSec<secs.length-1){setCSec(cSec+1);setCQ(0)}else setVw("close")};
+const pv=()=>{if(cQ>0)setCQ(cQ-1);else if(cSec>0){setCSec(cSec-1);setCQ(secs[cSec-1].qs.length-1)}};
+const reset=()=>{setVw("setup");setNotes({});setHl("");setCon({});setFb("");setFbs(false);setCSec(0);setCQ(0);ch.current=[];setRt(0)};
+
+if(vw==="setup")return(<div>
+<div className="hdr"><h1>🌿 Talk to the...</h1><p>Interviewer Guide & Recording Tool</p></div>
+<div className="mn"><div className="cd">
+<div className="tg">Select Question Set</div>
+<p className="mt" style={{marginBottom:20}}>Choose the question set for your interview context.</p>
+{Object.entries(QS).map(([k,v])=><div key={k} className={`so ${sel===k?"a":""}`} onClick={()=>setSel(k)}>
+<div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:24}}>{v.icon}</span><div><div className="sn">{v.name}</div><div className="mt sm">v{v.v} \u2014 {v.desc}</div></div></div>
+<div className="mt sm" style={{marginTop:4,marginLeft:34}}>{v.sections.length} sections \u00B7 {v.sections.reduce((a,s)=>a+s.qs.length,0)} questions</div></div>)}
+<div className="br r" style={{marginTop:24}}><button className="bt p" onClick={()=>setVw("consent")}>Begin Interview \u2192</button></div>
+</div></div></div>);
+
+if(vw==="consent")return(<div>
+<div className="hdr"><h1>🌿 Talk to the...</h1><p>{qs.name} \u2014 Consent & Identifiers</p></div>
+<div className="mn"><div className="cd">
+<div className="tg">Participant Consent</div><p className="mt" style={{marginBottom:20}}>Complete before recording. Participant controls all visibility.</p>
+{CF.map(f=><div key={f.id} className="fld"><label>{f.label}</label>
+{f.ty==="select"?<select value={con[f.id]||""} onChange={e=>setCon({...con,[f.id]:e.target.value})}><option value="">Select...</option>{f.opts.map(o=><option key={o} value={o}>{o}</option>)}</select>
+:<input placeholder={f.ph} value={con[f.id]||""} onChange={e=>setCon({...con,[f.id]:e.target.value})}/>}</div>)}
+<div className="br"><button className="bt g" onClick={()=>setVw("setup")}>\u2190 Back</button><button className="bt p" onClick={()=>{setCSec(0);setCQ(0);setVw("interview")}}>Start Questions \u2192</button></div>
+</div></div></div>);
+
+if(vw==="close")return(<div>
+<div className="hdr"><h1>🌿 Talk to the...</h1><p>{qs.name} \u2014 Closing</p></div>
+<div className="mn"><div className="cd">
+<div className="tg">Capture the Headline</div>
+<div className="pb">\u{1F4A1} "Here\u2019s what I captured as your headline: [summary]. What did I miss? What needs to be generalized or removed?"</div>
+<textarea value={hl} onChange={e=>setHl(e.target.value)} placeholder="One-sentence headline..." rows={3}/>
+{rec&&<div className="rc on" style={{marginTop:16}}><div className="rd on"/><span className="rl on">REC {fm(rt)}</span><button className="bt d s" onClick={stopRec}>Stop</button></div>}
+<div className="br" style={{marginTop:24}}><button className="bt g" onClick={()=>{setVw("interview");setCSec(secs.length-1);setCQ(secs[secs.length-1].qs.length-1)}}>\u2190 Back</button>
+<button className="bt p" onClick={()=>{if(rec)stopRec();setVw("export")}}>Finish & Export \u2192</button></div>
+</div></div></div>);
+
+if(vw==="export")return(<div>
+<div className="hdr"><h1>🌿 Talk to the...</h1><p>{qs.name} \u2014 Export</p></div>
+<div className="mn">
+<div className="cd">
+<div className="tg">Interview Complete</div>
+<div style={{fontSize:18,fontWeight:700,color:"#1B4332",marginBottom:4}}>{con.display_name||"Participant"} \u2014 {new Date().toLocaleDateString()}</div>
+<div className="mt" style={{marginBottom:20}}>{ans} of {tot} questions have notes</div>
+<div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:24}}>
+<button className="bt p" onClick={dlTxt}>\u{1F4C4} Save Transcript (.txt)</button>
+{ch.current.length>0&&<button className="bt sc" onClick={dlAudio}>\u{1F399}\uFE0F Save Audio (.webm)</button>}
+</div>
+{hl&&<div className="pb" style={{marginBottom:20}}><div style={{fontSize:11,fontWeight:700,color:"#E8A838",marginBottom:4}}>HEADLINE</div><div style={{fontStyle:"italic"}}>{hl}</div></div>}
+</div>
+<div className="cd">
+<div className="tg">Feedback on Question Set</div>
+<p className="mt" style={{marginBottom:12}}>Help improve future versions.</p>
+{fbs?<div style={{padding:12,background:"#E8F0E8",borderRadius:8,color:"#2D6A4F",fontSize:14,fontWeight:600}}>\u2713 Feedback recorded. Thank you!</div>
+:<><textarea value={fb} onChange={e=>setFb(e.target.value)} placeholder="Suggestions..." rows={4}/>
+<div className="br r"><button className="bt sc" onClick={()=>setFbs(true)}>Submit Feedback</button></div></>}
+</div>
+<div style={{textAlign:"center",marginTop:16}}><button className="bt g" onClick={reset}>Start New Interview</button></div>
+</div></div>);
+
+return(<div>
+<div className="hdr">
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+<div><h1>🌿 Talk to the...</h1><p>{qs.name} v{qs.v}</p></div>
+<div style={{fontSize:13,opacity:.8}}>{con.display_name||""}</div></div>
+<div className="pg"><div className="pf" style={{width:`${(ans/tot)*100}%`}}/></div></div>
+<div className="snv">{secs.map((s,si)=><button key={s.id} className={`nb ${si===cSec?"a":""}`} onClick={()=>{setCSec(si);setCQ(0)}}>{s.title.length>28?s.title.slice(0,26)+"\u2026":s.title}</button>)}</div>
+<div className="mn">
+<div className={`rc ${rec?"on":""}`}><div className={`rd ${rec?"on":""}`}/>
+{rec?<><span className="rl on">REC {fm(rt)}</span><button className="bt d s" onClick={stopRec}>Pause</button></>
+:<><span className="rl">{rt>0?`Paused ${fm(rt)}`:"Not recording"}</span><button className="bt sc s" onClick={startRec}>{rt>0?"Resume":"Start Recording"}</button></>}</div>
+<div className="ds">{sec.qs.map((q,qi)=><div key={q.id} className={`dt ${qi===cQ?"a":""} ${notes[q.id]&&notes[q.id].trim()?"f":""}`} onClick={()=>setCQ(qi)}>{qi+1}</div>)}</div>
+<div className="cd">
+<div className="tg">{sec.title}</div>
+{sec.sub&&<div className="mt sm" style={{marginBottom:12}}>{sec.sub}</div>}
+<div className="qt">{q.t}</div>
+<div className="pb">\u{1F4A1} {q.p}</div>
+<textarea value={notes[q.id]||""} onChange={e=>setNotes({...notes,[q.id]:e.target.value})} placeholder="Notes from participant response..."/>
+<div className="br">
+<button className="bt g" onClick={pv} disabled={cSec===0&&cQ===0}>\u2190 Previous</button>
+<span className="mt sm">{cSec+1}.{cQ+1}</span>
+<button className="bt p" onClick={nx}>{cSec===secs.length-1&&cQ===sec.qs.length-1?"Close Interview \u2192":"Next \u2192"}</button></div>
+</div></div></div>);
+}
+
+ReactDOM.render(React.createElement(App),document.getElementById("root"));
+  </script>
+</body>
+</html>

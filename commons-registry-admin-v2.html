@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commons Card Registry — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1a14; --text:#333; --muted:#636363; --subtle:#999;
+  --border:#d5d0c8; --rule:#e5e0d6; --bg:#faf8f1; --surface:#fff;
+  --olive:#3a5a1c; --olive-l:#5a8033; --olive-bg:#eef3e6;
+  --earth:#8b6914; --earth-bg:#fdf5e0; --sky:#236b8e; --sky-bg:#e6f0f7;
+  --rust:#7c4a1e; --red:#9e2b2b; --red-bg:#fce8e8;
+  --f-sans:'IBM Plex Sans',sans-serif;
+  --f-serif:'IBM Plex Serif',Georgia,serif;
+  --f-mono:'IBM Plex Mono',monospace;
+  --r:4px; --r-lg:8px; --ease:.2s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14.5px;scroll-behavior:smooth}
+body{font-family:var(--f-sans);color:var(--text);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--f-serif);color:var(--ink);line-height:1.25}
+a{color:var(--olive);text-decoration:none;transition:color var(--ease)}
+a:hover{color:var(--olive-l)}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* ─── LAYOUT ─── */
+.app{display:grid;grid-template-columns:240px 1fr;grid-template-rows:52px 1fr;min-height:100vh}
+.topbar{grid-column:1/-1;background:var(--ink);color:#fff;display:flex;align-items:center;padding:0 1.2rem;gap:.8rem;position:sticky;top:0;z-index:100}
+.topbar .brand{display:flex;align-items:center;gap:.45rem;color:#fff;font-weight:600;font-size:.88rem;text-decoration:none}
+.topbar .brand svg{width:22px;height:22px}
+.topbar .sep{color:rgba(255,255,255,.25);margin:0 .3rem}
+.topbar .env{font-family:var(--f-mono);font-size:.65rem;background:var(--olive);padding:.12rem .45rem;border-radius:99px;font-weight:500}
+.topbar .user-pill{margin-left:auto;display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:rgba(255,255,255,.7)}
+.topbar .user-pill .avatar{width:26px;height:26px;border-radius:50%;background:var(--olive-l);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#fff}
+
+.sidebar{background:var(--surface);border-right:1px solid var(--rule);padding:1rem 0;overflow-y:auto}
+.sidebar .nav-section{margin-bottom:1rem}
+.sidebar .nav-label{font-family:var(--f-mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--subtle);padding:.2rem 1rem;font-weight:600}
+.sidebar .nav-item{display:flex;align-items:center;gap:.5rem;padding:.4rem 1rem;font-size:.82rem;color:var(--muted);cursor:pointer;transition:all var(--ease);border-left:2px solid transparent}
+.sidebar .nav-item:hover{background:var(--olive-bg);color:var(--ink)}
+.sidebar .nav-item.active{background:var(--olive-bg);color:var(--olive);border-left-color:var(--olive);font-weight:600}
+.sidebar .nav-item svg{width:16px;height:16px;flex-shrink:0}
+.sidebar .nav-item .badge{margin-left:auto;font-family:var(--f-mono);font-size:.6rem;background:var(--earth-bg);color:var(--earth);padding:.1rem .35rem;border-radius:99px;font-weight:600}
+
+.main{padding:1.5rem 2rem;overflow-y:auto}
+
+/* ─── PAGE SECTIONS ─── */
+.page{display:none}
+.page.active{display:block}
+.page-head{margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.page-head h1{font-size:1.45rem}
+.page-head .actions{margin-left:auto;display:flex;gap:.4rem}
+
+/* ─── BUTTONS ─── */
+.btn{display:inline-flex;align-items:center;gap:.3rem;padding:.38rem .85rem;font-family:var(--f-sans);font-weight:600;font-size:.78rem;border:1.5px solid transparent;border-radius:var(--r);cursor:pointer;transition:all var(--ease);white-space:nowrap}
+.btn-fill{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn-fill:hover{background:#333}
+.btn-olive{background:var(--olive);color:#fff;border-color:var(--olive)}
+.btn-olive:hover{background:var(--olive-l);border-color:var(--olive-l)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--border)}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn-danger{background:transparent;color:var(--red);border-color:var(--red)}
+.btn-danger:hover{background:var(--red-bg)}
+.btn svg{width:14px;height:14px}
+
+/* ─── STAT CARDS ─── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.7rem;margin-bottom:1.8rem}
+.stat-card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-lg);padding:.9rem 1rem}
+.stat-card .stat-label{font-family:var(--f-mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;color:var(--subtle);font-weight:500;margin-bottom:.2rem}
+.stat-card .stat-val{font-family:var(--f-serif);font-size:1.6rem;color:var(--ink);font-weight:600}
+.stat-card .stat-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+
+/* ─── TABLE ─── */
+.tbl-wrap{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-lg);overflow:hidden}
+.tbl-head{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.tbl-search{font-family:var(--f-sans);font-size:.82rem;padding:.3rem .6rem;border:1px solid var(--border);border-radius:var(--r);background:var(--bg);flex:1;max-width:320px;outline:none}
+.tbl-search:focus{border-color:var(--olive)}
+.chip{font-family:var(--f-mono);font-size:.65rem;font-weight:500;padding:.2rem .5rem;border:1px solid var(--border);border-radius:99px;background:transparent;color:var(--muted);cursor:pointer;transition:all var(--ease)}
+.chip:hover{border-color:var(--olive);color:var(--olive)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-family:var(--f-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:var(--subtle);font-weight:600;padding:.5rem 1rem;border-bottom:1px solid var(--rule);background:var(--bg)}
+td{padding:.55rem 1rem;border-bottom:1px solid var(--rule);font-size:.84rem;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(58,90,28,.03)}
+.tag{font-family:var(--f-mono);font-size:.6rem;font-weight:500;padding:.1rem .4rem;border-radius:99px;border:1px solid var(--rule);color:var(--muted);display:inline-block;margin:.1rem .15rem .1rem 0}
+.tag-olive{border-color:#c7d9b3;background:var(--olive-bg);color:var(--olive)}
+.tag-earth{border-color:#e5d5a8;background:var(--earth-bg);color:var(--earth)}
+.tag-sky{border-color:#b3d1e5;background:var(--sky-bg);color:var(--sky)}
+.status{display:inline-flex;align-items:center;gap:.25rem;font-family:var(--f-mono);font-size:.65rem;font-weight:600;padding:.15rem .4rem;border-radius:99px}
+.status-pub{background:var(--olive-bg);color:var(--olive)}
+.status-draft{background:var(--earth-bg);color:var(--earth)}
+.status-review{background:var(--sky-bg);color:var(--sky)}
+.comm-badge{display:inline-flex;padding:.1rem .35rem;border-radius:99px;font-family:var(--f-mono);font-size:.58rem;font-weight:600;background:var(--bg);border:1px solid var(--rule);color:var(--muted);margin:.1rem .1rem}
+
+/* ─── FORMS ─── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{margin-bottom:1rem}
+.form-group.full{grid-column:1/-1}
+.form-group label{display:block;font-family:var(--f-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:500;margin-bottom:.3rem}
+.form-group input,.form-group select,.form-group textarea{width:100%;font-family:var(--f-sans);font-size:.84rem;padding:.45rem .65rem;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--ink);outline:none;transition:border-color var(--ease)}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--olive)}
+.form-group textarea{min-height:80px;resize:vertical;line-height:1.5}
+.form-group .help{font-size:.72rem;color:var(--subtle);margin-top:.2rem}
+.form-group .multi-check{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.2rem}
+.form-group .multi-check label{display:inline-flex;align-items:center;gap:.25rem;font-size:.78rem;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text);cursor:pointer}
+.form-group .multi-check input[type="checkbox"]{width:auto;accent-color:var(--olive)}
+
+/* ─── HELP BOX ─── */
+.help-box{background:var(--earth-bg);border:1px solid #e5d5a8;border-radius:var(--r-lg);padding:1rem 1.2rem;margin-bottom:1.2rem;font-size:.84rem;line-height:1.6}
+.help-box h4{font-size:.95rem;color:var(--earth);margin-bottom:.3rem}
+.help-box code{background:rgba(0,0,0,.06);padding:.12rem .3rem;border-radius:3px;font-size:.8rem}
+.help-box ol,.help-box ul{margin:.4rem 0 .4rem 1.1rem}
+.help-box li{margin-bottom:.25rem}
+.help-box a{color:var(--earth);font-weight:600}
+
+.info-box{background:var(--sky-bg);border:1px solid #b3d1e5;border-radius:var(--r-lg);padding:1rem 1.2rem;margin-bottom:1.2rem;font-size:.84rem;line-height:1.6}
+.info-box h4{font-size:.95rem;color:var(--sky);margin-bottom:.3rem}
+
+/* ─── MODAL ─── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--r-lg);width:90%;max-width:720px;max-height:85vh;overflow-y:auto;box-shadow:0 12px 40px rgba(0,0,0,.2)}
+.modal-head{display:flex;align-items:center;padding:1rem 1.2rem;border-bottom:1px solid var(--rule)}
+.modal-head h3{flex:1}
+.modal-head .close{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted);padding:.2rem}
+.modal-body{padding:1.2rem}
+.modal-foot{display:flex;justify-content:flex-end;gap:.4rem;padding:.8rem 1.2rem;border-top:1px solid var(--rule);background:var(--bg)}
+
+/* ─── ACTIVITY LOG ─── */
+.activity-item{display:flex;gap:.6rem;padding:.6rem 0;border-bottom:1px solid var(--rule);font-size:.82rem}
+.activity-item:last-child{border-bottom:none}
+.activity-dot{width:8px;height:8px;border-radius:50%;margin-top:.35rem;flex-shrink:0}
+.dot-green{background:var(--olive)}
+.dot-amber{background:var(--earth)}
+.dot-blue{background:var(--sky)}
+.activity-item .time{font-family:var(--f-mono);font-size:.68rem;color:var(--subtle);margin-top:.15rem}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:860px){
+  .app{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── SVG ICONS ─── -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-logo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4v8M10 4l-3 3M10 4l3 3"/><path d="M10 12v16"/><path d="M22 4c-2.5 0-4.5 2-4.5 4.5 0 1 .3 1.9.8 2.7l-1.3 1.3 1.5 1.5 1.3-1.3c.8.5 1.7.8 2.7.8 2.5 0 4.5-2 4.5-4.5S24.5 4 22 4z"/><path d="M18 15l-2 2"/><path d="M22 12v16"/></symbol>
+  <symbol id="i-dash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></symbol>
+  <symbol id="i-proj" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 2,7 12,12 22,7"/><polyline points="2,17 12,22 22,17"/><polyline points="2,12 12,17 22,12"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></symbol>
+  <symbol id="i-data" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+</svg>
+
+<!-- ─── APP SHELL ─── -->
+<div class="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <a class="brand" href="#"><svg><use href="#i-logo"/></svg> Commons Registry</a>
+    <span class="sep">|</span>
+    <span class="env">ADMIN</span>
+    <div class="user-pill">
+      <span id="user-name">Not connected</span>
+      <div class="avatar" id="user-avatar">?</div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="nav-section">
+      <div class="nav-label">Overview</div>
+      <div class="nav-item active" onclick="showPage('dashboard')"><svg><use href="#i-dash"/></svg> Dashboard</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Registries</div>
+      <div class="nav-item" onclick="showPage('tools')"><svg><use href="#i-tool"/></svg> Tool Cards <span class="badge" id="n-tools">8</span></div>
+      <div class="nav-item" onclick="showPage('projects')"><svg><use href="#i-proj"/></svg> Project Cards <span class="badge" id="n-proj">5</span></div>
+      <div class="nav-item" onclick="showPage('events')"><svg><use href="#i-cal"/></svg> Event Cards <span class="badge" id="n-ev">7</span></div>
+      <div class="nav-item" onclick="showPage('library')"><svg><use href="#i-book"/></svg> Library Cards <span class="badge" id="n-lib">4</span></div>
+      <div class="nav-item" onclick="showPage('datasets')"><svg><use href="#i-data"/></svg> Dataset Cards <span class="badge" id="n-ds">3</span></div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Manage</div>
+      <div class="nav-item" onclick="showPage('people')"><svg><use href="#i-users"/></svg> People &amp; Roles</div>
+      <div class="nav-item" onclick="showPage('communities')"><svg><use href="#i-globe"/></svg> Communities</div>
+      <div class="nav-item" onclick="showPage('tags')"><svg><use href="#i-tag"/></svg> Tags &amp; Taxonomy</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">System</div>
+      <div class="nav-item" onclick="showPage('setup')"><svg><use href="#i-gear"/></svg> Setup &amp; Config</div>
+      <div class="nav-item" onclick="showPage('help')"><svg><use href="#i-help"/></svg> Help &amp; Docs</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT AREA -->
+  <div class="main">
+
+    <!-- ════ DASHBOARD ════ -->
+    <div class="page active" id="p-dashboard">
+      <div class="page-head">
+        <h1>Registry Dashboard</h1>
+        <div class="actions">
+          <button class="btn btn-olive" onclick="openNewCard()"><svg><use href="#i-plus"/></svg> New Card</button>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-label">Tool Cards</div><div class="stat-val">8</div><div class="stat-sub">3 hardware · 2 software · 2 protocols · 1 design</div></div>
+        <div class="stat-card"><div class="stat-label">Project Cards</div><div class="stat-val">5</div><div class="stat-sub">2 active · 2 planned · 1 completed</div></div>
+        <div class="stat-card"><div class="stat-label">Event Cards</div><div class="stat-val">7</div><div class="stat-sub">3 upcoming · 2 recurring · 2 past</div></div>
+        <div class="stat-card"><div class="stat-label">Communities</div><div class="stat-val">5</div><div class="stat-sub">Farm Hack · OpenTEAM · GIAA · Concordance · GOAT</div></div>
+        <div class="stat-card"><div class="stat-label">Stewards</div><div class="stat-val">12</div><div class="stat-sub">5 admins · 7 community stewards</div></div>
+        <div class="stat-card"><div class="stat-label">Pending Reviews</div><div class="stat-val">2</div><div class="stat-sub">1 tool · 1 event submission</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:1.2rem;">
+        <div>
+          <h3 style="margin-bottom:.7rem;">Recent Activity</h3>
+          <div style="background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-lg);padding:.8rem 1rem;">
+            <div class="activity-item"><div class="activity-dot dot-green"></div><div><strong>Hoop Chicken Trailer</strong> updated by dorncox<div class="time">2 hours ago · Tool Card · ETA score updated to 82</div></div></div>
+            <div class="activity-item"><div class="activity-dot dot-blue"></div><div><strong>D-Web Camp</strong> event card added by giaa-steward<div class="time">5 hours ago · Event Card · Tagged: giaa, openteam</div></div></div>
+            <div class="activity-item"><div class="activity-dot dot-amber"></div><div><strong>PR #14:</strong> New tool card "Solar Dehydrator" submitted by contributor<div class="time">1 day ago · Awaiting review by farmhack-stewards</div></div></div>
+            <div class="activity-item"><div class="activity-dot dot-green"></div><div><strong>communities.json</strong> updated — GOAT community config added<div class="time">2 days ago · by registry-admin</div></div></div>
+            <div class="activity-item"><div class="activity-dot dot-green"></div><div><strong>farmOS</strong> tool card tags updated: added "concordance"<div class="time">3 days ago · Now visible on Concordance site</div></div></div>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin-bottom:.7rem;">Quick Actions</h3>
+          <div style="display:flex;flex-direction:column;gap:.5rem;">
+            <button class="btn btn-ghost" style="justify-content:flex-start;" onclick="openNewCard()"><svg><use href="#i-plus"/></svg> Create new card</button>
+            <button class="btn btn-ghost" style="justify-content:flex-start;" onclick="showPage('people')"><svg><use href="#i-users"/></svg> Manage steward roles</button>
+            <button class="btn btn-ghost" style="justify-content:flex-start;" onclick="showPage('communities')"><svg><use href="#i-globe"/></svg> Configure community filters</button>
+            <button class="btn btn-ghost" style="justify-content:flex-start;" onclick="showPage('tags')"><svg><use href="#i-tag"/></svg> Edit tag taxonomy</button>
+            <a class="btn btn-ghost" style="justify-content:flex-start;" href="https://github.com" target="_blank"><svg><use href="#i-ext"/></svg> View pending pull requests</a>
+            <button class="btn btn-ghost" style="justify-content:flex-start;" onclick="showPage('setup')"><svg><use href="#i-gear"/></svg> Repository setup guide</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ TOOLS REGISTRY ════ -->
+    <div class="page" id="p-tools">
+      <div class="page-head">
+        <h1>Tool Cards</h1>
+        <div class="actions">
+          <button class="btn btn-olive" onclick="openNewCard('tool')"><svg><use href="#i-plus"/></svg> New Tool</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <div class="tbl-head">
+          <input class="tbl-search" placeholder="Search tools..." oninput="filterTable(this,'tools-tbl')">
+          <button class="chip on" onclick="filterType(this,'all','tools-tbl')">All</button>
+          <button class="chip" onclick="filterType(this,'hardware','tools-tbl')">Hardware</button>
+          <button class="chip" onclick="filterType(this,'software','tools-tbl')">Software</button>
+          <button class="chip" onclick="filterType(this,'protocol','tools-tbl')">Protocol</button>
+          <button class="chip" onclick="filterType(this,'design','tools-tbl')">Design</button>
+        </div>
+        <table id="tools-tbl">
+          <thead><tr><th>Tool</th><th>Type</th><th>Communities</th><th>Tags</th><th>Status</th><th>ETA</th><th></th></tr></thead>
+          <tbody>
+            <tr data-type="hardware"><td><strong>Hoop Chicken Trailer</strong><br><span style="color:var(--muted);font-size:.78rem;">Pastured Poultry Egg Mobile</span></td><td><span class="tag tag-olive">hardware</span></td><td><span class="comm-badge">FH</span><span class="comm-badge">GIAA</span><span class="comm-badge">OT</span></td><td><span class="tag">open-hardware</span><span class="tag">repairable</span></td><td><span class="status status-pub">Published</span></td><td>82</td><td><button class="btn btn-ghost" onclick="openEditor('tool','hoop-chicken-trailer')"><svg><use href="#i-edit"/></svg></button></td></tr>
+            <tr data-type="hardware"><td><strong>Walk-In Cooler</strong><br><span style="color:var(--muted);font-size:.78rem;">Post-Harvest Cold Storage</span></td><td><span class="tag tag-olive">hardware</span></td><td><span class="comm-badge">FH</span></td><td><span class="tag">open-hardware</span><span class="tag">post-harvest</span></td><td><span class="status status-pub">Published</span></td><td>71</td><td><button class="btn btn-ghost" onclick="openEditor('tool','walk-in-cooler')"><svg><use href="#i-edit"/></svg></button></td></tr>
+            <tr data-type="hardware"><td><strong>Reemay Robot</strong><br><span style="color:var(--muted);font-size:.78rem;">Arduino Row Cover Automation</span></td><td><span class="tag tag-olive">hardware</span></td><td><span class="comm-badge">FH</span></td><td><span class="tag">arduino</span><span class="tag">prototype</span></td><td><span class="status status-draft">Draft</span></td><td>—</td><td><button class="btn btn-ghost" onclick="openEditor('tool','reemay-robot')"><svg><use href="#i-edit"/></svg></button></td></tr>
+            <tr data-type="software"><td><strong>farmOS</strong><br><span style="color:var(--muted);font-size:.78rem;">Farm Management Platform</span></td><td><span class="tag tag-sky">software</span></td><td><span class="comm-badge">FH</span><span class="comm-badge">OT</span><span class="comm-badge">AKC</span></td><td><span class="tag">open-source</span><span class="tag">data-sovereignty</span></td><td><span class="status status-pub">Published</span></td><td>90</td><td><button class="btn btn-ghost" onclick="openEditor('tool','farmos')"><svg><use href="#i-edit"/></svg></button></td></tr>
+            <tr data-type="protocol"><td><strong>Talk to Your Tools</strong><br><span style="color:var(--muted);font-size:.78rem;">Technological Terroir Documentation</span></td><td><span class="tag tag-earth">protocol</span></td><td><span class="comm-badge">AKC</span><span class="comm-badge">FH</span></td><td><span class="tag">concordance</span><span class="tag">documentation</span></td><td><span class="status status-pub">Published</span></td><td>—</td><td><button class="btn btn-ghost" onclick="openEditor('tool','talk-tools')"><svg><use href="#i-edit"/></svg></button></td></tr>
+            <tr data-type="design"><td><strong>Ethical Technology Assessment</strong><br><span style="color:var(--muted);font-size:.78rem;">Participatory Evaluation Framework</span></td><td><span class="tag" style="border-color:#d4a8a8;background:#fdf0f0;color:var(--rust);">design</span></td><td><span class="comm-badge">GIAA</span><span class="comm-badge">FH</span><span class="comm-badge">OT</span></td><td><span class="tag">ethics</span><span class="tag">framework</span></td><td><span class="status status-pub">Published</span></td><td>—</td><td><button class="btn btn-ghost" onclick="openEditor('tool','eta')"><svg><use href="#i-edit"/></svg></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════ SETUP & CONFIG ════ -->
+    <div class="page" id="p-setup">
+      <div class="page-head"><h1>Setup &amp; Configuration</h1></div>
+
+      <div style="background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-lg);padding:1.2rem;margin-bottom:1.2rem;">
+        <h3 style="margin-bottom:.8rem;">Connect to Repository</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Git Platform</label>
+            <select id="cfg-platform" onchange="onPlatformChange()">
+              <option value="github">GitHub (github.com)</option>
+              <option value="gitlab">GitLab (gitlab.com or self-hosted)</option>
+              <option value="gitea">Gitea / Forgejo / Codeberg</option>
+            </select>
+            <div class="help">All platforms use the same card data model. Only the API layer changes.</div>
+          </div>
+          <div class="form-group" id="cfg-instance-wrap" style="display:none;">
+            <label>Instance URL</label>
+            <input type="url" id="cfg-instance" placeholder="https://gitlab.example.com">
+            <div class="help">Required for self-hosted GitLab, Gitea, Forgejo, or Codeberg.</div>
+          </div>
+          <div class="form-group">
+            <label id="cfg-token-label">Personal Access Token</label>
+            <input type="password" id="cfg-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            <div class="help" id="cfg-token-help">Stored in browser session only. Cleared when you close this tab.</div>
+          </div>
+          <div class="form-group">
+            <label>Repository</label>
+            <input type="text" id="cfg-repo" value="dornawcox/commons-registry" placeholder="owner/repo">
+            <div class="help" id="cfg-repo-help">Format: <code>owner/repo-name</code></div>
+          </div>
+          <div class="form-group"><label>Branch</label><input type="text" id="cfg-branch" value="main"></div>
+          <div class="form-group">
+            <label>Pages Base URL</label>
+            <input type="url" id="cfg-pages-url" placeholder="https://dornawcox.github.io/commons-registry">
+            <div class="help">Public URL where JSON is served. Community sites fetch from here.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.5rem;margin-top:.6rem;">
+          <button class="btn btn-olive" onclick="testConnection()">Test Connection</button>
+          <button class="btn btn-ghost" onclick="saveConfig()">Save Config</button>
+        </div>
+        <div id="conn-result" style="margin-top:.6rem;font-size:.82rem;"></div>
+      </div>
+
+      <div class="help-box"><h4 id="guide-token-title">&#128273; Token Setup</h4><div id="guide-token-body"></div></div>
+      <div class="help-box"><h4>&#128274; Branch Protection</h4><div id="guide-protection-body"></div></div>
+      <div class="help-box"><h4>&#128101; Steward Teams</h4><div id="guide-teams-body"></div></div>
+
+      <div class="help-box">
+        <h4>&#128196; Code Ownership (All Platforms)</h4>
+        <p>All three platforms support a <code>CODEOWNERS</code> file defining required reviewers per data file. Place in <code>.github/</code> (GitHub), or repo root (GitLab/Gitea).</p>
+        <pre style="background:rgba(0,0,0,.06);padding:.6rem;border-radius:var(--r);font-size:.72rem;overflow-x:auto;margin:.4rem 0;"><code># CODEOWNERS
+data/tools.json          @org/farmhack-stewards @org/openteam-stewards
+data/projects.json       @org/openteam-stewards @org/giaa-stewards
+data/events.json         @org/farmhack-stewards @org/giaa-stewards @org/openteam-stewards
+data/library.json        @org/concordance-stewards @org/openteam-stewards
+data/datasets.json       @org/concordance-stewards @org/openteam-stewards
+data/people.json         @org/registry-admins
+schemas/*                @org/registry-admins</code></pre>
+        <p style="font-size:.8rem;color:var(--muted);">GitLab: CODEOWNERS enforcement needs Premium; use Protected Branches on Free. Gitea: 1.21+ supports CODEOWNERS.</p>
+      </div>
+
+      <div class="help-box">
+        <h4>&#9989; Validation CI</h4>
+        <div class="filter-rail" style="margin:.5rem 0;"><button class="chip on" onclick="showCI(this,'github')">GitHub Actions</button><button class="chip" onclick="showCI(this,'gitlab')">GitLab CI</button><button class="chip" onclick="showCI(this,'gitea')">Gitea Actions</button></div>
+        <pre id="ci-github" style="background:rgba(0,0,0,.06);padding:.5rem;border-radius:var(--r);font-size:.7rem;overflow-x:auto;"><code># .github/workflows/validate.yml
+name: Validate Registry
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: for f in data/*.json; do python -m json.tool "$f" > /dev/null; done
+      - run: python3 scripts/validate_cards.py</code></pre>
+        <pre id="ci-gitlab" style="background:rgba(0,0,0,.06);padding:.5rem;border-radius:var(--r);font-size:.7rem;overflow-x:auto;display:none;"><code># .gitlab-ci.yml
+validate:
+  image: python:3.11-slim
+  script:
+    - for f in data/*.json; do python -m json.tool "$f" > /dev/null; done
+    - python3 scripts/validate_cards.py
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+pages:
+  stage: deploy
+  script: [mkdir -p public, cp -r data/ admin/ schemas/ public/]
+  artifacts: { paths: [public] }
+  rules: [{ if: "$CI_COMMIT_BRANCH == 'main'" }]</code></pre>
+        <pre id="ci-gitea" style="background:rgba(0,0,0,.06);padding:.5rem;border-radius:var(--r);font-size:.7rem;overflow-x:auto;display:none;"><code># .gitea/workflows/validate.yml
+# Gitea Actions uses identical YAML syntax to GitHub Actions (since 1.19+)
+name: Validate Registry
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: for f in data/*.json; do python -m json.tool "$f" > /dev/null; done
+      - run: python3 scripts/validate_cards.py</code></pre>
+      </div>
+
+      <div class="info-box"><h4>&#128279; Pages Hosting</h4><div id="guide-pages-body"></div></div>
+
+      <div class="info-box">
+        <h4>&#127760; Community Site Integration (Platform-Agnostic)</h4>
+        <p>This snippet works identically on any platform. Sites only need the Pages base URL:</p>
+        <pre style="background:rgba(0,0,0,.06);padding:.5rem;border-radius:var(--r);font-size:.72rem;overflow-x:auto;margin:.4rem 0;"><code>const REGISTRY = 'https://YOUR-PAGES-URL/data'; // set per deployment
+const MY_COMMUNITY = 'farmhack';                 // set per site
+async function loadCards(type) {
+  const r = await fetch(`${REGISTRY}/${type}.json`);
+  return (await r.json()).filter(c =&gt; c.communities.includes(MY_COMMUNITY));
+}</code></pre>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-lg);padding:1rem;overflow-x:auto;">
+        <h3 style="margin-bottom:.5rem;">Platform Comparison</h3>
+        <table style="font-size:.78rem;"><thead><tr><th>Feature</th><th>GitHub</th><th>GitLab</th><th>Gitea / Forgejo</th></tr></thead><tbody>
+        <tr><td>Pages hosting</td><td>Built-in, free</td><td>Via CI pipeline, free</td><td>Built-in (1.17+) or reverse proxy</td></tr>
+        <tr><td>API style</td><td>REST Contents API</td><td>REST Files API (v4)</td><td>GitHub-compatible REST API</td></tr>
+        <tr><td>OAuth (no server)</td><td>Needs proxy for token exchange</td><td>PKCE flow &mdash; no proxy needed</td><td>Varies by version</td></tr>
+        <tr><td>CODEOWNERS</td><td>Free &#10003;</td><td>Premium only</td><td>1.21+ &#10003;</td></tr>
+        <tr><td>Branch protection</td><td>Free (limited)</td><td>Free, more granular</td><td>Free, granular</td></tr>
+        <tr><td>Self-hostable</td><td>No</td><td>Yes (CE edition)</td><td>Yes (very lightweight)</td></tr>
+        <tr><td>Data sovereignty</td><td>US-hosted</td><td>Self-host or EU</td><td>Full control &mdash; ideal for Pillar 2</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <!-- ════ PEOPLE & ROLES ════ -->
+    <div class="page" id="p-people">
+      <div class="page-head"><h1>People &amp; Roles</h1><div class="actions"><button class="btn btn-olive" onclick="openNewCard('person')"><svg><use href="#i-plus"/></svg> Add Person</button></div></div>
+      <div class="info-box"><h4>How roles work</h4><p>Roles in <code>people.json</code> define who can do what in the admin panel. GitHub Teams enforce the same roles at the repository level via CODEOWNERS. Each person's Hylo profile provides their rich community identity.</p></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Person</th><th>GitHub</th><th>Roles</th><th>Communities</th><th>Hylo Profile</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><strong>Dorn Cox</strong><br><span style="color:var(--muted);font-size:.78rem;">Wolfe's Neck / Farm Hack</span></td><td><code>dorncox</code></td><td><span class="status status-pub">Admin</span> <span class="status status-pub">Steward</span></td><td><span class="comm-badge">FH</span><span class="comm-badge">OT</span><span class="comm-badge">GIAA</span></td><td><a href="https://www.hylo.com/members/dorncox" target="_blank">View →</a></td><td><button class="btn btn-ghost"><svg><use href="#i-edit"/></svg></button></td></tr>
+            <tr><td><strong>Kristen Loria</strong><br><span style="color:var(--muted);font-size:.78rem;">Farm Hack Community</span></td><td><code>kristen-loria</code></td><td><span class="status status-pub">Steward</span></td><td><span class="comm-badge">FH</span></td><td><a href="#" target="_blank">View →</a></td><td><button class="btn btn-ghost"><svg><use href="#i-edit"/></svg></button></td></tr>
+            <tr><td><strong>GIAA Secretariat</strong><br><span style="color:var(--muted);font-size:.78rem;">Grassroots Innovations Assembly</span></td><td><code>giaa-admin</code></td><td><span class="status status-pub">Steward</span> <span class="status status-review">Reviewer</span></td><td><span class="comm-badge">GIAA</span></td><td><a href="#" target="_blank">View →</a></td><td><button class="btn btn-ghost"><svg><use href="#i-edit"/></svg></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════ COMMUNITIES ════ -->
+    <div class="page" id="p-communities">
+      <div class="page-head"><h1>Communities</h1><div class="actions"><button class="btn btn-olive"><svg><use href="#i-plus"/></svg> Add Community</button></div></div>
+      <div class="info-box"><h4>How communities work</h4><p>Each community defines a filter configuration. When a community site loads cards from the registry, it filters by its community ID. Adding a community ID tag to a card makes it appear on that community's site. Stewards curate which cards belong to their community.</p></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Community</th><th>ID</th><th>Card Types</th><th>Stewards</th><th>Hylo Group</th><th>Hub URL</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Farm Hack</strong></td><td><code>farmhack</code></td><td>tool, event, library, project</td><td>dorncox, kristen-loria</td><td><a href="https://www.hylo.com/groups/farmhack" target="_blank">Hylo →</a></td><td><a href="#" target="_blank">Site →</a></td></tr>
+            <tr><td><strong>OpenTEAM</strong></td><td><code>openteam</code></td><td>tool, project, dataset, event, library</td><td>dorncox, openteam-admin</td><td><a href="https://www.hylo.com/groups/openteam" target="_blank">Hylo →</a></td><td><a href="https://dornawcox.github.io/Test-37/" target="_blank">Site →</a></td></tr>
+            <tr><td><strong>GIAA</strong></td><td><code>giaa</code></td><td>project, event, tool, library</td><td>giaa-admin</td><td><a href="#" target="_blank">Hylo →</a></td><td><a href="https://www.gia-agroecology.org/" target="_blank">Site →</a></td></tr>
+            <tr><td><strong>Concordance</strong></td><td><code>concordance</code></td><td>tool, library, dataset</td><td>concordance-steward</td><td><a href="#" target="_blank">Hylo →</a></td><td><a href="https://agricultural-knowledge-concordance.github.io/Ag-Knowledge-Concordance/" target="_blank">Site →</a></td></tr>
+            <tr><td><strong>GOAT</strong></td><td><code>goat</code></td><td>tool, event, project</td><td>goat-admin</td><td>—</td><td><a href="https://forum.goatech.org" target="_blank">Forum →</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════ HELP & DOCS ════ -->
+    <div class="page" id="p-help">
+      <div class="page-head"><h1>Help &amp; Documentation</h1></div>
+
+      <div class="help-box">
+        <h4>How the Registry Works</h4>
+        <p>The Commons Card Registry is a single GitHub repository containing JSON data files. Each file holds an array of cards (tools, projects, events, etc.). Community websites fetch these files and filter by their community tags to display relevant content.</p>
+        <p><strong>No one needs to know Git.</strong> The admin panel reads and writes JSON through the GitHub API. Changes appear on all community sites within ~1 minute (the time it takes GitHub Pages to rebuild).</p>
+      </div>
+
+      <div class="help-box">
+        <h4>Creating a New Card</h4>
+        <ol>
+          <li>Click <strong>"New Card"</strong> and select the card type</li>
+          <li>Fill in the required fields (title, description, tags, communities)</li>
+          <li>Click <strong>"Save"</strong> — if you're a steward, it commits directly; if you're a contributor, it creates a pull request for review</li>
+          <li>The card appears on all community sites that match its community tags</li>
+        </ol>
+      </div>
+
+      <div class="help-box">
+        <h4>Making a Card Appear on Multiple Sites</h4>
+        <p>Add community IDs to the card's <code>communities</code> array. For example, a tool tagged <code>["farmhack", "giaa", "openteam"]</code> will appear on all three sites. Only stewards of a community can add/remove that community's tag.</p>
+      </div>
+
+      <div class="help-box">
+        <h4>The "Browse All Communities" Toggle</h4>
+        <p>Every community site includes a toggle that lets visitors see cards from all communities, not just their own. This promotes cross-pollination while keeping the default view curated and focused.</p>
+      </div>
+
+      <div class="info-box">
+        <h4>API Reference: GitHub Contents API</h4>
+        <p>The admin panel uses these GitHub API endpoints:</p>
+        <p><strong>Read:</strong> <code>GET /repos/{owner}/{repo}/contents/data/{file}.json</code></p>
+        <p><strong>Write:</strong> <code>PUT /repos/{owner}/{repo}/contents/data/{file}.json</code> (include <code>sha</code> from read, <code>content</code> as base64, <code>message</code> as commit message)</p>
+        <p><strong>Create PR:</strong> <code>POST /repos/{owner}/{repo}/pulls</code> (first create a branch with <code>POST /repos/{owner}/{repo}/git/refs</code>)</p>
+        <p><strong>Auth:</strong> Include header <code>Authorization: Bearer {token}</code> on all requests.</p>
+      </div>
+    </div>
+
+    <!-- Placeholder pages for other sections -->
+    <div class="page" id="p-projects"><div class="page-head"><h1>Project Cards</h1><div class="actions"><button class="btn btn-olive" onclick="openNewCard('project')"><svg><use href="#i-plus"/></svg> New Project</button></div></div><p style="color:var(--muted);">Project cards follow the same pattern as tool cards. Filtered by project_type: collabathon, pilot, working-group, research.</p></div>
+    <div class="page" id="p-events"><div class="page-head"><h1>Event Cards</h1><div class="actions"><button class="btn btn-olive" onclick="openNewCard('event')"><svg><use href="#i-plus"/></svg> New Event</button></div></div><p style="color:var(--muted);">Event cards include date_start, date_end, location, virtual flag, and registration_url. Shared across community calendars.</p></div>
+    <div class="page" id="p-library"><div class="page-head"><h1>Library Cards</h1><div class="actions"><button class="btn btn-olive" onclick="openNewCard('library')"><svg><use href="#i-plus"/></svg> New Resource</button></div></div><p style="color:var(--muted);">Library cards cover books, papers, frameworks, reports, videos, and datasets. Filtered by media_type and topics.</p></div>
+    <div class="page" id="p-datasets"><div class="page-head"><h1>Dataset Cards</h1><div class="actions"><button class="btn btn-olive" onclick="openNewCard('dataset')"><svg><use href="#i-plus"/></svg> New Dataset</button></div></div><p style="color:var(--muted);">Dataset cards include format, spatial/temporal extent, access tier, provenance, and consent model. Critical for data sovereignty.</p></div>
+    <div class="page" id="p-tags"><div class="page-head"><h1>Tags &amp; Taxonomy</h1></div><p style="color:var(--muted);">Controlled vocabulary for card tags. Categories: hardware, software, protocol, design, event-type, region, license, etc.</p></div>
+  </div>
+</div>
+
+<!-- ════ CARD EDITOR MODAL ════ -->
+<div class="modal-overlay" id="editor-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="editor-title">New Tool Card</h3>
+      <button class="close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Card Type</label>
+          <select id="ed-type" onchange="updateEditorFields()">
+            <option value="tool">Tool Card</option>
+            <option value="project">Project Card</option>
+            <option value="event">Event Card</option>
+            <option value="library">Library Card</option>
+            <option value="dataset">Dataset Card</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Status</label>
+          <select id="ed-status"><option value="draft">Draft</option><option value="review">In Review</option><option value="published">Published</option></select>
+        </div>
+        <div class="form-group"><label>ID (slug)</label><input type="text" id="ed-id" placeholder="hoop-chicken-trailer"><div class="help">URL-safe identifier. Auto-generated from title if blank.</div></div>
+        <div class="form-group"><label>Category</label>
+          <select id="ed-cat"><option value="hardware">Hardware</option><option value="software">Software</option><option value="protocol">Protocol</option><option value="design">Design</option></select>
+        </div>
+        <div class="form-group full"><label>Title</label><input type="text" id="ed-title" placeholder="Hoop Chicken Trailer"></div>
+        <div class="form-group full"><label>Subtitle</label><input type="text" id="ed-sub" placeholder="Pastured Poultry Egg Mobile"></div>
+        <div class="form-group full"><label>Description</label><textarea id="ed-desc" placeholder="A light, simply-built hoop trailer..."></textarea></div>
+        <div class="form-group full">
+          <label>Communities (which sites show this card)</label>
+          <div class="multi-check">
+            <label><input type="checkbox" value="farmhack" checked> Farm Hack</label>
+            <label><input type="checkbox" value="openteam"> OpenTEAM</label>
+            <label><input type="checkbox" value="giaa"> GIAA</label>
+            <label><input type="checkbox" value="concordance"> Concordance</label>
+            <label><input type="checkbox" value="goat"> GOAT</label>
+          </div>
+          <div class="help">Check all communities where this card should appear.</div>
+        </div>
+        <div class="form-group full"><label>Tags (comma-separated)</label><input type="text" id="ed-tags" placeholder="open-hardware, repairable, low-energy, field-tested"></div>
+        <div class="form-group"><label>Region</label><input type="text" id="ed-region" placeholder="northeast"></div>
+        <div class="form-group"><label>License</label>
+          <select><option>CC-BY-4.0</option><option>CC-BY-SA-4.0</option><option>CC0</option><option>MIT</option><option>GPL-3.0</option><option>CERN-OHL</option></select>
+        </div>
+        <div class="form-group"><label>Steward Name</label><input type="text" id="ed-steward" placeholder="Dorn Cox"></div>
+        <div class="form-group"><label>Steward Hylo Profile</label><input type="url" id="ed-hylo" placeholder="https://www.hylo.com/members/..."></div>
+        <div class="form-group full"><label>Canonical URL</label><input type="url" id="ed-url" placeholder="https://farmhack.org/tools/..."></div>
+        <div class="form-group"><label>Discussion Link</label><input type="url" id="ed-discuss" placeholder="https://forum.goatech.org/t/..."></div>
+        <div class="form-group"><label>Source Repository</label><input type="url" id="ed-repo" placeholder="https://github.com/..."></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-ghost">Save as Draft</button>
+      <button class="btn btn-olive" onclick="saveCard()">Save &amp; Publish</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ============================================================
+// GIT PLATFORM ABSTRACTION LAYER
+// Supports GitHub, GitLab, and Gitea/Forgejo/Codeberg
+// Each adapter: getUser, getRepoInfo, readFile, writeFile,
+//   listPRs, createBranch, createPR
+// ============================================================
+
+const GitAdapters = {
+
+  // ---- GITHUB ----
+  github: {
+    name: 'GitHub',
+    base: () => 'https://api.github.com',
+    hdrs: (t) => ({ 'Authorization': 'Bearer ' + t, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' }),
+
+    async getUser(token) {
+      const r = await fetch(this.base() + '/user', { headers: this.hdrs(token) });
+      if (!r.ok) throw new Error('Invalid GitHub token');
+      const u = await r.json();
+      return { login: u.login, name: u.name || u.login, avatar: u.avatar_url, url: u.html_url };
+    },
+
+    async getRepoInfo(token, repo) {
+      const r = await fetch(this.base() + '/repos/' + repo, { headers: this.hdrs(token) });
+      if (!r.ok) throw new Error('Cannot access repo: ' + repo);
+      const d = await r.json();
+      return { name: d.full_name, url: d.html_url, permissions: d.permissions || {}, default_branch: d.default_branch };
+    },
+
+    async readFile(token, repo, path, branch) {
+      const r = await fetch(this.base() + '/repos/' + repo + '/contents/' + path + '?ref=' + branch, { headers: this.hdrs(token) });
+      if (!r.ok) return { exists: false, content: null, sha: null };
+      const d = await r.json();
+      return { exists: true, content: JSON.parse(atob(d.content)), sha: d.sha };
+    },
+
+    async writeFile(token, repo, path, content, message, branch, sha) {
+      const body = { message: message, content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), branch: branch };
+      if (sha) body.sha = sha;
+      const r = await fetch(this.base() + '/repos/' + repo + '/contents/' + path, {
+        method: 'PUT', headers: this.hdrs(token), body: JSON.stringify(body)
+      });
+      if (!r.ok) { const e = await r.json(); throw new Error(e.message || 'Write failed'); }
+      return true;
+    },
+
+    async listPRs(token, repo) {
+      const r = await fetch(this.base() + '/repos/' + repo + '/pulls?state=open', { headers: this.hdrs(token) });
+      if (!r.ok) return [];
+      return (await r.json()).map(function(p) { return { number: p.number, title: p.title, author: p.user.login, url: p.html_url, created: p.created_at }; });
+    },
+
+    async createBranch(token, repo, branchName, fromBranch) {
+      var refR = await fetch(this.base() + '/repos/' + repo + '/git/ref/heads/' + fromBranch, { headers: this.hdrs(token) });
+      if (!refR.ok) throw new Error('Cannot read base branch');
+      var sha = (await refR.json()).object.sha;
+      var r = await fetch(this.base() + '/repos/' + repo + '/git/refs', {
+        method: 'POST', headers: this.hdrs(token),
+        body: JSON.stringify({ ref: 'refs/heads/' + branchName, sha: sha })
+      });
+      if (!r.ok) throw new Error('Cannot create branch');
+      return true;
+    },
+
+    async createPR(token, repo, title, head, base, body) {
+      var r = await fetch(this.base() + '/repos/' + repo + '/pulls', {
+        method: 'POST', headers: this.hdrs(token),
+        body: JSON.stringify({ title: title, head: head, base: base, body: body })
+      });
+      if (!r.ok) throw new Error('Cannot create pull request');
+      var d = await r.json();
+      return { number: d.number, url: d.html_url };
+    },
+
+    prTerm: 'Pull Request',
+    prTermPlural: 'Pull Requests'
+  },
+
+  // ---- GITLAB ----
+  gitlab: {
+    name: 'GitLab',
+    _inst: 'https://gitlab.com',
+    setInstance: function(u) { this._inst = u.replace(/\/+$/, ''); },
+    base: function() { return this._inst; },
+    hdrs: (t) => ({ 'PRIVATE-TOKEN': t, 'Content-Type': 'application/json' }),
+    pid: (repo) => encodeURIComponent(repo),
+
+    async getUser(token) {
+      var r = await fetch(this.base() + '/api/v4/user', { headers: this.hdrs(token) });
+      if (!r.ok) throw new Error('Invalid GitLab token');
+      var u = await r.json();
+      return { login: u.username, name: u.name || u.username, avatar: u.avatar_url, url: u.web_url };
+    },
+
+    async getRepoInfo(token, repo) {
+      var r = await fetch(this.base() + '/api/v4/projects/' + this.pid(repo), { headers: this.hdrs(token) });
+      if (!r.ok) throw new Error('Cannot access project: ' + repo);
+      var d = await r.json();
+      var perms = d.permissions || {};
+      var lvl = Math.max((perms.project_access || {}).access_level || 0, (perms.group_access || {}).access_level || 0);
+      return { name: d.path_with_namespace, url: d.web_url, permissions: { admin: lvl >= 40, push: lvl >= 30, pull: true }, default_branch: d.default_branch };
+    },
+
+    async readFile(token, repo, path, branch) {
+      var url = this.base() + '/api/v4/projects/' + this.pid(repo) + '/repository/files/' + encodeURIComponent(path) + '?ref=' + branch;
+      var r = await fetch(url, { headers: this.hdrs(token) });
+      if (!r.ok) return { exists: false, content: null, sha: null };
+      var d = await r.json();
+      return { exists: true, content: JSON.parse(atob(d.content)), sha: d.blob_id };
+    },
+
+    async writeFile(token, repo, path, content, message, branch, sha) {
+      var method = sha ? 'PUT' : 'POST';
+      var url = this.base() + '/api/v4/projects/' + this.pid(repo) + '/repository/files/' + encodeURIComponent(path);
+      var r = await fetch(url, {
+        method: method, headers: this.hdrs(token),
+        body: JSON.stringify({ branch: branch, content: JSON.stringify(content, null, 2), commit_message: message, encoding: 'text' })
+      });
+      if (!r.ok) { var e = await r.json(); throw new Error(e.message || 'Write failed'); }
+      return true;
+    },
+
+    async listPRs(token, repo) {
+      var r = await fetch(this.base() + '/api/v4/projects/' + this.pid(repo) + '/merge_requests?state=opened', { headers: this.hdrs(token) });
+      if (!r.ok) return [];
+      return (await r.json()).map(function(m) { return { number: m.iid, title: m.title, author: m.author.username, url: m.web_url, created: m.created_at }; });
+    },
+
+    async createBranch(token, repo, branchName, fromBranch) {
+      var r = await fetch(this.base() + '/api/v4/projects/' + this.pid(repo) + '/repository/branches', {
+        method: 'POST', headers: this.hdrs(token),
+        body: JSON.stringify({ branch: branchName, ref: fromBranch })
+      });
+      if (!r.ok) throw new Error('Cannot create branch');
+      return true;
+    },
+
+    async createPR(token, repo, title, sourceBranch, targetBranch, description) {
+      var r = await fetch(this.base() + '/api/v4/projects/' + this.pid(repo) + '/merge_requests', {
+        method: 'POST', headers: this.hdrs(token),
+        body: JSON.stringify({ title: title, source_branch: sourceBranch, target_branch: targetBranch, description: description })
+      });
+      if (!r.ok) throw new Error('Cannot create merge request');
+      var d = await r.json();
+      return { number: d.iid, url: d.web_url };
+    },
+
+    prTerm: 'Merge Request',
+    prTermPlural: 'Merge Requests'
+  },
+
+  // ---- GITEA / FORGEJO / CODEBERG ----
+  gitea: {
+    name: 'Gitea',
+    _inst: 'https://codeberg.org',
+    setInstance: function(u) { this._inst = u.replace(/\/+$/, ''); },
+    base: function() { return this._inst; },
+    hdrs: (t) => ({ 'Authorization': 'token ' + t, 'Content-Type': 'application/json' }),
+
+    async getUser(token) {
+      var r = await fetch(this.base() + '/api/v1/user', { headers: this.hdrs(token) });
+      if (!r.ok) throw new Error('Invalid Gitea/Forgejo token');
+      var u = await r.json();
+      return { login: u.login, name: u.full_name || u.login, avatar: u.avatar_url, url: this.base() + '/' + u.login };
+    },
+
+    async getRepoInfo(token, repo) {
+      var r = await fetch(this.base() + '/api/v1/repos/' + repo, { headers: this.hdrs(token) });
+      if (!r.ok) throw new Error('Cannot access repo: ' + repo);
+      var d = await r.json();
+      return { name: d.full_name, url: d.html_url, permissions: d.permissions || {}, default_branch: d.default_branch };
+    },
+
+    async readFile(token, repo, path, branch) {
+      var r = await fetch(this.base() + '/api/v1/repos/' + repo + '/contents/' + path + '?ref=' + branch, { headers: this.hdrs(token) });
+      if (!r.ok) return { exists: false, content: null, sha: null };
+      var d = await r.json();
+      return { exists: true, content: JSON.parse(atob(d.content)), sha: d.sha };
+    },
+
+    async writeFile(token, repo, path, content, message, branch, sha) {
+      var body = { message: message, content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), branch: branch };
+      if (sha) body.sha = sha;
+      var method = sha ? 'PUT' : 'POST';
+      var r = await fetch(this.base() + '/api/v1/repos/' + repo + '/contents/' + path, {
+        method: method, headers: this.hdrs(token), body: JSON.stringify(body)
+      });
+      if (!r.ok) { var e = await r.json(); throw new Error(e.message || 'Write failed'); }
+      return true;
+    },
+
+    async listPRs(token, repo) {
+      var r = await fetch(this.base() + '/api/v1/repos/' + repo + '/pulls?state=open', { headers: this.hdrs(token) });
+      if (!r.ok) return [];
+      var self = this;
+      return (await r.json()).map(function(p) { return { number: p.number, title: p.title, author: p.user.login, url: p.html_url || (self.base() + '/' + repo + '/pulls/' + p.number), created: p.created_at }; });
+    },
+
+    async createBranch(token, repo, branchName, fromBranch) {
+      var r = await fetch(this.base() + '/api/v1/repos/' + repo + '/branches', {
+        method: 'POST', headers: this.hdrs(token),
+        body: JSON.stringify({ new_branch_name: branchName, old_branch_name: fromBranch })
+      });
+      if (!r.ok) throw new Error('Cannot create branch');
+      return true;
+    },
+
+    async createPR(token, repo, title, head, base, body) {
+      var r = await fetch(this.base() + '/api/v1/repos/' + repo + '/pulls', {
+        method: 'POST', headers: this.hdrs(token),
+        body: JSON.stringify({ title: title, head: head, base: base, body: body })
+      });
+      if (!r.ok) throw new Error('Cannot create pull request');
+      var d = await r.json();
+      return { number: d.number, url: d.html_url || (this.base() + '/' + repo + '/pulls/' + d.number) };
+    },
+
+    prTerm: 'Pull Request',
+    prTermPlural: 'Pull Requests'
+  }
+};
+
+// ============================================================
+// CONFIG MANAGEMENT
+// ============================================================
+
+function getConfig() {
+  return {
+    platform: document.getElementById('cfg-platform').value,
+    instance: (document.getElementById('cfg-instance') || {}).value || '',
+    token: document.getElementById('cfg-token').value,
+    repo: document.getElementById('cfg-repo').value,
+    branch: document.getElementById('cfg-branch').value || 'main',
+    pagesUrl: (document.getElementById('cfg-pages-url') || {}).value || ''
+  };
+}
+
+function getAdapter() {
+  var cfg = getConfig();
+  var adapter = GitAdapters[cfg.platform];
+  if (cfg.platform !== 'github' && cfg.instance) {
+    adapter.setInstance(cfg.instance);
+  }
+  return adapter;
+}
+
+function saveConfig() {
+  var cfg = getConfig();
+  var keys = { reg_platform: cfg.platform, reg_instance: cfg.instance, reg_token: cfg.token, reg_repo: cfg.repo, reg_branch: cfg.branch, reg_pages: cfg.pagesUrl };
+  for (var k in keys) sessionStorage.setItem(k, keys[k]);
+  document.getElementById('conn-result').innerHTML = '<span style="color:var(--olive)">\u2713 Configuration saved to session.</span>';
+}
+
+function restoreConfig() {
+  var map = { 'cfg-platform': 'reg_platform', 'cfg-token': 'reg_token', 'cfg-repo': 'reg_repo', 'cfg-branch': 'reg_branch', 'cfg-instance': 'reg_instance', 'cfg-pages-url': 'reg_pages' };
+  for (var elId in map) {
+    var val = sessionStorage.getItem(map[elId]);
+    var el = document.getElementById(elId);
+    if (val && el) el.value = val;
+  }
+  onPlatformChange();
+}
+
+// ============================================================
+// PLATFORM-SPECIFIC HELP TEXT
+// ============================================================
+
+var GUIDES = {
+  github: {
+    token: '<ol><li>Go to <a href="https://github.com/settings/tokens" target="_blank">GitHub Settings \u2192 Developer Settings \u2192 Personal Access Tokens</a></li><li>Click <strong>Generate new token (classic)</strong></li><li>Name: <code>commons-registry-admin</code></li><li>Scope: <code>repo</code> (full control)</li><li>Copy the <code>ghp_...</code> token and paste above</li></ol>',
+    protection: '<ol><li><strong>Settings \u2192 Branches \u2192 Add rule</strong> for <code>main</code></li><li>Enable: <em>Require pull request reviews</em> (1 approval)</li><li>Enable: <em>Require review from Code Owners</em></li><li>Enable: <em>Require status checks</em> (select <code>validate</code>)</li></ol><p style="font-size:.82rem;">Admins can bypass via "Allow specified actors."</p>',
+    teams: '<ol><li><strong>Organization \u2192 Teams \u2192 New Team</strong></li><li>Create: <code>registry-admins</code>, <code>farmhack-stewards</code>, <code>openteam-stewards</code>, <code>giaa-stewards</code>, <code>concordance-stewards</code></li><li>Add members, grant <strong>Write</strong> access to the registry repo</li></ol>',
+    pages: '<ol><li><strong>Settings \u2192 Pages</strong></li><li>Source: Deploy from branch <code>main</code>, folder <code>/</code></li><li>Live in ~1 minute at <code>https://owner.github.io/repo/</code></li></ol><p>Community sites fetch JSON from this URL. No API keys needed for reading.</p>'
+  },
+  gitlab: {
+    token: '<ol><li>Go to <a href="https://gitlab.com/-/user_settings/personal_access_tokens" target="_blank">GitLab \u2192 User Settings \u2192 Access Tokens</a></li><li>Name: <code>commons-registry-admin</code></li><li>Scopes: <code>api</code>, <code>read_repository</code>, <code>write_repository</code></li><li>Copy the <code>glpat-...</code> token</li></ol><p style="font-size:.82rem;"><strong>Advantage:</strong> GitLab supports PKCE OAuth \u2014 no server-side proxy needed for production OAuth.</p>',
+    protection: '<ol><li><strong>Settings \u2192 Repository \u2192 Protected Branches</strong></li><li>Protect <code>main</code></li><li>Allowed to merge: <em>Maintainers</em></li><li>Allowed to push: <em>No one</em> (forces merge requests)</li><li>Require 1+ approval</li></ol><p style="font-size:.82rem;">GitLab Free has more granular protection than GitHub Free. CODEOWNERS enforcement requires Premium.</p>',
+    teams: '<ol><li><strong>Group \u2192 Members \u2192 Invite</strong></li><li>Create a GitLab Group for your organization</li><li>Use subgroups or roles: Guest, Reporter, Developer, Maintainer, Owner</li><li>Map: Developer = Contributor, Maintainer = Steward, Owner = Admin</li></ol><p style="font-size:.82rem;">GitLab uses Groups and Roles instead of Teams.</p>',
+    pages: '<p>GitLab Pages requires a CI pipeline. The <code>.gitlab-ci.yml</code> above includes a <code>pages:</code> job that copies data files to <code>public/</code>.</p><p>Live at <code>https://username.gitlab.io/repo/</code> after first pipeline succeeds.</p>'
+  },
+  gitea: {
+    token: '<ol><li>Go to <strong>User Settings \u2192 Applications</strong> on your Gitea instance</li><li>Under "Manage Access Tokens," name: <code>commons-registry-admin</code></li><li>Permissions: <code>repo</code> (read/write)</li><li>Click <strong>Generate Token</strong></li></ol><p style="font-size:.82rem;">For <strong>Codeberg</strong>: same at <a href="https://codeberg.org/user/settings/applications" target="_blank">codeberg.org/user/settings/applications</a>. For <strong>Forgejo</strong>: identical to Gitea.</p>',
+    protection: '<ol><li><strong>Repository Settings \u2192 Branches \u2192 Branch Protection</strong></li><li>Select <code>main</code></li><li>Enable: <em>Require pull request reviews</em></li><li>Required approvals: 1</li><li>Enable: <em>Block push</em></li></ol><p style="font-size:.82rem;">Gitea/Forgejo offer full protection on all tiers. CODEOWNERS in 1.21+.</p>',
+    teams: '<ol><li><strong>Organization Settings \u2192 Teams \u2192 New Team</strong></li><li>Create teams matching community steward groups</li><li>Permissions: Read, Write, Admin</li><li>Assign repos to each team</li></ol><p style="font-size:.82rem;">Gitea Teams work like GitHub Teams \u2014 same concept.</p>',
+    pages: '<p><strong>Gitea 1.17+</strong> has built-in Pages (may need admin to enable).</p><p><strong>Codeberg</strong> has Pages built-in \u2014 push to <code>pages</code> branch.</p><p><strong>Self-hosted:</strong> Point nginx/Caddy at the raw file URLs. This aligns with <strong>Pillar 2</strong> \u2014 community-managed infrastructure.</p>'
+  }
+};
+
+function onPlatformChange() {
+  var p = document.getElementById('cfg-platform').value;
+  document.getElementById('cfg-instance-wrap').style.display = (p !== 'github') ? '' : 'none';
+
+  var tok = document.getElementById('cfg-token');
+  if (p === 'github') tok.placeholder = 'ghp_xxxxxxxxxxxxxxxxxxxx';
+  else if (p === 'gitlab') tok.placeholder = 'glpat-xxxxxxxxxxxxxxxxxxxx';
+  else tok.placeholder = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+
+  var g = GUIDES[p];
+  document.getElementById('guide-token-body').innerHTML = g.token;
+  document.getElementById('guide-protection-body').innerHTML = g.protection;
+  document.getElementById('guide-teams-body').innerHTML = g.teams;
+  document.getElementById('guide-pages-body').innerHTML = g.pages;
+
+  var names = { github: 'GitHub', gitlab: 'GitLab', gitea: 'Gitea' };
+  document.querySelector('.topbar .env').textContent = 'ADMIN \u00b7 ' + names[p];
+}
+
+function showCI(btn, platform) {
+  btn.closest('.filter-rail').querySelectorAll('.chip').forEach(function(c) { c.classList.remove('on'); });
+  btn.classList.add('on');
+  ['github','gitlab','gitea'].forEach(function(p) {
+    var el = document.getElementById('ci-' + p);
+    if (el) el.style.display = (p === platform) ? '' : 'none';
+  });
+}
+
+// ============================================================
+// CORE ACTIONS (use adapter abstraction)
+// ============================================================
+
+async function testConnection() {
+  var cfg = getConfig();
+  var adapter = getAdapter();
+  var out = document.getElementById('conn-result');
+  if (!cfg.token) { out.innerHTML = '<span style="color:var(--red)">Enter a token first.</span>'; return; }
+  out.innerHTML = '<span style="color:var(--muted)">Connecting to ' + adapter.name + '...</span>';
+  try {
+    var user = await adapter.getUser(cfg.token);
+    var repo = await adapter.getRepoInfo(cfg.token, cfg.repo);
+    document.getElementById('user-name').textContent = user.login;
+    document.getElementById('user-avatar').textContent = user.login.substring(0, 2).toUpperCase();
+    var perm = repo.permissions.admin ? 'Admin' : repo.permissions.push ? 'Write' : 'Read';
+    out.innerHTML = '<span style="color:var(--olive)">\u2713 Connected as <strong>' + user.login + '</strong> to <strong>' + repo.name + '</strong> (' + perm + ') via ' + adapter.name + '</span>';
+    saveConfig();
+  } catch (e) {
+    out.innerHTML = '<span style="color:var(--red)">\u2717 ' + e.message + '</span>';
+  }
+}
+
+async function saveCard() {
+  var cfg = getConfig();
+  var adapter = getAdapter();
+  if (!cfg.token || !cfg.repo) { alert('Connect to your Git platform first (Setup & Config).'); return; }
+
+  var type = document.getElementById('ed-type').value;
+  var filePath = 'data/' + type + 's.json';
+
+  var card = {
+    id: document.getElementById('ed-id').value || document.getElementById('ed-title').value.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    type: type,
+    title: document.getElementById('ed-title').value,
+    subtitle: document.getElementById('ed-sub').value,
+    description: document.getElementById('ed-desc').value,
+    status: document.getElementById('ed-status').value,
+    communities: Array.from(document.querySelectorAll('#editor-modal .multi-check input:checked')).map(function(cb) { return cb.value; }),
+    tags: document.getElementById('ed-tags').value.split(',').map(function(t) { return t.trim(); }).filter(Boolean),
+    category: document.getElementById('ed-cat').value,
+    region: document.getElementById('ed-region').value,
+    steward: { name: document.getElementById('ed-steward').value, hylo_profile: document.getElementById('ed-hylo').value },
+    links: { canonical: document.getElementById('ed-url').value, discussion: document.getElementById('ed-discuss').value, source_repo: document.getElementById('ed-repo').value },
+    dates: { created: new Date().toISOString().split('T')[0], updated: new Date().toISOString().split('T')[0] },
+    metadata: { license: 'CC-BY-4.0' }
+  };
+
+  try {
+    var file = await adapter.readFile(cfg.token, cfg.repo, filePath, cfg.branch);
+    var cards = file.exists ? file.content : [];
+    if (!Array.isArray(cards)) cards = [];
+
+    var idx = cards.findIndex(function(c) { return c.id === card.id; });
+    if (idx >= 0) {
+      var prev = cards[idx];
+      cards[idx] = Object.assign({}, prev, card);
+      cards[idx].dates = Object.assign({}, prev.dates, { updated: card.dates.updated });
+    } else {
+      cards.push(card);
+    }
+
+    var verb = idx >= 0 ? 'Update' : 'Add';
+    await adapter.writeFile(cfg.token, cfg.repo, filePath, cards, verb + ' ' + type + ' card: ' + card.title, cfg.branch, file.sha);
+    alert('Card saved via ' + adapter.name + '! Community sites will update after Pages rebuilds.');
+    closeModal();
+  } catch (e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+// ============================================================
+// UI: NAVIGATION, MODALS, TABLE FILTERING
+// ============================================================
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.sidebar .nav-item').forEach(function(n) { n.classList.remove('active'); });
+  var page = document.getElementById('p-' + id);
+  if (page) page.classList.add('active');
+  if (event && event.currentTarget) event.currentTarget.classList.add('active');
+}
+
+function filterTable(input, tableId) {
+  var q = input.value.toLowerCase();
+  document.querySelectorAll('#' + tableId + ' tbody tr').forEach(function(tr) {
+    tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+function filterType(btn, type, tableId) {
+  btn.closest('.tbl-head').querySelectorAll('.chip').forEach(function(c) { c.classList.remove('on'); });
+  btn.classList.add('on');
+  document.querySelectorAll('#' + tableId + ' tbody tr').forEach(function(tr) {
+    tr.style.display = (type === 'all' || tr.dataset.type === type) ? '' : 'none';
+  });
+}
+
+function openNewCard(type) {
+  document.getElementById('editor-modal').classList.add('open');
+  document.getElementById('editor-title').textContent = 'New ' + (type || 'Tool') + ' Card';
+  if (type) document.getElementById('ed-type').value = type;
+}
+
+function openEditor(type, id) {
+  document.getElementById('editor-modal').classList.add('open');
+  document.getElementById('editor-title').textContent = 'Edit: ' + id;
+}
+
+function closeModal() {
+  document.getElementById('editor-modal').classList.remove('open');
+}
+
+// ---- INIT ----
+restoreConfig();
+</script>
+
+</body>
+</html>

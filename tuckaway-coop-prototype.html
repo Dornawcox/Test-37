@@ -1,0 +1,1300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tuckaway Cooperative Riding Club – Prototype</title>
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- React (UMD) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Babel for in-browser JSX (prototype only) -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    .card { border: 1px solid rgb(226 232 240); border-radius: 16px; background: white; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .btn  { border-radius: 12px; padding: 10px 12px; font-weight: 600; }
+    .btn-primary { background: #111827; color: white; }
+    .btn-muted { background: rgb(241 245 249); color: rgb(15 23 42); }
+    .input { border: 1px solid rgb(226 232 240); border-radius: 12px; padding: 10px 12px; width: 100%; }
+    .label { font-size: 12px; color: rgb(71 85 105); font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+    .pill { font-size: 12px; border-radius: 999px; padding: 4px 10px; border: 1px solid rgb(226 232 240); background: rgb(248 250 252); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useEffect, useMemo, useState } = React;
+
+    // ---------- Storage ----------
+    const STORE_KEY = "tuckaway_coop_prototype_v1";
+
+    function uid(prefix="id") {
+      return `${prefix}_${Math.random().toString(16).slice(2)}_${Date.now().toString(16)}`;
+    }
+
+    function loadStore() {
+      try {
+        const raw = localStorage.getItem(STORE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch {
+        return null;
+      }
+    }
+
+    function saveStore(store) {
+      localStorage.setItem(STORE_KEY, JSON.stringify(store));
+    }
+
+    function todayISO() {
+      const d = new Date();
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    const seed = () => ({
+      meta: {
+        orgName: "Tuckaway Cooperative Riding Club (Prototype)",
+        createdAt: new Date().toISOString(),
+        demoNotice: "Prototype: localStorage only. No real e-sign. No PHI/PCI. For review/demo."
+      },
+      auth: {
+        currentUser: { name: "Demo Admin", role: "Admin" } // Admin | Farm | Member | Guest
+      },
+      members: [
+        { id: uid("mem"), name: "Rachel", role: "Owner-Member", phone: "", email: "", notes: "" },
+        { id: uid("mem"), name: "Chris", role: "Owner-Member", phone: "", email: "", notes: "" },
+        { id: uid("mem"), name: "Dorn", role: "Non-Owner Member", phone: "", email: "", notes: "" }
+      ],
+      horses: [
+        { id: uid("horse"), name: "Barry", ownerMemberId: null, vet: "", farrier: "", emergency: "", feedNotes: "", turnoutNotes: "" },
+        { id: uid("horse"), name: "Badger", ownerMemberId: null, vet: "", farrier: "", emergency: "", feedNotes: "", turnoutNotes: "" }
+      ],
+      documents: [
+        { id: uid("doc"), type: "Agreement", title: "Cooperative Boarding & Riding Club Agreement", status: "Draft", link: "", signedBy: "", signedAt: "", notes: "Track versions + signatures." },
+        { id: uid("doc"), type: "Release", title: "Assumption of Risk, Waiver & Release of Liability", status: "Draft", link: "", signedBy: "", signedAt: "", notes: "Capture per-person signing (demo only)." }
+      ],
+      protocols: [
+        { id: uid("prot"), category: "Safety", title: "Helmets", body: "Helmets required for minors; strongly encouraged for all riders/handlers. (Prototype text)", updatedAt: new Date().toISOString() },
+        { id: uid("prot"), category: "Communications", title: "Barn Current norms", body: "Use chat for quick coordination; avoid big conflicts in group. (Prototype text)", updatedAt: new Date().toISOString() }
+      ],
+      schedule: [
+        { id: uid("evt"), date: todayISO(), start: "17:00", end: "18:30", title: "Arena: lesson block (demo)", location: "Indoor", tags: ["Arena"], notes: "" },
+      ],
+      chores: [
+        { id: uid("chore"), date: todayISO(), memberName: "Rachel", task: "AM hay/grain/water", hours: 0.5, paid: false, notes: "Demo entry" },
+      ],
+      careLog: [
+        { id: uid("care"), date: todayISO(), horses: "Barry/Badger", caregiver: "Rachel", items: "AM hay, grain, water; PM hay, grain, water", notes: "" }
+      ],
+      barnCircle: {
+        proposals: [
+          { id: uid("prop"), createdAt: new Date().toISOString(), title: "Demo Proposal: Update turnout schedule", proposer: "Chris", status: "Open", decision: "", notes: "" }
+        ]
+      },
+      comms: [
+        { id: uid("msg"), createdAt: new Date().toISOString(), author: "Demo Admin", channel: "Barn Current", text: "Welcome! This is a prototype message board for quick updates." }
+      ],
+      finance: {
+        barnFacilitiesFeePerHorse: 250,
+        baseLaborRatePerHour: 35,
+        choreHoursPerMonth: 4,
+        choreBuyoutPerMonth: 160
+      }
+    });
+
+    // ---------- UI helpers ----------
+    function SectionTitle({ title, subtitle, right }) {
+      return (
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-extrabold tracking-tight">{title}</h2>
+            {subtitle ? <p className="text-sm text-slate-600 mt-1">{subtitle}</p> : null}
+          </div>
+          <div className="shrink-0">{right}</div>
+        </div>
+      );
+    }
+
+    function Card({ children }) {
+      return <div className="card p-5">{children}</div>;
+    }
+
+    function Badge({ children }) {
+      return <span className="pill">{children}</span>;
+    }
+
+    function Divider() {
+      return <div className="h-px bg-slate-200 my-4"></div>;
+    }
+
+    function Empty({ title, hint }) {
+      return (
+        <div className="border border-dashed border-slate-300 rounded-2xl p-6 text-center bg-white">
+          <div className="font-bold">{title}</div>
+          <div className="text-sm text-slate-600 mt-1">{hint}</div>
+        </div>
+      );
+    }
+
+    // ---------- Main App ----------
+    function App() {
+      const [store, setStore] = useState(() => loadStore() || seed());
+      const [tab, setTab] = useState("Dashboard");
+      const [search, setSearch] = useState("");
+
+      useEffect(() => { saveStore(store); }, [store]);
+
+      const role = store.auth.currentUser.role;
+
+      const tabs = useMemo(() => ([
+        "Dashboard",
+        "Members",
+        "Horses",
+        "Documents",
+        "Schedule",
+        "Chores & Work Logs",
+        "Care Log",
+        "Protocols",
+        "Barn Circle",
+        "Comms",
+        "Admin"
+      ]), []);
+
+      function update(path, value) {
+        setStore(prev => {
+          const next = structuredClone(prev);
+          let ref = next;
+          for (let i = 0; i < path.length - 1; i++) ref = ref[path[i]];
+          ref[path[path.length - 1]] = value;
+          return next;
+        });
+      }
+
+      function resetAll() {
+        if (!confirm("Reset prototype data? This clears localStorage for this app.")) return;
+        localStorage.removeItem(STORE_KEY);
+        setStore(seed());
+      }
+
+      function exportJSON() {
+        const blob = new Blob([JSON.stringify(store, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "tuckaway-coop-prototype-export.json";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function importJSON(file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const parsed = JSON.parse(reader.result);
+            setStore(parsed);
+          } catch (e) {
+            alert("Import failed: invalid JSON.");
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      const filtered = (items, keys) => {
+        const q = search.trim().toLowerCase();
+        if (!q) return items;
+        return items.filter(it =>
+          keys.some(k => String(it[k] || "").toLowerCase().includes(q))
+        );
+      };
+
+      return (
+        <div className="max-w-6xl mx-auto p-5 md:p-8">
+          <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <div className="text-sm text-slate-600">{store.meta.demoNotice}</div>
+              <h1 className="text-2xl md:text-3xl font-black tracking-tight mt-1">
+                {store.meta.orgName}
+              </h1>
+              <div className="flex flex-wrap gap-2 mt-2">
+                <Badge>Role: {role}</Badge>
+                <Badge className="mono">localStorage</Badge>
+                <Badge>Single-file GitHub Pages</Badge>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <input
+                className="input w-64"
+                placeholder="Search (name, horse, doc…)…"
+                value={search}
+                onChange={(e)=>setSearch(e.target.value)}
+              />
+              <button className="btn btn-muted" onClick={exportJSON}>Export</button>
+              <label className="btn btn-muted cursor-pointer">
+                Import
+                <input type="file" accept="application/json" className="hidden"
+                  onChange={(e)=> e.target.files?.[0] && importJSON(e.target.files[0])} />
+              </label>
+              <button className="btn btn-primary" onClick={resetAll}>Reset</button>
+            </div>
+          </header>
+
+          <nav className="mt-6 flex flex-wrap gap-2">
+            {tabs.map(t => (
+              <button
+                key={t}
+                onClick={()=>setTab(t)}
+                className={"btn " + (tab === t ? "btn-primary" : "btn-muted")}
+              >
+                {t}
+              </button>
+            ))}
+          </nav>
+
+          <main className="mt-6 grid gap-6">
+            {tab === "Dashboard" && (
+              <Dashboard store={store} setTab={setTab} />
+            )}
+            {tab === "Members" && (
+              <Members
+                members={filtered(store.members, ["name", "role", "email", "phone", "notes"])}
+                onAdd={(m)=>update(["members"], [m, ...store.members])}
+                onUpdate={(id, patch)=>update(["members"], store.members.map(x => x.id === id ? { ...x, ...patch } : x))}
+                onDelete={(id)=>update(["members"], store.members.filter(x => x.id !== id))}
+              />
+            )}
+            {tab === "Horses" && (
+              <Horses
+                horses={filtered(store.horses, ["name", "vet", "farrier", "emergency", "feedNotes", "turnoutNotes"])}
+                members={store.members}
+                onAdd={(h)=>update(["horses"], [h, ...store.horses])}
+                onUpdate={(id, patch)=>update(["horses"], store.horses.map(x => x.id === id ? { ...x, ...patch } : x))}
+                onDelete={(id)=>update(["horses"], store.horses.filter(x => x.id !== id))}
+              />
+            )}
+            {tab === "Documents" && (
+              <Documents
+                docs={filtered(store.documents, ["type", "title", "status", "signedBy", "notes"])}
+                onAdd={(d)=>update(["documents"], [d, ...store.documents])}
+                onUpdate={(id, patch)=>update(["documents"], store.documents.map(x => x.id === id ? { ...x, ...patch } : x))}
+                onDelete={(id)=>update(["documents"], store.documents.filter(x => x.id !== id))}
+              />
+            )}
+            {tab === "Schedule" && (
+              <Schedule
+                events={filtered(store.schedule, ["date", "title", "location", "tags", "notes"])}
+                onAdd={(e)=>update(["schedule"], [e, ...store.schedule])}
+                onUpdate={(id, patch)=>update(["schedule"], store.schedule.map(x => x.id === id ? { ...x, ...patch } : x))}
+                onDelete={(id)=>update(["schedule"], store.schedule.filter(x => x.id !== id))}
+              />
+            )}
+            {tab === "Chores & Work Logs" && (
+              <Chores
+                chores={filtered(store.chores, ["date", "memberName", "task", "notes"])}
+                finance={store.finance}
+                onUpdateFinance={(patch)=>update(["finance"], { ...store.finance, ...patch })}
+                onAdd={(c)=>update(["chores"], [c, ...store.chores])}
+                onUpdate={(id, patch)=>update(["chores"], store.chores.map(x => x.id === id ? { ...x, ...patch } : x))}
+                onDelete={(id)=>update(["chores"], store.chores.filter(x => x.id !== id))}
+              />
+            )}
+            {tab === "Care Log" && (
+              <CareLog
+                rows={filtered(store.careLog, ["date", "horses", "caregiver", "items", "notes"])}
+                onAdd={(r)=>update(["careLog"], [r, ...store.careLog])}
+                onUpdate={(id, patch)=>update(["careLog"], store.careLog.map(x => x.id === id ? { ...x, ...patch } : x))}
+                onDelete={(id)=>update(["careLog"], store.careLog.filter(x => x.id !== id))}
+              />
+            )}
+            {tab === "Protocols" && (
+              <Protocols
+                protocols={filtered(store.protocols, ["category", "title", "body"])}
+                onAdd={(p)=>update(["protocols"], [p, ...store.protocols])}
+                onUpdate={(id, patch)=>update(["protocols"], store.protocols.map(x => x.id === id ? { ...x, ...patch, updatedAt: new Date().toISOString() } : x))}
+                onDelete={(id)=>update(["protocols"], store.protocols.filter(x => x.id !== id))}
+              />
+            )}
+            {tab === "Barn Circle" && (
+              <BarnCircle
+                proposals={filtered(store.barnCircle.proposals, ["title", "proposer", "status", "decision", "notes"])}
+                onAdd={(p)=>update(["barnCircle","proposals"], [p, ...store.barnCircle.proposals])}
+                onUpdate={(id, patch)=>update(["barnCircle","proposals"], store.barnCircle.proposals.map(x => x.id === id ? { ...x, ...patch } : x))}
+                onDelete={(id)=>update(["barnCircle","proposals"], store.barnCircle.proposals.filter(x => x.id !== id))}
+              />
+            )}
+            {tab === "Comms" && (
+              <Comms
+                messages={filtered(store.comms, ["author", "channel", "text"])}
+                currentUser={store.auth.currentUser}
+                onAdd={(m)=>update(["comms"], [m, ...store.comms])}
+                onDelete={(id)=>update(["comms"], store.comms.filter(x => x.id !== id))}
+              />
+            )}
+            {tab === "Admin" && (
+              <AdminPanel store={store} onUpdateAuth={(u)=>update(["auth","currentUser"], u)} />
+            )}
+          </main>
+
+          <footer className="mt-10 text-xs text-slate-500">
+            Prototype note: this demo mimics key co-op operations. Production: real auth, audit trails, e-sign, secure storage.
+          </footer>
+        </div>
+      );
+    }
+
+    // ---------- Dashboard ----------
+    function Dashboard({ store, setTab }) {
+      const counts = {
+        members: store.members.length,
+        horses: store.horses.length,
+        docs: store.documents.length,
+        events: store.schedule.length,
+        chores: store.chores.length,
+        care: store.careLog.length,
+        protocols: store.protocols.length,
+        proposals: store.barnCircle.proposals.length,
+        comms: store.comms.length
+      };
+
+      const tiles = [
+        ["Members", counts.members, "Manage people, roles, contacts"],
+        ["Horses", counts.horses, "Vet/farrier/emergency + care notes"],
+        ["Documents", counts.docs, "Agreements, releases, addenda"],
+        ["Schedule", counts.events, "Arena/field/trail calendar blocks"],
+        ["Chores & Work Logs", counts.chores, "Hours, paid tasks, buy-outs"],
+        ["Care Log", counts.care, "Daily AM/PM care tracking table"],
+        ["Protocols", counts.protocols, "Safety + barn norms"],
+        ["Barn Circle", counts.proposals, "Proposals + decisions"],
+        ["Comms", counts.comms, "Barn Current message board"]
+      ];
+
+      return (
+        <div className="grid gap-6">
+          <Card>
+            <SectionTitle
+              title="Dashboard"
+              subtitle="Quick entry points into the cooperative’s operating system."
+              right={<button className="btn btn-muted" onClick={()=>setTab("Admin")}>Switch role</button>}
+            />
+            <Divider />
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {tiles.map(([t, n, d]) => (
+                <button
+                  key={t}
+                  className="text-left card p-4 hover:shadow-sm transition"
+                  onClick={()=>setTab(t)}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="font-extrabold">{t}</div>
+                    <div className="pill">{n}</div>
+                  </div>
+                  <div className="text-sm text-slate-600 mt-1">{d}</div>
+                </button>
+              ))}
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle
+              title="Today at a glance"
+              subtitle="In production: closures, conflict warnings, urgent notices."
+            />
+            <Divider />
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="card p-4">
+                <div className="font-bold">Next scheduled event</div>
+                <div className="text-sm text-slate-600 mt-1">
+                  {store.schedule[0] ? `${store.schedule[0].date} • ${store.schedule[0].title}` : "None yet"}
+                </div>
+              </div>
+              <div className="card p-4">
+                <div className="font-bold">Open Barn Circle proposals</div>
+                <div className="text-sm text-slate-600 mt-1">
+                  {store.barnCircle.proposals.filter(p=>p.status==="Open").length}
+                </div>
+              </div>
+              <div className="card p-4">
+                <div className="font-bold">Unsigned docs</div>
+                <div className="text-sm text-slate-600 mt-1">
+                  {store.documents.filter(d=>d.status!=="Signed").length}
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+      );
+    }
+
+    // ---------- Members ----------
+    function Members({ members, onAdd, onUpdate, onDelete }) {
+      const [draft, setDraft] = useState({ name:"", role:"Owner-Member", phone:"", email:"", notes:"" });
+
+      return (
+        <div className="grid gap-6">
+          <Card>
+            <SectionTitle
+              title="Members"
+              subtitle="Track people + roles."
+              right={
+                <button className="btn btn-primary" onClick={()=>{
+                  if (!draft.name.trim()) return alert("Name required");
+                  onAdd({ id: uid("mem"), ...draft });
+                  setDraft({ name:"", role:"Owner-Member", phone:"", email:"", notes:"" });
+                }}>
+                  Add member
+                </button>
+              }
+            />
+            <Divider />
+            <div className="grid md:grid-cols-5 gap-3">
+              <div>
+                <div className="label">Name</div>
+                <input className="input" value={draft.name} onChange={e=>setDraft({...draft, name:e.target.value})} />
+              </div>
+              <div>
+                <div className="label">Role</div>
+                <select className="input" value={draft.role} onChange={e=>setDraft({...draft, role:e.target.value})}>
+                  <option>Owner-Member</option>
+                  <option>Non-Owner Member</option>
+                  <option>Barn Guest</option>
+                </select>
+              </div>
+              <div>
+                <div className="label">Phone</div>
+                <input className="input" value={draft.phone} onChange={e=>setDraft({...draft, phone:e.target.value})} />
+              </div>
+              <div>
+                <div className="label">Email</div>
+                <input className="input" value={draft.email} onChange={e=>setDraft({...draft, email:e.target.value})} />
+              </div>
+              <div>
+                <div className="label">Notes</div>
+                <input className="input" value={draft.notes} onChange={e=>setDraft({...draft, notes:e.target.value})} />
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle title="Member list" subtitle="Edit inline." />
+            <Divider />
+            {members.length === 0 ? (
+              <Empty title="No members yet" hint="Add your first member above." />
+            ) : (
+              <div className="grid gap-3">
+                {members.map(m => (
+                  <div key={m.id} className="card p-4">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                      <div>
+                        <div className="font-extrabold">{m.name} <span className="pill ml-2">{m.role}</span></div>
+                        <div className="text-sm text-slate-600 mt-1">{m.email || "—"} • {m.phone || "—"}</div>
+                      </div>
+                      <div className="flex gap-2">
+                        <button className="btn btn-muted" onClick={()=>onDelete(m.id)}>Delete</button>
+                      </div>
+                    </div>
+                    <Divider />
+                    <div className="grid md:grid-cols-4 gap-3">
+                      <Field label="Role" value={m.role} onChange={(v)=>onUpdate(m.id, { role:v })} />
+                      <Field label="Phone" value={m.phone} onChange={(v)=>onUpdate(m.id, { phone:v })} />
+                      <Field label="Email" value={m.email} onChange={(v)=>onUpdate(m.id, { email:v })} />
+                      <Field label="Notes" value={m.notes} onChange={(v)=>onUpdate(m.id, { notes:v })} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
+      );
+    }
+
+    // ---------- Horses ----------
+    function Horses({ horses, members, onAdd, onUpdate, onDelete }) {
+      const [draft, setDraft] = useState({
+        name:"", ownerMemberId:"", vet:"", farrier:"", emergency:"", feedNotes:"", turnoutNotes:""
+      });
+
+      return (
+        <div className="grid gap-6">
+          <Card>
+            <SectionTitle
+              title="Horses"
+              subtitle="Vet/farrier/emergency + feeding/turnout notes."
+              right={
+                <button className="btn btn-primary" onClick={()=>{
+                  if (!draft.name.trim()) return alert("Horse name required");
+                  onAdd({ id: uid("horse"), ...draft, ownerMemberId: draft.ownerMemberId || null });
+                  setDraft({ name:"", ownerMemberId:"", vet:"", farrier:"", emergency:"", feedNotes:"", turnoutNotes:"" });
+                }}>
+                  Add horse
+                </button>
+              }
+            />
+            <Divider />
+            <div className="grid md:grid-cols-3 gap-3">
+              <div>
+                <div className="label">Horse name</div>
+                <input className="input" value={draft.name} onChange={e=>setDraft({...draft, name:e.target.value})} />
+              </div>
+              <div>
+                <div className="label">Owner-member (optional)</div>
+                <select className="input" value={draft.ownerMemberId} onChange={e=>setDraft({...draft, ownerMemberId:e.target.value})}>
+                  <option value="">—</option>
+                  {members.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
+                </select>
+              </div>
+              <div>
+                <div className="label">Emergency contact</div>
+                <input className="input" value={draft.emergency} onChange={e=>setDraft({...draft, emergency:e.target.value})} />
+              </div>
+              <div>
+                <div className="label">Vet</div>
+                <input className="input" value={draft.vet} onChange={e=>setDraft({...draft, vet:e.target.value})} />
+              </div>
+              <div>
+                <div className="label">Farrier</div>
+                <input className="input" value={draft.farrier} onChange={e=>setDraft({...draft, farrier:e.target.value})} />
+              </div>
+              <div>
+                <div className="label">Feeding notes</div>
+                <input className="input" value={draft.feedNotes} onChange={e=>setDraft({...draft, feedNotes:e.target.value})} />
+              </div>
+              <div className="md:col-span-3">
+                <div className="label">Turnout / handling notes</div>
+                <input className="input" value={draft.turnoutNotes} onChange={e=>setDraft({...draft, turnoutNotes:e.target.value})} />
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle title="Horse list" subtitle="Edit inline." />
+            <Divider />
+            {horses.length === 0 ? (
+              <Empty title="No horses yet" hint="Add your first horse above." />
+            ) : (
+              <div className="grid gap-3">
+                {horses.map(h => (
+                  <div key={h.id} className="card p-4">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                      <div>
+                        <div className="font-extrabold">{h.name}</div>
+                        <div className="text-sm text-slate-600 mt-1">
+                          Owner: {h.ownerMemberId ? (members.find(m=>m.id===h.ownerMemberId)?.name || "—") : "—"}
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <button className="btn btn-muted" onClick={()=>onDelete(h.id)}>Delete</button>
+                      </div>
+                    </div>
+                    <Divider />
+                    <div className="grid md:grid-cols-3 gap-3">
+                      <div>
+                        <div className="label">Owner-member</div>
+                        <select className="input" value={h.ownerMemberId || ""} onChange={e=>onUpdate(h.id, { ownerMemberId: e.target.value || null })}>
+                          <option value="">—</option>
+                          {members.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
+                        </select>
+                      </div>
+                      <Field label="Emergency" value={h.emergency} onChange={(v)=>onUpdate(h.id, { emergency:v })} />
+                      <Field label="Vet" value={h.vet} onChange={(v)=>onUpdate(h.id, { vet:v })} />
+                      <Field label="Farrier" value={h.farrier} onChange={(v)=>onUpdate(h.id, { farrier:v })} />
+                      <Field label="Feeding notes" value={h.feedNotes} onChange={(v)=>onUpdate(h.id, { feedNotes:v })} />
+                      <div className="md:col-span-3">
+                        <Field label="Turnout/handling notes" value={h.turnoutNotes} onChange={(v)=>onUpdate(h.id, { turnoutNotes:v })} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
+      );
+    }
+
+    // ---------- Documents ----------
+    function Documents({ docs, onAdd, onUpdate, onDelete }) {
+      const [draft, setDraft] = useState({ type:"Agreement", title:"", status:"Draft", link:"", signedBy:"", signedAt:"", notes:"" });
+
+      return (
+        <div className="grid gap-6">
+          <Card>
+            <SectionTitle
+              title="Documents"
+              subtitle="Agreements, releases, addenda: track draft → sent → signed."
+              right={
+                <button className="btn btn-primary" onClick={()=>{
+                  if (!draft.title.trim()) return alert("Title required");
+                  onAdd({ id: uid("doc"), ...draft });
+                  setDraft({ type:"Agreement", title:"", status:"Draft", link:"", signedBy:"", signedAt:"", notes:"" });
+                }}>Add document</button>
+              }
+            />
+            <Divider />
+            <div className="grid md:grid-cols-6 gap-3">
+              <div>
+                <div className="label">Type</div>
+                <select className="input" value={draft.type} onChange={e=>setDraft({...draft, type:e.target.value})}>
+                  <option>Agreement</option>
+                  <option>Release</option>
+                  <option>Addendum</option>
+                  <option>Insurance</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div className="md:col-span-2">
+                <div className="label">Title</div>
+                <input className="input" value={draft.title} onChange={e=>setDraft({...draft, title:e.target.value})} />
+              </div>
+              <div>
+                <div className="label">Status</div>
+                <select className="input" value={draft.status} onChange={e=>setDraft({...draft, status:e.target.value})}>
+                  <option>Draft</option>
+                  <option>Sent</option>
+                  <option>Signed</option>
+                </select>
+              </div>
+              <div className="md:col-span-2">
+                <div className="label">Link (PDF/Drive)</div>
+                <input className="input" value={draft.link} onChange={e=>setDraft({...draft, link:e.target.value})} />
+              </div>
+              <div>
+                <div className="label">Signed by</div>
+                <input className="input" value={draft.signedBy} onChange={e=>setDraft({...draft, signedBy:e.target.value})} />
+              </div>
+              <div>
+                <div className="label">Signed at</div>
+                <input className="input" placeholder="YYYY-MM-DD" value={draft.signedAt} onChange={e=>setDraft({...draft, signedAt:e.target.value})} />
+              </div>
+              <div className="md:col-span-4">
+                <div className="label">Notes</div>
+                <input className="input" value={draft.notes} onChange={e=>setDraft({...draft, notes:e.target.value})} />
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle title="Document register" />
+            <Divider />
+            {docs.length === 0 ? (
+              <Empty title="No documents yet" hint="Add agreements/releases above." />
+            ) : (
+              <div className="grid gap-3">
+                {docs.map(d => (
+                  <div key={d.id} className="card p-4">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                      <div>
+                        <div className="font-extrabold">
+                          {d.title} <span className="pill ml-2">{d.type}</span> <span className="pill ml-2">{d.status}</span>
+                        </div>
+                        <div className="text-sm text-slate-600 mt-1">
+                          Signed: {d.signedBy || "—"} {d.signedAt ? `on ${d.signedAt}` : ""}
+                        </div>
+                        {d.link ? <div className="text-sm mt-2"><a className="underline" href={d.link} target="_blank">Open link</a></div> : null}
+                      </div>
+                      <div className="flex gap-2">
+                        <button className="btn btn-muted" onClick={()=>onDelete(d.id)}>Delete</button>
+                      </div>
+                    </div>
+                    <Divider />
+                    <div className="grid md:grid-cols-6 gap-3">
+                      <div>
+                        <div className="label">Type</div>
+                        <select className="input" value={d.type} onChange={e=>onUpdate(d.id, { type:e.target.value })}>
+                          <option>Agreement</option><option>Release</option><option>Addendum</option><option>Insurance</option><option>Other</option>
+                        </select>
+                      </div>
+                      <div className="md:col-span-2">
+                        <Field label="Title" value={d.title} onChange={(v)=>onUpdate(d.id, { title:v })} />
+                      </div>
+                      <div>
+                        <div className="label">Status</div>
+                        <select className="input" value={d.status} onChange={e=>onUpdate(d.id, { status:e.target.value })}>
+                          <option>Draft</option><option>Sent</option><option>Signed</option>
+                        </select>
+                      </div>
+                      <div className="md:col-span-2">
+                        <Field label="Link" value={d.link} onChange={(v)=>onUpdate(d.id, { link:v })} />
+                      </div>
+                      <Field label="Signed by" value={d.signedBy} onChange={(v)=>onUpdate(d.id, { signedBy:v })} />
+                      <Field label="Signed at" value={d.signedAt} onChange={(v)=>onUpdate(d.id, { signedAt:v })} />
+                      <div className="md:col-span-4">
+                        <Field label="Notes" value={d.notes} onChange={(v)=>onUpdate(d.id, { notes:v })} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
+      );
+    }
+
+    // ---------- Schedule ----------
+    function Schedule({ events, onAdd, onUpdate, onDelete }) {
+      const [draft, setDraft] = useState({ date: todayISO(), start:"", end:"", title:"", location:"", tags:"Arena", notes:"" });
+
+      return (
+        <div className="grid gap-6">
+          <Card>
+            <SectionTitle
+              title="Schedule"
+              subtitle="Arena/field blocks, lessons/clinics, closures, work days."
+              right={
+                <button className="btn btn-primary" onClick={()=>{
+                  if (!draft.title.trim()) return alert("Title required");
+                  onAdd({ id: uid("evt"), ...draft, tags: (draft.tags||"").split(",").map(s=>s.trim()).filter(Boolean) });
+                  setDraft({ date: todayISO(), start:"", end:"", title:"", location:"", tags:"Arena", notes:"" });
+                }}>Add event</button>
+              }
+            />
+            <Divider />
+            <div className="grid md:grid-cols-6 gap-3">
+              <Field label="Date" value={draft.date} onChange={(v)=>setDraft({...draft, date:v})} />
+              <Field label="Start" value={draft.start} onChange={(v)=>setDraft({...draft, start:v})} placeholder="HH:MM" />
+              <Field label="End" value={draft.end} onChange={(v)=>setDraft({...draft, end:v})} placeholder="HH:MM" />
+              <div className="md:col-span-2">
+                <Field label="Title" value={draft.title} onChange={(v)=>setDraft({...draft, title:v})} />
+              </div>
+              <Field label="Location" value={draft.location} onChange={(v)=>setDraft({...draft, location:v})} />
+              <div className="md:col-span-2">
+                <Field label="Tags (comma)" value={draft.tags} onChange={(v)=>setDraft({...draft, tags:v})} />
+              </div>
+              <div className="md:col-span-4">
+                <Field label="Notes" value={draft.notes} onChange={(v)=>setDraft({...draft, notes:v})} />
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle title="Upcoming" />
+            <Divider />
+            {events.length === 0 ? (
+              <Empty title="No events yet" hint="Add a lesson block, closure, or work day above." />
+            ) : (
+              <div className="grid gap-3">
+                {events
+                  .slice()
+                  .sort((a,b)=> (a.date+a.start).localeCompare(b.date+b.start))
+                  .map(e => (
+                  <div key={e.id} className="card p-4">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                      <div>
+                        <div className="font-extrabold">{e.title}</div>
+                        <div className="text-sm text-slate-600 mt-1">
+                          {e.date} {e.start ? `• ${e.start}` : ""}{e.end ? `–${e.end}` : ""} • {e.location || "—"}
+                        </div>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {(e.tags || []).map(t => <Badge key={t}>{t}</Badge>)}
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <button className="btn btn-muted" onClick={()=>onDelete(e.id)}>Delete</button>
+                      </div>
+                    </div>
+                    <Divider />
+                    <div className="grid md:grid-cols-6 gap-3">
+                      <Field label="Date" value={e.date} onChange={(v)=>onUpdate(e.id, { date:v })} />
+                      <Field label="Start" value={e.start} onChange={(v)=>onUpdate(e.id, { start:v })} />
+                      <Field label="End" value={e.end} onChange={(v)=>onUpdate(e.id, { end:v })} />
+                      <div className="md:col-span-2">
+                        <Field label="Title" value={e.title} onChange={(v)=>onUpdate(e.id, { title:v })} />
+                      </div>
+                      <Field label="Location" value={e.location} onChange={(v)=>onUpdate(e.id, { location:v })} />
+                      <div className="md:col-span-2">
+                        <Field
+                          label="Tags"
+                          value={(e.tags||[]).join(", ")}
+                          onChange={(v)=>onUpdate(e.id, { tags: v.split(",").map(s=>s.trim()).filter(Boolean) })}
+                        />
+                      </div>
+                      <div className="md:col-span-4">
+                        <Field label="Notes" value={e.notes} onChange={(v)=>onUpdate(e.id, { notes:v })} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
+      );
+    }
+
+    // ---------- Chores ----------
+    function Chores({ chores, finance, onUpdateFinance, onAdd, onUpdate, onDelete }) {
+      const [draft, setDraft] = useState({ date: todayISO(), memberName:"", task:"", hours:1, paid:false, notes:"" });
+
+      const totals = useMemo(() => {
+        const perMember = {};
+        for (const c of chores) {
+          perMember[c.memberName || "—"] = (perMember[c.memberName || "—"] || 0) + Number(c.hours || 0);
+        }
+        return perMember;
+      }, [chores]);
+
+      return (
+        <div className="grid gap-6">
+          <Card>
+            <SectionTitle
+              title="Chores & Work Logs"
+              subtitle="Log work-trade hours + paid tasks."
+              right={
+                <button className="btn btn-primary" onClick={()=>{
+                  if (!draft.memberName.trim()) return alert("Member name required");
+                  if (!draft.task.trim()) return alert("Task required");
+                  onAdd({ id: uid("chore"), ...draft, hours: Number(draft.hours || 0) });
+                  setDraft({ date: todayISO(), memberName:"", task:"", hours:1, paid:false, notes:"" });
+                }}>Add log</button>
+              }
+            />
+            <Divider />
+            <div className="grid md:grid-cols-6 gap-3">
+              <Field label="Date" value={draft.date} onChange={(v)=>setDraft({...draft, date:v})} />
+              <Field label="Member" value={draft.memberName} onChange={(v)=>setDraft({...draft, memberName:v})} />
+              <div className="md:col-span-2">
+                <Field label="Task" value={draft.task} onChange={(v)=>setDraft({...draft, task:v})} />
+              </div>
+              <Field label="Hours" value={String(draft.hours)} onChange={(v)=>setDraft({...draft, hours:v})} />
+              <div>
+                <div className="label">Paid?</div>
+                <select className="input" value={draft.paid ? "Yes":"No"} onChange={e=>setDraft({...draft, paid: e.target.value==="Yes"})}>
+                  <option>No</option>
+                  <option>Yes</option>
+                </select>
+              </div>
+              <div className="md:col-span-6">
+                <Field label="Notes" value={draft.notes} onChange={(v)=>setDraft({...draft, notes:v})} />
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle title="Rates (demo settings)" />
+            <Divider />
+            <div className="grid md:grid-cols-4 gap-3">
+              <Field label="Barn & Facilities Fee / horse (mo)" value={String(finance.barnFacilitiesFeePerHorse)} onChange={(v)=>onUpdateFinance({ barnFacilitiesFeePerHorse: Number(v||0) })} />
+              <Field label="Base labor rate ($/hr)" value={String(finance.baseLaborRatePerHour)} onChange={(v)=>onUpdateFinance({ baseLaborRatePerHour: Number(v||0) })} />
+              <Field label="Chore hours / month" value={String(finance.choreHoursPerMonth)} onChange={(v)=>onUpdateFinance({ choreHoursPerMonth: Number(v||0) })} />
+              <Field label="Chore buy-out ($/mo)" value={String(finance.choreBuyoutPerMonth)} onChange={(v)=>onUpdateFinance({ choreBuyoutPerMonth: Number(v||0) })} />
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle title="Totals (hours by member)" />
+            <Divider />
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(totals).length === 0 ? <div className="text-sm text-slate-600">No logs yet.</div> :
+                Object.entries(totals).map(([k,v]) => <Badge key={k}>{k}: {v.toFixed(2)}h</Badge>)
+              }
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle title="Work log entries" />
+            <Divider />
+            {chores.length === 0 ? (
+              <Empty title="No chore logs yet" hint="Add a feed shift, turnout, or maintenance log." />
+            ) : (
+              <div className="grid gap-3">
+                {chores.map(c => (
+                  <div key={c.id} className="card p-4">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                      <div>
+                        <div className="font-extrabold">{c.task}</div>
+                        <div className="text-sm text-slate-600 mt-1">{c.date} • {c.memberName} • {c.hours}h • {c.paid ? "Paid" : "Work-trade"}</div>
+                      </div>
+                      <div className="flex gap-2">
+                        <button className="btn btn-muted" onClick={()=>onDelete(c.id)}>Delete</button>
+                      </div>
+                    </div>
+                    <Divider />
+                    <div className="grid md:grid-cols-6 gap-3">
+                      <Field label="Date" value={c.date} onChange={(v)=>onUpdate(c.id, { date:v })} />
+                      <Field label="Member" value={c.memberName} onChange={(v)=>onUpdate(c.id, { memberName:v })} />
+                      <div className="md:col-span-2">
+                        <Field label="Task" value={c.task} onChange={(v)=>onUpdate(c.id, { task:v })} />
+                      </div>
+                      <Field label="Hours" value={String(c.hours)} onChange={(v)=>onUpdate(c.id, { hours:Number(v||0) })} />
+                      <div>
+                        <div className="label">Paid?</div>
+                        <select className="input" value={c.paid ? "Yes":"No"} onChange={e=>onUpdate(c.id, { paid: e.target.value==="Yes" })}>
+                          <option>No</option><option>Yes</option>
+                        </select>
+                      </div>
+                      <div className="md:col-span-6">
+                        <Field label="Notes" value={c.notes} onChange={(v)=>onUpdate(c.id, { notes:v })} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
+      );
+    }
+
+    // ---------- Care Log ----------
+    function CareLog({ rows, onAdd, onUpdate, onDelete }) {
+      const [draft, setDraft] = useState({ date: todayISO(), horses:"", caregiver:"", items:"", notes:"" });
+
+      return (
+        <div className="grid gap-6">
+          <Card>
+            <SectionTitle
+              title="Care Log"
+              subtitle="AM/PM hay/grain/water notes."
+              right={
+                <button className="btn btn-primary" onClick={()=>{
+                  if (!draft.horses.trim()) return alert("Horses field required");
+                  if (!draft.caregiver.trim()) return alert("Caregiver required");
+                  onAdd({ id: uid("care"), ...draft });
+                  setDraft({ date: todayISO(), horses:"", caregiver:"", items:"", notes:"" });
+                }}>Add care entry</button>
+              }
+            />
+            <Divider />
+            <div className="grid md:grid-cols-5 gap-3">
+              <Field label="Date" value={draft.date} onChange={(v)=>setDraft({...draft, date:v})} />
+              <Field label="Horses" value={draft.horses} onChange={(v)=>setDraft({...draft, horses:v})} placeholder="e.g., Barry/Badger" />
+              <Field label="Caregiver" value={draft.caregiver} onChange={(v)=>setDraft({...draft, caregiver:v})} />
+              <div className="md:col-span-2">
+                <Field label="Items" value={draft.items} onChange={(v)=>setDraft({...draft, items:v})} placeholder="AM hay, grain, water; PM hay, grain, water" />
+              </div>
+              <div className="md:col-span-5">
+                <Field label="Notes" value={draft.notes} onChange={(v)=>setDraft({...draft, notes:v})} />
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle title="Entries" />
+            <Divider />
+            {rows.length === 0 ? (
+              <Empty title="No care entries yet" hint="Add an entry for today’s care." />
+            ) : (
+              <div className="grid gap-3">
+                {rows
+                  .slice()
+                  .sort((a,b)=> b.date.localeCompare(a.date))
+                  .map(r => (
+                  <div key={r.id} className="card p-4">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                      <div>
+                        <div className="font-extrabold">{r.date} • {r.horses}</div>
+                        <div className="text-sm text-slate-600 mt-1">{r.caregiver} • {r.items}</div>
+                      </div>
+                      <button className="btn btn-muted" onClick={()=>onDelete(r.id)}>Delete</button>
+                    </div>
+                    <Divider />
+                    <div className="grid md:grid-cols-5 gap-3">
+                      <Field label="Date" value={r.date} onChange={(v)=>onUpdate(r.id, { date:v })} />
+                      <Field label="Horses" value={r.horses} onChange={(v)=>onUpdate(r.id, { horses:v })} />
+                      <Field label="Caregiver" value={r.caregiver} onChange={(v)=>onUpdate(r.id, { caregiver:v })} />
+                      <div className="md:col-span-2">
+                        <Field label="Items" value={r.items} onChange={(v)=>onUpdate(r.id, { items:v })} />
+                      </div>
+                      <div className="md:col-span-5">
+                        <Field label="Notes" value={r.notes} onChange={(v)=>onUpdate(r.id, { notes:v })} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
+      );
+    }
+
+    // ---------- Protocols ----------
+    function Protocols({ protocols, onAdd, onUpdate, onDelete }) {
+      const [draft, setDraft] = useState({ category:"Safety", title:"", body:"" });
+
+      return (
+        <div className="grid gap-6">
+          <Card>
+            <SectionTitle
+              title="Protocols"
+              subtitle="Post barn rules, safety policies, and operating norms."
+              right={
+                <button className="btn btn-primary" onClick={()=>{
+                  if (!draft.title.trim()) return alert("Title required");
+                  if (!draft.body.trim()) return alert("Body required");
+                  onAdd({ id: uid("prot"), ...draft, updatedAt: new Date().toISOString() });
+                  setDraft({ category:"Safety", title:"", body:"" });
+                }}>Add protocol</button>
+              }
+            />
+            <Divider />
+            <div className="grid md:grid-cols-3 gap-3">
+              <div>
+                <div className="label">Category</div>
+                <select className="input" value={draft.category} onChange={e=>setDraft({...draft, category:e.target.value})}>
+                  <option>Safety</option>
+                  <option>Biosecurity</option>
+                  <option>Communications</option>
+                  <option>Arena & Field Use</option>
+                  <option>Guests & Trainers</option>
+                  <option>Dogs</option>
+                  <option>Emergency</option>
+                </select>
+              </div>
+              <div className="md:col-span-2">
+                <Field label="Title" value={draft.title} onChange={(v)=>setDraft({...draft, title:v})} />
+              </div>
+              <div className="md:col-span-3">
+                <div className="label">Body</div>
+                <textarea className="input" rows="5" value={draft.body} onChange={e=>setDraft({...draft, body:e.target.value})}></textarea>
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle title="Published protocols" />
+            <Divider />
+            {protocols.length === 0 ? (
+              <Empty title="No protocols yet" hint="Add a protocol above." />
+            ) : (
+              <div className="grid gap-3">
+                {protocols.map(p => (
+                  <div key={p.id} className="card p-4">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                      <div>
+                        <div className="font-extrabold">{p.title} <span className="pill ml-2">{p.category}</span></div>
+                        <div className="text-xs text-slate-500 mt-1">Updated: {new Date(p.updatedAt).toLocaleString()}</div>
+                        <p className="text-sm text-slate-700 mt-3 whitespace-pre-wrap">{p.body}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button className="btn btn-muted" onClick={()=>onDelete(p.id)}>Delete</button>
+                      </div>
+                    </div>
+                    <Divider />
+                    <div className="grid md:grid-cols-3 gap-3">
+                      <div>
+                        <div className="label">Category</div>
+                        <select className="input" value={p.category} onChange={e=>onUpdate(p.id, { category:e.target.value })}>
+                          <option>Safety</option><option>Biosecurity</option><option>Communications</option>
+                          <option>Arena & Field Use</option><option>Guests & Trainers</option><option>Dogs</option><option>Emergency</option>
+                        </select>
+                      </div>
+                      <Field label="Title" value={p.title} onChange={(v)=>onUpdate(p.id, { title:v })} />
+                      <div></div>
+                      <div className="md:col-span-3">
+                        <div className="label">Body</div>
+                        <textarea className="input" rows="5" value={p.body} onChange={e=>onUpdate(p.id, { body:e.target.value })}></textarea>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
+      );
+    }
+
+    // ---------- Barn Circle ----------
+    function BarnCircle({ proposals, onAdd, onUpdate, onDelete }) {
+      const [draft, setDraft] = useState({ title:"", proposer:"", status:"Open", decision:"", notes:"" });
+
+      return (
+        <div className="grid gap-6">
+          <Card>
+            <SectionTitle
+              title="Barn Circle"
+              subtitle="Log proposals, objections, decisions, and follow-ups."
+              right={
+                <button className="btn btn-primary" onClick={()=>{
+                  if (!draft.title.trim()) return alert("Title required");
+                  onAdd({ id: uid("prop"), createdAt: new Date().toISOString(), ...draft });
+                  setDraft({ title:"", proposer:"", status:"Open", decision:"", notes:"" });
+                }}>Add proposal</button>
+              }
+            />
+            <Divider />
+            <div className="grid md:grid-cols-5 gap-3">
+              <div className="md:col-span-2">
+                <Field label="Title" value={draft.title} onChange={(v)=>setDraft({...draft, title:v})} />
+              </div>
+              <Field label="Proposer" value={draft.proposer} onChange={(v)=>setDraft({...draft, proposer:v})} />
+              <div>
+                <div className="label">Status</div>
+                <select className="input" value={draft.status} onChange={e=>setDraft({...draft, status:e.target.value})}>
+                  <option>Open</option>
+                  <option>Adopted</option>
+                  <option>Deferred</option>
+                  <option>Rejected</option>
+                </select>
+              </div>
+              <Field label="Decision summary" value={draft.decision} onChange={(v)=>setDraft({...draft, decision:v})} />
+              <div className="md:col-span-5">
+                <Field label="Notes" value={draft.notes} onChange={(v)=>setDraft({...draft, notes:v})} />
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle title="Proposals" />
+            <Divider />
+            {proposals.length === 0 ? (
+              <Empty title="No proposals yet" hint="Add a proposal above." />
+            ) : (
+              <div className="grid gap-3">
+                {proposals.map(p => (
+                  <div key={p.id} className="card p-4">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                      <div>
+                        <div className="font-extrabold">{p.title} <span className="pill ml-2">{p.status}</span></div>
+                        <div className="text-sm text-slate-600 mt-1">Proposer: {p.proposer || "—"} • Created: {new Date(p.createdAt).toLocaleString()}</div>
+                        {p.decision ? <div className="text-sm mt-2"><span className="font-bold">Decision:</span> {p.decision}</div> : null}
+                      </div>
+                      <button className="btn btn-muted" onClick={()=>onDelete(p.id)}>Delete</button>
+                    </div>
+                    <Divider />
+                    <div className="grid md:grid-cols-5 gap-3">
+                      <div className="md:col-span-2">
+                        <Field label="Title" value={p.title} onChange={(v)=>onUpdate(p.id, { title:v })} />
+                      </div>
+                      <Field label="Proposer" value={p.proposer} onChange={(v)=>onUpdate(p.id, { proposer:v })} />
+                      <div>
+                        <div className="label">Status</div>
+                        <select className="input" value={p.status} onChange={e=>onUpdate(p.id, { status:e.target.value })}>
+                          <option>Open</option><option>Adopted</option><option>Deferred</option><option>Rejected</option>
+                        </select>
+                      </div>
+                      <Field label="Decision summary" value={p.decision} onChange={(v)=>onUpdate(p.id, { decision:v })} />
+                      <div className="md:col-span-5">
+                        <Field label="Notes" value={p.notes} onChange={(v)=>onUpdate(p.id, { notes:v })} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
+      );
+    }
+
+    // ---------- Comms ----------
+    function Comms({ messages, currentUser, onAdd, onDelete }) {
+      const [draft, setDraft] = useState({ channel:"Barn Current", text:"" });
+
+      return (
+        <div className="grid gap-6">
+          <Card>
+            <SectionTitle
+              title="Comms"
+              subtitle="Prototype message board."
+              right={
+                <button className="btn btn-primary" onClick={()=>{
+                  if (!draft.text.trim()) return alert("Message required");
+                  onAdd({ id: uid("msg"), createdAt: new Date().toISOString(), author: currentUser.name, ...draft });
+                  setDraft({ channel:"Barn Current", text:"" });
+                }}>Post</button>
+              }
+            />
+            <Divider />
+            <div className="grid md:grid-cols-6 gap-3">
+              <div>
+                <div className="label">Channel</div>
+                <select className="input" value={draft.channel} onChange={e=>setDraft({...draft, channel:e.target.value})}>
+                  <option>Barn Current</option>
+                  <option>Urgent</option>
+                  <option>Arena</option>
+                  <option>Trail</option>
+                  <option>Work Party</option>
+                </select>
+              </div>
+              <div className="md:col-span-5">
+                <div className="label">Message</div>
+                <input className="input" value={draft.text} onChange={e=>setDraft({...draft, text:e.target.value})} placeholder="Short, practical updates…" />
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <SectionTitle title="Feed" />
+            <Divider />
+            {messages.length === 0 ? (
+              <Empty title="No messages yet" hint="Post a footing update or weather closure." />
+            ) : (
+              <div className="grid gap-3">
+                {messages.map(m => (
+                  <div key={m.id} className="card p-4">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                      <div>
+                        <div className="text-sm text-slate-600">
+                          <span className="pill mr-2">{m.channel}</span>
+                          <span className="font-bold">{m.author}</span> • {new Date(m.createdAt).toLocaleString()}
+                        </div>
+                        <div className="mt-2">{m.text}</div>
+                      </div>
+                      <button className="btn btn-muted" onClick={()=>onDelete(m.id)}>Delete</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
+      );
+    }
+
+    // ---------- Admin ----------
+    function AdminPanel({ store, onUpdateAuth }) {
+      const u = store.auth.currentUser;
+      return (
+        <div className="grid gap-6">
+          <Card>
+            <SectionTitle title="Admin" subtitle="Demo-only role switcher." />
+            <Divider />
+            <div className="grid md:grid-cols-3 gap-3">
+              <Field label="Name" value={u.name} onChange={(v)=>onUpdateAuth({ ...u, name:v })} />
+              <div>
+                <div className="label">Role</div>
+                <select className="input" value={u.role} onChange={e=>onUpdateAuth({ ...u, role:e.target.value })}>
+                  <option>Admin</option>
+                  <option>Farm</option>
+                  <option>Member</option>
+                  <option>Guest</option>
+                </select>
+              </div>
+              <div className="text-sm text-slate-600 flex items-end">
+                Tip: production would enforce permissions (read-only vs edit vs approve).
+              </div>
+            </div>
+          </Card>
+        </div>
+      );
+    }
+
+    // ---------- Small component ----------
+    function Field({ label, value, onChange, placeholder }) {
+      return (
+        <div>
+          <div className="label">{label}</div>
+          <input className="input" value={value || ""} placeholder={placeholder || ""} onChange={e=>onChange(e.target.value)} />
+        </div>
+      );
+    }
+
+    // ---------- Render ----------
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
